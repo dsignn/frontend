@@ -1,6 +1,6 @@
 {
   "entrypoint": "index.html",
-  "shell": "src/dsign-app.js",
+  "shell": "element/dsign-app/dsign-app.js",
   "sources": [
     "images/**/*"
   ],

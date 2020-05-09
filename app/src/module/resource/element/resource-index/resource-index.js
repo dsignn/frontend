@@ -10,17 +10,18 @@
 
 import { PolymerElement, html } from '@polymer/polymer/polymer-element.js';
 
-class UserIndex extends PolymerElement {
+class ResourceIndex extends PolymerElement {
   static get template() {
     return html`
       <div class="card">
-        <div class="circle">2</div>
-        <h1>User index</h1>
-        <p>Ea duis bonorum nec, falli paulo aliquid ei eum.</p>
-        <p>Id nam odio natum malorum, tibique copiosae expetenda mel ea.Detracto suavitate repudiandae no eum. Id adhuc minim soluta nam.Id nam odio natum malorum, tibique copiosae expetenda mel ea.</p>
+        <div class="circle">1</div>
+        <h1>resource index</h1>
+        <p>Ut labores minimum atomorum pro. Laudem tibique ut has.</p>
+        <p>Lorem ipsum dolor sit amet, per in nusquam nominavi periculis, sit elit oportere ea.Lorem ipsum dolor sit amet, per in nusquam nominavi periculis, sit elit oportere ea.Cu mei vide viris gloriatur, at populo eripuit sit.</p>
       </div>
+      
     `;
   }
 }
 
-window.customElements.define('user-index', UserIndex);
+window.customElements.define('resource-index', ResourceIndex);

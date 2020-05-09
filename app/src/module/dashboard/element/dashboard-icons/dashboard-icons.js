@@ -9,12 +9,13 @@
  */
 
 import '@polymer/iron-iconset-svg/iron-iconset-svg.js';
+
 const $_documentContainer = document.createElement('template');
-$_documentContainer.innerHTML = `<iron-iconset-svg name="user" size="24">
+$_documentContainer.innerHTML = `<iron-iconset-svg name="dashboard" size="24">
   <svg>
     <defs>
       <g id="menu">
-        <path d="M21 3H3c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h18c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm-9 9H3V5h9v7z"></path>
+        <path d="M4 8h4V4H4v4zm6 12h4v-4h-4v4zm-6 0h4v-4H4v4zm0-6h4v-4H4v4zm6 0h4v-4h-4v4zm6-10v4h4V4h-4zm-6 4h4V4h-4v4zm6 6h4v-4h-4v4zm0 6h4v-4h-4v4z"></path>
       </g>
     </defs>
   </svg>

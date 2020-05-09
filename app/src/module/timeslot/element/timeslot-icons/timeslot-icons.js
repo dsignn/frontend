@@ -14,7 +14,7 @@ $_documentContainer.innerHTML = `<iron-iconset-svg name="timeslot" size="24">
   <svg>
     <defs>
       <g id="menu">
-        <path d="M21 3H3c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h18c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm-9 9H3V5h9v7z"></path>
+        <path d="M2,2H4V20H22V22H2V2M7,10H17V13H7V10M11,15H21V18H11V15M6,4H22V8H20V6H8V8H6V4Z"></path>
       </g>
     </defs>
   </svg>

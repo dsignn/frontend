@@ -21,9 +21,9 @@ import '@polymer/app-route/app-route.js';
 import '@polymer/iron-pages/iron-pages.js';
 import '@polymer/iron-selector/iron-selector.js';
 import '@polymer/paper-icon-button/paper-icon-button.js';
-import './dsign-404.js';
-import './dsign-icons.js';
-import {layout} from '../element/layout/app-layout';
+import '../dsign-404/dsign-404.js';
+import '../../element/icons/dsign-icons.js';
+import {layout} from '../../element/layout/app-layout';
 
 // Gesture events like tap and track generated from touch will not be
 // preventable, allowing for better scrolling performance.
@@ -50,7 +50,6 @@ class DsignApp extends PolymerElement {
           visibility: visible;
         }
        
-
         app-header {
           color: #fff;
           background-color: var(--app-primary-color);
@@ -66,11 +65,17 @@ class DsignApp extends PolymerElement {
             padding-left: 8px;
         }
         
+        .name-module {
+           padding-left: 8px;
+        }
+        
         .icon-wrapper {
           height: 64px;
         }
         
-        
+        a.icon {
+            color: black;
+        }
         
       </style>
 
@@ -89,6 +94,7 @@ class DsignApp extends PolymerElement {
       <app-header slot="header" fixed effects="waterfall">
         <app-toolbar>
           <div main-title>Dsing</div>
+          <paper-icon-button icon="dsign:face" on-tap="tapAuthDrawer"></paper-icon-button>
         </app-toolbar>
       </app-header>
       <div>
@@ -99,7 +105,11 @@ class DsignApp extends PolymerElement {
     </app-header-layout>
     <app-drawer id="menuDrawer" align="left" swipe-open open>
       <div class="layout vertical center-justified start icon-wrapper" style="padding-left: 8px;"></div>
+    </app-drawer>
+    <app-drawer id="authDrawer" align="right" swipe-open open>
+      <div class="layout vertical center-justified start icon-wrapper"></div>
     </app-drawer>`;
+
   }
 
   static get properties() {
@@ -114,11 +124,20 @@ class DsignApp extends PolymerElement {
       modules: {
          value: [
            {
+             name: 'dashboard'
+           },
+           {
+             name: 'monitor'
+           },
+           {
+             name: 'resource'
+           },
+           {
              name: 'timeslot'
            },
            {
              name: 'user'
-           }
+           },
          ]
       }
     };
@@ -138,8 +157,7 @@ class DsignApp extends PolymerElement {
   _loadModuleChanged(modules) {
     modules.forEach(module => {
 
-      this._importIconModule(module);
-      this._importEntryPointModule(module)
+      this._importConfig(module);
     });
   }
 
@@ -184,6 +202,13 @@ class DsignApp extends PolymerElement {
   }
 
   /**
+   * @param event
+   */
+  tapAuthDrawer(event) {
+    this.$.authDrawer.open();
+  }
+
+  /**
    *
    */
   updateHeightMenu() {
@@ -207,15 +232,9 @@ class DsignApp extends PolymerElement {
    * @private
    */
   _importIconModule(module) {
-    let path = `./${module.name}/${module.name}-icons.js`;
+    let path = `./../../src/module/${module.name}/element/${module.name}-icons/${module.name}-icons.js`;
     import(path).then((data) =>{
-      /*
-      <div class="layout vertical center-center icon-wrapper">
-          <a name="view1" href="[[rootPath]]view1">
-            <paper-icon-button icon="my-icons:menu"></paper-icon-button>
-          </a>
-        </div>
-      * */
+
         let divDrawer = document.createElement('div');
         divDrawer.className = 'layout vertical center-justified start icon-wrapper';
 
@@ -223,15 +242,21 @@ class DsignApp extends PolymerElement {
         paperIcon.setAttribute('icon', `${module.name}:menu`);
 
         let a = document.createElement('a');
-
+        a.className = 'icon';
         a.setAttribute('href', `${this.rootPath}${module.name}`);
 
         let div = document.createElement('div');
-        div.className = "layout vertical center-center icon-wrapper";
+        div.className = "layout horizontal center-center icon-wrapper";
 
         a.appendChild(paperIcon);
         div.appendChild(a);
-        divDrawer.appendChild(div.cloneNode( true ));
+
+        let itemDrawer = div.cloneNode( true );
+        let name = document.createElement('div');
+        name.className = 'name-module';
+        name.innerHTML = module.name;
+        itemDrawer.appendChild(name);
+        divDrawer.appendChild(itemDrawer);
         this.$.menuStaticSelector.appendChild(div);
         this.$.menuDrawer.appendChild(divDrawer);
 
@@ -245,7 +270,7 @@ class DsignApp extends PolymerElement {
    * @private
    */
   _importEntryPointModule(module) {
-    let path = `./${module.name}/${module.name}-index.js`;
+    let path = `./../../src/module/${module.name}/element/${module.name}-index/${module.name}-index.js`;
     import(path).then((data) =>{
       let element = document.createElement(`${module.name}-index`);
       element.setAttribute('name', module.name);
@@ -254,6 +279,33 @@ class DsignApp extends PolymerElement {
       console.error(error);
     });
 
+  }
+
+  /**
+   * @param module
+   * @private
+   */
+  _importConfig(module) {
+    let path = `./../../src/module/${module.name}/config.js`;
+    import(path).then((data) =>{
+      this._importRepository(module);
+    }).catch((error) => {
+      console.error(error);
+    });
+  }
+
+  /**
+   * @param module
+   * @private
+   */
+  _importRepository(module) {
+    let path = `./../../src/module/${module.name}/repository.js`;
+    import(path).then((data) =>{
+      this._importIconModule(module);
+      this._importEntryPointModule(module);
+    }).catch((error) => {
+      console.error(error);
+    });
   }
 }
 
