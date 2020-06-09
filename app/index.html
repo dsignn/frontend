@@ -59,9 +59,11 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 
     <!-- Load webcomponents-loader.js to check and load any polyfills your browser needs -->
     <script src="node_modules/@webcomponents/webcomponentsjs/webcomponents-loader.js"></script>
+    <script src="node_modules/js-acl/dist/acl.js"></script>
     <!-- Load your application config -->
-    <script type="module" src="src/repository.js"></script>
+    <script type="module" src="src/app.js"></script>
     <!-- Load your application shell -->
+    <script type="module" src="element/layout/dsign-global-style.js" crossorigin></script>
     <script type="module" src="element/dsign-app/dsign-app.js"></script>
 
     <!-- Add any global styles for body, document, etc. -->
@@ -76,10 +78,5 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
     </style>
   </head>
   <body>
-    <dsign-app></dsign-app>
-    <noscript>
-      Please enable JavaScript to view this website.
-    </noscript>
-    <!-- Built with love using Polymer Starter Kit -->
   </body>
 </html>

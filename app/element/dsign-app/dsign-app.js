@@ -21,9 +21,17 @@ import '@polymer/app-route/app-route.js';
 import '@polymer/iron-pages/iron-pages.js';
 import '@polymer/iron-selector/iron-selector.js';
 import '@polymer/paper-icon-button/paper-icon-button.js';
+import '@polymer/paper-button/paper-button.js';
+import '@polymer/paper-input/paper-input.js';
+import '@polymer/paper-tabs/paper-tabs.js';
+import  '../../element/dsign-menu-icon/dsign-menu-icon.js';
 import '../dsign-404/dsign-404.js';
-import '../../element/icons/dsign-icons.js';
-import {layout} from '../../element/layout/app-layout';
+import '../../element/dsign-icons/dsign-icons.js';
+import '../../element/dsign-login/dsign-login';
+import '../../element/dsign-signup/dsign-signup';
+import {layout} from '../../element/layout/dsing-layout.js';
+import {ServiceInjectorMixin} from '../../src/mixin/service/injector-mixin';
+import {AclMixin} from '../../src/mixin/acl/acl-mixin';
 
 // Gesture events like tap and track generated from touch will not be
 // preventable, allowing for better scrolling performance.
@@ -33,17 +41,11 @@ setPassiveTouchGestures(true);
 // in `index.html`.
 setRootPath(MyAppGlobals.rootPath);
 
-class DsignApp extends PolymerElement {
+class DsignApp extends AclMixin(ServiceInjectorMixin(PolymerElement)) {
   static get template() {
     return html`
       ${layout}
       <style>
-        :host {
-          --app-primary-color: #4285f4;
-          --app-secondary-color: black;
-
-          display: block;
-        }
 
         app-header-layout {
           margin-left: 64px;
@@ -53,6 +55,11 @@ class DsignApp extends PolymerElement {
         app-header {
           color: #fff;
           background-color: var(--app-primary-color);
+        }
+        
+        paper-tabs {
+            width: 244px;
+            border-radius: 3px;
         }
         
         #menuStatic {
@@ -107,7 +114,27 @@ class DsignApp extends PolymerElement {
       <div class="layout vertical center-justified start icon-wrapper" style="padding-left: 8px;"></div>
     </app-drawer>
     <app-drawer id="authDrawer" align="right" swipe-open open>
-      <div class="layout vertical center-justified start icon-wrapper"></div>
+      <div class="layout vertical center-justified start icon-wrapper">
+        <template is="dom-if" if="{{isAllowed('application', 'login')}}">
+          <paper-button on-tap="logout">logout</paper-button>
+        </template>
+        <template is="dom-if" if="{{isAllowed('application', 'logout')}}">
+          <div style="padding: 6px; padding-top: 12px; height: 100%;">
+            <paper-tabs selected="{{authSelected}}" no-slide>
+              <paper-tab>LOGIN</paper-tab>
+              <paper-tab>SIGNUP</paper-tab>
+            </paper-tabs>
+            <iron-pages id="authPages" selected="{{authSelected}}" role="main">
+              <div>
+                <dsign-login></dsign-login>
+              </div>
+              <div>
+                <dsign-signup></dsign-signup>
+              </div>
+            </iron-pages>
+          </div>
+        </template>
+      </div>
     </app-drawer>`;
 
   }
@@ -119,46 +146,39 @@ class DsignApp extends PolymerElement {
         type: String,
         reflectToAttribute: true
       },
+
       routeData: Object,
+
       subroute: Object,
-      modules: {
-         value: [
-           {
-             name: 'dashboard'
-           },
-           {
-             name: 'monitor'
-           },
-           {
-             name: 'resource'
-           },
-           {
-             name: 'timeslot'
-           },
-           {
-             name: 'user'
-           },
-         ]
-      }
+
+      authSelected: {
+        type: Number,
+        value: 0,
+        notify: true
+      },
+
+      services : {
+        value : {
+          application:  "Application",
+          _aclService: "Acl",
+          _authService: "Auth"
+        }
+      },
+
+      application: {
+        observer: '_applicationChanged'
+      },
+
+      _authService: {
+        readOnly: true
+      },
     };
   }
 
   static get observers() {
     return [
-      '_routePageChanged(routeData.page)',
-      '_loadModuleChanged(modules)'
+      '_routePageChanged(routeData.page, application)'
     ];
-  }
-
-  /**
-   * @param modules
-   * @private
-   */
-  _loadModuleChanged(modules) {
-    modules.forEach(module => {
-
-      this._importConfig(module);
-    });
   }
 
   /**
@@ -173,17 +193,54 @@ class DsignApp extends PolymerElement {
   }
 
   /**
+   * @param application
+   * @private
+   */
+  _applicationChanged(application) {
+
+    let entryPoint;
+    let icon;
+    let drawerIcon;
+    let divWrap;
+    let divName;
+
+    for (let cont = 0 ; application.modules.length > cont; cont++) {
+
+      entryPoint = document.createElement(application.modules[cont].entryPoint.name);
+      entryPoint.setAttribute('name', application.modules[cont].name);
+      this.$.moduleEntryPoint.appendChild(entryPoint);
+
+      icon =  document.createElement('dsign-module-icon');
+      icon.module = application.modules[cont];
+      this.$.menuStaticSelector.appendChild(icon);
+
+      drawerIcon = icon.cloneNode(true);
+      drawerIcon.module = application.modules[cont];
+
+      divName = document.createElement('div');
+      divName.innerHTML = application.modules[cont].name.charAt(0).toUpperCase() + application.modules[cont].name.slice(1);
+
+      divWrap = document.createElement('div');
+      divWrap.className = 'layout horizontal start-justified center icon-wrapper';
+      divWrap.appendChild(drawerIcon);
+      divWrap.appendChild(divName);
+
+      this.$.menuDrawer.appendChild(divWrap);
+    }
+  }
+
+  /**
    * @param page
    * @private
    */
-  _routePageChanged(page) {
+  _routePageChanged(page, application) {
 
-    if (!page) {
+    if (!page || !application) {
       return;
     }
-
-    let search = this.modules.find((element) => {
-      return element.name === page;
+    let pages = Array.from(this.$.moduleEntryPoint.childNodes)
+    let search = pages.find((element) => {
+      return element.getAttribute && element.getAttribute('name') === page;
     });
 
     if (!search) {
@@ -209,6 +266,13 @@ class DsignApp extends PolymerElement {
   }
 
   /**
+   * @param evt
+   */
+  logout(evt) {
+    this._authService.logout();
+  }
+
+  /**
    *
    */
   updateHeightMenu() {
@@ -225,87 +289,6 @@ class DsignApp extends PolymerElement {
 
     return Math.max( body.scrollHeight, body.offsetHeight,
         html.clientHeight, html.scrollHeight, html.offsetHeight );
-  }
-
-  /**
-   * @param module
-   * @private
-   */
-  _importIconModule(module) {
-    let path = `./../../src/module/${module.name}/element/${module.name}-icons/${module.name}-icons.js`;
-    import(path).then((data) =>{
-
-        let divDrawer = document.createElement('div');
-        divDrawer.className = 'layout vertical center-justified start icon-wrapper';
-
-        let paperIcon = document.createElement('paper-icon-button');
-        paperIcon.setAttribute('icon', `${module.name}:menu`);
-
-        let a = document.createElement('a');
-        a.className = 'icon';
-        a.setAttribute('href', `${this.rootPath}${module.name}`);
-
-        let div = document.createElement('div');
-        div.className = "layout horizontal center-center icon-wrapper";
-
-        a.appendChild(paperIcon);
-        div.appendChild(a);
-
-        let itemDrawer = div.cloneNode( true );
-        let name = document.createElement('div');
-        name.className = 'name-module';
-        name.innerHTML = module.name;
-        itemDrawer.appendChild(name);
-        divDrawer.appendChild(itemDrawer);
-        this.$.menuStaticSelector.appendChild(div);
-        this.$.menuDrawer.appendChild(divDrawer);
-
-      }).catch((error) => {
-        console.error(error);
-      });
-  }
-
-  /**
-   * @param module
-   * @private
-   */
-  _importEntryPointModule(module) {
-    let path = `./../../src/module/${module.name}/element/${module.name}-index/${module.name}-index.js`;
-    import(path).then((data) =>{
-      let element = document.createElement(`${module.name}-index`);
-      element.setAttribute('name', module.name);
-      this.$.moduleEntryPoint.appendChild(element);
-    }).catch((error) => {
-      console.error(error);
-    });
-
-  }
-
-  /**
-   * @param module
-   * @private
-   */
-  _importConfig(module) {
-    let path = `./../../src/module/${module.name}/config.js`;
-    import(path).then((data) =>{
-      this._importRepository(module);
-    }).catch((error) => {
-      console.error(error);
-    });
-  }
-
-  /**
-   * @param module
-   * @private
-   */
-  _importRepository(module) {
-    let path = `./../../src/module/${module.name}/repository.js`;
-    import(path).then((data) =>{
-      this._importIconModule(module);
-      this._importEntryPointModule(module);
-    }).catch((error) => {
-      console.error(error);
-    });
   }
 }
 

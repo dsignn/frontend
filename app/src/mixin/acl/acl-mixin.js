@@ -18,6 +18,11 @@ export const AclMixin = (superClass) => {
                     observer: '_changeAclService'
                 },
 
+                _role : {
+                    type: String,
+                    readOnly: true,
+                },
+
                 /**
                  * @type Function
                  */
@@ -37,13 +42,12 @@ export const AclMixin = (superClass) => {
          * @private
          */
         __computeAllow(resource, privilege, role, aclService) {
-
             return (resource, privilege) => {
 
                 let isAllowed = false;
 
-                if (!!resource && !!aclService) {
-                    isAllowed = this._aclService.isAllowed(this._aclService.getRole(), resource, privilege);
+                if (!!resource && !!aclService, !!this._role) {
+                    isAllowed = this._aclService.isAllowed(this._role, resource, privilege);
                 }
                 return isAllowed;
             };
@@ -59,7 +63,7 @@ export const AclMixin = (superClass) => {
             }
 
             newValue.getEventManager().on(Acl.CHANGE_ROLE, (evt) => {
-                this._role = evt.data;
+                this._set_role(evt.data);
             });
         }
     }

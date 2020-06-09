@@ -1,10 +1,12 @@
-console.log('user copnfig');
 /**
- * User config
+ * Config
  */
-import {RestStorageAdapter} from './../../storage/adapter/RestStorageAdapter';
-
-let rest = new RestStorageAdapter()
-
-console.log(container);
-console.log(RestStorageAdapter);
+export const config = {
+    rest: {
+        resources : {
+            user : {
+                name: "user"
+            }
+        }
+    }
+};
