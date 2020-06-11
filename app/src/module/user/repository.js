@@ -9,6 +9,9 @@ import {JsonDecode} from "@dsign/library/src/data-transform/JsonDecode";
 import {DefaultBuilder} from "@dsign/library/src/storage/adapter/xmlh/url/DefaultBuilder";
 import {JsonEncode} from "@dsign/library/src/data-transform/JsonEncode";
 
+/**
+ * @class Repository
+ */
 export class Repository extends ContainerAware {
 
     /**

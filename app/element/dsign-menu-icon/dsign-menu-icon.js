@@ -29,21 +29,43 @@ class DsignMenuIcon extends AclMixin(ServiceInjectorMixin(PolymerElement)) {
     return html`
       ${layout}
       <style>
-      
-        .icon-wrapper {
-          height: 64px
+        :host {
+           display: block;
+           width: 100%;
+           height: 64px;
         }
+        
+        #container {
+         width: 100%;
+        }
+        
+        .icon-wrapper {
+          height: 64px;
+          width: 64px;
+        }
+        
+        .not-display {
+            display: none;
+        }
+            
+        .display {
+            display: flex;
+        }
+        
         
       </style>
       <template is="dom-if" if="{{isAllowed(module.name, 'menu')}}">
-        <div class="layout horizontal center-center icon-wrapper">
-          <a href="{{rootPath}}{{module.name}}">
-            <paper-icon-button icon="{{module.icon}}"></paper-icon-button>
-          </a>
+        <div id="container" class="layout horizontal start-justified center">
+          <div class="layout vertical center-center icon-wrapper ">
+            <a href="{{rootPath}}{{module.name}}">
+              <paper-icon-button icon="{{module.icon}}"></paper-icon-button>
+            </a>
+          </div>   
+          <div class$="{{classText}}">
+            {{ucFirst(module.name)}}
+          </div>
         </div>
       </template>`;
-
-
   }
 
   static get properties() {
@@ -54,12 +76,42 @@ class DsignMenuIcon extends AclMixin(ServiceInjectorMixin(PolymerElement)) {
         }
       },
 
+      viewText: {
+        value:false,
+        notify: true,
+        observer: 'viewTextChanged',
+        reflectToAttribute: true
+      },
+
       module: {
         type: Object,
         notify: true,
         value: {}
+      },
+
+      classText: {
+        readOnly: true,
+        value:'not-display'
       }
     }
+  }
+
+  /**
+   * @param value
+   */
+  viewTextChanged(value) {
+    let display = 'not-display';
+    if (value) {
+      display = 'display';
+    }
+    this._setClassText(display);
+  }
+
+  /**
+   * @param value
+   */
+  ucFirst(value) {
+    return value.charAt(0).toUpperCase() + value.slice(1)
   }
 }
 

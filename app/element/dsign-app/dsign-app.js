@@ -68,16 +68,13 @@ class DsignApp extends AclMixin(ServiceInjectorMixin(PolymerElement)) {
           position: fixed;
         }
         
-        #menuDrawer .icon-wrapper {
-            padding-left: 8px;
-        }
-        
         .name-module {
            padding-left: 8px;
         }
         
         .icon-wrapper {
           height: 64px;
+          width: 64px;
         }
         
         a.icon {
@@ -111,7 +108,7 @@ class DsignApp extends AclMixin(ServiceInjectorMixin(PolymerElement)) {
       </div>
     </app-header-layout>
     <app-drawer id="menuDrawer" align="left" swipe-open open>
-      <div class="layout vertical center-justified start icon-wrapper" style="padding-left: 8px;"></div>
+      <div class="layout vertical center-justified start icon-wrapper"></div>
     </app-drawer>
     <app-drawer id="authDrawer" align="right" swipe-open open>
       <div class="layout vertical center-justified start icon-wrapper">
@@ -202,7 +199,6 @@ class DsignApp extends AclMixin(ServiceInjectorMixin(PolymerElement)) {
     let icon;
     let drawerIcon;
     let divWrap;
-    let divName;
 
     for (let cont = 0 ; application.modules.length > cont; cont++) {
 
@@ -216,16 +212,9 @@ class DsignApp extends AclMixin(ServiceInjectorMixin(PolymerElement)) {
 
       drawerIcon = icon.cloneNode(true);
       drawerIcon.module = application.modules[cont];
+      drawerIcon.viewText = true;
 
-      divName = document.createElement('div');
-      divName.innerHTML = application.modules[cont].name.charAt(0).toUpperCase() + application.modules[cont].name.slice(1);
-
-      divWrap = document.createElement('div');
-      divWrap.className = 'layout horizontal start-justified center icon-wrapper';
-      divWrap.appendChild(drawerIcon);
-      divWrap.appendChild(divName);
-
-      this.$.menuDrawer.appendChild(divWrap);
+      this.$.menuDrawer.appendChild(drawerIcon);
     }
   }
 
