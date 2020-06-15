@@ -157,9 +157,10 @@ const template = html`
                 border-radius: 100%;
                 box-shadow: 0 1px 4px rgba(0,0,0,.23), 0 1px 4px rgba(0,0,0,.16);
             }
+           
         }                
     </style>
 </custom-style>`;
-console.log('fdfdsfdsfsdfdsfdsf');
+
 template.setAttribute('style', 'display: none;');
 document.head.appendChild(template.content);

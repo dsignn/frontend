@@ -1,19 +1,23 @@
-import {Container} from '@dsign/library/src/container/Container.js';
-import {PropertyHydrator} from '@dsign/library/src/hydrator/PropertyHydrator.js';
-import {HydratorStrategy} from '@dsign/library/src/hydrator/strategy/value/HydratorStrategy.js';
-import {XmlhAdapter} from '@dsign/library/src/storage/adapter/xmlh/XmlhAdapter.js';
-import {CallbackBuilder} from '@dsign/library/src/storage/adapter/xmlh/url/CallbackBuilder.js';
-import {JsAclAdapter} from '@dsign/library/src/permission/acl/adapter/js-acl/JsAclAdapter.js';
-import {Acl} from '@dsign/library/src/permission/acl/Acl.js';
-import {JsonDecode} from '@dsign/library/src/data-transform/JsonDecode.js';
-import {FormDataEncode} from '@dsign/library/src/data-transform/FormDataEncode.js';
-import {Application} from './core/Application.js';
-import {Module} from './core/module/Module.js';
-import {WebComponent} from './core/webcomponent/WebComponent.js';
-import {mergeDeep} from './object/Merge.js';
-import {config} from './config';
 import {Auth} from './authentication/Auth';
-
+import {Container} from '@dsign/library/src/container/Container';
+import {ContainerAggregate} from '@dsign/library/src/container/ContainerAggregate';
+import {PropertyHydrator} from '@dsign/library/src/hydrator/PropertyHydrator';
+import {HydratorStrategy} from '@dsign/library/src/hydrator/strategy/value/HydratorStrategy';
+import {XmlhAdapter} from '@dsign/library/src/storage/adapter/xmlh/XmlhAdapter';
+import {CallbackBuilder} from '@dsign/library/src/storage/adapter/xmlh/url/CallbackBuilder';
+import {EntityNestedReference} from '@dsign/library/src/storage/entity/EntityNestedReference';
+import {EntityReference} from '@dsign/library/src/storage/entity/EntityReference';
+import {EntityIdentifier} from '@dsign/library/src/storage/entity/EntityIdentifier';
+import {JsAclAdapter} from '@dsign/library/src/permission/acl/adapter/js-acl/JsAclAdapter';
+import {Acl} from '@dsign/library/src/permission/acl/Acl';
+import {Localize} from '@dsign/library/src/localize/Localize';
+import {JsonDecode} from '@dsign/library/src/data-transform/JsonDecode';
+import {FormDataEncode} from '@dsign/library/src/data-transform/FormDataEncode';
+import {Application} from './core/Application';
+import {Module} from './core/module/Module';
+import {WebComponent} from './core/webcomponent/WebComponent';
+import {mergeDeep} from './object/Merge';
+import {config} from './config';
 
 window.MyAppGlobals = { rootPath: '/' };
 
@@ -89,9 +93,9 @@ container.set(
     application
 );
 
-/**
+/***********************************************************************************************************************
  * Acl
- */
+ **********************************************************************************************************************/
 
 const acl = new Acl(new JsAclAdapter(new window.JsAcl()));
 
@@ -108,9 +112,9 @@ container.set(
     acl
 );
 
-/**
+/***********************************************************************************************************************
  * Auth
- */
+ **********************************************************************************************************************/
 
 let callbackBuilder = new CallbackBuilder();
 callbackBuilder.addCallback(
@@ -164,6 +168,52 @@ container.set(
     auth
 );
 
-//auth.login('antonino.visalli@gmail.com', 'suca');
+/***********************************************************************************************************************
+ * Localize
+ **********************************************************************************************************************/
+
+container.set('Localize', new Localize(
+    config.localize.defaultLanguage,
+    config.localize.languages
+));
+
+/***********************************************************************************************************************
+ * Notify
+ **********************************************************************************************************************/
+
+container.set('Notify', {
+    notify:  (text) => {
+
+        let id = 'notification';
+        let paperToast = document.getElementById(id);
+        if (!paperToast) {
+            console.warn('Element by id ' + id + ' not found');
+            return;
+        }
+
+        paperToast.text = text;
+        paperToast.open();
+    }
+});
+
+/***********************************************************************************************************************
+ * Entity container aggregate
+ **********************************************************************************************************************/
+
+const entityContainerAggregate = new ContainerAggregate();
+entityContainerAggregate.setPrototipeClass(EntityIdentifier);
+entityContainerAggregate.setContainer(container);
+
+entityContainerAggregate.set(
+    'EntityNestedReference',
+    new EntityNestedReference()
+);
+
+entityContainerAggregate.set(
+    'EntityReference',
+    new EntityReference()
+);
+
+container.set('EntityContainerAggregate', entityContainerAggregate);
 
 window.container = container;

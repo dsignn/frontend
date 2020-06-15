@@ -90,7 +90,7 @@ class DsignApp extends AclMixin(ServiceInjectorMixin(PolymerElement)) {
     <div id="menuStatic">
       <iron-selector id="menuStaticSelector" selected="[[page]]" attr-for-selected="name" class="drawer-list" role="navigation">
         <div class="layout vertical center-center icon-wrapper">
-          <paper-icon-button icon="dsign:arrow-right" on-tap="tapDrawer"></paper-icon-button>
+          <paper-icon-button icon="arrow-right" on-tap="tapDrawer"></paper-icon-button>
         </div>
       </iron-selector>
     </div>
@@ -98,7 +98,7 @@ class DsignApp extends AclMixin(ServiceInjectorMixin(PolymerElement)) {
       <app-header slot="header" fixed effects="waterfall">
         <app-toolbar>
           <div main-title>Dsing</div>
-          <paper-icon-button icon="dsign:face" on-tap="tapAuthDrawer"></paper-icon-button>
+          <paper-icon-button icon="face" on-tap="tapAuthDrawer"></paper-icon-button>
         </app-toolbar>
       </app-header>
       <div>

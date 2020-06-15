@@ -140,7 +140,6 @@ export class Auth extends EventManagerAware {
      */
     loadIdentity() {
         this.storageAdapter.get().then((data) => {
-            console.log('identity', data);
             this._setIdentity(data);
             this.eventManager.emit(Auth.IDENTITY(), this.identity);
         });

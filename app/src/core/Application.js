@@ -62,17 +62,45 @@ export class Application extends EventManagerAware {
         /**
          * to run absolute path on windows, for polymer cli script c:/ !== /c:/ when use import
          */
-        let configModule;
-        let configModuleClass;
-        let wcEntryPoint;
-        let wcComponentPath;
+
         console.groupCollapsed(`Load Module ${module.getName()}`);
+
+        /**
+         * Load entry point module
+         */
+        await this._importEntryPoint(module);
+
+        /**
+         * Import auto load class
+         */
+        await this._importAutoLoadClass(module);
+
+        /**
+         * Import auto load ws
+         */
+        await this._importAutoLoadWs(module);
+
+        /**
+         * Import auto load ws
+         */
+        await this._importConfigModule(module);
+
+        console.groupEnd();
+        return module;
+    }
+
+    /**
+     * @param {Module} module
+     * @private
+     */
+    async _importEntryPoint(module) {
+
+        let wcEntryPoint;
         /**
          * Load entry point module
          */
         if (customElements && customElements.get(module.getEntryPoint().getName()) === undefined) {
             wcEntryPoint = `${this.getModulePath()}/${module.getName()}/${module.getEntryPoint().getPath()}`;
-            console.log(wcEntryPoint);
             try {
                 await import(wcEntryPoint);
                 console.log(`Load entry point module "${module.getEntryPoint().getName()}" store in ${wcEntryPoint}`, module);
@@ -81,40 +109,75 @@ export class Application extends EventManagerAware {
                 console.error(`Failed to load entry point module store in ${wcEntryPoint}`, err);
             }
         }
+    }
+
+
+    /**
+     * @param {Module} module
+     * @private
+     */
+    async _importAutoLoadClass(module) {
 
         if (module.getAutoloads().length > 0) {
+            let autoLoadPath;
+            let autoLoadImport;
             for (let cont = 0; module.getAutoloads().length > cont; cont++) {
-              //  autoloadRequire = i(`${this.getModulePath()}${module.getName()}/${this.path.normalize(module.getAutoloads()[cont])}`);
-              //  window[autoloadRequire.name] = autoloadRequire;
+
+                autoLoadPath = `${this.getModulePath()}/${module.getName()}/${module.getAutoloads()[cont].path}`;
+                try {
+
+                    autoLoadImport = await import(autoLoadPath);
+                    window[module.getAutoloads()[cont].name] = autoLoadImport[module.getAutoloads()[cont].name];
+                    console.log(`Load auto load class in ${autoLoadPath}`, autoLoadImport);
+
+                }
+                catch (err) {
+                    console.error(`Failed to load auto load class ${module.getAutoloads()[cont].name} in ${module.getAutoloads()[cont].path}`, err);
+                }
             }
         }
+    }
+
+    /**
+     * @param {Module} module
+     * @private
+     */
+    async _importAutoLoadWs(module) {
 
         if (module.getAutoloadsWs().length > 0) {
+            let wcComponentPath;
             for (let cont = 0; module.getAutoloadsWs().length > cont; cont++) {
                 if (customElements.get(module.getAutoloadsWs()[cont].getName()) === undefined) {
                     wcComponentPath = `${this.getModulePath()}/${module.getName()}/${module.getAutoloadsWs()[cont].getPath()}`;
-                    console.log(wcComponentPath);
                     try {
                         let wcComponent = await import(wcComponentPath);
-                        console.log(`Load web component store in  "${module.getAutoloadsWs()[cont].getPath()}" store in ${module.getAutoloadsWs()[cont].getName()}`, wcComponent);
+                        console.log(`Load web component "${module.getAutoloadsWs()[cont].getName()}" store in ${wcComponentPath}`, wcComponent);
                     }
                     catch (err) {
-                        console.error(`Failed to load autoloads store in ${module.getAutoloadsWs()[cont].getPath()}`, err);
+                        console.error(`Failed to load autoloads store in ${wcComponentPath}`, err);
                     }
                 }
             }
         }
+    }
 
+    /**
+     * @param {Module} module
+     * @private
+     */
+    async _importConfigModule(module) {
         if (module.getConfigEntryPoint()) {
+
+            let configModule;
+            let configModuleClass;
             let configModulePath = `${this.getModulePath()}/${module.getName()}/${module.getConfigEntryPoint()}`;
+            console.log(`Init ${module.name}`);
 
             configModule = await import(configModulePath);
             configModuleClass = new configModule.Repository();
             configModuleClass.setContainer(container);
             configModuleClass.init();
         }
-        console.groupEnd();
-        return module;
     }
 
     /**

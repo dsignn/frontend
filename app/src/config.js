@@ -2,6 +2,13 @@
  * Config
  */
 export const config = {
+    localize: {
+        defaultLanguage: "it",
+        languages: [
+            "it",
+            "en"
+        ]
+    },
     modules:  [
         {
             "title": "Dashboard",
@@ -12,7 +19,9 @@ export const config = {
                 "path": "element/dashboard-index/dashboard-index.js"
             },
             "configEntryPoint": "repository.js",
-            "autoloads": [],
+            "autoloads": [
+
+            ],
             "autoloadsWs": [
                 {
                     "name": "dashboard-icons",
@@ -29,7 +38,16 @@ export const config = {
                 "path": "element/monitor-index/monitor-index.js"
             },
             "configEntryPoint": "repository.js",
-            "autoloads": [],
+            "autoloads": [
+                {
+                    "name": "MonitorEntity",
+                    "path": "src/entity/MonitorEntity.js"
+                },
+                {
+                    "name": "MonitorContainerEntity",
+                    "path": "src/entity/MonitorContainerEntity.js"
+                }
+            ],
             "autoloadsWs": [
                 {
                     "name": "monitor-icons",

@@ -59,12 +59,15 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 
     <!-- Load webcomponents-loader.js to check and load any polyfills your browser needs -->
     <script src="node_modules/@webcomponents/webcomponentsjs/webcomponents-loader.js"></script>
+    <script src="node_modules/web-animations-js/web-animations-next-lite.min.js"></script>
     <script src="node_modules/js-acl/dist/acl.js"></script>
     <!-- Load your application config -->
     <script type="module" src="src/app.js"></script>
     <!-- Load your application shell -->
+    <script type="module" src="node_modules/@polymer/iron-flex-layout/iron-flex-layout.js"></script>
     <script type="module" src="element/layout/dsign-global-style.js" crossorigin></script>
     <script type="module" src="element/dsign-app/dsign-app.js"></script>
+    <script type="module" src="node_modules/@polymer/paper-toast/paper-toast.js"></script>
 
     <!-- Add any global styles for body, document, etc. -->
     <style>
@@ -78,5 +81,6 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
     </style>
   </head>
   <body>
+    <paper-toast id="notification"></paper-toast>
   </body>
 </html>

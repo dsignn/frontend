@@ -1,3 +1,6 @@
+import {Storage} from "@dsign/library/src/storage/Storage";
+import {Listener} from "@dsign/library/src/event/Listener";
+
 /**
  * @type {Function}
  */
@@ -74,7 +77,7 @@ export const StorageEntityMixin = (superClass) => {
          */
         _autoUpdateFn() {
 
-            this.updateListener = new (require("@dsign/library").event.Listener)(function (evt) {
+            this.updateListener = new Listener(function (evt) {
                 if (evt.data.id === this.entity.id) {
                     this.entity = null;
                     this.entity = evt.data;
@@ -82,7 +85,7 @@ export const StorageEntityMixin = (superClass) => {
 
             }.bind(this));
 
-            this._storage.getEventManager().on(require("@dsign/library").storage.Storage.POST_UPDATE, this.updateListener);
+            this._storage.getEventManager().on(Storage.POST_UPDATE, this.updateListener);
         }
     }
 };

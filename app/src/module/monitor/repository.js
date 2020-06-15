@@ -8,16 +8,13 @@ import {JsonEncode} from "@dsign/library/src/data-transform/JsonEncode";
 import {JsonDecode} from "@dsign/library/src/data-transform/JsonDecode";
 import {DefaultBuilder} from "@dsign/library/src/storage/adapter/xmlh/url/DefaultBuilder";
 import {Storage} from "@dsign/library/src/storage/Storage";
+import {PropertyHydrator} from "@dsign/library/src/hydrator/PropertyHydrator";
+import {NumberStrategy} from "@dsign/library/src/hydrator/strategy/value/NumberStrategy";
 
 /**
  * @class Repository
  */
 export class Repository extends ContainerAware {
-
-    /**
-     * @const
-     */
-    static STORAGE_SERVICE() { return 'MonitorStorage';};
 
     /**
      * @const
@@ -62,5 +59,69 @@ export class Repository extends ContainerAware {
             .addHeader(    'Accept', 'application/json');
 
         this.getContainer().set(Repository.STORAGE_SERVICE(), new Storage(adapterStorage));
+    }
+
+    /**
+     * @param container
+     * @return {PropertyHydrator}
+     */
+    static getPointHydrator(container) {
+
+        let hydrator = new PropertyHydrator();
+
+        hydrator.addValueStrategy('x', new NumberStrategy())
+            .addValueStrategy('y', new NumberStrategy());
+
+        hydrator.enableHydrateProperty('x')
+            .enableHydrateProperty('y');
+
+        hydrator.enableExtractProperty('x')
+            .enableExtractProperty('y');
+
+        return hydrator;
+    }
+
+    /**
+     * @param container
+     * @return {PropertyHydrator}
+     */
+    static getMonitorContainerReferenceHydrator(container) {
+
+        let hydrator = new PropertyHydrator();
+        hydrator.setTemplateObjectHydration(container.get('EntityNestedReference'));
+
+        hydrator.enableHydrateProperty('id')
+            .enableHydrateProperty('collection')
+            .enableHydrateProperty('name')
+            .enableHydrateProperty('parentId');
+
+
+        hydrator.enableExtractProperty('id')
+            .enableExtractProperty('collection')
+            .enableExtractProperty('name')
+            .enableExtractProperty('parentId');
+
+        return hydrator;
+    }
+
+    /**
+     * @param container
+     * @return {PropertyHydrator}
+     */
+    static getTimeslotReferenceHydrator(container) {
+
+        let hydrator = new PropertyHydrator();
+        hydrator.setTemplateObjectHydration(container.get('EntityReference'));
+
+        hydrator.enableHydrateProperty('id')
+            .enableHydrateProperty('collection')
+            .enableHydrateProperty('name');
+
+
+        hydrator.enableExtractProperty('id')
+            .enableExtractProperty('collection')
+            .enableExtractProperty('name');
+
+        return hydrator;
     }
 }

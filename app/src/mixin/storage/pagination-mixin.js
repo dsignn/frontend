@@ -1,3 +1,6 @@
+import {Storage} from "@dsign/library/src/storage/Storage";
+import {Listener} from "@dsign/library/src/event/Listener";
+
 /**
  * @type {Function}
  */
@@ -79,8 +82,8 @@ export const StoragePaginationMixin = (superClass) => {
             this.getPagedEntities();
 
 
-            this.listenerUpdate = new (require("@dsign/library").event.Listener)(this.getPagedEntities.bind(this));
-            storage.getEventManager().on(require("@dsign/library").storage.Storage.POST_SAVE, this.listenerUpdate);
+            this.listenerUpdate = new Listener(this.getPagedEntities.bind(this));
+            storage.getEventManager().on(Storage.POST_SAVE, this.listenerUpdate);
         }
 
         /**
@@ -94,6 +97,8 @@ export const StoragePaginationMixin = (superClass) => {
                     this._setTotalItems(data.totalItems);
                     this.notifyPath('totalItems');
                 });
+
+
         }
     }
 };

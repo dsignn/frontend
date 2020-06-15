@@ -1,3 +1,6 @@
+import {Storage} from "@dsign/library/src/storage/Storage";
+import {Listener} from "@dsign/library/src/event/Listener";
+
 /**
  * @type {Function}
  */
@@ -66,8 +69,8 @@ export const StorageListMixin = (superClass) => {
                 super["_changedStorage"](newValue);
             }
 
-            this.listenerUpdate = new (require("@dsign/library").event.Listener)(this.getAll.bind(this));
-            newValue.getEventManager().on(require("@dsign/library").storage.Storage.POST_SAVE, this.listenerUpdate);
+            this.listenerUpdate = new Listener(this.getAll.bind(this));
+            newValue.getEventManager().on(Storage.POST_SAVE, this.listenerUpdate);
 
             if(this.autoladEntities) {
                 this.getAll();

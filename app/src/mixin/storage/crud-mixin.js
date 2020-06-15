@@ -71,7 +71,7 @@ export const StorageCrudMixin = (superClass) => {
          * @private
          */
         _updateCallback(data) {
-            console.log('Save crud mizin', data);
+            console.log('Save crud mixin', data);
         }
 
         /**
@@ -92,7 +92,7 @@ export const StorageCrudMixin = (superClass) => {
          * @private
          */
         _saveCallback(data) {
-            console.log('Save crud mizin', data);
+            console.log('Save crud mixin', data);
         }
     }
 };
