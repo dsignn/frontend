@@ -1,13 +1,15 @@
 import { PolymerElement, html } from '@polymer/polymer/polymer-element.js';
-import {ServiceInjectorMixin} from "../../../../mixin/service/injector-mixin";
-import {StoragePaginationMixin} from "../../../../mixin/storage/pagination-mixin";
+import {LocalizeMixin} from "@dsign/polymer-mixin/localize/localize-mixin";
+import {ServiceInjectorMixin} from "@dsign/polymer-mixin/service/injector-mixin";
+import {StoragePaginationMixin} from "@dsign/polymer-mixin//storage/pagination-mixin";
 import '@polymer/iron-pages/iron-pages.js';
 import '@fluidnext-polymer/paper-pagination/paper-pagination';
 import '../paper-monitor/paper-monitor';
+
 /**
  * @class MonitorViewList
  */
-class MonitorViewList extends StoragePaginationMixin(ServiceInjectorMixin(PolymerElement)) {
+class MonitorViewList extends StoragePaginationMixin(LocalizeMixin(ServiceInjectorMixin(PolymerElement))) {
 
     static get template() {
         return html`

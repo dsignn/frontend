@@ -1,14 +1,14 @@
 import {html, PolymerElement} from '@polymer/polymer/polymer-element.js';
-import {ServiceInjectorMixin} from "../../../../mixin/service/injector-mixin"
-import {LocalizeMixin} from "../../../../mixin/localize/localize-mixin"
-import {StorageEntityMixin} from "../../../../mixin/storage/entity-mixin"
+import {ServiceInjectorMixin} from "@dsign/polymer-mixin/service/injector-mixin"
+import {LocalizeMixin} from "@dsign/polymer-mixin/localize/localize-mixin"
+import {StorageEntityMixin} from "@dsign/polymer-mixin/storage/entity-mixin"
 import '@polymer/paper-card/paper-card';
 import '@polymer/paper-tooltip/paper-tooltip';
 import '@polymer/paper-item/paper-item';
 import '@polymer/paper-listbox/paper-listbox';
 import '@polymer/paper-toggle-button/paper-toggle-button';
 import '@polymer/paper-menu-button/paper-menu-button';
-import {lang} from './language/language';
+import {lang} from './language';
 
 /**
  * @customElement

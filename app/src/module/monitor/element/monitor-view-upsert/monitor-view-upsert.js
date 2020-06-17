@@ -1,8 +1,8 @@
 import { PolymerElement, html } from '@polymer/polymer/polymer-element.js';
-import {ServiceInjectorMixin} from "../../../../mixin/service/injector-mixin";
-import {LocalizeMixin} from "../../../../mixin/localize/localize-mixin";
-import {NotifyMixin} from "../../../../mixin/notify/notify-mixin";
-import {StorageEntityMixin} from "../../../../mixin/storage/entity-mixin";
+import {ServiceInjectorMixin} from "@dsign/polymer-mixin/service/injector-mixin";
+import {LocalizeMixin} from "@dsign/polymer-mixin/localize/localize-mixin";
+import {NotifyMixin} from "@dsign/polymer-mixin//notify/notify-mixin";
+import {StorageEntityMixin} from "@dsign/polymer-mixin/storage/entity-mixin";
 import {MongoIdGenerator} from "@dsign/library/src/storage/util/MongoIdGenerator";
 import '@polymer/paper-input/paper-input';
 import '@fluidnext-polymer/paper-autocomplete/paper-autocomplete';

@@ -1,4 +1,6 @@
 import {PolymerElement, html} from '@polymer/polymer/polymer-element.js';
+import {LocalizeMixin} from "@dsign/polymer-mixin/localize/localize-mixin";
+import {ServiceInjectorMixin} from "@dsign/polymer-mixin/service/injector-mixin";
 
 import '@polymer/iron-pages/iron-pages';
 import '@polymer/paper-icon-button/paper-icon-button';
@@ -6,8 +8,6 @@ import '@polymer/paper-tooltip/paper-tooltip';
 import '@polymer/iron-pages/iron-pages';
 import '../monitor-view-list/monitor-view-list';
 import '../monitor-view-upsert/monitor-view-upsert';
-import {LocalizeMixin} from "../../../../mixin/localize/localize-mixin";
-import {ServiceInjectorMixin} from "../../../../mixin/service/injector-mixin";
 import {lang} from './language';
 
 /**
