@@ -21,16 +21,19 @@ export class Repository extends ContainerAware {
 
     init() {
 
-        /**
-         * Merge config
-         */
-        this.container.set(
-            'config',
-            container.get('merge').merge(config, container.get('config'))
-        );
-
+        this.loadConfig();
         this.loadAcl();
         this.loadStorage();
+    }
+
+    /**
+     * Merge config
+     */
+    loadConfig() {
+        this.container.set(
+            'config',
+            this.getContainer().get('merge').merge(config, this.getContainer().get('config'))
+        );
     }
 
     /**

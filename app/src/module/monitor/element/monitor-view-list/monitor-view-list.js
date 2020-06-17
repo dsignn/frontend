@@ -62,7 +62,7 @@ class MonitorViewList extends StoragePaginationMixin(ServiceInjectorMixin(Polyme
         <slot name="header"></slot>
         <div id="container">
             <template is="dom-repeat" items="[[entities]]" as="monitor">
-                <paper-monitor entity="{{monitor}}"></paper-monitor>
+                <paper-monitor entity="{{monitor}}" on-delete="_deleteEntity" on-update="_showUpdateView" on-enable-monitor="_updateEntity"></paper-monitor>
             </template>
         </div>
         <paper-pagination page="{{page}}" total-items="{{totalItems}}" item-per-page="{{itemPerPage}}" next-icon="next" previous-icon="previous"></paper-pagination>`;
@@ -70,8 +70,20 @@ class MonitorViewList extends StoragePaginationMixin(ServiceInjectorMixin(Polyme
     static get properties() {
         return {
 
+            /**
+             * @type number
+             */
             itemPerPage: {
               value: 3
+            },
+
+            /**
+             * @type number
+             */
+            selected: {
+                type: Number,
+                notify: true,
+                value: 0
             },
 
             services : {
@@ -91,6 +103,22 @@ class MonitorViewList extends StoragePaginationMixin(ServiceInjectorMixin(Polyme
         ]
     }
 
+
+    /**
+     * @param {CustomEvent} evt
+     * @private
+     */
+    _showUpdateView(evt) {
+        this.entitySelected = evt.detail;
+        this.selected = 2;
+    }
+
+    /**
+     * @private
+     */
+    _deleteCallback() {
+        this._notify.notify(this.localize('notify-delete'));
+    }
 }
 
 window.customElements.define('monitor-view-list', MonitorViewList);

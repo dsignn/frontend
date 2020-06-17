@@ -83,7 +83,7 @@ export class Application extends EventManagerAware {
         /**
          * Import auto load ws
          */
-        await this._importConfigModule(module);
+        await this._importConfigModule(module, container);
 
         console.groupEnd();
         return module;
@@ -163,9 +163,10 @@ export class Application extends EventManagerAware {
 
     /**
      * @param {Module} module
+     * @param {Container} container
      * @private
      */
-    async _importConfigModule(module) {
+    async _importConfigModule(module, container) {
         if (module.getConfigEntryPoint()) {
 
             let configModule;

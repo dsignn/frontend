@@ -1,6 +1,7 @@
 import {Auth} from './authentication/Auth';
 import {Container} from '@dsign/library/src/container/Container';
 import {ContainerAggregate} from '@dsign/library/src/container/ContainerAggregate';
+import {AbstractHydrator} from '@dsign/library/src/hydrator/AbstractHydrator';
 import {PropertyHydrator} from '@dsign/library/src/hydrator/PropertyHydrator';
 import {HydratorStrategy} from '@dsign/library/src/hydrator/strategy/value/HydratorStrategy';
 import {XmlhAdapter} from '@dsign/library/src/storage/adapter/xmlh/XmlhAdapter';
@@ -113,6 +114,16 @@ container.set(
 );
 
 /***********************************************************************************************************************
+ * Storage
+ **********************************************************************************************************************/
+
+const storageContainerAggregate = new ContainerAggregate();
+storageContainerAggregate.setPrototipeClass(Storage);
+storageContainerAggregate.setContainer(container);
+
+container.set('StorageContainerAggregate', storageContainerAggregate);
+
+/***********************************************************************************************************************
  * Auth
  **********************************************************************************************************************/
 
@@ -215,5 +226,15 @@ entityContainerAggregate.set(
 );
 
 container.set('EntityContainerAggregate', entityContainerAggregate);
+
+/***********************************************************************************************************************
+ * Hydrator container aggregate
+ **********************************************************************************************************************/
+
+const hydratorContainerAggregate = new ContainerAggregate();
+hydratorContainerAggregate.setPrototipeClass(AbstractHydrator);
+hydratorContainerAggregate.setContainer(container);
+
+container.set('HydratorContainerAggregate', hydratorContainerAggregate);
 
 window.container = container;

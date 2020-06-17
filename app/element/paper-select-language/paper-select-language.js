@@ -3,7 +3,7 @@ import '@polymer/polymer/lib/elements/dom-repeat.js';
 import '@polymer/paper-menu-button/paper-menu-button';
 import '@polymer/paper-listbox/paper-listbox';
 import '@polymer/paper-item/paper-item';
-import {lang} from "./language/language.js";
+import {lang} from "./language.js";
 import {ServiceInjectorMixin} from "../../src/mixin/service/injector-mixin";
 import {LocalizeMixin} from "../../src/mixin/localize/localize-mixin";
 

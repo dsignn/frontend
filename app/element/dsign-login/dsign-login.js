@@ -26,18 +26,18 @@ class DsignLogin extends AclMixin(ServiceInjectorMixin(PolymerElement)) {
 
             services : {
                 value : {
-                    authService: "Auth"
+                    _authService: "Auth"
                 }
             },
 
-            authService: {
+            _authService: {
                 readOnly: true
             },
         };
     }
 
     login(evt) {
-        this.authService.login(
+        this._authService.login(
             this.$.username.value,
             this.$.password.value
         ).then((data) => {

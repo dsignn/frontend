@@ -29,6 +29,7 @@ import '../dsign-404/dsign-404.js';
 import '../../element/dsign-icons/dsign-icons.js';
 import '../../element/dsign-login/dsign-login';
 import '../../element/dsign-signup/dsign-signup';
+import '../../element/paper-select-language/paper-select-language';
 import {layout} from '../../element/layout/dsing-layout.js';
 import {ServiceInjectorMixin} from '../../src/mixin/service/injector-mixin';
 import {AclMixin} from '../../src/mixin/acl/acl-mixin';
@@ -98,6 +99,7 @@ class DsignApp extends AclMixin(ServiceInjectorMixin(PolymerElement)) {
       <app-header slot="header" fixed effects="waterfall">
         <app-toolbar>
           <div main-title>Dsing</div>
+          <paper-select-language></paper-select-language>
           <paper-icon-button icon="face" on-tap="tapAuthDrawer"></paper-icon-button>
         </app-toolbar>
       </app-header>

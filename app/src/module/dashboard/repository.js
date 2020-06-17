@@ -1,5 +1,5 @@
 /**
- * Dashboard666666666666666666666666666666666666666666 repository
+ * Dashboard repository
  */
 import {ContainerAware} from "@dsign/library/src/container/ContainerAware.js";
 import {config} from './config';
@@ -11,12 +11,18 @@ export class Repository extends ContainerAware {
         /**
          * Merge config
          */
+        this.loadConfig();
+        this.loadAcl();
+    }
+
+    /**
+     * Merge config
+     */
+    loadConfig() {
         this.container.set(
             'config',
-            container.get('merge').merge(config, container.get('config'))
+            this.getContainer().get('merge').merge(config, this.getContainer().get('config'))
         );
-
-        this.loadAcl();
     }
 
     /**
