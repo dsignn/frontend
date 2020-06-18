@@ -1,5 +1,5 @@
-import {AclMixin} from "../../src/mixin/acl/acl-mixin";
-import {ServiceInjectorMixin} from "../../src/mixin/service/injector-mixin";
+import {AclMixin} from "@dsign/polymer-mixin/acl/acl-mixin";
+import {ServiceInjectorMixin} from "@dsign/polymer-mixin/service/injector-mixin";
 import {html, PolymerElement} from "@polymer/polymer/polymer-element";
 import "@polymer/paper-button/paper-button";
 import "@polymer/paper-input/paper-input";

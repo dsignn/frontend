@@ -10,6 +10,9 @@
 
 import { PolymerElement, html } from '@polymer/polymer/polymer-element.js';
 import { setPassiveTouchGestures, setRootPath } from '@polymer/polymer/lib/utils/settings.js';
+import {ServiceInjectorMixin} from '@dsign/polymer-mixin/service/injector-mixin';
+import {AclMixin} from '@dsign/polymer-mixin/acl/acl-mixin';
+
 import '@polymer/app-layout/app-drawer-layout/app-drawer-layout.js';
 import '@polymer/app-layout/app-header/app-header.js';
 import '@polymer/app-layout/app-drawer/app-drawer.js';
@@ -31,8 +34,6 @@ import '../../element/dsign-login/dsign-login';
 import '../../element/dsign-signup/dsign-signup';
 import '../../element/paper-select-language/paper-select-language';
 import {layout} from '../../element/layout/dsing-layout.js';
-import {ServiceInjectorMixin} from '../../src/mixin/service/injector-mixin';
-import {AclMixin} from '../../src/mixin/acl/acl-mixin';
 
 // Gesture events like tap and track generated from touch will not be
 // preventable, allowing for better scrolling performance.

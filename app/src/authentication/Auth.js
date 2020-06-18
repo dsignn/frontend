@@ -70,7 +70,6 @@ export class Auth extends EventManagerAware {
          * @type {null}
          */
         this.identity = null;
-
     }
 
     /**
