@@ -19,8 +19,12 @@ export const config = {
             "name": "dashboard",
             "icon": "dashboard:menu",
             "entryPoint": {
-                "name": "dashboard-index",
-                "path": "element/dashboard-index/dashboard-index.js"
+                name: "dashboard-index",
+                path: {
+                    directory: 'element/dashboard-index',
+                    nameFile: 'dashboard-index',
+                    extension: 'js'
+                }
             },
             "configEntryPoint": "repository.js",
             "autoloads": [
@@ -29,7 +33,11 @@ export const config = {
             "autoloadsWs": [
                 {
                     "name": "dashboard-icons",
-                    "path": "element/dashboard-icons/dashboard-icons.js"
+                    "path":  {
+                        directory: 'element/dashboard-icons',
+                        nameFile: 'dashboard-icons',
+                        extension: 'js'
+                    }
                 }
             ]
         },
@@ -39,23 +47,39 @@ export const config = {
             "icon": "monitor:menu",
             "entryPoint": {
                 "name": "monitor-index",
-                "path": "element/monitor-index/monitor-index.js"
+                "path": {
+                    directory: 'element/monitor-index',
+                    nameFile: 'monitor-index',
+                    extension: 'js'
+                }
             },
             "configEntryPoint": "repository.js",
             "autoloads": [
                 {
                     "name": "MonitorEntity",
-                    "path": "src/entity/MonitorEntity.js"
+                    "path": {
+                        directory: 'src/entity',
+                        nameFile: 'MonitorEntity',
+                        extension: 'js'
+                    }
                 },
                 {
                     "name": "MonitorContainerEntity",
-                    "path": "src/entity/MonitorContainerEntity.js"
+                    "path": {
+                        directory: 'src/entity',
+                        nameFile: 'MonitorContainerEntity',
+                        extension: 'js'
+                    }
                 }
             ],
             "autoloadsWs": [
                 {
                     "name": "monitor-icons",
-                    "path": "element/monitor-icons/monitor-icons.js"
+                    "path": {
+                        directory: 'element/monitor-icons',
+                        nameFile: 'monitor-icons',
+                        extension: 'js'
+                    }
                 }
             ]
         },
@@ -65,14 +89,22 @@ export const config = {
             "icon": "resource:menu",
             "entryPoint": {
                 "name": "resource-index",
-                "path": "element/resource-index/resource-index.js"
+                "path": {
+                    directory: 'element/resource-icons',
+                    nameFile: 'resource-icons',
+                    extension: 'js'
+                }
             },
             "configEntryPoint": "repository.js",
             "autoloads": [],
             "autoloadsWs": [
                 {
                     "name": "resource-icons",
-                    "path": "element/resource-icons/resource-icons.js"
+                    "path":  {
+                        directory: 'element/resource-icons',
+                        nameFile: 'resource-icons',
+                        extension: 'js'
+                    }
                 }
             ]
         },
@@ -82,14 +114,22 @@ export const config = {
             "icon": "timeslot:menu",
             "entryPoint": {
                 "name": "timeslot-index",
-                "path": "element/timeslot-index/timeslot-index.js"
+                "path":  {
+                    directory: 'element/timeslot-index',
+                    nameFile: 'timeslot-index',
+                    extension: 'js'
+                }
             },
             "configEntryPoint": "repository.js",
             "autoloads": [],
             "autoloadsWs": [
                 {
                     "name": "timeslot-icons",
-                    "path": "element/timeslot-icons/timeslot-icons.js"
+                    "path": {
+                        directory: 'element/timeslot-icons',
+                        nameFile: 'timeslot-icons',
+                        extension: 'js'
+                    }
                 }
             ]
         },
@@ -99,14 +139,22 @@ export const config = {
             "icon": "user:menu",
             "entryPoint": {
                 "name": "user-index",
-                "path": "element/user-index/user-index.js"
+                "path": {
+                    directory: 'element/user-index',
+                    nameFile: 'user-index',
+                    extension: 'js'
+                }
             },
             "configEntryPoint": "repository.js",
             "autoloads": [],
             "autoloadsWs": [
                 {
                     "name": "user-icons",
-                    "path": "element/user-icons/user-icons.js"
+                    "path":  {
+                        directory: 'element/user-icons',
+                        nameFile: 'user-icons',
+                        extension: 'js'
+                    }
                 }
             ]
         }

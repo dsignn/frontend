@@ -18,6 +18,7 @@ import {Application2 as Application} from '@dsign/library/src/core/Application2'
 import {Module} from '@dsign/library/src/core/module/Module';
 import {WebComponent} from '@dsign/library/src/core/webcomponent/WebComponent';
 import {AutoLoadClass} from '@dsign/library/src/core/autoload/AutoLoadClass';
+import {PathGeneric} from '@dsign/library/src/path/PathGeneric';
 import {mergeDeep} from '@dsign/library/src/object/Utils';
 import {config} from './config';
 
@@ -50,10 +51,12 @@ container.set(
 /**
  * Module Hydrator
  */
-
+let pathHydrator = new PropertyHydrator(new PathGeneric());
 let moduleHydrator = new PropertyHydrator(new Module());
 let webComponentHydrator = new PropertyHydrator(new WebComponent());
+webComponentHydrator.addValueStrategy('path',new HydratorStrategy(pathHydrator));
 let autoLoadClassHydrator = new PropertyHydrator(new AutoLoadClass());
+autoLoadClassHydrator.addValueStrategy('path',new HydratorStrategy(pathHydrator));
 
 moduleHydrator.addValueStrategy('autoloadsWs', new HydratorStrategy(webComponentHydrator));
 moduleHydrator.addValueStrategy('entryPoint', new HydratorStrategy(webComponentHydrator));
