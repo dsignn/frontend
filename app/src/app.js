@@ -14,10 +14,11 @@ import {Acl} from '@dsign/library/src/permission/acl/Acl';
 import {Localize} from '@dsign/library/src/localize/Localize';
 import {JsonDecode} from '@dsign/library/src/data-transform/JsonDecode';
 import {FormDataEncode} from '@dsign/library/src/data-transform/FormDataEncode';
-import {Application} from './core/Application';
-import {Module} from './core/module/Module';
-import {WebComponent} from './core/webcomponent/WebComponent';
-import {mergeDeep} from './object/Merge';
+import {Application2 as Application} from '@dsign/library/src/core/Application2';
+import {Module} from '@dsign/library/src/core/module/Module';
+import {WebComponent} from '@dsign/library/src/core/webcomponent/WebComponent';
+import {AutoLoadClass} from '@dsign/library/src/core/autoload/AutoLoadClass';
+import {mergeDeep} from '@dsign/library/src/object/Utils';
 import {config} from './config';
 
 window.MyAppGlobals = { rootPath: '/' };
@@ -51,19 +52,20 @@ container.set(
  */
 
 let moduleHydrator = new PropertyHydrator(new Module());
-
 let webComponentHydrator = new PropertyHydrator(new WebComponent());
+let autoLoadClassHydrator = new PropertyHydrator(new AutoLoadClass());
 
 moduleHydrator.addValueStrategy('autoloadsWs', new HydratorStrategy(webComponentHydrator));
 moduleHydrator.addValueStrategy('entryPoint', new HydratorStrategy(webComponentHydrator));
+moduleHydrator.addValueStrategy('autoloads', new HydratorStrategy(autoLoadClassHydrator));
 
 /**
  * Application
  */
 
 const application = new Application();
-application.setBasePath('.')
-    .setModulePath('http://127.0.0.1:8081/src/module');
+application.setBasePath(config.app.basePath)
+    .setModuleRelativePath(config.app.moduleRelativePath);
 
 let modules = [];
 config.modules.forEach(function(module, index) {

@@ -9,6 +9,10 @@ export const config = {
             "en"
         ]
     },
+    app: {
+        basePath: 'http://127.0.0.1:8081/',
+        moduleRelativePath: 'src/module'
+    },
     modules:  [
         {
             "title": "Dashboard",
@@ -119,9 +123,6 @@ export const config = {
                     grantType: 'password'
                 }
             }
-        },
-        app: {
-            modulePath: 'http://127.0.0.1:8081/src/module'
         }
     }
 };
