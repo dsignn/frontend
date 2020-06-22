@@ -68,7 +68,7 @@ moduleHydrator.addValueStrategy('autoloads', new HydratorStrategy(autoLoadClassH
 
 const application = new Application();
 application.setBasePath(config.app.basePath)
-    .setModuleRelativePath(config.app.moduleRelativePath);
+    .setModulePath(`${config.app.basePath}${config.app.moduleRelativePath}`);
 
 let modules = [];
 config.modules.forEach(function(module, index) {
