@@ -10,9 +10,9 @@ import '@polymer/paper-menu-button/paper-menu-button';
 import '@polymer/paper-toggle-button/paper-toggle-button';
 import '@fluidnext-polymer/paper-input-color/paper-input-color'
 import '@fluidnext-polymer/paper-input-color/icons/paper-input-color-icons'
-import '../../../../../element/paper-input-points/paper-input-points';
+import '../../../../element/paper-input-points/paper-input-points';
 import {lang} from './language';
-import { layout } from '../../../../../element/layout/dsing-layout';
+import { layout } from '../../../../element/layout/dsing-layout';
 
 /**
  * @customElement

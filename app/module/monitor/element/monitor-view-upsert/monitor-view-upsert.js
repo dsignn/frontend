@@ -13,7 +13,7 @@ import '@polymer/paper-card/paper-card';
 import '@polymer/paper-tooltip/paper-tooltip';
 import '../paper-monitor/paper-monitor';
 import '../../element/paper-monitor-update/paper-monitor-update';
-import '../../../../../element/paper-input-points/paper-input-points';
+import '../../../../element/paper-input-points/paper-input-points';
 import {lang} from './language';
 
 /**

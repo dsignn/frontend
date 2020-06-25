@@ -113,10 +113,7 @@ acl.addResource('application');
 acl.allow('guest', 'application', 'logout');
 acl.allow('admin', 'application', 'login');
 
-container.set(
-    'Acl',
-    acl
-);
+container.set('Acl', acl);
 
 /***********************************************************************************************************************
  * Storage
