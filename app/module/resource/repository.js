@@ -56,8 +56,7 @@ export class Repository extends ContainerAware {
             new DefaultBuilder()
         );
 
-        adapterStorage.addHeader(    'Content-Type', 'application/json')
-            .addHeader(    'Accept', 'application/json');
+        adapterStorage.addHeader(    'Accept', 'application/json');
 
         this.getContainer().set(Repository.STORAGE_SERVICE(), new Storage(adapterStorage));
     }

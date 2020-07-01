@@ -90,8 +90,8 @@ export const config = {
             "entryPoint": {
                 "name": "resource-index",
                 "path": {
-                    directory: 'element/resource-icons',
-                    nameFile: 'resource-icons',
+                    directory: 'element/resource-index',
+                    nameFile: 'resource-index',
                     extension: 'js'
                 }
             },

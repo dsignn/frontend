@@ -31,10 +31,7 @@ class MonitorIndex extends LocalizeMixin(ServiceInjectorMixin(PolymerElement)) {
        }
        
        .circle {
-          border-width: 2px 3px);
-          border-radius: 50%;
-          box-shadow: 0 1px 4px rgba(0,0,0,.23), 0 1px 4px rgba(0,0,0,.16);
-          background-color: var(--accent-color);
+            @apply --paper-icon-button-action;
        }
        
        </style>

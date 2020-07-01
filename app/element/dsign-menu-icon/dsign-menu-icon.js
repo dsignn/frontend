@@ -36,6 +36,10 @@ class DsignMenuIcon extends AclMixin(ServiceInjectorMixin(PolymerElement)) {
            height: 64px;
         }
         
+        paper-icon-button{
+            color: var(--app-primary-color);
+        }
+        
         #container {
          width: 100%;
         }

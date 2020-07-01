@@ -8,18 +8,18 @@ const template = html`
     
         :root {
                
-            --dark-primary-color:       #512DA8;
-            --default-primary-color:    #673AB7;
-            --light-primary-color:      #D1C4E9;
+            --dark-primary-color:       #61ad97;
+            --default-primary-color:    #009688;
+            --light-primary-color:      #B2DFDB;
             --text-primary-color:       #FFFFFF;
-            --accent-color:             #CDDC39;
-            --primary-background-color: #D1C4E9;
+            --accent-color:             #FF5252;
+            --primary-background-color: #FFFFFF;
             --primary-text-color:       #212121;
             --secondary-text-color:     #757575;
             --disabled-text-color:      #BDBDBD;
             --divider-color:            #BDBDBD;
 
-            --app-primary-color: #512DA8;
+            --app-primary-color:  #009688;
 
             /* Components */
 

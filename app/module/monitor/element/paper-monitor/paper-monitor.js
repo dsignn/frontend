@@ -32,7 +32,7 @@ class PaperMonitor extends StorageEntityMixin(LocalizeMixin(ServiceInjectorMixin
                     background-size: cover;
                     background-position: center;
                     background-repeat: no-repeat;
-                    @apply --application-paper-card-left-content;
+                    background-image: url("./../../module/monitor/element/paper-monitor/img/cover.png");
                 }
                 
                 #fastAction {
@@ -69,7 +69,6 @@ class PaperMonitor extends StorageEntityMixin(LocalizeMixin(ServiceInjectorMixin
                     <div class="action">
                         <paper-toggle-button id="paperToggleEnable" on-change="_toggleEnableMonitor" checked="{{entity.enable}}"></paper-toggle-button>
                         <paper-tooltip for="paperToggleEnable" position="bottom">{{localize('enable-monitor')}}</paper-tooltip>
-                           <paper-toggle-button id="fd" on-change="_toggleEnableMonitor" checked="{{entity.enable}}"></paper-toggle-button>
                     </div>
                 </div>
                 <div id="right-section">
