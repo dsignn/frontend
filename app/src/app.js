@@ -14,7 +14,7 @@ import {Acl} from '@dsign/library/src/permission/acl/Acl';
 import {Localize} from '@dsign/library/src/localize/Localize';
 import {JsonDecode} from '@dsign/library/src/data-transform/JsonDecode';
 import {FormDataEncode} from '@dsign/library/src/data-transform/FormDataEncode';
-import {Application2 as Application} from '@dsign/library/src/core/Application2';
+import {Application} from '@dsign/library/src/core/Application';
 import {Module} from '@dsign/library/src/core/module/Module';
 import {WebComponent} from '@dsign/library/src/core/webcomponent/WebComponent';
 import {AutoLoadClass} from '@dsign/library/src/core/autoload/AutoLoadClass';
