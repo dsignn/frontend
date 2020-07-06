@@ -52,17 +52,17 @@ export class Repository extends ContainerAware {
 
     init() {
 
-        this.loadConfig();
-        this.loadAcl();
+        this.initConfig();
+        this.initAcl();
         this.initEntity();
         this.initHydrator();
-        this.loadStorage();
+        this.initStorage();
     }
 
     /**
      * Merge config
      */
-    loadConfig() {
+    initConfig() {
         this.container.set(
             'config',
             this.getContainer().get('merge').merge(config, this.getContainer().get('config'))
@@ -72,7 +72,7 @@ export class Repository extends ContainerAware {
     /**
      * Acl
      */
-    loadAcl() {
+    initAcl() {
         this.getContainer().get('Acl').addResource('timeslot');
         this.getContainer().get('Acl').allow('admin', 'timeslot', 'menu')
     }
@@ -80,7 +80,7 @@ export class Repository extends ContainerAware {
     /**
      * Storage
      */
-    loadStorage() {
+    initStorage() {
         let adapterStorage = new XmlhAdapter(
             container.get('config')['rest']['path'],
             container.get('config')['rest']['resources']['timeslot']['name'],
@@ -217,6 +217,7 @@ export class Repository extends ContainerAware {
 
         return hydrator;
     }
+
 
     /**
      * @param container

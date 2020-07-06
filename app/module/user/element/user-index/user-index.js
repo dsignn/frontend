@@ -10,17 +10,103 @@
 
 import { PolymerElement, html } from '@polymer/polymer/polymer-element.js';
 import '@polymer/paper-card/paper-card.js';
+import {LocalizeMixin} from "@dsign/polymer-mixin/localize/localize-mixin";
+import {ServiceInjectorMixin} from "@dsign/polymer-mixin/service/injector-mixin";
+import '@polymer/paper-icon-button/paper-icon-button';
+import '@polymer/iron-pages/iron-pages';
+import './../user-view-list/user-view-list';
+import './../user-view-upsert/user-view-upsert'
+import {lang} from './language';
 
-class UserIndex extends PolymerElement {
+class UserIndex extends LocalizeMixin(ServiceInjectorMixin(PolymerElement)) {
   static get template() {
-    return html`
-      <paper-card>
-        <div class="circle">2</div>
-        <h1>User index</h1>
-        <p>Ea duis bonorum nec, falli paulo aliquid ei eum.</p>
-        <p>Id nam odio natum malorum, tibique copiosae expetenda mel ea.Detracto suavitate repudiandae no eum. Id adhuc minim soluta nam.Id nam odio natum malorum, tibique copiosae expetenda mel ea.</p>
-      </paper-card>
+    return html`  
+      <style>          
+           .header {
+              @apply --layout-horizontal;
+              @apply --layout-center;
+              padding: 10px 20px;
+           }
+           
+          .text-content {
+              font-size: 20px;
+              flex: 1;
+           }
+           
+        
+            paper-icon-button.circle {
+                @apply --paper-icon-button-action;
+            }
+      </style>
+    
+      <iron-pages id="index" selected="{{selected}}">
+          <div id="list"> 
+              <user-view-list selected="{{selected}}" entity-selected="{{entitySelected}}">
+                   <div slot="header" class="header">
+                      <div class="text-content">{{localize('user-resource')}}</div>
+                      <paper-icon-button id="iconInsertMonitor" icon="insert" class="circle" on-click="displayAddView"></paper-icon-button>
+                      <paper-tooltip for="iconInsertMonitor" position="left">{{localize('user-resource')}}</paper-tooltip>
+                   </div>
+              </user-view-list>
+          </div>
+          <div id="insert"> 
+              <user-view-upsert>
+                  <div slot="header" class="header">
+                      <div class="text-content">{{localize('user-resource')}}</div>
+                      <paper-icon-button id="iconBackInsert" icon="arrow-back" class="circle" on-click="displayListView"></paper-icon-button>
+                      <paper-tooltip for="iconBackInsert" position="left">{{localize('back')}}</paper-tooltip>
+                  </div>
+              </user-view-upsert>
+          </div>
+          <div id="update"> 
+              <user-view-upsert entity="{{entitySelected}}">
+                  <div slot="header" class="header">
+                      <div class="text-content">{{localize('user-resource')}}</div>
+                      <paper-icon-button id="iconBackUpdate" icon="arrow-back" class="circle" on-click="displayListView"></paper-icon-button>
+                      <paper-tooltip for="iconBackUpdate" position="left">{{localize('back')}}</paper-tooltip>
+                  </div>
+              </user-view-upsert>
+          </div>
+      </iron-pages>
     `;
+  }
+
+
+  constructor() {
+    super();
+    this.resources = lang;
+  }
+
+  static get properties () {
+    return {
+      selected: {
+        type: Number,
+        value: 0
+      },
+
+      /**
+       * @type object
+       */
+      services : {
+        value : {
+          _localizeService: 'Localize'
+        }
+      },
+    };
+  }
+
+  /**
+   * @param evt
+   */
+  displayAddView(evt) {
+    this.selected = 1;
+  }
+
+  /**
+   * @param evt
+   */
+  displayListView(evt) {
+    this.selected = 0;
   }
 }
 
