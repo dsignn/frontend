@@ -12,7 +12,6 @@ import {Storage} from "@dsign/library/src/storage/Storage";
 import {AggregatePropertyHydrator, PropertyHydrator} from "@dsign/library/src/hydrator/index";
 import {HydratorStrategy, MongoIdStrategy} from "@dsign/library/src/hydrator/strategy/value/index";
 import {MapProprertyStrategy} from "@dsign/library/src/hydrator/strategy/proprerty/index";
-import {FormDataExtractorHydrator} from "./src/hydrator/FormDataExtractorHydrator";
 import {FileEntity} from "./src/entity/FileEntity";
 import {AudioEntity} from "./src/entity/AudioEntity";
 import {VideoEntity} from "./src/entity/VideoEntity";
