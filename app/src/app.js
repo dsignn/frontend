@@ -162,7 +162,6 @@ const authStorage = new Storage(authStorageAdapter);
 application.getEventManager().on(
     Application.BOOTSTRAP_MODULE,
     (data) => {
-        console.log('SUCA', authStorage, container.get('HydratorContainerAggregate').get('UserEntityHydrator'));
         authStorage.setHydrator(container.get('HydratorContainerAggregate').get('UserEntityHydrator'));
     }
 );
