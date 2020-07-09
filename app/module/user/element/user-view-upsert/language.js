@@ -1,10 +1,8 @@
 export const lang = {
   "it": {
-    "header": "Lista utenti",
-    "notify-delete": "Utente eliminato"
+    "name": "Nome"
   },
   "en": {
-    "header": "List user",
-    "notify-delete": "User delete"
+    "name": "Name"
   }
 };

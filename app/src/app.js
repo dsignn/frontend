@@ -4,6 +4,7 @@ import {ContainerAggregate} from '@dsign/library/src/container/ContainerAggregat
 import {AbstractHydrator} from '@dsign/library/src/hydrator/AbstractHydrator';
 import {PropertyHydrator} from '@dsign/library/src/hydrator/PropertyHydrator';
 import {HydratorStrategy} from '@dsign/library/src/hydrator/strategy/value/HydratorStrategy';
+import {Storage} from '@dsign/library/src/storage/Storage';
 import {XmlhAdapter} from '@dsign/library/src/storage/adapter/xmlh/XmlhAdapter';
 import {CallbackBuilder} from '@dsign/library/src/storage/adapter/xmlh/url/CallbackBuilder';
 import {EntityNestedReference} from '@dsign/library/src/storage/entity/EntityNestedReference';
@@ -85,6 +86,8 @@ application.getEventManager().on(
             () => {
                 container.get('Acl').setRole('guest');
                 container.get('Auth').init();
+
+                console.log('testestst', container.get('Acl').getRole());
             },
             300
         );
@@ -93,6 +96,7 @@ application.getEventManager().on(
 
     }
 );
+
 
 container.set(
     'Application',
@@ -142,7 +146,7 @@ callbackBuilder.addCallback(
     }
 );
 
-let storage = new XmlhAdapter(
+const authStorageAdapter = new XmlhAdapter(
     container.get('config')['rest']['path'],
     container.get('config')['rest']['resources']['auth']['name'],
     new FormDataEncode(),
@@ -150,22 +154,34 @@ let storage = new XmlhAdapter(
     callbackBuilder
 );
 
-storage.addHeader(   'Content-Type', 'application/json', 'GET')
+authStorageAdapter.addHeader(   'Content-Type', 'application/json', 'GET')
     .addHeader(    'Accept', 'application/json', 'GET');
 
-const auth = new Auth(storage,  container.get('config')['rest']['resources']['auth']['options']);
+const authStorage = new Storage(authStorageAdapter);
+
+application.getEventManager().on(
+    Application.BOOTSTRAP_MODULE,
+    (data) => {
+        console.log('SUCA', authStorage, container.get('HydratorContainerAggregate').get('UserEntityHydrator'));
+        authStorage.setHydrator(container.get('HydratorContainerAggregate').get('UserEntityHydrator'));
+    }
+);
+
+
+const auth = new Auth(authStorage,  container.get('config')['rest']['resources']['auth']['options']);
 
 auth.eventManager.on(
     Auth.IDENTITY(),
-    (identity) => {
-        acl.setRole(identity.data["role_id"]);
+    (evt) => {
+        acl.setRole(evt.data.roleId);
     }
 );
 
 auth.eventManager.on(
     Auth.IDENTITY(),
     (evt) => {
-        acl.setRole(evt.data['role_id']);
+        //console.log('toni', evt.data);
+        acl.setRole(evt.data.roleId);
     }
 );
 

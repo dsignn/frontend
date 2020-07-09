@@ -26,15 +26,15 @@ export class Auth extends EventManagerAware {
     static TOKEN() { return 'token'; };
 
     /**
-     * @param storageAdapter
+     * @param {StorageInterface}
      * @param {object} options
      */
-    constructor(storageAdapter, options) {
+    constructor(storage, options) {
 
         super();
         options = options ? options : {};
 
-        this.storageAdapter = storageAdapter;
+        this.storage = storage;
 
         /**
          * @type {string}
@@ -63,7 +63,7 @@ export class Auth extends EventManagerAware {
         if (localStorage.getItem('token')) {
             this._setToken(JSON.parse(localStorage.getItem('token')));
             this.eventManager.emit(Auth.LOGIN(), this.token);
-            this.storageAdapter.addHeader('Authorization', this.token['access_token'], 'GET');
+            this.storage.adapter.addHeader('Authorization', this.token['access_token'], 'GET');
         }
 
         /**
@@ -87,7 +87,7 @@ export class Auth extends EventManagerAware {
      */
     login(username, password) {
         return new Promise( (resolve ,reject) => {
-            this.storageAdapter.save({
+            this.storage.save({
                 'username': username,
                 'password': password,
                 'scope': this.scope,
@@ -97,7 +97,7 @@ export class Auth extends EventManagerAware {
             }).then((response) => {
                 this._setToken(response);
                 this.eventManager.emit(Auth.LOGIN(), this.token);
-                this.storageAdapter.addHeader('Authorization', this.token['access_token'], 'GET');
+                this.storage.adapter.addHeader('Authorization', this.token['access_token'], 'GET');
                 localStorage.setItem(Auth.TOKEN(), JSON.stringify(this.token));
                 this.loadIdentity();
                 resolve(response)
@@ -114,7 +114,7 @@ export class Auth extends EventManagerAware {
 
         this._setToken(null);
         this.eventManager.emit(Auth.LOGOUT());
-        this.storageAdapter.removeHeader('Authorization', 'GET');
+        this.storage.adapter.removeHeader('Authorization', 'GET');
         localStorage.removeItem(Auth.TOKEN());
     }
 
@@ -138,7 +138,7 @@ export class Auth extends EventManagerAware {
      *
      */
     loadIdentity() {
-        this.storageAdapter.get().then((data) => {
+        this.storage.get().then((data) => {
             this._setIdentity(data);
             this.eventManager.emit(Auth.IDENTITY(), this.identity);
         });

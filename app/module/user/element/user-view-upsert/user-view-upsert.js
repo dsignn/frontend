@@ -1,17 +1,20 @@
 import {html, PolymerElement} from '@polymer/polymer/polymer-element.js';
 import {ServiceInjectorMixin} from "@dsign/polymer-mixin/service/injector-mixin";
 import {LocalizeMixin} from "@dsign/polymer-mixin/localize/localize-mixin";
-import {StoragePaginationMixin} from "@dsign/polymer-mixin/storage/pagination-mixin";
-import {StorageCrudMixin} from "@dsign/polymer-mixin/storage/crud-mixin";
+import {StorageEntityMixin} from "@dsign/polymer-mixin/storage/entity-mixin";
 import "@fluidnext-polymer/paper-pagination/paper-pagination";
 import "@fluidnext-polymer/paper-pagination/icons/paper-pagination-icons";
+import '@polymer/iron-form/iron-form';
+import '@polymer/paper-button/paper-button';
+import '@polymer/paper-input/paper-input';
 import {lang} from './language';
+
 
 /**
  * @customElement
  * @polymer
  */
-class UserViewUpsert extends StoragePaginationMixin(StorageCrudMixin(LocalizeMixin(ServiceInjectorMixin(PolymerElement)))) {
+class UserViewUpsert extends StorageEntityMixin(LocalizeMixin(ServiceInjectorMixin(PolymerElement))) {
 
     static get template() {
         return html`
@@ -60,13 +63,15 @@ class UserViewUpsert extends StoragePaginationMixin(StorageCrudMixin(LocalizeMix
                 }
             </style>
             <slot name="header"></slot>
-                <div id="container">
-                <template is="dom-repeat" items="[[entities]]" as="user">
-                    {{user.id}}
-                </template>
+            <div id="container">
+                <iron-form id="formResource">
+                     <form method="post">
+                        <paper-input id="name" name="name" label="{{localize('name')}}" value="{{entity.name}}" required></paper-input>
+                
+                     </form>
+                </iron-form>
             </div>
-            <paper-pagination page="{{page}}" total-items="{{totalItems}}" item-per-page="{{itemPerPage}}" next-icon="next" previous-icon="previous"></paper-pagination>
-        `;
+            `;
     }
 
     constructor() {
@@ -110,28 +115,6 @@ class UserViewUpsert extends StoragePaginationMixin(StorageCrudMixin(LocalizeMix
                 }
             }
         };
-    }
-
-    static get observers() {
-        return [
-            'observerPaginationEntities(page, itemPerPage, _storage)'
-        ]
-    }
-
-    /**
-     * @param {CustomEvent} evt
-     * @private
-     */
-    _showUpdateView(evt) {
-        this.entitySelected = evt.detail;
-        this.selected = 2;
-    }
-
-    /**
-     * @private
-     */
-    _deleteCallback() {
-        this._notify.notify(this.localize('notify-delete'));
     }
 }
 window.customElements.define('user-view-upsert', UserViewUpsert);
