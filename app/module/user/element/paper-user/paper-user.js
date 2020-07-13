@@ -118,7 +118,7 @@ class PaperUser extends StorageEntityMixin(LocalizeMixin(ServiceInjectorMixin(Po
              * @type FileEntity
              */
             entity: {
-                observer: '_entityChanged'
+            //    observer: '_entityChanged'
             },
 
             /**

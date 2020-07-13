@@ -34,6 +34,8 @@ import '../../element/dsign-login/dsign-login';
 import '../../element/dsign-signup/dsign-signup';
 import '../../element/paper-select-language/paper-select-language';
 import {layout} from '../../element/layout/dsing-layout.js';
+import {Auth} from "../../src/authentication/Auth";
+import {LocalizeMixin} from "@dsign/polymer-mixin/localize/localize-mixin";
 
 // Gesture events like tap and track generated from touch will not be
 // preventable, allowing for better scrolling performance.
@@ -43,11 +45,14 @@ setPassiveTouchGestures(true);
 // in `index.html`.
 setRootPath(MyAppGlobals.rootPath);
 
-class DsignApp extends AclMixin(ServiceInjectorMixin(PolymerElement)) {
+class DsignApp extends LocalizeMixin(AclMixin(ServiceInjectorMixin(PolymerElement))) {
   static get template() {
     return html`
       ${layout}
       <style>
+      
+       
+       
 
         app-header-layout {
           margin-left: 64px;
@@ -83,6 +88,26 @@ class DsignApp extends AclMixin(ServiceInjectorMixin(PolymerElement)) {
             color: black;
         }
         
+        .height-100 {
+            height: 100%;
+        }
+        
+        app-drawer#authDrawer {
+             --app-drawer-width: 356px;
+        }
+        
+        .auth-container {
+            display: block;
+            width: 332px;
+            height: 100%;
+            padding: 6px 12px;
+        }
+        
+        #auth-tab {
+            height: 56px;
+            width: 100%;
+        }
+        
       </style>
 
       <app-location route="{{route}}" url-space-regex="^[[rootPath]]"></app-location>
@@ -113,14 +138,14 @@ class DsignApp extends AclMixin(ServiceInjectorMixin(PolymerElement)) {
     <app-drawer id="menuDrawer" align="left" swipe-open open>
       <div class="layout vertical center-justified start icon-wrapper"></div>
     </app-drawer>
-    <app-drawer id="authDrawer" align="right" swipe-open open>
-      <div class="layout vertical center-justified start icon-wrapper">
+    <app-drawer id="authDrawer" align="right"  swipe-open open>
+      <div class="layout vertical center-justified start icon-wrapper height-100">
         <template is="dom-if" if="{{isAllowed('application', 'login')}}">
           <paper-button on-tap="logout">logout</paper-button>
         </template>
         <template is="dom-if" if="{{isAllowed('application', 'logout')}}">
-          <div style="padding: 6px; padding-top: 12px; height: 100%;">
-            <paper-tabs selected="{{authSelected}}" no-slide>
+          <div class="auth-container">
+            <paper-tabs id="auth-tab" selected="{{authSelected}}" no-slide>
               <paper-tab>LOGIN</paper-tab>
               <paper-tab>SIGNUP</paper-tab>
             </paper-tabs>
@@ -165,12 +190,14 @@ class DsignApp extends AclMixin(ServiceInjectorMixin(PolymerElement)) {
         }
       },
 
+
       application: {
         observer: '_applicationChanged'
       },
 
       _authService: {
-        readOnly: true
+        readOnly: true,
+        observer: '_authServiceChanged'
       },
     };
   }
@@ -281,6 +308,29 @@ class DsignApp extends AclMixin(ServiceInjectorMixin(PolymerElement)) {
 
     return Math.max( body.scrollHeight, body.offsetHeight,
         html.clientHeight, html.scrollHeight, html.offsetHeight );
+  }
+
+  _authServiceChanged(authService) {
+    if (!authService) {
+      return;
+    }
+
+    authService.eventManager.on(
+        Auth.LOGOUT(),
+        (evt) => {
+          this._redirectRoleView();
+        }
+    );
+  }
+
+  /**
+   * @private
+   */
+  _redirectRoleView() {
+    if (!this._aclService.isAllowed(this._aclService.getRole(), this.page)) {
+      window.history.pushState("", "", "");
+      this.page = "";
+    }
   }
 }
 

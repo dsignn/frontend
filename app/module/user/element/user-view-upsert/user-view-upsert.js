@@ -20,10 +20,19 @@ class UserViewUpsert extends StorageEntityMixin(LocalizeMixin(ServiceInjectorMix
         return html`
             <style>
 
+                iron-form {
+                    width: 100%;
+                }
+
                 #container {
                     padding: var(--padding-top-view-list);
                     @apply --layout-horizontal;
                     @apply --layout-wrap;
+                }
+                
+                .form-action {
+                     @apply --layout-horizontal;
+                     @apply --layout-end-justified;
                 }
                 
                 @media (max-width: 500px) {
@@ -64,10 +73,25 @@ class UserViewUpsert extends StorageEntityMixin(LocalizeMixin(ServiceInjectorMix
             </style>
             <slot name="header"></slot>
             <div id="container">
-                <iron-form id="formResource">
+                <iron-form id="formUser">
                      <form method="post">
                         <paper-input id="name" name="name" label="{{localize('name')}}" value="{{entity.name}}" required></paper-input>
-                
+                        <paper-input id="name" name="lastName" label="{{localize('lastName')}}" value="{{entity.lastName}}" required></paper-input>
+                        <paper-input id="name" name="email" label="{{localize('email')}}" value="{{entity.email}}" required></paper-input>
+                        <paper-input type="password" id="password" name="password" label="{{localize('password')}}" value="{{entity.password}}" required></paper-input>
+                        <paper-input type="password" id="repeatPassword" name="repeatPassword" label="{{localize('repeatPassword')}}" required></paper-input>
+                        <paper-dropdown-menu label="{{localize('role')}}" value="{{entity.roleId}}">
+                          <paper-listbox slot="dropdown-content">
+                            <paper-item>guest</paper-item>
+                            <paper-item>admin</paper-item>
+                          </paper-listbox>
+                        </paper-dropdown-menu>
+                        <div>{{entity.status}}</div>
+                        <div>
+                            <div class="form-action" style="margin-top: 20px;">
+                                <paper-button on-tap="submitUsertButton">{{localize(labelAction)}}</paper-button>
+                            </div>
+                        </div>
                      </form>
                 </iron-form>
             </div>
@@ -82,24 +106,20 @@ class UserViewUpsert extends StorageEntityMixin(LocalizeMixin(ServiceInjectorMix
     static get properties () {
         return {
 
-            itemPerPage: {
-                value: 20
+            /**
+             * @type TimeslotEntity
+             */
+            entity: {
+                observer: '_changeEntity',
+                value: {}
             },
 
             /**
-             * @type number
+             * @type string
              */
-            selected: {
-                type: Number,
-                notify: true,
-                value: 0
-            },
-
-            /**
-             * @type FileEntity
-             */
-            entitySelected: {
-                notify: true
+            labelAction: {
+                type: String,
+                value: 'save'
             },
 
             /**
@@ -115,6 +135,55 @@ class UserViewUpsert extends StorageEntityMixin(LocalizeMixin(ServiceInjectorMix
                 }
             }
         };
+    }
+
+    ready() {
+        super.ready();
+        this.$.formUser.addEventListener('iron-form-presubmit', this.submitUser.bind(this));
+    }
+
+    /**
+     * @param evt
+     */
+    submitUsertButton(evt) {
+        this.$.formUser.submit();
+    }
+
+    /**
+     * @param evt
+     */
+    submitUser(evt) {
+        evt.preventDefault();
+
+        let method = this.getStorageUpsertMethod();
+        this._storage[method](this.entity)
+            .then((data) => {
+
+                if (method === 'save') {
+
+                    // TODO pass to entity manager
+                    this.entity = this._storage.getHydrator().hydrate({});
+                    this.$.formUser.reset();
+                }
+
+                this._notify.notify(this.localize(method === 'save' ? 'notify-save' : 'notify-update'));
+            });
+
+    }
+
+    /**
+     * @param newValue
+     * @private
+     */
+    _changeEntity(newValue) {
+        this.labelAction = 'save';
+        if (!newValue) {
+            return;
+        }
+
+        if (newValue.id) {
+            this.labelAction = 'update';
+        }
     }
 }
 window.customElements.define('user-view-upsert', UserViewUpsert);

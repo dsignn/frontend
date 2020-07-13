@@ -1,8 +1,26 @@
 export const lang = {
   "it": {
-    "name": "Nome"
+    "name": "Nome",
+    "save" : "Salva",
+    "update" : "Modifica",
+    "lastName" : "Cognome",
+    "email" : "Email",
+    "password" : "Password",
+    "repeatPassword" : "Ripeti password",
+    "role" : "Ruolo",
+    "notify-save" : "Timeslot salvato",
+    "notify-update" : "Timeslot modificato"
   },
   "en": {
-    "name": "Name"
+    "name": "Name",
+    "save" : "Save",
+    "update" : "Update",
+    "lastName" : "Last name",
+    "email" : "Email",
+    "password" : "Password",
+    "repeatPassword" : "Repeat password",
+    "role" : "Role",
+    "notify-save" : "Timeslot saved",
+    "notify-update" : "Timeslot updated"
   }
 };
