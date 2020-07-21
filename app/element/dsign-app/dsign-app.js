@@ -12,7 +12,8 @@ import { PolymerElement, html } from '@polymer/polymer/polymer-element.js';
 import { setPassiveTouchGestures, setRootPath } from '@polymer/polymer/lib/utils/settings.js';
 import {ServiceInjectorMixin} from '@dsign/polymer-mixin/service/injector-mixin';
 import {AclMixin} from '@dsign/polymer-mixin/acl/acl-mixin';
-
+import {Auth} from "../../src/authentication/Auth";
+import {LocalizeMixin} from "@dsign/polymer-mixin/localize/localize-mixin";
 import '@polymer/app-layout/app-drawer-layout/app-drawer-layout.js';
 import '@polymer/app-layout/app-header/app-header.js';
 import '@polymer/app-layout/app-drawer/app-drawer.js';
@@ -34,8 +35,6 @@ import '../../element/dsign-login/dsign-login';
 import '../../element/dsign-signup/dsign-signup';
 import '../../element/paper-select-language/paper-select-language';
 import {layout} from '../../element/layout/dsing-layout.js';
-import {Auth} from "../../src/authentication/Auth";
-import {LocalizeMixin} from "@dsign/polymer-mixin/localize/localize-mixin";
 
 // Gesture events like tap and track generated from touch will not be
 // preventable, allowing for better scrolling performance.
@@ -104,7 +103,7 @@ class DsignApp extends LocalizeMixin(AclMixin(ServiceInjectorMixin(PolymerElemen
         }
         
         #auth-tab {
-            height: 56px;
+            height: 50px;
             width: 100%;
         }
         
@@ -112,7 +111,7 @@ class DsignApp extends LocalizeMixin(AclMixin(ServiceInjectorMixin(PolymerElemen
 
       <app-location route="{{route}}" url-space-regex="^[[rootPath]]"></app-location>
 
-      <app-route route="{{route}}" pattern="[[rootPath]]:page" data="{{routeData}}" tail="{{subroute}}"></app-route>
+      <app-route route="{{route}}" pattern="[[rootPath]]:page" data="{{routeData}}" tail="{{subroute}}" query-params="{{query}}"></app-route>
      
     <div id="menuStatic">
       <iron-selector id="menuStaticSelector" selected="[[page]]" attr-for-selected="name" class="drawer-list" role="navigation">
@@ -131,6 +130,8 @@ class DsignApp extends LocalizeMixin(AclMixin(ServiceInjectorMixin(PolymerElemen
       </app-header>
       <div>
         <iron-pages id="moduleEntryPoint" selected="[[page]]" attr-for-selected="name" role="main">
+          <activation-code query={{query}} name="activation-code"></activation-code>
+          <reset-password query={{query}} name="reset-password"></reset-password>
           <dsing-404 name="404" root-path="[[rootPath]]timeslot"></dsing-404>
         </iron-pages>
       </div>
@@ -139,9 +140,11 @@ class DsignApp extends LocalizeMixin(AclMixin(ServiceInjectorMixin(PolymerElemen
       <div class="layout vertical center-justified start icon-wrapper"></div>
     </app-drawer>
     <app-drawer id="authDrawer" align="right"  swipe-open open>
-      <div class="layout vertical center-justified start icon-wrapper height-100">
+      <div class="layout vertical start-aligned icon-wrapper height-100">
         <template is="dom-if" if="{{isAllowed('application', 'login')}}">
-          <paper-button on-tap="logout">logout</paper-button>
+          <div class="auth-container">
+            <paper-button on-tap="logout">logout</paper-button>
+          </div>
         </template>
         <template is="dom-if" if="{{isAllowed('application', 'logout')}}">
           <div class="auth-container">
@@ -169,12 +172,21 @@ class DsignApp extends LocalizeMixin(AclMixin(ServiceInjectorMixin(PolymerElemen
 
       page: {
         type: String,
-        reflectToAttribute: true
+        reflectToAttribute: true,
+        value: 'dashboard'
       },
 
-      routeData: Object,
+      routeData: {
+        value: Object
+      },
 
-      subroute: Object,
+      subroute: {
+        value: Object
+      },
+
+      query: {
+        notify: true
+      },
 
       authSelected: {
         type: Number,
@@ -189,7 +201,6 @@ class DsignApp extends LocalizeMixin(AclMixin(ServiceInjectorMixin(PolymerElemen
           _authService: "Auth"
         }
       },
-
 
       application: {
         observer: '_applicationChanged'
@@ -329,7 +340,7 @@ class DsignApp extends LocalizeMixin(AclMixin(ServiceInjectorMixin(PolymerElemen
   _redirectRoleView() {
     if (!this._aclService.isAllowed(this._aclService.getRole(), this.page)) {
       window.history.pushState("", "", "");
-      this.page = "";
+      this.page = "dashboard";
     }
   }
 }

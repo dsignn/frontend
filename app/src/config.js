@@ -155,6 +155,22 @@ export const config = {
                         nameFile: 'user-icons',
                         extension: 'js'
                     }
+                },
+                {
+                    "name": "reset-password",
+                    "path":  {
+                        directory: 'element/reset-password',
+                        nameFile: 'reset-password',
+                        extension: 'js'
+                    }
+                },
+                {
+                    "name": "activation-code",
+                    "path":  {
+                        directory: 'element/activation-code',
+                        nameFile: 'activation-code',
+                        extension: 'js'
+                    }
                 }
             ]
         }

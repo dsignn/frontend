@@ -86,8 +86,6 @@ application.getEventManager().on(
             () => {
                 container.get('Acl').setRole('guest');
                 container.get('Auth').init();
-
-                console.log('testestst', container.get('Acl').getRole());
             },
             300
         );

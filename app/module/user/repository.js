@@ -19,6 +19,21 @@ export class Repository extends ContainerAware {
     /**
      * @const
      */
+    static STORAGE_ACTIVATION_CODE_SERVICE() { return 'ActivationCodeStorage'; };
+
+    /**
+     * @const
+     */
+    static STORAGE_RESET_PASSWORD_SERVICE() { return 'ResetPasswordStorage'; };
+
+    /**
+     * @const
+     */
+    static STORAGE_RECOVER_PASSWORD_SERVICE() { return 'RecoverPasswordStorage'; };
+
+    /**
+     * @const
+     */
     static STORAGE_SERVICE() { return 'UserStorage'; };
 
     /**
@@ -33,6 +48,9 @@ export class Repository extends ContainerAware {
         this.initAcl();
         this.initHydrator();
         this.initStorage();
+        this.initRecoverPasswordStorage();
+        this.initResetPasswordStorage();
+        this.initActivationCode();
     }
 
     /**
@@ -71,6 +89,66 @@ export class Repository extends ContainerAware {
         let storage = new Storage(adapterStorage);
         storage.setHydrator(this.getContainer().get('HydratorContainerAggregate').get(Repository.USER_HYDRATOR_SERVICE()));
         this.getContainer().set(Repository.STORAGE_SERVICE(), storage);
+    }
+
+    /**
+     *
+     */
+    initRecoverPasswordStorage() {
+        let adapterStorage = new XmlhAdapter(
+            container.get('config')['rest']['path'],
+            container.get('config')['rest']['resources']['recoverPassword']['name'],
+            new JsonEncode(),
+            new JsonDecode(),
+            new DefaultBuilder()
+        );
+
+        adapterStorage.addHeader('Content-Type', 'application/json')
+            .addHeader('Accept', 'application/json');
+
+        let storage = new Storage(adapterStorage);
+        storage.setHydrator(this.getContainer().get('HydratorContainerAggregate').get(Repository.USER_HYDRATOR_SERVICE()));
+        this.getContainer().set(Repository.STORAGE_RECOVER_PASSWORD_SERVICE(), storage);
+    }
+
+    /**
+     *
+     */
+    initActivationCode() {
+        let adapterStorage = new XmlhAdapter(
+            container.get('config')['rest']['path'],
+            container.get('config')['rest']['resources']['activationCode']['name'],
+            new JsonEncode(),
+            new JsonDecode(),
+            new DefaultBuilder()
+        );
+
+        adapterStorage.addHeader('Content-Type', 'application/json')
+            .addHeader('Accept', 'application/json');
+
+        let storage = new Storage(adapterStorage);
+        storage.setHydrator(this.getContainer().get('HydratorContainerAggregate').get(Repository.USER_HYDRATOR_SERVICE()));
+        this.getContainer().set(Repository.STORAGE_ACTIVATION_CODE_SERVICE(), storage);
+    }
+
+    /**
+     *
+     */
+    initResetPasswordStorage() {
+        let adapterStorage = new XmlhAdapter(
+            container.get('config')['rest']['path'],
+            container.get('config')['rest']['resources']['resetPassword']['name'],
+            new JsonEncode(),
+            new JsonDecode(),
+            new DefaultBuilder()
+        );
+
+        adapterStorage.addHeader('Content-Type', 'application/json')
+            .addHeader('Accept', 'application/json');
+
+        let storage = new Storage(adapterStorage);
+        storage.setHydrator(this.getContainer().get('HydratorContainerAggregate').get(Repository.USER_HYDRATOR_SERVICE()));
+        this.getContainer().set(Repository.STORAGE_RESET_PASSWORD_SERVICE(), storage);
     }
 
     /**
