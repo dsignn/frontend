@@ -50,9 +50,10 @@ class DsignApp extends LocalizeMixin(AclMixin(ServiceInjectorMixin(PolymerElemen
       ${layout}
       <style>
       
+       paper-select-language {
+            max-width: 150px;
+       }
        
-       
-
         app-header-layout {
           margin-left: 64px;
           visibility: visible;

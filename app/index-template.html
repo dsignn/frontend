@@ -2,10 +2,43 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Title</title>
+    <title>Menu</title>
+    <link rel="icon" href="images/favicon-32x32.png">
+    <meta name="viewport" content="width=device-width, minimum-scale=1, initial-scale=1, user-scalable=yes">
+    <script type="module" src="node_modules/@webcomponents/webcomponentsjs/webcomponents-loader.js"></script>
+    <script src="node_modules/web-animations-js/web-animations-next-lite.min.js"></script>
+    <script type="module">
+        import {Container} from '@dsign/library/src/container/Container';
+        import {Localize} from '@dsign/library/src/localize/Localize';
+
+        const container = new Container();
+
+        container.set('Localize', new Localize(
+            "it",
+            [
+                "it",
+                "en"
+            ]
+        ));
+
+        window.container = container;
+
+        window.addEventListener('load', function() {
+            let ele = document.createElement('menu-template');
+            document.body.appendChild(ele);
+        });
+
+    </script>
+    <script type="module" src="template/menu-icons.js"></script>
     <script type="module" src="template/menu-template.js"></script>
+    <style is="custom-style">
+        * {
+            padding: 0;
+            margin: 0;
+        }
+    </style>
 </head>
 <body>
-    <menu-template></menu-template>
+
 </body>
 </html>

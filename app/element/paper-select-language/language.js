@@ -1,4 +1,12 @@
 export const lang = {
-  "it": { "it": "italiano", "en": "inglese" },
-  "en": { "en": "English", "it": "italian"}
+  "it": {
+    "language": "Lingua",
+    "it": "Italiano",
+    "en": "Inglese"
+  },
+  "en": {
+    "language": "Language",
+    "en": "English",
+    "it": "Italian"
+  }
 };

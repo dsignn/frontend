@@ -16,8 +16,12 @@ export class PaperSelectLanguage extends LocalizeMixin(ServiceInjectorMixin(Poly
 
     static get template() {
         return html`
-            <paper-menu-button on-iron-select="_selectLanguage">
-                <div slot="dropdown-trigger">{{localize(language)}}</div>
+            <style>
+               paper-dropdown-menu {
+                width: 100%;
+                }
+            </style>
+            <paper-dropdown-menu id="category" label="{{localize('language')}}" on-iron-select="_selectLanguage">
                 <paper-listbox id="listbox" slot="dropdown-content">
                    <dom-repeat id="menu" items="{{languages}}" as="language">
                         <template>
@@ -25,7 +29,7 @@ export class PaperSelectLanguage extends LocalizeMixin(ServiceInjectorMixin(Poly
                         </template>
                     </dom-repeat>
                 </paper-listbox>
-            </paper-menu-button>
+            </paper-dropdown-menu>
         `;
     }
 

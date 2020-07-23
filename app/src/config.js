@@ -173,6 +173,31 @@ export const config = {
                     }
                 }
             ]
+        },
+        {
+            "title": "Restaurant",
+            "name": "restaurant",
+            "icon": "restaurant:menu",
+            "entryPoint": {
+                "name": "restaurant-index",
+                "path": {
+                    directory: 'element/restaurant-index',
+                    nameFile: 'restaurant-index',
+                    extension: 'js'
+                }
+            },
+            "configEntryPoint": "repository.js",
+            "autoloads": [],
+            "autoloadsWs": [
+                {
+                    "name": "restaurant-icons",
+                    "path":  {
+                        directory: 'element/restaurant-icons',
+                        nameFile: 'restaurant-icons',
+                        extension: 'js'
+                    }
+                }
+            ]
         }
     ],
     "rest": {
