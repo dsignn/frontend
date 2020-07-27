@@ -1,7 +1,7 @@
 import {EventManagerAware} from '@dsign/library/src/event/EventManagerAware';
 
 /**
- *
+ * @class Auth
  */
 export class Auth extends EventManagerAware {
 

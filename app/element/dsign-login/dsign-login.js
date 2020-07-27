@@ -26,6 +26,10 @@ class DsignLogin extends LocalizeMixin(AclMixin(ServiceInjectorMixin(PolymerElem
             color: #32b0ff;
             cursor: pointer;
         }
+        
+        paper-input {
+            text-align: left;
+        }
       </style>
       <div id="loginUserContainer">
           <iron-form id="loginUser">

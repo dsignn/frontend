@@ -1,4 +1,5 @@
 import {Auth} from './authentication/Auth';
+import {Slugify} from './url/Slugify';
 import {Container} from '@dsign/library/src/container/Container';
 import {ContainerAggregate} from '@dsign/library/src/container/ContainerAggregate';
 import {AbstractHydrator} from '@dsign/library/src/hydrator/AbstractHydrator';
@@ -99,6 +100,17 @@ application.getEventManager().on(
 container.set(
     'Application',
     application
+);
+
+/***********************************************************************************************************************
+ * Slugify
+ **********************************************************************************************************************/
+
+const slugify = new Slugify();
+
+container.set(
+    'Slugify',
+    slugify
 );
 
 /***********************************************************************************************************************

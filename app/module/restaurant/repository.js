@@ -1,5 +1,5 @@
 /**
- * Timeslot repository
+ * Restaurant repository
  */
 import {ContainerAware} from "@dsign/library/src/container/ContainerAware.js";
 import {config} from './config';
@@ -16,6 +16,7 @@ import {
 } from "@dsign/library/src/hydrator/strategy/value/index";
 import {MapProprertyStrategy} from "@dsign/library/src/hydrator/strategy/proprerty/index";
 import {Storage} from "@dsign/library/src/storage/Storage";
+import {RestaurantEntity} from "./src/entity/RestaurantEntity";
 
 /**
  * @class Repository
@@ -38,13 +39,14 @@ export class Repository extends ContainerAware {
      * @return {string}
      * @constructor
      */
-    static get ORGANIZATION_ENTITY_SERVICE() { return 'OrganizationEntity'; };
+    static get ORGANIZATION_ENTITY_SERVICE() { return 'RestaurantEntity'; };
 
     /**
      * @return {string}
      * @constructor
      */
-    static get Organization_HYDRATOR_SERVICE() { return 'OrganizationEntityHydrator'; };
+    static get ORGANIZATION_HYDRATOR_SERVICE() { return 'OrganizationEntityHydrator'; };
+
 
     init() {
 
@@ -79,7 +81,7 @@ export class Repository extends ContainerAware {
     initStorage() {
         let adapterStorage = new XmlhAdapter(
             container.get('config')['rest']['path'],
-            container.get('config')['rest']['resources']['timeslot']['name'],
+            container.get('config')['rest']['resources']['restaurant']['name'],
             new JsonEncode(),
             new JsonDecode(),
             new DefaultBuilder()
@@ -89,18 +91,17 @@ export class Repository extends ContainerAware {
             .addHeader(    'Accept', 'application/json');
 
         let storage = new Storage(adapterStorage);
-        storage.setHydrator(this.getContainer().get('HydratorContainerAggregate').get(Repository.Organization_HYDRATOR_SERVICE));
+        storage.setHydrator(this.getContainer().get('HydratorContainerAggregate').get(Repository.ORGANIZATION_HYDRATOR_SERVICE));
         this.getContainer().set(Repository.STORAGE_SERVICE, storage);
     }
-
-
+    
     /**
      *
      */
     initEntity() {
         this.getContainer()
             .get('EntityContainerAggregate')
-     //       .set(Repository.ORGANIZATION_ENTITY_SERVICE, new TimeslotEntity());
+            .set(Repository.ORGANIZATION_ENTITY_SERVICE, new RestaurantEntity());
     }
 
     /**
@@ -112,124 +113,18 @@ export class Repository extends ContainerAware {
             .get('HydratorContainerAggregate')
             .set(
                 Repository.ORGANIZATION_HYDRATOR_SERVICE,
-                Repository.getTimeslotHydrator(this.getContainer().get('EntityContainerAggregate'))
+                Repository.getRestaurantHydrator(this.getContainer().get('EntityContainerAggregate'))
             );
     }
 
     /**
      * @param container
      */
-    static getTimeslotHydrator(container) {
+    static getRestaurantHydrator(container) {
 
         let hydrator = new PropertyHydrator();
         hydrator.setTemplateObjectHydration(container.get(Repository.ORGANIZATION_ENTITY_SERVICE));
 
-        /**
-         * Resource strategy
-
-        let resourceStrategy = new HydratorStrategy();
-        resourceStrategy.setHydrator(ResourceRepository.getResourceHydrator(container));
-
-        /**
-         * Monitor strategy
-
-        let monitorStrategy = new HydratorStrategy();
-        monitorStrategy.setHydrator(MonitorRepository.getMonitorContainerReferenceHydrator(container));
-
-        /**
-         * Timeslot bind strategy
-
-        let bindTimeslotStrategy = new HydratorStrategy();
-        bindTimeslotStrategy.setHydrator(Repository.getTimeslotReferenceHydrator(container));
-
-        /**
-         * Timeslot bind strategy
-
-        let injectorDataStrategy = new HydratorStrategy();
-        injectorDataStrategy.setHydrator(Repository.getInjectorHydrator(container));
-*/
-
-        hydrator
-            //.addValueStrategy('resources', resourceStrategy)
-       //     .addValueStrategy('monitorContainerReference', monitorStrategy)
-       //     .addValueStrategy('binds', bindTimeslotStrategy)
-            .addValueStrategy('currentTime', new NumberStrategy())
-            .addValueStrategy('duration', new NumberStrategy())
-       //     .addValueStrategy('dataReferences', injectorDataStrategy)
-            .addValueStrategy('enableAudio', new HybridStrategy(HybridStrategy.BOOLEAN_TYPE, HybridStrategy.NUMBER_TYPE));
-
-        hydrator.enableHydrateProperty('id')
-            .enableHydrateProperty('_id')
-            .enableHydrateProperty('name')
-            .enableHydrateProperty('status')
-            .enableHydrateProperty('binds')
-            .enableHydrateProperty('currentTime')
-            .enableHydrateProperty('duration')
-            .enableHydrateProperty('enableAudio')
-            .enableHydrateProperty('context')
-            .enableHydrateProperty('monitorContainerReference')
-            .enableHydrateProperty('resources')
-            .enableHydrateProperty('dataReferences')
-            .enableHydrateProperty('tags')
-            .enableHydrateProperty('rotation')
-            .enableHydrateProperty('filters');
-
-        hydrator.enableExtractProperty('id')
-            .enableHydrateProperty('_id')
-            .enableExtractProperty('name')
-            .enableExtractProperty('status')
-            .enableExtractProperty('binds')
-            .enableExtractProperty('currentTime')
-            .enableExtractProperty('duration')
-            .enableExtractProperty('enableAudio')
-            .enableExtractProperty('context')
-            .enableExtractProperty('monitorContainerReference')
-            .enableExtractProperty('resources')
-            .enableExtractProperty('dataReferences')
-            .enableExtractProperty('tags')
-            .enableExtractProperty('rotation')
-            .enableExtractProperty('filters');
-
-        return hydrator;
-    }
-
-    /**
-     * @param container
-     * @return {PropertyHydrator}
-     */
-    static getTimeslotReferenceHydrator(container) {
-
-        let hydrator = new PropertyHydrator();
-        hydrator.setTemplateObjectHydration(container.get('EntityReference'));
-
-        hydrator.enableHydrateProperty('id')
-            .enableHydrateProperty('collection')
-            .enableHydrateProperty('name');
-
-
-        hydrator.enableExtractProperty('id')
-            .enableExtractProperty('collection')
-            .enableExtractProperty('name');
-
-        return hydrator;
-    }
-
-
-    /**
-     * @param container
-     * @return {*}
-     */
-    static getInjectorHydrator(container) {
-
-        let hydrator = new PropertyHydrator();
-        hydrator.setTemplateObjectHydration(new Injector());
-
-        hydrator.enableHydrateProperty('name')
-            .enableHydrateProperty('data');
-
-
-        hydrator.enableExtractProperty('name')
-            .enableExtractProperty('data');
 
         return hydrator;
     }

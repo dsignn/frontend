@@ -93,12 +93,12 @@ class DsignApp extends LocalizeMixin(AclMixin(ServiceInjectorMixin(PolymerElemen
         }
         
         app-drawer#authDrawer {
-             --app-drawer-width: 356px;
+             --app-drawer-width: 426px;
         }
         
         .auth-container {
             display: block;
-            width: 332px;
+            width: 392px;
             height: 100%;
             padding: 6px 12px;
         }

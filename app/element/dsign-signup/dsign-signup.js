@@ -3,6 +3,7 @@ import {AclMixin} from "@dsign/polymer-mixin/acl/acl-mixin";
 import {ServiceInjectorMixin} from "@dsign/polymer-mixin/service/injector-mixin";
 import {LocalizeMixin} from "@dsign/polymer-mixin/localize/localize-mixin";
 import "@polymer/paper-button/paper-button";
+import "@fluidnext-polymer/paper-autocomplete/paper-autocomplete";
 import "@polymer/paper-input/paper-input";
 import "@polymer/iron-form/iron-form";
 import {layout} from "../layout/dsing-layout";
@@ -17,6 +18,26 @@ class DsignSignup extends LocalizeMixin(AclMixin(ServiceInjectorMixin(PolymerEle
         return html`
       ${layout}
       <style>
+        .url {
+        
+            background-color: var(--accent-color);
+            color: white;
+            padding: 6px;
+            font-size: 13px;
+            font-weight: bold;
+            border-radius: 6px;
+        }
+        
+        paper-input {
+            text-align: left;
+        }
+        
+        #url {
+            iron-input {
+                text-align: left;
+                background-color: red;
+            }
+        }
       </style>
       <div id="signupUserContainer">
          <iron-form id="signupUser">
@@ -26,7 +47,15 @@ class DsignSignup extends LocalizeMixin(AclMixin(ServiceInjectorMixin(PolymerEle
               <paper-input id="email" name="email" label="{{localize('email')}}" required></paper-input>
               <paper-input id="password" type="password" name="password" label="{{localize('password')}}" required></paper-input>
               <paper-input name="confirmPassword" type="password" label="{{localize('repeat-password')}}" required></paper-input>
-               <paper-input name="nameOrganization" label="{{localize('name-restaurant')}}" required></paper-input>
+              <paper-input id="nameRestaurant" name="nameRestaurant" label="{{localize('name-restaurant')}}" on-value-changed="changeNameRestaurant" required></paper-input>
+              <paper-input 
+                id="url"
+                label="{{localize('url')}}" 
+                value="{{url}}"
+                always-float-label
+                disabled>
+                <div class="url" slot="prefix">{{_config.app.basePath}}menu/</div>
+              </paper-input>
               <paper-button on-tap="submitSignupButton">{{localize('signup')}}</paper-button>
             </form>
           </iron-form>
@@ -43,15 +72,34 @@ class DsignSignup extends LocalizeMixin(AclMixin(ServiceInjectorMixin(PolymerEle
 
             services: {
                 value: {
+                    _slugify: "Slugify",
+                    _config: "config",
                     _notify: "Notify",
                     _localizeService: 'Localize',
                     StorageContainerAggregate: {
                         userStorage: "UserStorage",
+                        organizationStorage: "OrganizationStorage"
                     }
                 }
             },
 
+            url: {
+
+            },
+
             userService: {
+                readOnly: true
+            },
+
+            organizationStorage: {
+                readOnly: true
+            },
+
+            _slugify: {
+                readOnly: true
+            },
+
+            _config: {
                 readOnly: true
             }
         };
@@ -60,6 +108,16 @@ class DsignSignup extends LocalizeMixin(AclMixin(ServiceInjectorMixin(PolymerEle
     ready() {
         super.ready();
         this.$.signupUser.addEventListener('iron-form-presubmit', this.submitSignup.bind(this));
+    }
+
+    changeNameRestaurant(evt) {
+        if (!this._slugify) {
+            return;
+        }
+
+        console.log('changeNameRestaurant', evt);
+        // TODO normalize path
+        this.url = this._slugify.slugify(evt.detail.value);
     }
 
     /**
@@ -83,6 +141,25 @@ class DsignSignup extends LocalizeMixin(AclMixin(ServiceInjectorMixin(PolymerEle
         }).catch((error) => {
             console.log('ERROR', error);
         });
+    }
+
+    /**
+     * @param evt
+     * @private
+     */
+    _searchRestaurant(evt) {
+
+        this.organizationStorage.getAll({name: evt.detail.value.text})
+            .then((data) => {
+                console.log(evt.detail, this);
+                this.$.organization.value = {
+                    name: evt.detail.value.text
+                };
+                evt.detail.target.suggestions(
+                    data
+                );
+            })
+
     }
 }
 
