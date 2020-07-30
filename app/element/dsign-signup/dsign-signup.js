@@ -1,23 +1,33 @@
 import {html, PolymerElement} from "@polymer/polymer/polymer-element";
 import {AclMixin} from "@dsign/polymer-mixin/acl/acl-mixin";
 import {ServiceInjectorMixin} from "@dsign/polymer-mixin/service/injector-mixin";
-import {LocalizeMixin} from "@dsign/polymer-mixin/localize/localize-mixin";
+
+import {FormErrorMessage} from "../mixin/form-error-message/form-error-message";
 import "@polymer/paper-button/paper-button";
 import "@fluidnext-polymer/paper-autocomplete/paper-autocomplete";
 import "@polymer/paper-input/paper-input";
 import "@polymer/iron-form/iron-form";
 import {layout} from "../layout/dsing-layout";
 import {lang} from './language';
+import {Flatten} from './../../src/transform/Flatten';
 
 /**
  * @DsignSignup
  */
-class DsignSignup extends LocalizeMixin(AclMixin(ServiceInjectorMixin(PolymerElement))) {
+class DsignSignup extends FormErrorMessage(AclMixin(ServiceInjectorMixin(PolymerElement))) {
 
     static get template() {
         return html`
       ${layout}
       <style>
+      
+         :host paper-input[disabled] {
+
+          --paper-input-container-disabled: {
+            opacity: 0.7;
+          }
+        }
+      
         .url {
         
             background-color: var(--accent-color);
@@ -43,11 +53,12 @@ class DsignSignup extends LocalizeMixin(AclMixin(ServiceInjectorMixin(PolymerEle
          <iron-form id="signupUser">
             <form method="post">
               <paper-input id="name" name="name" label="{{localize('name')}}" required></paper-input>
-              <paper-input id="lastname" name="lastname" label="{{localize('lastname')}}" required></paper-input>
+              <paper-input id="lastName" name="lastName" label="{{localize('lastName')}}" required></paper-input>
               <paper-input id="email" name="email" label="{{localize('email')}}" required></paper-input>
               <paper-input id="password" type="password" name="password" label="{{localize('password')}}" required></paper-input>
               <paper-input name="confirmPassword" type="password" label="{{localize('repeat-password')}}" required></paper-input>
-              <paper-input id="nameRestaurant" name="nameRestaurant" label="{{localize('name-restaurant')}}" on-value-changed="changeNameRestaurant" required></paper-input>
+              <paper-input name="roleId" value="restaurantOwner" hidden></paper-input>
+              <paper-input id="nameOrganization" name="nameOrganization" label="{{localize('name-restaurant')}}" on-value-changed="changeNameRestaurant" required></paper-input>
               <paper-input 
                 id="url"
                 label="{{localize('url')}}" 
@@ -110,14 +121,15 @@ class DsignSignup extends LocalizeMixin(AclMixin(ServiceInjectorMixin(PolymerEle
         this.$.signupUser.addEventListener('iron-form-presubmit', this.submitSignup.bind(this));
     }
 
+    /**
+     * @param evt
+     */
     changeNameRestaurant(evt) {
         if (!this._slugify) {
             return;
         }
 
-        console.log('changeNameRestaurant', evt);
-        // TODO normalize path
-        this.url = this._slugify.slugify(evt.detail.value);
+        this.url = evt.detail.value ? this._slugify.slugify(evt.detail.value) : '';
     }
 
     /**
@@ -139,7 +151,7 @@ class DsignSignup extends LocalizeMixin(AclMixin(ServiceInjectorMixin(PolymerEle
             this._notify.notify(this.localize('signup-ok'));
             this.$.signupUser.reset();
         }).catch((error) => {
-            console.log('ERROR', error);
+            this.errorMessage(this.$.signupUser, error);
         });
     }
 

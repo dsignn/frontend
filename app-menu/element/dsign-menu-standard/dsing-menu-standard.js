@@ -25,7 +25,7 @@ import '@polymer/neon-animation/neon-animation';
 import '@polymer/paper-input/paper-input';
 import '@polymer/paper-button/paper-button';
 import '@dsign/polymer-mixin/localize/localize-mixin';
-import '../element/paper-select-language/paper-select-language';
+import '../../element/paper-select-language/paper-select-language';
 
 // Gesture events like tap and track generated from touch will not be
 // preventable, allowing for better scrolling performance.
@@ -48,7 +48,7 @@ let lang = {
     }
 };
 
-class MenuTemplate extends LocalizeMixin(ServiceInjectorMixin(PolymerElement)) {
+class DsignMenuStandard extends LocalizeMixin(ServiceInjectorMixin(PolymerElement)) {
     static get template() {
         return html`
     <style>
@@ -57,6 +57,18 @@ class MenuTemplate extends LocalizeMixin(ServiceInjectorMixin(PolymerElement)) {
          padding-left: 6px;
          padding-right: 6px;
          color: white;
+       }
+       
+        app-toolbar paper-input,
+       app-toolbar paper-dropdown-menu {
+           --primary-text-color: white; 
+           --paper-input-container-color: white;
+           --paper-input-container-focus-color: #BFBFBF;
+           --paper-input-container-invalid-color: white;
+       }
+       
+       app-toolbar paper-dropdown-menu paper-item {
+            color: #757575;; ;
        }
        
        #menuContainer {
@@ -158,7 +170,7 @@ class MenuTemplate extends LocalizeMixin(ServiceInjectorMixin(PolymerElement)) {
 
            background-size: cover;
            background-repeat: no-repeat;
-           background-image: url("./template/COPERTINA.jpg");
+           background-image: url("./element/dsign-menu-standard/COPERTINA.jpg");
             width: 100%;
        }
        
@@ -413,8 +425,6 @@ class MenuTemplate extends LocalizeMixin(ServiceInjectorMixin(PolymerElement)) {
     tapMenu(evt) {
         this.$.drawer.toggle();
     }
-
-
 }
 
-window.customElements.define('menu-template', MenuTemplate);
+window.customElements.define('dsign-menu-standard', DsignMenuStandard);

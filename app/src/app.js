@@ -120,12 +120,14 @@ container.set(
 const acl = new Acl(new JsAclAdapter(new window.JsAcl()));
 
 acl.addRole('guest');
+acl.addRole('restaurantOwner');
 acl.addRole('admin');
 
 acl.addResource('application');
 
 acl.allow('guest', 'application', 'logout');
 acl.allow('admin', 'application', 'login');
+acl.allow('restaurantOwner', 'application', 'login');
 
 container.set('Acl', acl);
 

@@ -1,7 +1,7 @@
 export const lang = {
   "it": {
     "name": "Nome",
-    "lastname": "Cognome",
+    "lastName": "Cognome",
     "email": "Email",
     "password" : "Password",
     "repeat-password" : "Ripeti password",
@@ -13,7 +13,7 @@ export const lang = {
   },
   "en": {
     "name": "Name",
-    "lastname": "Last name",
+    "lastName": "Last name",
     "email": "Email",
     "password" : "Password",
     "repeat-password" : "Repeat password",

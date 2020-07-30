@@ -33,7 +33,6 @@ class DsignMenuIcon extends AclMixin(ServiceInjectorMixin(PolymerElement)) {
         :host {
            display: block;
            width: 100%;
-           height: 64px;
         }
         
         paper-icon-button{
@@ -42,6 +41,7 @@ class DsignMenuIcon extends AclMixin(ServiceInjectorMixin(PolymerElement)) {
         
         #container {
          width: 100%;
+         height: 64px;
         }
         
         .icon-wrapper {

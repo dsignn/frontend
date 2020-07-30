@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <title>Menu</title>
-    <link rel="icon" href="images/favicon-32x32.png">
+    <link rel="icon" href="../app/images/favicon-32x32.png">
     <meta name="viewport" content="width=device-width, minimum-scale=1, initial-scale=1, user-scalable=yes">
     <script type="module" src="node_modules/@webcomponents/webcomponentsjs/webcomponents-loader.js"></script>
     <script src="node_modules/web-animations-js/web-animations-next-lite.min.js"></script>
@@ -24,13 +24,13 @@
         window.container = container;
 
         window.addEventListener('load', function() {
-            let ele = document.createElement('menu-template');
+            let ele = document.createElement('dsign-menu-standard');
             document.body.appendChild(ele);
         });
 
     </script>
-    <script type="module" src="template/menu-icons.js"></script>
-    <script type="module" src="template/menu-template.js"></script>
+    <script type="module" src="element/dsign-menu-icons/dsign-menu-icons.js"></script>
+    <script type="module" src="element/dsign-menu-standard/dsing-menu-standard.js"></script>
     <style is="custom-style">
         * {
             padding: 0;

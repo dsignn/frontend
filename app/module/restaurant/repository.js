@@ -72,7 +72,9 @@ export class Repository extends ContainerAware {
      */
     initAcl() {
         this.getContainer().get('Acl').addResource('restaurant');
-        this.getContainer().get('Acl').allow('admin', 'restaurant', 'menu')
+
+        this.getContainer().get('Acl').allow('restaurantOwner', 'restaurant', 'menu');
+        this.getContainer().get('Acl').allow('admin', 'restaurant', 'menu');
     }
 
     /**
