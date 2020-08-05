@@ -37,7 +37,7 @@ class MonitorIndex extends LocalizeMixin(ServiceInjectorMixin(PolymerElement)) {
        </style>
        <iron-pages id="index" selected="{{selected}}">
             <div id="list">
-                <monitor-view-list selected="{{selected}}"  entity-selected="{{entitySelected}}">
+                <monitor-view-list selected="{{selected}}" entity-selected="{{entitySelected}}">
                     <div slot="header" class="header">
                         <div class="text-content">{{localize('list-monitor')}}</div>
                         <paper-icon-button id="iconInsertMonitor" icon="insert" class="circle" on-click="displayAddView"></paper-icon-button>
@@ -55,7 +55,7 @@ class MonitorIndex extends LocalizeMixin(ServiceInjectorMixin(PolymerElement)) {
                 </monitor-view-upsert>  
             </div>
             <div id="update">
-                <monitor-view-upsert  entity="{{entitySelected}}">
+                <monitor-view-upsert entity="{{entitySelected}}">
                     <div slot="header" class="header">
                         <div class="text-content">{{localize('insert-monitor')}}</div>
                         <paper-icon-button id="iconInsertMonitor" icon="arrow-back" class="circle" on-click="displayListView"></paper-icon-button>

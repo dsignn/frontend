@@ -39,6 +39,12 @@ export class Repository extends ContainerAware {
      * @return {string}
      * @constructor
      */
+    static get QR_CODE_STORAGE_SERVICE() { return 'QrCodeGeneratorStorage'; };
+
+    /**
+     * @return {string}
+     * @constructor
+     */
     static get ORGANIZATION_ENTITY_SERVICE() { return 'RestaurantEntity'; };
 
     /**
@@ -55,6 +61,7 @@ export class Repository extends ContainerAware {
         this.initEntity();
         this.initHydrator();
         this.initStorage();
+        this.initQrCode();
     }
 
     /**
@@ -73,7 +80,9 @@ export class Repository extends ContainerAware {
     initAcl() {
         this.getContainer().get('Acl').addResource('restaurant');
 
+        this
         this.getContainer().get('Acl').allow('restaurantOwner', 'restaurant', 'menu');
+        this.getContainer().get('Acl').allow('admin', 'restaurant', 'add');
         this.getContainer().get('Acl').allow('admin', 'restaurant', 'menu');
     }
 
@@ -95,6 +104,24 @@ export class Repository extends ContainerAware {
         let storage = new Storage(adapterStorage);
         storage.setHydrator(this.getContainer().get('HydratorContainerAggregate').get(Repository.ORGANIZATION_HYDRATOR_SERVICE));
         this.getContainer().set(Repository.STORAGE_SERVICE, storage);
+    }
+
+    initQrCode() {
+
+        let adapterStorage = new XmlhAdapter(
+            container.get('config')['rest']['path'],
+            container.get('config')['rest']['resources']['rpcQrcode']['name'],
+            new JsonEncode(),
+            new JsonDecode(),
+            new DefaultBuilder()
+        );
+
+        adapterStorage.addHeader(    'Content-Type', 'application/json')
+            .addHeader(    'Accept', 'application/json');
+
+        let storage = new Storage(adapterStorage);
+        storage.setHydrator(this.getContainer().get('HydratorContainerAggregate').get(Repository.ORGANIZATION_HYDRATOR_SERVICE));
+        this.getContainer().set(Repository.QR_CODE_STORAGE_SERVICE, storage);
     }
     
     /**

@@ -78,9 +78,7 @@ class UserViewUpsert extends StorageEntityMixin(LocalizeMixin(ServiceInjectorMix
                         <paper-input id="name" name="name" label="{{localize('name')}}" value="{{entity.name}}" required></paper-input>
                         <paper-input id="name" name="lastName" label="{{localize('lastName')}}" value="{{entity.lastName}}" required></paper-input>
                         <paper-input id="name" name="email" label="{{localize('email')}}" value="{{entity.email}}" required></paper-input>
-                        <paper-input type="password" id="password" name="password" label="{{localize('password')}}" value="{{entity.password}}" required></paper-input>
-                        <paper-input type="password" id="repeatPassword" name="repeatPassword" label="{{localize('repeatPassword')}}" required></paper-input>
-                        <paper-dropdown-menu label="{{localize('role')}}" value="{{entity.roleId}}">
+                       <paper-dropdown-menu label="{{localize('role')}}" value="{{entity.roleId}}">
                           <paper-listbox slot="dropdown-content">
                             <paper-item>guest</paper-item>
                             <paper-item>admin</paper-item>

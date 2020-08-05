@@ -21,7 +21,7 @@ export class FileEntity extends EntityIdentifier {
         /**
          * @type {null}
          */
-        this.type = null;
+        this.mimeType = null;
 
         /**
          * @type {PathInterface}

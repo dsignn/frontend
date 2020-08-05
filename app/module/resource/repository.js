@@ -126,6 +126,8 @@ export class Repository extends ContainerAware {
             new DefaultBuilder()
         );
 
+        adapterStorage.setUpdateMethod('PATCH');
+
         adapterStorage.addHeader(    'Accept', 'application/json');
 
         let storage = new Storage(adapterStorage);
@@ -238,7 +240,8 @@ export class Repository extends ContainerAware {
             .enableHydrateProperty('name')
             .enableHydrateProperty('resourceToImport')
             .enableHydrateProperty('size')
-            .enableHydrateProperty('type')
+            .enableHydrateProperty('mimeType')
+            .enableHydrateProperty('src')
             .enableHydrateProperty('path')
             .enableHydrateProperty('tags');
 
@@ -247,7 +250,8 @@ export class Repository extends ContainerAware {
             .enableExtractProperty('name')
             .enableExtractProperty('size')
             .enableExtractProperty('resourceToImport')
-            .enableExtractProperty('type')
+            .enableExtractProperty('mimeType')
+            .enableExtractProperty('src')
             .enableExtractProperty('path')
             .enableExtractProperty('tags');
 

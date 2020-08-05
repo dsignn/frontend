@@ -6,6 +6,9 @@ export const config = {
         resources : {
             restaurant : {
                 name: "organization"
+            },
+            rpcQrcode: {
+                name: "generate-qrcode"
             }
         }
     }

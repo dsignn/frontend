@@ -1,14 +1,16 @@
 export const lang = {
   "it": {
-    "list-resource": "Lista risorse",
-    "insert-resource" : "Inserisci risorsa",
-    "update-resource" : "Modifica risorsa",
+    "restaurants": "Ristoranti",
+    "menu": "Menù",
     "back" : "Indietro",
+    "list-restaurant": "Lista ristoranti",
+    "insert-restaurant": "Inserisci ristorante"
   },
   "en": {
-    "list-resource": "List resource",
-    "insert-resource" : "Insert monitor",
-    "update-resource" : "Update monitor",
+    "restaurants": "Restaurants",
+    "menu": "Menù",
     "back" : "Back",
+    "list-restaurant": "List restaurants",
+    "insert-restaurant": "Insert restaurant"
   }
 };

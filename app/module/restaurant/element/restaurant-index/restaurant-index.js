@@ -1,20 +1,32 @@
 import {html, PolymerElement} from '@polymer/polymer/polymer-element.js';
 import {ServiceInjectorMixin} from "@dsign/polymer-mixin/service/injector-mixin";
 import {LocalizeMixin} from "@dsign/polymer-mixin/localize/localize-mixin";
+import {AclMixin} from "@dsign/polymer-mixin/acl/acl-mixin";
 import '@polymer/paper-icon-button/paper-icon-button';
+import '@polymer/paper-tabs/paper-tabs';
 import '@polymer/iron-pages/iron-pages';
+import '../restaurant-view-list/restaurant-view-list';
+import '../restaurant-view-upsert/restaurant-view-upsert';
 import {lang} from './language';
 
 /**
  * @customElement
  * @polymer
  */
-class RestaurantIndex extends LocalizeMixin(ServiceInjectorMixin(PolymerElement)) {
+class RestaurantIndex extends LocalizeMixin(AclMixin(ServiceInjectorMixin(PolymerElement))) {
 
     static get template() {
         return html`
          
             <style>
+                :host {
+                    display: block;
+                    padding: 6px;
+                }  
+                   
+               paper-tabs {
+                   width: auto;
+               }    
                    
                .header {
                   @apply --layout-horizontal;
@@ -32,15 +44,46 @@ class RestaurantIndex extends LocalizeMixin(ServiceInjectorMixin(PolymerElement)
                     @apply --paper-icon-button-action;
                 }
             </style>
-            <iron-pages id="index" selected="{{selected}}">
+            <paper-tabs selected="{{selectedTab}}" tabindex="0">
+                <paper-tab>{{localize('restaurants')}}</paper-tab>
+                <paper-tab>{{localize('menu')}}</paper-tab>
+            </paper-tabs>
+            <iron-pages id="restaurant" selected="{{selectedTab}}">
                 <div id="list"> 
-                    LIST
+                    <iron-pages id="restaurant" selected="{{selectedRestaurant}}">
+                       <div id="list"> 
+                            <restaurant-view-list selected="{{selectedRestaurant}}" entity-selected="{{entitySelected}}">
+                               <div slot="header" class="header">
+                                   <div class="text-content">{{localize('list-restaurant')}}</div>
+                                   <template is="dom-if" if="{{isAllowed('restaurant', 'add')}}">
+                                       <paper-icon-button id="iconInsertMonitor" icon="insert" class="circle" on-click="displayRestaurantAddView"></paper-icon-button>
+                                       <paper-tooltip for="iconInsertMonitor" position="left">{{localize('insert-restaurant')}}</paper-tooltip>
+                                   </template>
+                               </div>
+                            </restaurant-view-list>
+                       </div>
+                       <div id="insert"> 
+                           <restaurant-view-upsert>
+                                <div slot="header" class="header">
+                                    <div class="text-content">{{localize('insert-restaurant')}}</div>
+                                    <paper-icon-button id="iconInsertMonitor" icon="arrow-back" class="circle" on-click="displayRestaurantListView"></paper-icon-button>
+                                    <paper-tooltip for="iconInsertMonitor" position="left">{{localize('insert-restaurant')}}</paper-tooltip>
+                                </div>
+                           </restaurant-view-upsert>
+                       </div>
+                       <div id="update"> 
+                           <restaurant-view-upsert entity="{{entitySelected}}">
+                                <div slot="header" class="header">
+                                    <div class="text-content">{{localize('update-restaurant')}}</div>
+                                    <paper-icon-button id="iconInsertMonitor" icon="arrow-back" class="circle" on-click="displayRestaurantListView"></paper-icon-button>
+                                    <paper-tooltip for="iconInsertMonitor" position="left">{{localize('update-restaurant')}}</paper-tooltip>
+                                </div>
+                           </restaurant-view-upsert>
+                       </div>
+                    </iron-pages>
                 </div>
-                <div id="insert"> 
-                   INSERT
-                </div>
-                <div id="update"> 
-                    UPDATE
+                <div id="menu"> 
+                   menu
                 </div>
             </iron-pages>
     `;
@@ -53,7 +96,14 @@ class RestaurantIndex extends LocalizeMixin(ServiceInjectorMixin(PolymerElement)
 
     static get properties () {
         return {
-            selected: {
+            /**
+             * @type number
+             */
+            selectedTab: {
+                value: 0
+            },
+
+            selectedRestaurant: {
                 type: Number,
                 value: 0
             },
@@ -63,7 +113,8 @@ class RestaurantIndex extends LocalizeMixin(ServiceInjectorMixin(PolymerElement)
              */
             services : {
                 value : {
-                    _localizeService: 'Localize'
+                    _localizeService: 'Localize',
+                    _aclService: "Acl"
                 }
             },
         };
@@ -72,15 +123,15 @@ class RestaurantIndex extends LocalizeMixin(ServiceInjectorMixin(PolymerElement)
     /**
      * @param evt
      */
-    displayAddView(evt) {
-        this.selected = 1;
+    displayRestaurantAddView(evt) {
+        this.selectedRestaurant = 1;
     }
 
     /**
      * @param evt
      */
-    displayListView(evt) {
-        this.selected = 0;
+    displayRestaurantListView(evt) {
+        this.selectedRestaurant = 0;
     }
 }
 window.customElements.define('restaurant-index', RestaurantIndex);
