@@ -7,6 +7,8 @@ import '@polymer/paper-tabs/paper-tabs';
 import '@polymer/iron-pages/iron-pages';
 import '../restaurant-view-list/restaurant-view-list';
 import '../restaurant-view-upsert/restaurant-view-upsert';
+import '../menu-view-list/menu-view-list';
+import '../menu-view-upsert/menu-view-upsert';
 import {lang} from './language';
 
 /**
@@ -25,7 +27,7 @@ class RestaurantIndex extends LocalizeMixin(AclMixin(ServiceInjectorMixin(Polyme
                 }  
                    
                paper-tabs {
-                   width: auto;
+                   width: 340px;
                }    
                    
                .header {
@@ -49,7 +51,7 @@ class RestaurantIndex extends LocalizeMixin(AclMixin(ServiceInjectorMixin(Polyme
                 <paper-tab>{{localize('menu')}}</paper-tab>
             </paper-tabs>
             <iron-pages id="restaurant" selected="{{selectedTab}}">
-                <div id="list"> 
+                <div id="restaurant"> 
                     <iron-pages id="restaurant" selected="{{selectedRestaurant}}">
                        <div id="list"> 
                             <restaurant-view-list selected="{{selectedRestaurant}}" entity-selected="{{entitySelected}}">
@@ -83,7 +85,37 @@ class RestaurantIndex extends LocalizeMixin(AclMixin(ServiceInjectorMixin(Polyme
                     </iron-pages>
                 </div>
                 <div id="menu"> 
-                   menu
+                    <iron-pages id="restaurant" selected="{{selectedMenu}}">
+                        <div id="list"> 
+                            <menu-view-list selected="{{selectedMenu}}" entity-selected="{{menuSelected}}">
+                               <div slot="header" class="header">
+                                   <div class="text-content">{{localize('list-menu')}}</div>
+                                   <template is="dom-if" if="{{isAllowed('restaurant', 'add')}}">
+                                       <paper-icon-button id="iconInsertMonitor" icon="insert" class="circle" on-click="displayRestaurantMenuAddView"></paper-icon-button>
+                                       <paper-tooltip for="iconInsertMonitor" position="left">{{localize('insert-menu')}}</paper-tooltip>
+                                   </template>
+                               </div>
+                            </menu-view-list>
+                       </div>
+                       <div id="insert"> 
+                           <menu-view-upsert>
+                                <div slot="header" class="header">
+                                    <div class="text-content">{{localize('insert-menu')}}</div>
+                                    <paper-icon-button id="iconInsertMonitor" icon="arrow-back" class="circle" on-click="displayRestaurantMenuListView"></paper-icon-button>
+                                    <paper-tooltip for="iconInsertMonitor" position="left">{{localize('insert-menu')}}</paper-tooltip>
+                                </div>
+                           </menu-view-upsert>
+                       </div>
+                       <div id="update"> 
+                           <menu-view-upsert entity="{{menuSelected}}">
+                                <div slot="header" class="header">
+                                    <div class="text-content">{{localize('update-restaurant')}}</div>
+                                    <paper-icon-button id="iconInsertMonitor" icon="arrow-back" class="circle" on-click="displayRestaurantMenuListView"></paper-icon-button>
+                                    <paper-tooltip for="iconInsertMonitor" position="left">{{localize('update-menu')}}</paper-tooltip>
+                                </div>
+                           </menu-view-upsert>
+                       </div>
+                   </iron-pages>
                 </div>
             </iron-pages>
     `;
@@ -100,10 +132,15 @@ class RestaurantIndex extends LocalizeMixin(AclMixin(ServiceInjectorMixin(Polyme
              * @type number
              */
             selectedTab: {
-                value: 0
+                value: 1
             },
 
             selectedRestaurant: {
+                type: Number,
+                value: 0
+            },
+
+            selectedMenu: {
                 type: Number,
                 value: 0
             },
@@ -132,6 +169,14 @@ class RestaurantIndex extends LocalizeMixin(AclMixin(ServiceInjectorMixin(Polyme
      */
     displayRestaurantListView(evt) {
         this.selectedRestaurant = 0;
+    }
+
+    displayRestaurantMenuAddView() {
+        this.selectedMenu = 1;
+    }
+
+    displayRestaurantMenuListView() {
+        this.selectedMenu = 0;
     }
 }
 window.customElements.define('restaurant-index', RestaurantIndex);

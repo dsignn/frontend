@@ -114,7 +114,6 @@ class ResetPassword extends LocalizeMixin(AclMixin(ServiceInjectorMixin(PolymerE
      * @param query
      */
     queryChange(query) {
-        console.log('query', query);
         if (query && query.token) {
             this._setToken(query.token);
         }

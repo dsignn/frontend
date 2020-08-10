@@ -1,0 +1,42 @@
+export const lang = {
+  "it": {
+    "name": "Nome",
+    "description": "Descrizione",
+    "menu-item": "Voce di menù",
+    "status": "Stato",
+    "category": "Categoria",
+    "restaurant": "Ristorante",
+    "price": "Prezzo",
+    "add" : "Aggiugi",
+    "save" : "Salva",
+    "clear": "Chiaro",
+    "dark": "Scuro",
+    "update" : "Modifica",
+    "background-header": "Colore di sfondo intestazione",
+    "color-header": "Colore dei caratteri nell'intestazione",
+    "qr-code": "Qr Code",
+    "logo": "Logo",
+    "notify-save": "Ristorante salvato",
+    "notify-update": "Ristorante modificato"
+  },
+  "en": {
+    "name": "Name",
+    "description": "Description",
+    "menu-item": "Menu item",
+    "status": "Status",
+    "category": "Categoria",
+    "restaurant": "Restaurant",
+    "price": "Prezzo",
+    "add" : "Add",
+    "save" : "Save",
+    "clear": "Clear",
+    "dark": "Dark",
+    "update" : "Update",
+    "background-header": "Background color header",
+    "color-header": "Charaters color on the header",
+    "qr-code": "Qr Code",
+    "logo": "Logo",
+    "notify-save": "Restaurant saved",
+    "notify-update": "Restaurant updated"
+  }
+};

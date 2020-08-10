@@ -7,6 +7,12 @@ export const config = {
             restaurant : {
                 name: "organization"
             },
+            menu : {
+                name: "menu"
+            },
+            'menu-category' : {
+                name: "menu-category"
+            },
             rpcQrcode: {
                 name: "generate-qrcode"
             }

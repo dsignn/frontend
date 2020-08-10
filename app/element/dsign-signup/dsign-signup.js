@@ -1,7 +1,6 @@
 import {html, PolymerElement} from "@polymer/polymer/polymer-element";
 import {AclMixin} from "@dsign/polymer-mixin/acl/acl-mixin";
 import {ServiceInjectorMixin} from "@dsign/polymer-mixin/service/injector-mixin";
-
 import {FormErrorMessage} from "../mixin/form-error-message/form-error-message";
 import "@polymer/paper-button/paper-button";
 import "@fluidnext-polymer/paper-autocomplete/paper-autocomplete";

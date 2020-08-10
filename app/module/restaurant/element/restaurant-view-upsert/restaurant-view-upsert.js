@@ -217,7 +217,8 @@ class RestaurantViewUpsert extends StorageEntityMixin(NotifyMixin(LocalizeMixin(
         if (!newValue) {
             return;
         }
-
+        this.$.qrCode.setAttribute('src', '');
+        
         if (this.$.name.value) {
             this.$.name.dispatchEvent(new CustomEvent('value-changed', {detail: this.$.name}));
         }
@@ -241,7 +242,7 @@ class RestaurantViewUpsert extends StorageEntityMixin(NotifyMixin(LocalizeMixin(
             this._resourceStorage.get( this.entity.qrCode.id)
                 .then((resource) => {
                     if (resource) {
-                        this.$.qrCode.setAttribute('src', `${resource.src}?refresh=${new Date()}`);
+                        this.$.qrCode.setAttribute('src', `${resource.src}`);
                     }
 
                 })

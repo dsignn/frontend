@@ -17,6 +17,8 @@ import {
 import {MapProprertyStrategy} from "@dsign/library/src/hydrator/strategy/proprerty/index";
 import {Storage} from "@dsign/library/src/storage/Storage";
 import {RestaurantEntity} from "./src/entity/RestaurantEntity";
+import {MenuEntity} from "./src/entity/MenuEntity";
+import {ListBuilder} from "./src/storage/adapter/xmlh/url/ListBuilder"
 
 /**
  * @class Repository
@@ -39,6 +41,18 @@ export class Repository extends ContainerAware {
      * @return {string}
      * @constructor
      */
+    static get STORAGE_MENU_SERVICE() { return 'MenuStorage'; };
+
+    /**
+     * @return {string}
+     * @constructor
+     */
+    static get STORAGE_MENU_CATEGORY_SERVICE() { return 'MenuCategoryStorage'; };
+
+    /**
+     * @return {string}
+     * @constructor
+     */
     static get QR_CODE_STORAGE_SERVICE() { return 'QrCodeGeneratorStorage'; };
 
     /**
@@ -51,7 +65,20 @@ export class Repository extends ContainerAware {
      * @return {string}
      * @constructor
      */
+    static get MENU_ENTITY_SERVICE() { return 'MenuEntity'; };
+
+    /**
+     * @return {string}
+     * @constructor
+     */
     static get ORGANIZATION_HYDRATOR_SERVICE() { return 'OrganizationEntityHydrator'; };
+
+
+    /**
+     * @return {string}
+     * @constructor
+     */
+    static get MENU_HYDRATOR_SERVICE() { return 'MenuEntityHydrator'; };
 
 
     init() {
@@ -61,6 +88,8 @@ export class Repository extends ContainerAware {
         this.initEntity();
         this.initHydrator();
         this.initStorage();
+        this.initMenuStorage();
+        this.initMenuCategoryStorage();
         this.initQrCode();
     }
 
@@ -80,7 +109,6 @@ export class Repository extends ContainerAware {
     initAcl() {
         this.getContainer().get('Acl').addResource('restaurant');
 
-        this
         this.getContainer().get('Acl').allow('restaurantOwner', 'restaurant', 'menu');
         this.getContainer().get('Acl').allow('admin', 'restaurant', 'add');
         this.getContainer().get('Acl').allow('admin', 'restaurant', 'menu');
@@ -106,6 +134,47 @@ export class Repository extends ContainerAware {
         this.getContainer().set(Repository.STORAGE_SERVICE, storage);
     }
 
+    /**
+     * Storage
+     */
+    initMenuStorage() {
+        let adapterStorage = new XmlhAdapter(
+            container.get('config')['rest']['path'],
+            container.get('config')['rest']['resources']['menu']['name'],
+            new JsonEncode(),
+            new JsonDecode(),
+            new DefaultBuilder()
+        );
+
+        adapterStorage.addHeader(    'Content-Type', 'application/json')
+            .addHeader(    'Accept', 'application/json');
+
+        let storage = new Storage(adapterStorage);
+        storage.setHydrator(this.getContainer().get('HydratorContainerAggregate').get(Repository.MENU_HYDRATOR_SERVICE));
+        this.getContainer().set(Repository.STORAGE_MENU_SERVICE, storage);
+    }
+
+    /**
+     * Storage
+     */
+    initMenuCategoryStorage() {
+        let adapterStorage = new XmlhAdapter(
+            container.get('config')['rest']['path'],
+            container.get('config')['rest']['resources']['menu-category']['name'],
+            new JsonEncode(),
+            new JsonDecode(),
+            new ListBuilder()
+        );
+
+        adapterStorage.addHeader(    'Content-Type', 'application/json')
+            .addHeader(    'Accept', 'application/json');
+
+        this.getContainer().set(Repository.STORAGE_MENU_CATEGORY_SERVICE, adapterStorage);
+    }
+
+    /**
+     *
+     */
     initQrCode() {
 
         let adapterStorage = new XmlhAdapter(
@@ -131,6 +200,10 @@ export class Repository extends ContainerAware {
         this.getContainer()
             .get('EntityContainerAggregate')
             .set(Repository.ORGANIZATION_ENTITY_SERVICE, new RestaurantEntity());
+
+        this.getContainer()
+            .get('EntityContainerAggregate')
+            .set(Repository.MENU_ENTITY_SERVICE, new MenuEntity());
     }
 
     /**
@@ -144,6 +217,13 @@ export class Repository extends ContainerAware {
                 Repository.ORGANIZATION_HYDRATOR_SERVICE,
                 Repository.getRestaurantHydrator(this.getContainer().get('EntityContainerAggregate'))
             );
+
+        this.getContainer()
+            .get('HydratorContainerAggregate')
+            .set(
+                Repository.MENU_HYDRATOR_SERVICE,
+                Repository.getMenuHydrator(this.getContainer().get('EntityContainerAggregate'))
+            );
     }
 
     /**
@@ -154,6 +234,16 @@ export class Repository extends ContainerAware {
         let hydrator = new PropertyHydrator();
         hydrator.setTemplateObjectHydration(container.get(Repository.ORGANIZATION_ENTITY_SERVICE));
 
+        return hydrator;
+    }
+
+    /**
+     * @param container
+     */
+    static getMenuHydrator(container) {
+
+        let hydrator = new PropertyHydrator();
+        hydrator.setTemplateObjectHydration(container.get(Repository.MENU_ENTITY_SERVICE));
 
         return hydrator;
     }
