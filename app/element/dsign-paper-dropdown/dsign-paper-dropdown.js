@@ -16,9 +16,8 @@ import {IronValidatableBehavior} from '@polymer/iron-validatable-behavior/iron-v
 
 import {dom} from '@polymer/polymer/lib/legacy/polymer.dom.js';
 import * as gestures from '@polymer/polymer/lib/utils/gestures.js';
-import {html} from '@polymer/polymer/lib/utils/html-tag.js';
 import {wrap} from '@polymer/polymer/lib/utils/wrap.js';
-import {PolymerElement} from "@polymer/polymer/polymer-element";
+import {PolymerElement, html} from "@polymer/polymer/polymer-element";
 import {ServiceInjectorMixin} from "@dsign/polymer-mixin/service/injector-mixin";
 import {mixinBehaviors} from '@polymer/polymer/lib/legacy/class.js';
 import {LocalizeMixin} from "@dsign/polymer-mixin/localize/localize-mixin";
@@ -80,6 +79,7 @@ class DsignPaperDropdownMenu extends LocalizeMixin(ServiceInjectorMixin(
             value: {
                 type: String,
                 notify: true,
+
             },
 
             valueToView: {
@@ -175,7 +175,8 @@ class DsignPaperDropdownMenu extends LocalizeMixin(ServiceInjectorMixin(
 
     static get observers() {
         return [
-            '_selectedItemChanged(selectedItem)'
+            '_selectedItemChanged(selectedItem)',
+            '_valueChanged(value, _localizeService)'
         ]
     }
 
@@ -293,24 +294,73 @@ class DsignPaperDropdownMenu extends LocalizeMixin(ServiceInjectorMixin(
             return;
         }
 
+        this.valueToView = selectedItem.textContent.trim();
+        this.value = this._getValueFromElement(selectedItem);
+        this._setSelectedItemLabel(value);
+    };
+
+    /**
+     * @param element
+     * @returns {*}
+     * @private
+     */
+    _getValueFromElement(element) {
+        let value = null;
         switch (true) {
-            case !selectedItem !== true && !selectedItem.getAttribute('value') !== true:
-                // console.log('value', selectedItem.getAttribute('value'));
-                value = selectedItem.getAttribute('value');
+            case !element['value'] !== true:
+                value = element['value'];
                 break;
-            case !selectedItem !== true && !selectedItem.getAttribute('label') !== true:
-                //   console.log('label', selectedItem.getAttribute('label'));
-                value = selectedItem.getAttribute('label');
+            case !element.getAttribute('value') !== true:
+                value = element.getAttribute('value');
+                break;
+            case !element.getAttribute('label') !== true:
+                value = element.getAttribute('label');
                 break;
             default:
-                value = selectedItem.textContent.trim();
+                value = element.textContent.trim();
                 break;
         }
 
-        this.value = value;
-        this.valueToView = selectedItem.textContent.trim();
-        this._setSelectedItemLabel(value);
-    };
+        return value;
+    }
+
+    /**
+     *
+     * @param value
+     * @returns {null}
+     * @private
+     */
+    _getElementFromValue(value) {
+
+        // TODO control if use ng-repeat find element
+        let items = this.querySelectorAll('paper-item');
+        let ele = null;
+        for (let i = 0; i < items.length; i++) {
+            if (value === this._getValueFromElement(items[i])) {
+                ele = items[i];
+                break;
+            }
+        }
+        return ele;
+    }
+
+    /**
+     * @param value
+     * @param localizeService
+     * @private
+     */
+    _valueChanged(value, localizeService) {
+        if (!value || !localizeService) {
+            return;
+        }
+
+        if (!this.valueToView) {
+            let element = this._getElementFromValue(value);
+            if (element) {
+                this.valueToView = element.innerText;
+            }
+        }
+    }
 
     /**
      * Compute the vertical offset of the menu based on the value of
@@ -351,6 +401,11 @@ class DsignPaperDropdownMenu extends LocalizeMixin(ServiceInjectorMixin(
             e.setAttribute('aria-expanded', openState);
         }
     };
+
+    reset() {
+        this.value = null;
+        this.valueToView = null;
+    }
 }
 
 window.customElements.define('dsign-paper-dropdown-menu', DsignPaperDropdownMenu);

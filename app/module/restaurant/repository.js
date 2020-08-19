@@ -19,6 +19,7 @@ import {Storage} from "@dsign/library/src/storage/Storage";
 import {RestaurantEntity} from "./src/entity/RestaurantEntity";
 import {MenuEntity} from "./src/entity/MenuEntity";
 import {ListBuilder} from "./src/storage/adapter/xmlh/url/ListBuilder"
+import {MenuItem} from "./src/entity/embedded/MenuItem";
 
 /**
  * @class Repository
@@ -79,6 +80,12 @@ export class Repository extends ContainerAware {
      * @constructor
      */
     static get MENU_HYDRATOR_SERVICE() { return 'MenuEntityHydrator'; };
+
+    /**
+     * @return {string}
+     * @constructor
+     */
+    static get MENU_ITEM_HYDRATOR_SERVICE() { return 'MenuItemHydrator'; };
 
 
     init() {
@@ -224,6 +231,13 @@ export class Repository extends ContainerAware {
                 Repository.MENU_HYDRATOR_SERVICE,
                 Repository.getMenuHydrator(this.getContainer().get('EntityContainerAggregate'))
             );
+
+        this.getContainer()
+            .get('HydratorContainerAggregate')
+            .set(
+                Repository.MENU_ITEM_HYDRATOR_SERVICE,
+                Repository.getMenuItemHydrator()
+            );
     }
 
     /**
@@ -244,6 +258,16 @@ export class Repository extends ContainerAware {
 
         let hydrator = new PropertyHydrator();
         hydrator.setTemplateObjectHydration(container.get(Repository.MENU_ENTITY_SERVICE));
+
+        return hydrator;
+    }
+
+    /**
+     * @returns {PropertyHydrator}
+     */
+    static getMenuItemHydrator() {
+        let hydrator = new PropertyHydrator();
+        hydrator.setTemplateObjectHydration(new MenuItem());
 
         return hydrator;
     }

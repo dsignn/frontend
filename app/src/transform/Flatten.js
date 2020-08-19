@@ -9,10 +9,10 @@ export class Flatten {
      * @param breakOnNonObject
      */
     flatten (data, breakOnNonObject) {
-        var output = {};
+        let output = {};
 
-        var _process = function (key, val, output) {
-            var k;
+        let _process = function (key, val, output) {
+            let k;
 
             if (typeof val === 'object') {
                 for (k in val) {
@@ -29,7 +29,7 @@ export class Flatten {
             }
         };
 
-        for (var key in data) {
+        for (let key in data) {
             _process(key, data[key], output);
         }
 
@@ -41,16 +41,16 @@ export class Flatten {
      * @param value
      * @param data
      * @param useArrayWhenFirstKeyIsNumeric
+     * @private
      */
-    unFlatten(key, value, data, useArrayWhenFirstKeyIsNumeric) {
-
+    _unFlattenValue(key, value, data, useArrayWhenFirstKeyIsNumeric) {
         // Avoid indirect modifications
         if (value instanceof Array) {
             // slices() clones the array and returns the reference to the new array
             value = value.slice();
         }
 
-        var j, ct, p, lastObj, obj, lastIter, undef, chr,
+        let j, ct, p, lastObj, obj, lastIter, undef, chr,
             postLeftBracketPos, keys, keysLen;
         while (key.charAt(0) === ' ') {
             key = key.slice(1);
@@ -98,7 +98,7 @@ export class Flatten {
                 lastObj = obj;
                 if ((key !== '' && key !== ' ') || j === 0) {
                     if (obj[key] === undef) {
-                        if (useArrayWhenFirstKeyIsNumeric && (j+1) < keysLen && !isNaN(parseInt(keys[j+1].replace(/^['"]/, '').replace(/['"]$/, '')))) {
+                        if (useArrayWhenFirstKeyIsNumeric && (j + 1) < keysLen && !isNaN(parseInt(keys[j + 1].replace(/^['"]/, '').replace(/['"]$/, '')))) {
                             obj[key] = [];
                         } else {
                             obj[key] = {};
@@ -120,5 +120,17 @@ export class Flatten {
             }
             lastObj[key] = value;
         }
+    }
+
+    /**
+     * @param data
+     * @return {object}
+     */
+    unFlatten(data) {
+        let obj = {};
+        for (let property in data) {
+           this._unFlattenValue(property, data[property], obj, true);
+        }
+        return obj;
     }
 }

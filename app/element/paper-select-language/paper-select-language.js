@@ -18,8 +18,21 @@ export class PaperSelectLanguage extends LocalizeMixin(ServiceInjectorMixin(Poly
         return html`
             <style>
                paper-dropdown-menu {
-                width: 100%;
-                }
+                    width: 100%;
+               }
+               
+                paper-dropdown-menu {
+                    --paper-input-container-label: {
+                        color: white;
+                    }
+                    --paper-input-container-input: {
+                       color: white;
+                    }
+                    
+                    --paper-input-container-underline: {
+                      color: white;
+                    };
+                };
             </style>
             <paper-dropdown-menu id="category" label="{{localize('language')}}" on-iron-select="_selectLanguage">
                 <paper-listbox id="listbox" slot="dropdown-content">

@@ -100,7 +100,7 @@ class PaperMenu extends StorageEntityMixin(LocalizeMixin(ServiceInjectorMixin(Po
                 value : {
                     _localizeService: 'Localize',
                     "StorageContainerAggregate": {
-                        "_storage":"OrganizationStorage"
+                        "_storage":"MenuStorage"
                     }
                 }
             },

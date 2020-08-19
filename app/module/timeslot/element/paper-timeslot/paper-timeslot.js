@@ -351,7 +351,9 @@ class PaperTimeslot extends StorageEntityMixin(LocalizeMixin(ServiceInjectorMixi
         this._updateActionHtml();
         this._updateContextHtml();
         this._updateRotationHtml();
-        this._clearStatusClass(this.entity.status);
+        if (!!this.entity.status) {
+            this._clearStatusClass(this.entity.status);
+        }
 
         this.$.slider.max = this.entity.duration;
         this.$.slider.disabled = this.entity.status === 'running' ? false : true;

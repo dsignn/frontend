@@ -184,7 +184,6 @@ const auth = new Auth(authStorage,  container.get('config')['rest']['resources']
 auth.eventManager.on(
     Auth.IDENTITY(),
     (evt) => {
-        console.log('LOGIN', evt.data);
         acl.setRole(evt.data.roleId);
     }
 );

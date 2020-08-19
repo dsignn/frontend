@@ -142,7 +142,7 @@ class RestaurantIndex extends LocalizeMixin(AclMixin(ServiceInjectorMixin(Polyme
 
             selectedMenu: {
                 type: Number,
-                value: 0
+                value: 1
             },
 
             /**
@@ -161,7 +161,7 @@ class RestaurantIndex extends LocalizeMixin(AclMixin(ServiceInjectorMixin(Polyme
      * @param evt
      */
     displayRestaurantAddView(evt) {
-        this.selectedRestaurant = 1;
+        this.selectedRestaurant = 0;
     }
 
     /**
@@ -172,7 +172,7 @@ class RestaurantIndex extends LocalizeMixin(AclMixin(ServiceInjectorMixin(Polyme
     }
 
     displayRestaurantMenuAddView() {
-        this.selectedMenu = 1;
+        this.selectedMenu = 0;
     }
 
     displayRestaurantMenuListView() {
