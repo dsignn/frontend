@@ -1,9 +1,10 @@
-import { PolymerElement, html } from '@polymer/polymer/polymer-element.js';
+import {PolymerElement, html} from '@polymer/polymer/polymer-element.js';
 import {LocalizeMixin} from "@dsign/polymer-mixin/localize/localize-mixin";
 import {ServiceInjectorMixin} from "@dsign/polymer-mixin/service/injector-mixin";
 import {lang} from './language';
 import {Listener} from "@dsign/library/src/event/Listener";
 import {Localize} from "@dsign/library/src/localize/Localize";
+import '@fluidnext-polymer/paper-input-file/paper-input-file';
 
 /**
  * @class MenuItem
@@ -14,47 +15,65 @@ class MenuItem extends LocalizeMixin(ServiceInjectorMixin(PolymerElement)) {
         return html`
         <style>
                paper-card {
-                    @apply --layout-horizontal;
-                    @apply --application-paper-card;
-                    margin-right: 4px;
-                    margin-bottom: 4px;
-                }
+                   @apply --layout-horizontal;
+                   @apply --application-paper-card;
+                   margin-right: 4px;
+                   margin-bottom: 4px;
+               }
                 
-                #leftSection {
-                    width: 80px;
-                    min-height: 120px;
-                    background-size: cover;
-                    background-position: center;
-                    background-repeat: no-repeat;
-                    @apply --application-paper-card-left-content;
-                }
+               paper-input-file {
+                   outline: none;
+                   color: var(--accent-color);
+                   --primary-text-color: var(--accent-color);
+                   --paper-input-container-color: var(--accent-color);
+                   --paper-input-container-focus-color: var(--accent-color);
+                   --paper-input-container-invalid-color: var(--accent-color);
+                   --paper-input-container-underline: {
+                      border-bottom: 3px solid var(--paper-input-container-focus-color, var(--primary-color));
+                   };
+               }
                 
-                #fastAction {
-                    border-right: 1px solid var(--divider-color);
-                }
+               #leftSection {
+                   width: 80px;
+                   min-height: 120px;
+                   background-size: cover;
+                   background-position: center;
+                   background-repeat: no-repeat;
+                   @apply --application-paper-card-left-content;
+                   @apply --layout-vertical;
+                   @apply --layout-end-justified;
+                   padding: 0 6px;
+               }
                 
-                .name {
-                    font-size: 18px;
-                }
+               #fastAction {
+                   border-right: 1px solid var(--divider-color);
+               }
                 
-                .middle-info {
-                    @apply --layout-horizontal;
-                    @apply --layout-justified;
-                }
+               .name {
+                   overflow: hidden;
+                   text-overflow: ellipsis;
+                   height: 27px;
+                   font-size: 18px;
+               }
                 
-                .price,
-                .category,
-                .description {
-                    color: #757575; 
-                }
+               .middle-info {
+                   @apply --layout-horizontal;
+                   @apply --layout-justified;
+               }
+                
+               .price,
+               .category,
+               .description {
+                   color: #757575; 
+               }
                 
                .description {
-                    font-size: 14px;
-                    overflow: hidden;
-                    text-overflow: ellipsis;
-                    display: -webkit-box;
-                    -webkit-line-clamp: 2;
-                    -webkit-box-orient: vertical;
+                   font-size: 14px;
+                   overflow: hidden;
+                   text-overflow: ellipsis;
+                   display: -webkit-box;
+                   -webkit-line-clamp: 2;
+                   -webkit-box-orient: vertical;
                }
 
                 
@@ -83,12 +102,13 @@ class MenuItem extends LocalizeMixin(ServiceInjectorMixin(PolymerElement)) {
                 }
         </style>
          <paper-card>
-                <div id="leftSection"></div>
-                <div id="fastAction">
-                    <div class="action">
-                       
-                    </div>
-                </div>
+                <div id="leftSection">
+                   <iron-form id="formResource">
+                    <form method="post">
+                      <paper-input-file id="file" value="{{file}}"></paper-input-file>
+                    </form>
+                  </iron-form>
+                </div>             
                 <div id="rightSection">
                     <div id="content">
                         <div class="name" capitalize>{{name}}</div>
@@ -114,6 +134,12 @@ class MenuItem extends LocalizeMixin(ServiceInjectorMixin(PolymerElement)) {
     static get properties() {
         return {
 
+            file: {
+                type: Object,
+                notify: true,
+                observer: 'changedFile'
+            },
+
             name: {
                 type: String,
                 notify: true,
@@ -135,10 +161,13 @@ class MenuItem extends LocalizeMixin(ServiceInjectorMixin(PolymerElement)) {
             /**
              * @type object
              */
-            services : {
-                value : {
+            services: {
+                value: {
                     _localizeService: 'Localize',
                     _merge: "merge",
+                    StorageContainerAggregate: {
+                        _resourceStorage: "ResourceStorage",
+                    }
                 }
             },
 
@@ -152,12 +181,11 @@ class MenuItem extends LocalizeMixin(ServiceInjectorMixin(PolymerElement)) {
             _merge: {
                 readOnly: true
             },
-        };
-    }
 
-    constructor() {
-        super();
-        this.resources = lang;
+            _resourceStorage: {
+                readOnly: true
+            },
+        };
     }
 
     /**
@@ -165,8 +193,19 @@ class MenuItem extends LocalizeMixin(ServiceInjectorMixin(PolymerElement)) {
      */
     static get observers() {
         return [
-            '_activeMenuItem(menuItem, _localizeService)'
+            '_activeMenuItem(menuItem, _localizeService)',
+            '_changedMenuItem(menuItem, _resourceStorage)'
         ]
+    }
+
+    constructor() {
+        super();
+        this.resources = lang;
+    }
+
+    ready() {
+        super.ready();
+        this.$.formResource.addEventListener('iron-form-presubmit', this.submitResource.bind(this));
     }
 
     /**
@@ -181,6 +220,22 @@ class MenuItem extends LocalizeMixin(ServiceInjectorMixin(PolymerElement)) {
 
         this._evtListener = new Listener(this.changeLanguage.bind(this));
         this._localizeService.getEventManager().on(Localize.CHANGE_LANGUAGE, this._evtListener);
+    }
+
+    /**
+     *
+     * @param menuItem
+     * @param _resourceStorage
+     */
+    _changedMenuItem(menuItem, _resourceStorage) {
+
+        if (!menuItem || !_resourceStorage) {
+            return;
+        }
+
+        if (Array.isArray(menuItem.photos) && menuItem.photos.length > 0) {
+            this.loadResource(menuItem.photos[0].id);
+        }
     }
 
     /**
@@ -216,6 +271,49 @@ class MenuItem extends LocalizeMixin(ServiceInjectorMixin(PolymerElement)) {
      */
     _delete(evt) {
         this.dispatchEvent(new CustomEvent('delete', {detail: this.menuItem}));
+    }
+
+    /**
+     * @param id
+     * @private
+     */
+    loadResource(id) {
+        this._resourceStorage.get(id)
+            .then((entity) => {
+                this.$.leftSection.style.backgroundImage = `url(${entity.src}?cache=${(new Date()).getTime()})`;
+            });
+    }
+
+    /**
+     * @param value
+     */
+    changedFile(value) {
+        if (!value) {
+            return;
+        }
+
+        this.$.formResource.submit();
+    }
+
+    /**
+     * @param evt
+     */
+    submitResource(evt) {
+        evt.preventDefault();
+
+        this.dispatchEvent(new CustomEvent('upload-file', {
+            detail: {
+                file: this.$.file.files[0],
+                menuItem: this.menuItem
+            }
+        }));
+
+        setTimeout(
+            () => {
+                this.$.file.reset();
+            },
+            300
+        );
     }
 }
 

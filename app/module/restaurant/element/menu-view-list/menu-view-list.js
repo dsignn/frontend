@@ -64,7 +64,7 @@ class MenuViewList extends StoragePaginationMixin(LocalizeMixin(ServiceInjectorM
         <slot name="header"></slot>
         <div id="container">
             <template is="dom-repeat" items="[[entities]]" as="menu">
-               <paper-menu entity="{{menu}}" on-delete="_deleteEntity" on-update="_showUpdateView" on-enable-monitor="_updateEntity"></paper-menu>
+               <paper-menu entity="{{menu}}" on-delete="_deleteEntity" on-update="_showUpdateView" on-enable-monitor="_updateEntity" auto-update-entity></paper-menu>
             </template>
         </div>
         <paper-pagination page="{{page}}" total-items="{{totalItems}}" item-per-page="{{itemPerPage}}" next-icon="next" previous-icon="previous"></paper-pagination>`;
@@ -77,7 +77,7 @@ class MenuViewList extends StoragePaginationMixin(LocalizeMixin(ServiceInjectorM
              * @type number
              */
             itemPerPage: {
-                value: 3
+                value: 5
             },
 
             /**

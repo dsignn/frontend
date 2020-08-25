@@ -20,6 +20,7 @@ import {RestaurantEntity} from "./src/entity/RestaurantEntity";
 import {MenuEntity} from "./src/entity/MenuEntity";
 import {ListBuilder} from "./src/storage/adapter/xmlh/url/ListBuilder"
 import {MenuItem} from "./src/entity/embedded/MenuItem";
+import {FormDataEncode} from "@dsign/library/src/data-transform/FormDataEncode";
 
 /**
  * @class Repository
@@ -43,6 +44,12 @@ export class Repository extends ContainerAware {
      * @constructor
      */
     static get STORAGE_MENU_SERVICE() { return 'MenuStorage'; };
+
+    /**
+     * @return {string}
+     * @constructor
+     */
+    static get STORAGE_UPLOAD_MENU_RESOURCE_SERVICE() { return 'UploadMenuResourceStorage'; };
 
     /**
      * @return {string}
@@ -97,7 +104,8 @@ export class Repository extends ContainerAware {
         this.initStorage();
         this.initMenuStorage();
         this.initMenuCategoryStorage();
-        this.initQrCode();
+        this.initUploadMenuResourceStorage();
+        this.initQrCodeStorage();
     }
 
     /**
@@ -180,9 +188,28 @@ export class Repository extends ContainerAware {
     }
 
     /**
+     * Storage
+     */
+    initUploadMenuResourceStorage() {
+
+        let adapterStorage = new XmlhAdapter(
+            container.get('config')['rest']['path'],
+            container.get('config')['rest']['resources']['updloadMenuResource']['name'],
+            new FormDataEncode(),
+            new JsonDecode(),
+            new ListBuilder()
+        );
+
+        adapterStorage.addHeader(    'Accept', 'application/json');
+        let storage = new Storage(adapterStorage);
+        storage.setHydrator(this.getContainer().get('HydratorContainerAggregate').get(Repository.MENU_HYDRATOR_SERVICE));
+        this.getContainer().set(Repository.STORAGE_UPLOAD_MENU_RESOURCE_SERVICE, storage);
+    }
+
+    /**
      *
      */
-    initQrCode() {
+    initQrCodeStorage() {
 
         let adapterStorage = new XmlhAdapter(
             container.get('config')['rest']['path'],
@@ -256,8 +283,13 @@ export class Repository extends ContainerAware {
      */
     static getMenuHydrator(container) {
 
+        let strategy = new HydratorStrategy();
+        strategy.setHydrator(Repository.getMenuItemHydrator(container));
+
         let hydrator = new PropertyHydrator();
         hydrator.setTemplateObjectHydration(container.get(Repository.MENU_ENTITY_SERVICE));
+
+        hydrator.addValueStrategy('items', strategy);
 
         return hydrator;
     }
@@ -265,7 +297,7 @@ export class Repository extends ContainerAware {
     /**
      * @returns {PropertyHydrator}
      */
-    static getMenuItemHydrator() {
+    static getMenuItemHydrator(container) {
         let hydrator = new PropertyHydrator();
         hydrator.setTemplateObjectHydration(new MenuItem());
 

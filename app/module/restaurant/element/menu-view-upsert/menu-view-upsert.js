@@ -168,7 +168,7 @@ class MenuViewUpsert extends StorageEntityMixin(NotifyMixin(LocalizeMixin(Servic
                 <h2>{{localize('menu-title')}}</h2>
                 <div id="menuItemContainer">
                      <template id="items" is="dom-repeat" items="[[entity.items]]" as="menuItem">
-                        <menu-item menu-item="{{menuItem}}" index$="{{index}}" on-delete="_deleteMenuItem"></menu-item>
+                        <menu-item menu-item="{{menuItem}}" index$="{{index}}" on-delete="_deleteMenuItem" on-upload-file="uploadFile"></menu-item>
                      </template>
                 </div>
             </div>
@@ -266,7 +266,8 @@ class MenuViewUpsert extends StorageEntityMixin(NotifyMixin(LocalizeMixin(Servic
                         _resourceStorage :"ResourceStorage",
                         _organizationStorage :"OrganizationStorage",
                         _menuCategoryStorage :"MenuCategoryStorage",
-                        _qrCodeGeneratorStorage: "QrCodeGeneratorStorage"
+                        _qrCodeGeneratorStorage: "QrCodeGeneratorStorage",
+                        _uploadMenuResourceStorage: "UploadMenuResourceStorage"
                     },
                     HydratorContainerAggregate: {
                         _menuItemHydrator: "MenuItemHydrator"
@@ -290,6 +291,10 @@ class MenuViewUpsert extends StorageEntityMixin(NotifyMixin(LocalizeMixin(Servic
             _organizationStorage: {
                 readOnly: true,
                 observer: 'loadRestaurant'
+            },
+
+            _uploadMenuResourceStorage: {
+                readOnly: true,
             },
 
             _menuCategoryStorage: {
@@ -469,6 +474,7 @@ class MenuViewUpsert extends StorageEntityMixin(NotifyMixin(LocalizeMixin(Servic
             .then((data) => {
 
                 if (method === 'save') {
+                    this.dispatchEvent(new CustomEvent('saved', {detail: data}));
                     this.entity = this._storage.getHydrator().hydrate({});
                     this.$.formMenu.reset();
                 }
@@ -476,6 +482,36 @@ class MenuViewUpsert extends StorageEntityMixin(NotifyMixin(LocalizeMixin(Servic
                 this.notify(this.localize(method === 'save' ? 'notify-save' : 'notify-update'));
             });
     }
+
+    /**
+     * @param {CustomEvent} evt
+     */
+    uploadFile(evt) {
+
+        let data = evt.detail;
+
+        this._storage.update(this.entity)
+            .then((entity) => {
+                console.log('UPDATE', this);
+                console.log('UPDATE', data);
+                console.log('UPDATE', entity);
+                let requestData = {
+                    menu_id: this.entity.id,
+                    resource_menu_id: data.menuItem.id,
+                    file:  data.file
+                }
+                console.log('LOD', requestData);
+                this._uploadMenuResourceStorage.save(requestData)
+                    .then((entity) => {
+
+                        this.entity = entity;
+
+
+                    }).catch((error) => {
+                        console.error(error)
+                });
+            })
+    };
 }
 
 window.customElements.define('menu-view-upsert', MenuViewUpsert);

@@ -29,5 +29,10 @@ export class MenuItem {
          * @type {boolean}
          */
         this.new = false;
+
+        /**
+         * @type {Array}
+         */
+        this.photos = [];
     }
 }

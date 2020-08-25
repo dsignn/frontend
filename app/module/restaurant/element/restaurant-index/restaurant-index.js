@@ -98,7 +98,7 @@ class RestaurantIndex extends LocalizeMixin(AclMixin(ServiceInjectorMixin(Polyme
                             </menu-view-list>
                        </div>
                        <div id="insert"> 
-                           <menu-view-upsert>
+                           <menu-view-upsert on-saved="goToUpdateView">
                                 <div slot="header" class="header">
                                     <div class="text-content">{{localize('insert-menu')}}</div>
                                     <paper-icon-button id="iconInsertMonitor" icon="arrow-back" class="circle" on-click="displayRestaurantMenuListView"></paper-icon-button>
@@ -142,7 +142,7 @@ class RestaurantIndex extends LocalizeMixin(AclMixin(ServiceInjectorMixin(Polyme
 
             selectedMenu: {
                 type: Number,
-                value: 1
+                value: 0
             },
 
             /**
@@ -157,11 +157,16 @@ class RestaurantIndex extends LocalizeMixin(AclMixin(ServiceInjectorMixin(Polyme
         };
     }
 
+    goToUpdateView(evt) {
+        this.menuSelected = evt.detail;
+        this.selectedMenu = 2;
+    }
+
     /**
      * @param evt
      */
     displayRestaurantAddView(evt) {
-        this.selectedRestaurant = 0;
+        this.selectedRestaurant = 1;
     }
 
     /**
@@ -172,7 +177,7 @@ class RestaurantIndex extends LocalizeMixin(AclMixin(ServiceInjectorMixin(Polyme
     }
 
     displayRestaurantMenuAddView() {
-        this.selectedMenu = 0;
+        this.selectedMenu = 1;
     }
 
     displayRestaurantMenuListView() {
