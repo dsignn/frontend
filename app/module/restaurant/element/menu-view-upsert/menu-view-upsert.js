@@ -492,21 +492,17 @@ class MenuViewUpsert extends StorageEntityMixin(NotifyMixin(LocalizeMixin(Servic
 
         this._storage.update(this.entity)
             .then((entity) => {
-                console.log('UPDATE', this);
-                console.log('UPDATE', data);
-                console.log('UPDATE', entity);
+
                 let requestData = {
                     menu_id: this.entity.id,
                     resource_menu_id: data.menuItem.id,
                     file:  data.file
-                }
+                };
                 console.log('LOD', requestData);
                 this._uploadMenuResourceStorage.save(requestData)
                     .then((entity) => {
 
                         this.entity = entity;
-
-
                     }).catch((error) => {
                         console.error(error)
                 });

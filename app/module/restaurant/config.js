@@ -16,8 +16,11 @@ export const config = {
             rpcQrcode: {
                 name: "generate-qrcode"
             },
-            updloadMenuResource: {
+            uploadMenuResource: {
                 name: "menu/upload-resource"
+            },
+            uploadOrganizationResource: {
+                name: "organization/upload-resource"
             }
         }
     }

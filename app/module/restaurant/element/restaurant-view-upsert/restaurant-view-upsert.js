@@ -39,14 +39,32 @@ class RestaurantViewUpsert extends StorageEntityMixin(NotifyMixin(LocalizeMixin(
                 text-align: center;
             }
             
-            #content-right {
-                 @apply --layout-horizontal;
-                justify-content: space-between;
+            #contentRight {
+                 @apply --layout-vertical;
+                 @apply --layout-center;
             }
             
-            img {
+            paper-input-file {
+               outline: none;
+               color: var(--accent-color);
+               --primary-text-color: var(--accent-color);
+               --paper-input-container-color: var(--accent-color);
+               --paper-input-container-focus-color: var(--accent-color);
+               --paper-input-container-invalid-color: var(--accent-color);
+               --paper-input-container-underline: {
+                  border-bottom: 3px solid var(--paper-input-container-focus-color, var(--primary-color));
+               };
+            }
+            
+            .img {
+                @apply --application-paper-card-left-content;
+                @apply --layout-vertical;
+                @apply --layout-end-justified;
                 height: 300px;
                 width: 300px;
+                background-repeat: no-repeat;
+                background-position: center center;
+                background-size: contain;
             }
             
             .action {
@@ -64,10 +82,10 @@ class RestaurantViewUpsert extends StorageEntityMixin(NotifyMixin(LocalizeMixin(
                 }
             
                 #content-left {
-                    @apply --layout-flex;
+                    @apply --layout-flex;pko
                 }
                 
-                #content-right {
+                #contentRight {
                     @apply --layout-flex;
                 }
             }
@@ -78,11 +96,11 @@ class RestaurantViewUpsert extends StorageEntityMixin(NotifyMixin(LocalizeMixin(
                 }
             
                 #content-left {
-                   @apply --layout-flex-8;
+                   @apply --layout-flex-9;
                 }
                 
-                #content-right {
-                   @apply --layout-flex-4;
+                #contentRight {
+                   @apply --layout-flex-3;
                 }
             }
         </style>
@@ -108,14 +126,21 @@ class RestaurantViewUpsert extends StorageEntityMixin(NotifyMixin(LocalizeMixin(
                     </form>
                 </iron-form>
             </div>
-            <div id="content-right">
+            <div id="contentRight">
                 <div>
                     <h2>{{localize('qr-code')}}</h2>
-                    <img id="qrCode">
+                    <div id="qrCode" class="img">
+                    </div>
                 </div>
-                <div>
-                     <h2>{{localize('logo')}}</h2>
-                    <img id="logo">
+                <div style="margin-top: 8px;">
+                    <h2>{{localize('logo')}}</h2>
+                    <div id="logo" class="img">
+                        <iron-form id="formResource">
+                            <form method="post" style="padding: 0 8px;">
+                                <paper-input-file id="file" value="{{file}}"></paper-input-file>
+                            </form>
+                        </iron-form>
+                    </div>
                 </div>
             </div>
         </div>`;
@@ -134,6 +159,12 @@ class RestaurantViewUpsert extends StorageEntityMixin(NotifyMixin(LocalizeMixin(
             url: {
                 notify: true,
                 value: ''
+            },
+
+            file: {
+                type: Object,
+                notify: true,
+                observer: 'changedFile'
             },
 
             /**
@@ -159,12 +190,17 @@ class RestaurantViewUpsert extends StorageEntityMixin(NotifyMixin(LocalizeMixin(
                     StorageContainerAggregate : {
                         _storage :"OrganizationStorage",
                         _resourceStorage :"ResourceStorage",
-                        _qrCodeGeneratorStorage: "QrCodeGeneratorStorage"
+                        _qrCodeGeneratorStorage: "QrCodeGeneratorStorage",
+                        _uploadOrganizationResourceStorage: "UploadOrganizationResourceStorage"
                     }
                 }
             },
 
             _resourceStorage: {
+                readOnly: true
+            },
+
+            _uploadOrganizationResourceStorage: {
                 readOnly: true
             }
         };
@@ -177,7 +213,7 @@ class RestaurantViewUpsert extends StorageEntityMixin(NotifyMixin(LocalizeMixin(
 
     ready() {
         super.ready();
-        this.$.formRestaurant.addEventListener('iron-form-presubmit', this.submitRestaurant.bind(this));
+        this.$.formResource.addEventListener('iron-form-presubmit', this.submitResource.bind(this));
     }
 
     /**
@@ -198,7 +234,6 @@ class RestaurantViewUpsert extends StorageEntityMixin(NotifyMixin(LocalizeMixin(
 
         this._qrCodeGeneratorStorage.get(this.entity.id)
             .then((restaurant) => {
-                this.entity = null;
                 this.entity = restaurant;
                 this._updateQrCode();
                 console.log('RESTAURANT', restaurant)
@@ -215,16 +250,26 @@ class RestaurantViewUpsert extends StorageEntityMixin(NotifyMixin(LocalizeMixin(
 
         this.labelAction = 'save';
         if (!newValue) {
+            this.$.logo.style.backgroundImage = null;
+            this.$.qrCode.style.backgroundImage = null;
             return;
         }
-        this.$.qrCode.setAttribute('src', '');
-        
+
         if (this.$.name.value) {
             this.$.name.dispatchEvent(new CustomEvent('value-changed', {detail: this.$.name}));
         }
 
         if (newValue && oldValue && newValue.id !== oldValue.id ) {
             this._updateQrCode();
+            this._updateLogo();
+        }
+
+        if (!newValue.logo || !newValue.logo.id) {
+            this.$.logo.style.backgroundImage = null;
+        }
+
+        if (!newValue.qrCode || !newValue.qrCode.id) {
+            this.$.qrCode.style.backgroundImage = null;
         }
 
         if (newValue.id) {
@@ -238,11 +283,26 @@ class RestaurantViewUpsert extends StorageEntityMixin(NotifyMixin(LocalizeMixin(
      */
     _updateQrCode() {
         if ( this.entity.qrCode.id) {
-            console.log('update', this.entity.qrCode.id);
             this._resourceStorage.get( this.entity.qrCode.id)
                 .then((resource) => {
                     if (resource) {
-                        this.$.qrCode.setAttribute('src', `${resource.src}`);
+                        this.$.qrCode.style.backgroundImage = `url(${resource.src}?cache=${(new Date()).getTime()})`;
+                    }
+
+                })
+        }
+    }
+
+    /**
+     * @param restaurant
+     * @private
+     */
+    _updateLogo() {
+        if ( this.entity.logo.id) {
+            this._resourceStorage.get( this.entity.logo.id)
+                .then((resource) => {
+                    if (resource) {
+                        this.$.logo.style.backgroundImage = `url(${resource.src}?cache=${(new Date()).getTime()})`;
                     }
 
                 })
@@ -254,6 +314,17 @@ class RestaurantViewUpsert extends StorageEntityMixin(NotifyMixin(LocalizeMixin(
      */
     submitRestaurantButton(evt) {
         this.$.formRestaurant.submit();
+    }
+
+    /**
+     * @param value
+     */
+    changedFile(value) {
+        if (!value) {
+            return;
+        }
+
+        this.$.formResource.submit();
     }
 
     /**
@@ -273,6 +344,33 @@ class RestaurantViewUpsert extends StorageEntityMixin(NotifyMixin(LocalizeMixin(
 
                 this.notify(this.localize(method === 'save' ? 'notify-save' : 'notify-update'));
             });
+    }
+
+    /**
+     * @param evt
+     */
+    submitResource(evt) {
+        evt.preventDefault();
+
+        let requestData = {
+            organization_id: this.entity.id,
+            file: this.$.file.files[0]
+        };
+
+        this._uploadOrganizationResourceStorage.save(requestData)
+            .then((entity) => {
+
+                this.entity = entity;
+                this._updateLogo();
+                setTimeout(
+                    () => {
+                        this.$.file.reset();
+                    },
+                    300
+                );
+            }).catch((error) => {
+            console.error(error)
+        });
     }
 }
 

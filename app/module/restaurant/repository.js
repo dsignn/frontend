@@ -55,6 +55,12 @@ export class Repository extends ContainerAware {
      * @return {string}
      * @constructor
      */
+    static get STORAGE_UPLOAD_ORGANIZATION_RESOURCE_SERVICE() { return 'UploadOrganizationResourceStorage'; };
+
+    /**
+     * @return {string}
+     * @constructor
+     */
     static get STORAGE_MENU_CATEGORY_SERVICE() { return 'MenuCategoryStorage'; };
 
     /**
@@ -105,6 +111,7 @@ export class Repository extends ContainerAware {
         this.initMenuStorage();
         this.initMenuCategoryStorage();
         this.initUploadMenuResourceStorage();
+        this.initUploadRestaurantResourceStorage();
         this.initQrCodeStorage();
     }
 
@@ -194,7 +201,7 @@ export class Repository extends ContainerAware {
 
         let adapterStorage = new XmlhAdapter(
             container.get('config')['rest']['path'],
-            container.get('config')['rest']['resources']['updloadMenuResource']['name'],
+            container.get('config')['rest']['resources']['uploadMenuResource']['name'],
             new FormDataEncode(),
             new JsonDecode(),
             new ListBuilder()
@@ -204,6 +211,26 @@ export class Repository extends ContainerAware {
         let storage = new Storage(adapterStorage);
         storage.setHydrator(this.getContainer().get('HydratorContainerAggregate').get(Repository.MENU_HYDRATOR_SERVICE));
         this.getContainer().set(Repository.STORAGE_UPLOAD_MENU_RESOURCE_SERVICE, storage);
+    }
+
+
+    /**
+     * Storage
+     */
+    initUploadRestaurantResourceStorage() {
+
+        let adapterStorage = new XmlhAdapter(
+            container.get('config')['rest']['path'],
+            container.get('config')['rest']['resources']['uploadOrganizationResource']['name'],
+            new FormDataEncode(),
+            new JsonDecode(),
+            new ListBuilder()
+        );
+
+        adapterStorage.addHeader(    'Accept', 'application/json');
+        let storage = new Storage(adapterStorage);
+        storage.setHydrator(this.getContainer().get('HydratorContainerAggregate').get(Repository.ORGANIZATION_HYDRATOR_SERVICE));
+        this.getContainer().set(Repository.STORAGE_UPLOAD_ORGANIZATION_RESOURCE_SERVICE, storage);
     }
 
     /**
