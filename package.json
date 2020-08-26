@@ -13,7 +13,9 @@
   "scripts": {
     "postinstall": " cd app && npm install && cd ../app-menu/ && npm install",
     "serve": "polymer serve --root app",
+    "build": "cd app && polymer build",
     "serve-menu": "polymer serve --root app-menu",
+    "build-menu": "cd app-menu && polymer build",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "repository": {
