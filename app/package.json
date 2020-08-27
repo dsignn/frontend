@@ -6,7 +6,8 @@
   "license": "BSD-3-Clause",
   "repository": "Polymer/polymer-starter-kit",
   "scripts": {
-    "start": "polymer serve",
+    "start": "polymer serve --root .",
+    "start-prod": "polymer serve --root build/es5-bundled",
     "build": "polymer build",
     "lint": "polymer lint",
     "test": "polymer test",
