@@ -17,9 +17,7 @@
         "es2015"
       ],
       "js": {
-        "minify": false,
-        "compile": true,
-        "transformModulesToAmd": true
+        "minify": false
       },
       "css": {
         "minify": true
