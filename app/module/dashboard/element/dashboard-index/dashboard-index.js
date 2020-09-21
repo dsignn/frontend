@@ -21,10 +21,35 @@ class DashboardIndex extends LocalizeMixin(ServiceInjectorMixin(PolymerElement))
   static get template() {
     return html`
       <style>
+      
+        :host {
+            display: block;
+            position: relative;
+            margin-top: 12px;
+        }
+      
         .section {
             @apply --layout-horizontal;
-            @apply --layout-center-center;           
+            @apply --layout-center-center;      
+            position: relative; 
         }
+        
+        .column {
+            @apply --layout-vertical;
+        }
+        
+        .row {
+            @apply --layout-horizontal;
+        }
+                    
+        .center {
+          @apply --layout-center-center;           
+        }
+        
+        .row.team {
+            width: 100%;
+           justify-content: space-around;
+        } 
         
         .container {
             @apply --layout-horizontal;
@@ -32,16 +57,42 @@ class DashboardIndex extends LocalizeMixin(ServiceInjectorMixin(PolymerElement))
             min-height: 400px;
         }
         
-        .center {
-          @apply --layout-center-center;           
+        .container.box {
+            margin: 140px 12px 12px 12px;
+            padding: 12px;
+            border: 8px solid #f0cd0a;
+            border-radius: 6px;
+            flex-direction: column;
+            padding-top: 50px;
+            z-index: -1;
+   
         }
         
+        .user_team {
+            height: 400px;
+            width: 300px;
+        }
+        
+        .user_photo {
+            height: 300px;
+            width: 300px;
+            border-radius: 50%;
+            background-color: red;
+        }
+        
+        .user_team .text {
+            text-align: center;
+        }
+
         .logo {
-            flex: 1;
+            position: absolute;    
+            margin-top: -380px;
+            height: 300px;
+            width: 100%;
             background-repeat: no-repeat;
             background-position: center center;
             background-size: contain;
-            background-image: url("../../../../images/android-chrome-512x512.png");
+            background-image: url("../../../../images/android-chrome-384x384.png");
         }
         
         .intro-description {
@@ -56,9 +107,10 @@ class DashboardIndex extends LocalizeMixin(ServiceInjectorMixin(PolymerElement))
         }
         
       </style>
+    
       <div class="section padding-top-30">
-          <div class="container">
-            <div class="logo"></div>
+          <div class="logo"></div>
+          <div class="container box">
             <div class="intro-description center">
                 <h2>Dsign Menù</h2>
                 <p>
@@ -67,10 +119,25 @@ class DashboardIndex extends LocalizeMixin(ServiceInjectorMixin(PolymerElement))
             </div>
           </div>
       </div>
-      <div class="section">
-          <div class="container center">
-            <h2>Team</h2>
-          </div>
+      <div class="section column">
+           <h2>Team</h2>
+           <div class="row team">
+                <div class="user_team">
+                    <div class="user_photo"></div>
+                    <div class="text">CTO</div>
+                    <div class="text">Antonino Visalli</div>
+                </div>
+                <div  class="user_team">
+                    <div class="user_photo"></div>
+                    <div class="text">Web Designer</div>
+                    <div class="text">Paolo Sartorio</div>
+                </div>
+                <div  class="user_team">
+                    <div class="user_photo"></div>
+                    <div class="text">Web Designer</div>
+                    <div class="text">Paolo Sartorio</div>
+                </div>
+           </div>
       </div>`;
   }
 

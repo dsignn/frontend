@@ -23,6 +23,8 @@ import {AutoLoadClass} from '@dsign/library/src/core/autoload/AutoLoadClass';
 import {PathGeneric} from '@dsign/library/src/path/PathGeneric';
 import {mergeDeep} from '@dsign/library/src/object/Utils';
 import {config} from './config';
+import {AccessTokenEntity} from './../src/oauth/entity/AccessTokenEntity';
+import {AggregatePropertyHydrator} from "@dsign/library/src/hydrator";
 
 window.MyAppGlobals = { rootPath: '/' };
 
@@ -171,13 +173,26 @@ authStorageAdapter.addHeader(   'Content-Type', 'application/json', 'GET')
 
 const authStorage = new Storage(authStorageAdapter);
 
+/**
+ * Set auth hydrator for oauth system Access token and User entity
+ */
 application.getEventManager().on(
     Application.BOOTSTRAP_MODULE,
     (data) => {
-        authStorage.setHydrator(container.get('HydratorContainerAggregate').get('UserEntityHydrator'));
+
+        let hydrator = new AggregatePropertyHydrator(['token_type', 'roleId']);
+
+        hydrator.addHydratorMap(
+            new PropertyHydrator(new AccessTokenEntity()),
+            ["Bearer"]
+        ).addHydratorMap(
+             container.get('HydratorContainerAggregate').get('UserEntityHydrator'),
+            ["restaurantOwner", "admin"]
+        );
+
+        authStorage.setHydrator(hydrator);
     }
 );
-
 
 const auth = new Auth(authStorage,  container.get('config')['rest']['resources']['auth']['options']);
 

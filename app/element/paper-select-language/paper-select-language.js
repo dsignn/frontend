@@ -3,6 +3,7 @@ import {ServiceInjectorMixin} from "@dsign/polymer-mixin/service/injector-mixin"
 import {LocalizeMixin} from "@dsign/polymer-mixin/localize/localize-mixin";
 
 import '@polymer/polymer/lib/elements/dom-repeat.js';
+import '@polymer/paper-dropdown-menu/paper-dropdown-menu';
 import '@polymer/paper-menu-button/paper-menu-button';
 import '@polymer/paper-listbox/paper-listbox';
 import '@polymer/paper-item/paper-item';

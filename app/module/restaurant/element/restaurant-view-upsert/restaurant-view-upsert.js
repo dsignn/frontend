@@ -236,7 +236,6 @@ class RestaurantViewUpsert extends StorageEntityMixin(NotifyMixin(LocalizeMixin(
             .then((restaurant) => {
                 this.entity = restaurant;
                 this._updateQrCode();
-                console.log('RESTAURANT', restaurant)
             });
     }
 

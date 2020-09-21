@@ -114,7 +114,6 @@ class ActivationCode extends LocalizeMixin(AclMixin(ServiceInjectorMixin(Polymer
             }).then((data) => {
                 this.$.load.style.display = "none";
                 this.$.ok.style.display = "block";
-                console.log(data)
                 this._notify.notify(this.localize('activation-code-ok'));
 
             }).catch((error) => {

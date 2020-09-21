@@ -458,6 +458,7 @@ class MenuViewUpsert extends StorageEntityMixin(NotifyMixin(LocalizeMixin(Servic
      */
     submitMenuButton(evt) {
         this.$.formMenu.submit();
+        // TODO
         this._storage.getPaged(1,3,[]).then((data) => {
             console.log('porco dio', data);
         })
@@ -498,7 +499,7 @@ class MenuViewUpsert extends StorageEntityMixin(NotifyMixin(LocalizeMixin(Servic
                     resource_menu_id: data.menuItem.id,
                     file:  data.file
                 };
-                console.log('LOD', requestData);
+
                 this._uploadMenuResourceStorage.save(requestData)
                     .then((entity) => {
 

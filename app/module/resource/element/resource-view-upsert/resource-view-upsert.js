@@ -211,7 +211,6 @@ class ResourceViewUpsert extends StorageEntityMixin(NotifyMixin(LocalizeMixin(Se
      * @private
      */
     _appendTagOnViewer() {
-        console.log(this.$.viewer)
         for (let i = 0; i < this.$.viewer.children.length; i++) {
             this.$.viewer.children[i].remove();
         }

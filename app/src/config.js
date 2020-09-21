@@ -42,6 +42,98 @@ export const config = {
             ]
         },
         {
+            "title": "User",
+            "name": "user",
+            "icon": "user:menu",
+            "entryPoint": {
+                "name": "user-index",
+                "path": {
+                    directory: 'element/user-index',
+                    nameFile: 'user-index',
+                    extension: 'js'
+                }
+            },
+            "configEntryPoint": "repository.js",
+            "autoloads": [],
+            "autoloadsWs": [
+                {
+                    "name": "user-icons",
+                    "path":  {
+                        directory: 'element/user-icons',
+                        nameFile: 'user-icons',
+                        extension: 'js'
+                    }
+                },
+                {
+                    "name": "reset-password",
+                    "path":  {
+                        directory: 'element/reset-password',
+                        nameFile: 'reset-password',
+                        extension: 'js'
+                    }
+                },
+                {
+                    "name": "activation-code",
+                    "path":  {
+                        directory: 'element/activation-code',
+                        nameFile: 'activation-code',
+                        extension: 'js'
+                    }
+                }
+            ]
+        },
+        {
+            "title": "Resource",
+            "name": "resource",
+            "icon": "resource:menu",
+            "entryPoint": {
+                "name": "resource-index",
+                "path": {
+                    directory: 'element/resource-index',
+                    nameFile: 'resource-index',
+                    extension: 'js'
+                }
+            },
+            "configEntryPoint": "repository.js",
+            "autoloads": [],
+            "autoloadsWs": [
+                {
+                    "name": "resource-icons",
+                    "path":  {
+                        directory: 'element/resource-icons',
+                        nameFile: 'resource-icons',
+                        extension: 'js'
+                    }
+                }
+            ]
+        },
+        {
+            "title": "Restaurant",
+            "name": "restaurant",
+            "icon": "restaurant:menu",
+            "entryPoint": {
+                "name": "restaurant-index",
+                "path": {
+                    directory: 'element/restaurant-index',
+                    nameFile: 'restaurant-index',
+                    extension: 'js'
+                }
+            },
+            "configEntryPoint": "repository.js",
+            "autoloads": [],
+            "autoloadsWs": [
+                {
+                    "name": "restaurant-icons",
+                    "path":  {
+                        directory: 'element/restaurant-icons',
+                        nameFile: 'restaurant-icons',
+                        extension: 'js'
+                    }
+                }
+            ]
+        }
+        /*
+        {
             "title": "Monitor",
             "name": "monitor",
             "icon": "monitor:menu",
@@ -84,31 +176,6 @@ export const config = {
             ]
         },
         {
-            "title": "Resource",
-            "name": "resource",
-            "icon": "resource:menu",
-            "entryPoint": {
-                "name": "resource-index",
-                "path": {
-                    directory: 'element/resource-index',
-                    nameFile: 'resource-index',
-                    extension: 'js'
-                }
-            },
-            "configEntryPoint": "repository.js",
-            "autoloads": [],
-            "autoloadsWs": [
-                {
-                    "name": "resource-icons",
-                    "path":  {
-                        directory: 'element/resource-icons',
-                        nameFile: 'resource-icons',
-                        extension: 'js'
-                    }
-                }
-            ]
-        },
-        {
             "title": "Timeslot",
             "name": "timeslot",
             "icon": "timeslot:menu",
@@ -133,72 +200,8 @@ export const config = {
                 }
             ]
         },
-        {
-            "title": "User",
-            "name": "user",
-            "icon": "user:menu",
-            "entryPoint": {
-                "name": "user-index",
-                "path": {
-                    directory: 'element/user-index',
-                    nameFile: 'user-index',
-                    extension: 'js'
-                }
-            },
-            "configEntryPoint": "repository.js",
-            "autoloads": [],
-            "autoloadsWs": [
-                {
-                    "name": "user-icons",
-                    "path":  {
-                        directory: 'element/user-icons',
-                        nameFile: 'user-icons',
-                        extension: 'js'
-                    }
-                },
-                {
-                    "name": "reset-password",
-                    "path":  {
-                        directory: 'element/reset-password',
-                        nameFile: 'reset-password',
-                        extension: 'js'
-                    }
-                },
-                {
-                    "name": "activation-code",
-                    "path":  {
-                        directory: 'element/activation-code',
-                        nameFile: 'activation-code',
-                        extension: 'js'
-                    }
-                }
-            ]
-        },
-        {
-            "title": "Restaurant",
-            "name": "restaurant",
-            "icon": "restaurant:menu",
-            "entryPoint": {
-                "name": "restaurant-index",
-                "path": {
-                    directory: 'element/restaurant-index',
-                    nameFile: 'restaurant-index',
-                    extension: 'js'
-                }
-            },
-            "configEntryPoint": "repository.js",
-            "autoloads": [],
-            "autoloadsWs": [
-                {
-                    "name": "restaurant-icons",
-                    "path":  {
-                        directory: 'element/restaurant-icons',
-                        nameFile: 'restaurant-icons',
-                        extension: 'js'
-                    }
-                }
-            ]
-        }
+
+         */
     ],
     "rest": {
         "path" : "http://127.0.0.150",

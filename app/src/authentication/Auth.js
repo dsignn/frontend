@@ -106,7 +106,16 @@ export class Auth extends EventManagerAware {
             });
         });
     }
-
+/*
+ {
+ client_id: "myapp",
+ client_secret: "testdrwerewq",
+ grant_type: "password",
+ password: "suca",
+ scope: "basic email",
+ username: "antonino.visalli+1@gmail.com"
+ }
+ */
     /**
      *
      */
@@ -141,6 +150,8 @@ export class Auth extends EventManagerAware {
         this.storage.get().then((data) => {
             this._setIdentity(data);
             this.eventManager.emit(Auth.IDENTITY(), this.identity);
+        }).catch((error) => {
+            console.error(error);
         });
     }
 }

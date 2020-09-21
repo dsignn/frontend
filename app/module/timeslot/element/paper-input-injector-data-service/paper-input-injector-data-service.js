@@ -181,7 +181,6 @@ class PaperInputInjectorDataService extends ServiceInjectorMixin(PolymerElement)
         }
 
         for (let cont = 0; newValue.length > cont; cont++) {
-            console.log('nuovo', newValue[cont]);
             this._injectorServices.get(newValue[cont].name)
                 .getTimeslotData(newValue[cont].data)
                 .then(function(data) {
@@ -286,7 +285,6 @@ class PaperInputInjectorDataService extends ServiceInjectorMixin(PolymerElement)
      * @private
      */
     _deleteChip(evt) {
-        console.log('dai toni');
         let removeElement = this.splice('paperItemsData', evt.target.index, 1)[0];
         let findIndexValue = this.value.findIndex((element) => {
             return element.name === removeElement.serviceName;
