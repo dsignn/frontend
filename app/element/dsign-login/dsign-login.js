@@ -106,7 +106,6 @@ class DsignLogin extends LocalizeMixin(AclMixin(ServiceInjectorMixin(PolymerElem
     submitLogin(evt) {
         evt.preventDefault();
         let data = this.$.loginUser.serializeForm();
-        console.log(data);
         this._authService.login(data.email, data.password)
             .then((data) => {
             this._notify.notify(this.localize('login-ok'));
