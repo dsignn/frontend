@@ -7,7 +7,7 @@
   "repository": "Polymer/polymer-starter-kit",
   "scripts": {
     "start": "polymer serve --root .",
-    "start-prod": "polymer serve --root build/es5-bundled",
+    "start-prod": "polymer serve --root build/production",
     "build": "polymer build",
     "lint": "polymer lint",
     "test": "polymer test",

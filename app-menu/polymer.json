@@ -1,7 +1,10 @@
 {
   "entrypoint": "index.html",
   "sources": [
-    "images/**/*"
+    "images/**/*",
+    "src/**/*",
+    "module/**/*",
+    "element/**/*"
   ],
   "extraDependencies": [
     "manifest.json",
@@ -11,7 +14,7 @@
   ],
   "builds": [
     {
-      "name": "es5-bundled",
+      "name": "production",
       "preset": "es5-bundled",
       "browserCapabilities": [
         "es2015"
@@ -20,17 +23,15 @@
         "minify": false
       },
       "css": {
-        "minify": true
+        "minify": false
       },
       "html": {
-        "minify": true
+        "minify": false
       },
-      "bundle": true,
-      "addServiceWorker": true
+      "bundle": false,
+      "addServiceWorker": false
     }
   ],
-  "moduleResolution": "node",
-  "npm": true,
   "lint": {
     "rules": [
       "polymer-3"

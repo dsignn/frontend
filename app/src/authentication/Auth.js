@@ -1,4 +1,4 @@
-import {EventManagerAware} from '@dsign/library/src/event/EventManagerAware';
+import {EventManagerAware} from '@dsign/library/src/event/EventManagerAware.js';
 
 /**
  * @class Auth

@@ -2,7 +2,7 @@
  * Dashboard repository
  */
 import {ContainerAware} from "@dsign/library/src/container/ContainerAware.js";
-import {config} from './config';
+import {config} from './config.js';
 
 export class Repository extends ContainerAware {
 

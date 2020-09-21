@@ -9,9 +9,9 @@
  */
 
 import { PolymerElement, html } from '@polymer/polymer/polymer-element.js';
-import {LocalizeMixin} from "@dsign/polymer-mixin/localize/localize-mixin";
-import {ServiceInjectorMixin} from "@dsign/polymer-mixin/service/injector-mixin";
-import {lang} from './language';
+import {LocalizeMixin} from "@dsign/polymer-mixin/localize/localize-mixin.js";
+import {ServiceInjectorMixin} from "@dsign/polymer-mixin/service/injector-mixin.js";
+import {lang} from './language.js';
 
 /**
  * @class DashboardIndex

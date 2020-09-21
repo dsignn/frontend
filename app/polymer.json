@@ -2,40 +2,49 @@
   "entrypoint": "index.html",
   "shell": "element/dsign-app/dsign-app.js",
   "sources": [
-    "images/**/*"
+    "images/**/*",
+    "!node_modules/@dsign/polymer-mixin/module.js",
+    "manifest/**"
   ],
   "extraDependencies": [
+    "src/**/*",
+    "module/**/*",
+    "element/**/*",
     "manifest.json",
     "node_modules/@webcomponents/webcomponentsjs/*.js",
     "!node_modules/@webcomponents/webcomponentsjs/gulpfile.js",
     "node_modules/@webcomponents/webcomponentsjs/bundles/*.js",
+    "node_modules/@dsign/**/*",
+    "!node_modules/@dsign/**/*.ts",
+    "!node_modules/@dsign/**/*.map",
+    "node_modules/@polymer/paper-toast/paper-toast.js",
+    "!node_modules/@dsign/polymer-mixin/module.js",
+    "!node_modules/@dsign/library/src/storage/adapter/dexie/DexieManager.js",
     "node_modules/web-animations-js/web-animations-next-lite.min.js",
     "node_modules/js-acl/dist/acl.js"
   ],
   "builds": [
     {
-      "name": "es5-bundled",
+      "name": "production",
+      "js": {
+        "minify": false,
+        "compile": "es5"
+      },
+      "css": {
+        "minify": false
+      },
+      "html": {
+        "minify": false
+      },
+      "bundle": false,
+      "addServiceWorker": false,
+      "addPushManifest": false,
       "preset": "es5-bundled",
       "browserCapabilities": [
         "es2015"
-      ],
-      "js": {
-        "minify": false,
-        "compile": true,
-        "transformModulesToAmd": true
-      },
-      "css": {
-        "minify": true
-      },
-      "html": {
-        "minify": true
-      },
-      "bundle": true,
-      "addServiceWorker": true
+      ]
     }
   ],
-  "moduleResolution": "node",
-  "npm": true,
   "lint": {
     "rules": [
       "polymer-3"
