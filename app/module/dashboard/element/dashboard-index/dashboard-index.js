@@ -16,7 +16,7 @@ import {lang} from './language.js';
 /**
  * @class DashboardIndex
  */
-class DashboardIndex extends LocalizeMixin(ServiceInjectorMixin(PolymerElement)) {
+class DashboardIndex extends ServiceInjectorMixin(PolymerElement) {
 
   static get template() {
     return html`

@@ -34,7 +34,7 @@ export class Repository extends ContainerAware {
     /**
      * @const
      */
-    static STORAGE_SERVICE() { return 'MonitorStorage';};
+    static get STORAGE_SERVICE() { return 'MonitorStorage';};
 
     /**
      * @return {string}
@@ -98,7 +98,7 @@ export class Repository extends ContainerAware {
             .get(Repository.MONITOR_CONTAINER_HYDRATOR_SERVICE)
         );
 
-        this.getContainer().set(Repository.STORAGE_SERVICE(), storage);
+        this.getContainer().set(Repository.STORAGE_SERVICE, storage);
     }
 
     /**

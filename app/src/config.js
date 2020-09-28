@@ -82,6 +82,7 @@ export const config = {
                 }
             ]
         },
+        /*
         {
             "title": "Resource",
             "name": "resource",
@@ -132,7 +133,7 @@ export const config = {
                 }
             ]
         }
-        /*
+
         {
             "title": "Monitor",
             "name": "monitor",

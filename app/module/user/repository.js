@@ -19,28 +19,28 @@ export class Repository extends ContainerAware {
     /**
      * @const
      */
-    static STORAGE_ACTIVATION_CODE_SERVICE() { return 'ActivationCodeStorage'; };
+    static get STORAGE_ACTIVATION_CODE_SERVICE() { return 'ActivationCodeStorage'; };
 
     /**
      * @const
      */
-    static STORAGE_RESET_PASSWORD_SERVICE() { return 'ResetPasswordStorage'; };
+    static get STORAGE_RESET_PASSWORD_SERVICE() { return 'ResetPasswordStorage'; };
 
     /**
      * @const
      */
-    static STORAGE_RECOVER_PASSWORD_SERVICE() { return 'RecoverPasswordStorage'; };
+    static get STORAGE_RECOVER_PASSWORD_SERVICE() { return 'RecoverPasswordStorage'; };
 
     /**
      * @const
      */
-    static STORAGE_SERVICE() { return 'UserStorage'; };
+    static get STORAGE_SERVICE() { return 'UserStorage'; };
 
     /**
      *
      * @const
      */
-    static USER_HYDRATOR_SERVICE() { return 'UserEntityHydrator'}
+    static get USER_HYDRATOR_SERVICE() { return 'UserEntityHydrator'}
 
     init() {
 
@@ -87,8 +87,8 @@ export class Repository extends ContainerAware {
             .addHeader('Accept', 'application/json');
 
         let storage = new Storage(adapterStorage);
-        storage.setHydrator(this.getContainer().get('HydratorContainerAggregate').get(Repository.USER_HYDRATOR_SERVICE()));
-        this.getContainer().set(Repository.STORAGE_SERVICE(), storage);
+        storage.setHydrator(this.getContainer().get('HydratorContainerAggregate').get(Repository.USER_HYDRATOR_SERVICE));
+        this.getContainer().set(Repository.STORAGE_SERVICE, storage);
     }
 
     /**
@@ -107,8 +107,8 @@ export class Repository extends ContainerAware {
             .addHeader('Accept', 'application/json');
 
         let storage = new Storage(adapterStorage);
-        storage.setHydrator(this.getContainer().get('HydratorContainerAggregate').get(Repository.USER_HYDRATOR_SERVICE()));
-        this.getContainer().set(Repository.STORAGE_RECOVER_PASSWORD_SERVICE(), storage);
+        storage.setHydrator(this.getContainer().get('HydratorContainerAggregate').get(Repository.USER_HYDRATOR_SERVICE));
+        this.getContainer().set(Repository.STORAGE_RECOVER_PASSWORD_SERVICE, storage);
     }
 
     /**
@@ -127,8 +127,8 @@ export class Repository extends ContainerAware {
             .addHeader('Accept', 'application/json');
 
         let storage = new Storage(adapterStorage);
-        storage.setHydrator(this.getContainer().get('HydratorContainerAggregate').get(Repository.USER_HYDRATOR_SERVICE()));
-        this.getContainer().set(Repository.STORAGE_ACTIVATION_CODE_SERVICE(), storage);
+        storage.setHydrator(this.getContainer().get('HydratorContainerAggregate').get(Repository.USER_HYDRATOR_SERVICE));
+        this.getContainer().set(Repository.STORAGE_ACTIVATION_CODE_SERVICE, storage);
     }
 
     /**
@@ -147,8 +147,8 @@ export class Repository extends ContainerAware {
             .addHeader('Accept', 'application/json');
 
         let storage = new Storage(adapterStorage);
-        storage.setHydrator(this.getContainer().get('HydratorContainerAggregate').get(Repository.USER_HYDRATOR_SERVICE()));
-        this.getContainer().set(Repository.STORAGE_RESET_PASSWORD_SERVICE(), storage);
+        storage.setHydrator(this.getContainer().get('HydratorContainerAggregate').get(Repository.USER_HYDRATOR_SERVICE));
+        this.getContainer().set(Repository.STORAGE_RESET_PASSWORD_SERVICE, storage);
     }
 
     /**
@@ -159,7 +159,7 @@ export class Repository extends ContainerAware {
         this.getContainer()
             .get('HydratorContainerAggregate')
             .set(
-                Repository.USER_HYDRATOR_SERVICE(),
+                Repository.USER_HYDRATOR_SERVICE,
                 Repository.getUserHydrator(this.getContainer().get('EntityContainerAggregate'))
             );
     }

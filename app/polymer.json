@@ -1,6 +1,6 @@
 {
   "entrypoint": "index.html",
-  "shell": "element/dsign-app/dsign-app.js",
+  "shell": "import-element.js",
   "sources": [
     "images/**/*",
     "!node_modules/@dsign/polymer-mixin/module.js",
@@ -41,7 +41,8 @@
       "addPushManifest": false,
       "preset": "es5-bundled",
       "browserCapabilities": [
-        "es2015"
+        "es2015",
+        "modules"
       ]
     }
   ],

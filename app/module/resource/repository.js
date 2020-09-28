@@ -85,7 +85,7 @@ export class Repository extends ContainerAware {
     /**
      * @const
      */
-    static STORAGE_SERVICE() { return 'ResourceStorage';};
+    static get STORAGE_SERVICE() { return 'ResourceStorage';};
 
     init() {
 
@@ -133,7 +133,7 @@ export class Repository extends ContainerAware {
         let storage = new Storage(adapterStorage);
         storage.setHydrator(this.getContainer().get('HydratorContainerAggregate').get(Repository.RESOURCE_HYDRATOR_SERVICE));
 
-        this.getContainer().set(Repository.STORAGE_SERVICE(), storage);
+        this.getContainer().set(Repository.STORAGE_SERVICE, storage);
     }
 
     /**
