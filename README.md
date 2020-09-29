@@ -7,13 +7,3 @@ This project is build on [Polymer element](https://polymer-library.polymer-proje
 ```bash
 npm install
 ```
-
-## Start frontend dev application on dev mode 
-```bash
-npm run serve
-```
-
-## Start template dev application on dev mode 
-```bash
-npm run serve-menu
-```
