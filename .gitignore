@@ -1,6 +1,6 @@
 # Application
 package-lock.json
-app/src/
+app/src/config.js
 build-app
 build-app-menu
 
