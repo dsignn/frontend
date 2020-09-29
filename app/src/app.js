@@ -79,8 +79,6 @@ config.modules.forEach(function(module, index) {
     modules.push(moduleHydrator.hydrate(module));
 });
 
-application.loadModules(modules, container);
-
 application.getEventManager().on(
     Application.BOOTSTRAP_MODULE,
     (data) => {
@@ -97,6 +95,11 @@ application.getEventManager().on(
 
     }
 );
+
+window.addEventListener('load', (event) => {
+    console.log('page is fully loaded');
+    application.loadModules(modules, container);
+});
 
 
 container.set(

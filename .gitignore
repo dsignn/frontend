@@ -1,7 +1,8 @@
 # Application
 package-lock.json
-app/build
-app-menu/build
+app/src/
+build-app
+build-app-menu
 
 # Node modules
 /node_modules

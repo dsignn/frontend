@@ -26,9 +26,11 @@
         "minify": false
       },
       "html": {
-        "minify": false
+        "minify": false,
+        "compile": true,
+        "transformModulesToAmd": true
       },
-      "bundle": false,
+      "bundle": true,
       "addServiceWorker": false
     }
   ],
