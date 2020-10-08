@@ -3,7 +3,7 @@
   "short_name": "Dsign menu",
   "start_url": ".",
   "display": "standalone",
-  "background_color": "#fff",
+  "background_color": "#005b60",
   "description": "E menu system navigable and multi language",
   "icons": []
 }

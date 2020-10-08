@@ -4,7 +4,9 @@
   "sources": [
     "images/**/*",
     "!node_modules/@dsign/polymer-mixin/module.js",
-    "manifest/**"
+    "manifest/**",
+    "service-worker.js",
+    "manifest.json"
   ],
   "extraDependencies": [
     "src/**/*",

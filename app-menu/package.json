@@ -7,7 +7,7 @@
   "repository": "Polymer/polymer-starter-kit",
   "scripts": {
     "start": "polymer serve --root .",
-    "build": "polymer build && mv build ../build-app-menu",
+    "build": "polymer build && rsync -zavhr build --delete ../build-app-menu && rm -rf build\",",
     "lint": "polymer lint",
     "test": "polymer test",
     "test:integration": "polymer build # test that psk builds without error with the CLI"
