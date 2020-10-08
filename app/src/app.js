@@ -98,19 +98,6 @@ application.getEventManager().on(
     }
 );
 
-/**
- * Load Application
- */
-
-if( document.readyState !== 'loading' ) {
-    application.loadModules(modules, container);
-} else {
-    document.addEventListener('DOMContentLoaded event', function () {
-        application.loadModules(modules, container);
-    });
-}
-
-
 container.set(
     'Application',
     application
@@ -286,3 +273,24 @@ hydratorContainerAggregate.setContainer(container);
 container.set('HydratorContainerAggregate', hydratorContainerAggregate);
 
 window.container = container;
+
+/**
+ * Load Application
+ */
+
+if( document.readyState !== 'loading' ) {
+    loadApplication();
+} else {
+    document.addEventListener('DOMContentLoaded event', () => {
+        loadApplication();
+    });
+}
+
+function loadApplication() {
+    setTimeout(
+        () => {
+            application.loadModules(modules, container);
+        },
+        1000
+    );
+}
