@@ -98,16 +98,15 @@ application.getEventManager().on(
     }
 );
 
-window.addEventListener('load', (event) => {
-    console.log('load');
-    application.loadModules(modules, container);
-});
+/**
+ * Load Application
+ */
 
 if( document.readyState !== 'loading' ) {
-    console.log('DOMContentLoaded Alredy loaded');
+    application.loadModules(modules, container);
 } else {
     document.addEventListener('DOMContentLoaded event', function () {
-        console.log('DOMContentLoaded');
+        application.loadModules(modules, container);
     });
 }
 
