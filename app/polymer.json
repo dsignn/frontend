@@ -18,7 +18,6 @@
     "node_modules/@webcomponents/webcomponentsjs/bundles/*.js",
     "node_modules/@dsign/**/*",
     "!node_modules/@dsign/**/*.ts",
-    "!node_modules/@dsign/**/*.map",
     "node_modules/@polymer/paper-toast/paper-toast.js",
     "!node_modules/@dsign/polymer-mixin/module.js",
     "!node_modules/@dsign/library/src/storage/adapter/dexie/DexieManager.js",

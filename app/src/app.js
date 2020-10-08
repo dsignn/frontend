@@ -103,9 +103,13 @@ window.addEventListener('load', (event) => {
     application.loadModules(modules, container);
 });
 
-document.addEventListener("DOMContentLoaded", function(event) {
-    console.log('DOMContentLoaded');
-});
+if( document.readyState !== 'loading' ) {
+    console.log('DOMContentLoaded Alredy loaded');
+} else {
+    document.addEventListener('DOMContentLoaded event', function () {
+        console.log('DOMContentLoaded');
+    });
+}
 
 
 container.set(
