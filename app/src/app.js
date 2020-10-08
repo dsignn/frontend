@@ -97,8 +97,12 @@ application.getEventManager().on(
 );
 
 window.addEventListener('load', (event) => {
-    console.log('page is fully loaded');
+    console.log('load');
     application.loadModules(modules, container);
+});
+
+document.addEventListener("DOMContentLoaded", function(event) {
+    console.log('DOMContentLoaded');
 });
 
 
