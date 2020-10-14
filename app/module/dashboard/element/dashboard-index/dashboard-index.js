@@ -30,7 +30,6 @@ class DashboardIndex extends ServiceInjectorMixin(PolymerElement) {
       
         .section {
             @apply --layout-horizontal;
-            @apply --layout-center-center;      
             position: relative; 
         }
         
@@ -65,7 +64,10 @@ class DashboardIndex extends ServiceInjectorMixin(PolymerElement) {
             flex-direction: column;
             padding-top: 50px;
             z-index: -1;
-   
+        }
+        
+        .team-title {
+            text-align: center;
         }
         
         .user_team {
@@ -86,7 +88,6 @@ class DashboardIndex extends ServiceInjectorMixin(PolymerElement) {
 
         .logo {
             position: absolute;    
-            margin-top: -380px;
             height: 300px;
             width: 100%;
             background-repeat: no-repeat;
@@ -100,16 +101,44 @@ class DashboardIndex extends ServiceInjectorMixin(PolymerElement) {
           flex: 1;
           text-align: center;
           font-size: 18px;
+          padding-top: 110px;
         }
         
         .padding-top-30 {
             padding-top: 30px;
         }
         
+        @media only screen and (max-width: 1000px) {
+          .team  {
+            flex-direction: column;
+            align-items: center;
+          }
+        }
+        
+        @media only screen and (max-width: 400px) {
+          .logo  {
+            background-size: 80%;
+          }
+          
+          .user_photo {
+              height: 200px;
+              width: 200px;
+              border-radius: 50%;
+              background-color: red;
+          }
+          
+          .user_team {
+            height: 300px;
+            width: 200px;
+          }
+        }
+        
       </style>
     
       <div class="section padding-top-30">
-          <div class="logo"></div>
+          <div>
+              <div class="logo"></div>
+          </div>
           <div class="container box">
             <div class="intro-description center">
                 <h2>Dsign Menù</h2>
@@ -120,7 +149,7 @@ class DashboardIndex extends ServiceInjectorMixin(PolymerElement) {
           </div>
       </div>
       <div class="section column">
-           <h2>Team</h2>
+           <h2 class="team-title">Team</h2>
            <div class="row team">
                 <div class="user_team">
                     <div class="user_photo"></div>
