@@ -8,22 +8,22 @@ export class Auth extends EventManagerAware {
     /**
      * @returns {string}
      */
-    static IDENTITY() { return 'identity'; };
+    static get IDENTITY() { return 'identity'; };
 
     /**
      * @returns {string}
      */
-    static LOGIN() { return 'login'; };
+    static get LOGIN() { return 'login'; };
 
     /**
      * @returns {string}
      */
-    static LOGOUT() { return 'logout'; };
+    static get LOGOUT() { return 'logout'; };
 
     /**
      * @returns {string}
      */
-    static TOKEN() { return 'token'; };
+    static get TOKEN() { return 'token'; };
 
     /**
      * @param {StorageInterface}
@@ -62,7 +62,7 @@ export class Auth extends EventManagerAware {
         this.token = null;
         if (localStorage.getItem('token')) {
             this._setToken(JSON.parse(localStorage.getItem('token')));
-            this.eventManager.emit(Auth.LOGIN(), this.token);
+            this.eventManager.emit(Auth.LOGIN, this.token);
             this.storage.adapter.addHeader('Authorization', this.token['access_token'], 'GET');
         }
 
@@ -96,9 +96,9 @@ export class Auth extends EventManagerAware {
                 'grant_type':  this.grantType,
             }).then((response) => {
                 this._setToken(response);
-                this.eventManager.emit(Auth.LOGIN(), this.token);
+                this.eventManager.emit(Auth.LOGIN, this.token);
                 this.storage.adapter.addHeader('Authorization', this.token['access_token'], 'GET');
-                localStorage.setItem(Auth.TOKEN(), JSON.stringify(this.token));
+                localStorage.setItem(Auth.TOKEN, JSON.stringify(this.token));
                 this.loadIdentity();
                 resolve(response)
             }).catch((error) => {
@@ -122,9 +122,9 @@ export class Auth extends EventManagerAware {
     logout() {
 
         this._setToken(null);
-        this.eventManager.emit(Auth.LOGOUT());
+        this.eventManager.emit(Auth.LOGOUT);
         this.storage.adapter.removeHeader('Authorization', 'GET');
-        localStorage.removeItem(Auth.TOKEN());
+        localStorage.removeItem(Auth.TOKEN);
     }
 
     /**
@@ -149,7 +149,7 @@ export class Auth extends EventManagerAware {
     loadIdentity() {
         this.storage.get().then((data) => {
             this._setIdentity(data);
-            this.eventManager.emit(Auth.IDENTITY(), this.identity);
+            this.eventManager.emit(Auth.IDENTITY, this.identity);
         }).catch((error) => {
             console.error(error);
         });

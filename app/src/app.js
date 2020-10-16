@@ -196,14 +196,14 @@ application.getEventManager().on(
 const auth = new Auth(authStorage,  container.get('config')['rest']['resources']['auth']['options']);
 
 auth.eventManager.on(
-    Auth.IDENTITY(),
+    Auth.IDENTITY,
     (evt) => {
         acl.setRole(evt.data.roleId);
     }
 );
 
 auth.eventManager.on(
-    Auth.LOGOUT(),
+    Auth.LOGOUT,
     (evt) => {
         acl.setRole('guest');
     }

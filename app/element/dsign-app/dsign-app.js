@@ -55,7 +55,7 @@ class DsignApp extends LocalizeMixin(AclMixin(ServiceInjectorMixin(PolymerElemen
        }
        
         app-header-layout {
-          margin-left: 64px;
+          /**  margin-left: 64px;*/
           visibility: visible;
         }
        
@@ -73,6 +73,7 @@ class DsignApp extends LocalizeMixin(AclMixin(ServiceInjectorMixin(PolymerElemen
           background-color: white; 
           width: 64px;
           position: fixed;
+          display: none;
         }
         
         .name-module {
@@ -303,6 +304,18 @@ class DsignApp extends LocalizeMixin(AclMixin(ServiceInjectorMixin(PolymerElemen
     this._authService.logout();
   }
 
+  hideMenu() {
+    this.$.menuStatic.style.display = 'none';
+    this.shadowRoot.querySelector('app-header-layout').style.marginLeft = '0';
+    this.shadowRoot.querySelector('app-header').style.left = '0';
+  }
+
+  showMenu() {
+    this.$.menuStatic.style.display = 'block';
+    this.shadowRoot.querySelector('app-header-layout').style.marginLeft = '64px';
+    this.shadowRoot.querySelector('app-header').style.left = '64px';
+  }
+
   /**
    *
    */
@@ -328,7 +341,7 @@ class DsignApp extends LocalizeMixin(AclMixin(ServiceInjectorMixin(PolymerElemen
     }
 
     authService.eventManager.on(
-        Auth.LOGOUT(),
+        Auth.LOGOUT,
         (evt) => {
           this._redirectRoleView();
         }

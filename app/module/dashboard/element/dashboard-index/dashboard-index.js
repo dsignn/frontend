@@ -40,9 +40,13 @@ class DashboardIndex extends ServiceInjectorMixin(PolymerElement) {
         .row {
             @apply --layout-horizontal;
         }
-                    
+
         .center {
           @apply --layout-center-center;           
+        }
+        
+        .space-between {
+          @apply --layout-justified;           
         }
         
         .row.team {
@@ -56,14 +60,19 @@ class DashboardIndex extends ServiceInjectorMixin(PolymerElement) {
             min-height: 400px;
         }
         
+        .padding-34 {
+            padding: 34px;
+        }
+        
         .container.box {
-            margin: 140px 12px 12px 12px;
+            margin: 165px 34px 12px 34px;
             padding: 12px;
             border: 8px solid #f0cd0a;
             border-radius: 6px;
             flex-direction: column;
             padding-top: 50px;
             z-index: -1;
+            width: 100%;
         }
         
         .team-title {
@@ -79,11 +88,25 @@ class DashboardIndex extends ServiceInjectorMixin(PolymerElement) {
             height: 300px;
             width: 300px;
             border-radius: 50%;
-            background-color: red;
+            background-image: url("http://placehold.it/300x300/015b63/ffffff");
         }
         
-        .user_team .text {
+        .user_team .name,
+        .user_team .role {
             text-align: center;
+        }
+
+        .user_team .name {
+            font-size: 18px;
+        }
+
+        .user_team .role {
+            font-size: 24px;
+        }
+        
+        .card-content .description {
+            word-wrap: break-word;
+            max-width: 280px;
         }
 
         .logo {
@@ -98,18 +121,54 @@ class DashboardIndex extends ServiceInjectorMixin(PolymerElement) {
         
         .intro-description {
           @apply --layout-vertical;
+          @apply --layout-start-justified;
           flex: 1;
           text-align: center;
           font-size: 18px;
-          padding-top: 110px;
+          padding-top: 100px;
         }
         
         .padding-top-30 {
             padding-top: 30px;
         }
         
+        .strengths {
+            flex-wrap: wrap;
+        }
+        
+        paper-card[strengths] {
+            min-width: 300px;
+            margin-bottom: 20px;
+        }
+        
+        .card-content {
+            padding: 10px;
+            text-align: center;
+        }
+        
+        .margin-0 {
+            margin: 0;
+        }
+ 
         @media only screen and (max-width: 1000px) {
-          .team  {
+          .team {
+            flex-direction: column;
+            align-items: center;
+          }
+          
+          paper-card[strengths] {
+            min-width: 400px;
+          }
+        }
+        
+        @media only screen and (max-width: 883px) {
+           paper-card[strengths] {
+                min-width: 300px;
+            }
+        }
+        
+        @media only screen and (max-width: 699px) {
+          .strengths {
             flex-direction: column;
             align-items: center;
           }
@@ -124,7 +183,7 @@ class DashboardIndex extends ServiceInjectorMixin(PolymerElement) {
               height: 200px;
               width: 200px;
               border-radius: 50%;
-              background-color: red;
+              background-image: url("http://placehold.it/300x300/015b63/ffffff");
           }
           
           .user_team {
@@ -140,8 +199,8 @@ class DashboardIndex extends ServiceInjectorMixin(PolymerElement) {
               <div class="logo"></div>
           </div>
           <div class="container box">
-            <div class="intro-description center">
-                <h2>Dsign Menù</h2>
+            <div class="intro-description center start">
+                <h2 class="margin-0">Dsign Menù</h2>
                 <p>
                 Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum
                 </p>
@@ -149,22 +208,64 @@ class DashboardIndex extends ServiceInjectorMixin(PolymerElement) {
           </div>
       </div>
       <div class="section column">
-           <h2 class="team-title">Team</h2>
+        <div class="row center">
+            <h2>Punti di forza</h2>
+        </div>
+        <div class="row strengths padding-34 space-between">
+            <paper-card strengths image="http://placehold.it/300x150/015b63/ffffff">
+                <div class="card-content">
+                    <h3>Gratuito</h3>
+                      <div class="description">Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard</div>
+   
+                </div>
+            </paper-card>
+            <paper-card strengths image="http://placehold.it/300x150/015b63/ffffff">
+                <div class="card-content">
+                    <h3>Personalizzabile</h3>
+                    <div class="description">Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard</div>
+                </div>
+            </paper-card>
+            <paper-card strengths image="http://placehold.it/300x150/015b63/ffffff">
+                <div class="card-content">
+                    <h3>Utile</h3>
+                      <div class="description">Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard</div>
+   
+                </div>
+            </paper-card>
+            <paper-card strengths image="http://placehold.it/300x150/015b63/ffffff">
+                <div class="card-content">
+                    <h3>Facile</h3>
+                      <div class="description">Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard</div>
+   
+                </div>
+            </paper-card>
+        </div>
+      </div>
+      <div class="section column">
+         <div class="row">
+            <div style="height: 300px; flex:1; background-color: red;"></div>
+            <div style="height: 300px; flex:1; background-color: blue;"></div>
+         </div>
+      </div>
+      <div class="section column">
+           <div class="row center">
+                <h2 class="team-title">Team</h2>
+           </div>
            <div class="row team">
                 <div class="user_team">
                     <div class="user_photo"></div>
-                    <div class="text">CTO</div>
-                    <div class="text">Antonino Visalli</div>
+                    <div class="role">CTO</div>
+                    <div class="name">Antonino Visalli</div>
                 </div>
                 <div  class="user_team">
                     <div class="user_photo"></div>
-                    <div class="text">Web Designer</div>
-                    <div class="text">Paolo Sartorio</div>
+                    <div class="role">Web Designer</div>
+                    <div class="name">Paolo Sartorio</div>
                 </div>
                 <div  class="user_team">
                     <div class="user_photo"></div>
-                    <div class="text">Web Designer</div>
-                    <div class="text">Paolo Sartorio</div>
+                    <div class="role">Web Designer</div>
+                    <div class="name">Paolo Sartorio</div>
                 </div>
            </div>
       </div>`;
@@ -190,3 +291,4 @@ class DashboardIndex extends ServiceInjectorMixin(PolymerElement) {
 }
 
 window.customElements.define('dashboard-index', DashboardIndex);
+
