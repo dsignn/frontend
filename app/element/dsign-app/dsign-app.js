@@ -115,58 +115,58 @@ class DsignApp extends LocalizeMixin(AclMixin(ServiceInjectorMixin(PolymerElemen
 
       <app-route route="{{route}}" pattern="[[rootPath]]:page" data="{{routeData}}" tail="{{subroute}}" query-params="{{query}}"></app-route>
      
-    <div id="menuStatic">
-      <iron-selector id="menuStaticSelector" selected="[[page]]" attr-for-selected="name" class="drawer-list" role="navigation">
-        <div class="layout vertical center-center icon-wrapper">
-          <paper-icon-button icon="arrow-right" on-tap="tapDrawer"></paper-icon-button>
+      <div id="menuStatic">
+        <iron-selector id="menuStaticSelector" selected="[[page]]" attr-for-selected="name" class="drawer-list" role="navigation">
+          <div class="layout vertical center-center icon-wrapper">
+            <paper-icon-button icon="arrow-right" on-tap="tapDrawer"></paper-icon-button>
+          </div>
+        </iron-selector>
+      </div>
+      <app-header-layout fullbleed>
+        <app-header slot="header" fixed effects="waterfall">
+          <app-toolbar>
+            <div main-title>Dsing</div>
+            <paper-select-language></paper-select-language>
+            <paper-icon-button icon="face" on-tap="tapAuthDrawer"></paper-icon-button>
+          </app-toolbar>
+        </app-header>
+        <div>
+          <iron-pages id="moduleEntryPoint" selected="[[page]]" attr-for-selected="name" role="main">
+            <activation-code query={{query}} name="activation-code"></activation-code>
+            <reset-password query={{query}} name="reset-password"></reset-password>
+            <dsing-404 name="404" root-path="[[rootPath]]timeslot"></dsing-404>
+          </iron-pages>
         </div>
-      </iron-selector>
-    </div>
-    <app-header-layout fullbleed>
-      <app-header slot="header" fixed effects="waterfall">
-        <app-toolbar>
-          <div main-title>Dsing</div>
-          <paper-select-language></paper-select-language>
-          <paper-icon-button icon="face" on-tap="tapAuthDrawer"></paper-icon-button>
-        </app-toolbar>
-      </app-header>
-      <div>
-        <iron-pages id="moduleEntryPoint" selected="[[page]]" attr-for-selected="name" role="main">
-          <activation-code query={{query}} name="activation-code"></activation-code>
-          <reset-password query={{query}} name="reset-password"></reset-password>
-          <dsing-404 name="404" root-path="[[rootPath]]timeslot"></dsing-404>
-        </iron-pages>
-      </div>
-      <footer style="height: 100px; background-color: black; color: white">footer</footer>
-    </app-header-layout>
-    <app-drawer id="menuDrawer" align="left" swipe-open open>
-      <div class="layout vertical center-justified start icon-wrapper"></div>
-    </app-drawer>
-    <app-drawer id="authDrawer" align="right"  swipe-open open>
-      <div class="layout vertical start-aligned icon-wrapper height-100">
-        <template is="dom-if" if="{{isAllowed('application', 'login')}}">
-          <div class="auth-container">
-            <paper-button on-tap="logout">logout</paper-button>
-          </div>
-        </template>
-        <template is="dom-if" if="{{isAllowed('application', 'logout')}}">
-          <div class="auth-container">
-            <paper-tabs id="auth-tab" selected="{{authSelected}}" no-slide>
-              <paper-tab>LOGIN</paper-tab>
-              <paper-tab>SIGNUP</paper-tab>
-            </paper-tabs>
-            <iron-pages id="authPages" selected="{{authSelected}}" role="main">
-              <div>
-                <dsign-login></dsign-login>
-              </div>
-              <div>
-                <dsign-signup></dsign-signup>
-              </div>
-            </iron-pages>
-          </div>
-        </template>
-      </div>
-    </app-drawer>`;
+        <footer style="height: 100px; background-color: black; color: white">footer</footer>
+      </app-header-layout>
+      <app-drawer id="menuDrawer" align="left" swipe-open open>
+        <div class="layout vertical center-justified start icon-wrapper"></div>
+      </app-drawer>
+      <app-drawer id="authDrawer" align="right"  swipe-open open>
+        <div class="layout vertical start-aligned icon-wrapper height-100">
+          <template is="dom-if" if="{{isAllowed('application', 'login')}}">
+            <div class="auth-container">
+              <paper-button on-tap="logout">logout</paper-button>
+            </div>
+          </template>
+          <template is="dom-if" if="{{isAllowed('application', 'logout')}}">
+            <div class="auth-container">
+              <paper-tabs id="auth-tab" selected="{{authSelected}}" no-slide>
+                <paper-tab>LOGIN</paper-tab>
+                <paper-tab>SIGNUP</paper-tab>
+              </paper-tabs>
+              <iron-pages id="authPages" selected="{{authSelected}}" role="main">
+                <div>
+                  <dsign-login></dsign-login>
+                </div>
+                <div>
+                  <dsign-signup></dsign-signup>
+                </div>
+              </iron-pages>
+            </div>
+          </template>
+        </div>
+      </app-drawer>`;
 
   }
 

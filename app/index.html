@@ -64,6 +64,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
       import './src/app.js'
       import '@polymer/iron-flex-layout/iron-flex-layout.js';
       import '@polymer/paper-toast/paper-toast.js';
+      import '@polymer/paper-spinner/paper-spinner.js';
       import './element/layout/dsign-global-style.js';
       import './element/dsign-app/dsign-app.js';
     </script>
@@ -76,10 +77,24 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         line-height: 1.5;
         min-height: 100vh;
         background-color: #eeeeee;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+      }
+
+      paper-spinner {
+        --paper-spinner-layer-1-color: var(--default-primary-color);
+        --paper-spinner-layer-2-color: var(--default-primary-color);
+        --paper-spinner-layer-3-color: var(--default-primary-color);
+        --paper-spinner-layer-4-color: var(--default-primary-color);
+        --paper-spinner-stroke-width: 6px;
+        width: 300px;
+        height: 300px;
       }
     </style>
   </head>
   <body>
+    <paper-spinner id="loader" active></paper-spinner>
     <paper-toast id="notification"></paper-toast>
   </body>
 </html>
