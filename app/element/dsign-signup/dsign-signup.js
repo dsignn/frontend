@@ -35,6 +35,7 @@ class DsignSignup extends FormErrorMessage(AclMixin(ServiceInjectorMixin(Polymer
             font-size: 13px;
             font-weight: bold;
             border-radius: 6px;
+            width: ma;
         }
         
         paper-input {
