@@ -109,6 +109,16 @@ class DsignApp extends LocalizeMixin(AclMixin(ServiceInjectorMixin(PolymerElemen
             width: 100%;
         }
         
+         @media only screen and (max-width: 499px) {
+            app-drawer#authDrawer {
+             --app-drawer-width: 326px;
+            }
+            
+            .auth-container {
+             width: 292px;
+            }
+        }
+        
       </style>
 
       <app-location route="{{route}}" url-space-regex="^[[rootPath]]"></app-location>

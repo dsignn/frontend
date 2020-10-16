@@ -177,8 +177,6 @@ class DashboardIndex extends ServiceInjectorMixin(PolymerElement) {
             flex-direction: column;
             align-items: center;
           }
-          
-          
         }
         
         @media only screen and (max-width: 400px) {
