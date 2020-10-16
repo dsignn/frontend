@@ -64,7 +64,7 @@ class DsignSignup extends FormErrorMessage(AclMixin(ServiceInjectorMixin(Polymer
                 value="{{url}}"
                 always-float-label
                 disabled>
-                <div class="url" slot="prefix">{{_config.app.basePath}}menu/</div>
+                <div class="url" slot="prefix">{{_getUrl(_config.app.basePath)}}menu/</div>
               </paper-input>
               <paper-button on-tap="submitSignupButton">{{localize('signup')}}</paper-button>
             </form>
@@ -129,6 +129,14 @@ class DsignSignup extends FormErrorMessage(AclMixin(ServiceInjectorMixin(Polymer
         }
 
         this.url = evt.detail.value ? this._slugify.slugify(evt.detail.value) : '';
+    }
+
+    /**
+     * @param {string} url
+     * @private
+     */
+    _getUrl(url) {
+        return url.replace(/^https?:\/\//,'').replace(/^http?:\/\//,'');
     }
 
     /**
