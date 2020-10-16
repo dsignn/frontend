@@ -137,6 +137,7 @@ class DsignApp extends LocalizeMixin(AclMixin(ServiceInjectorMixin(PolymerElemen
           <dsing-404 name="404" root-path="[[rootPath]]timeslot"></dsing-404>
         </iron-pages>
       </div>
+      <footer style="height: 100px; background-color: black; color: white">footer</footer>
     </app-header-layout>
     <app-drawer id="menuDrawer" align="left" swipe-open open>
       <div class="layout vertical center-justified start icon-wrapper"></div>

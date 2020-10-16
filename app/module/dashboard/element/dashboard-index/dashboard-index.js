@@ -49,6 +49,10 @@ class DashboardIndex extends ServiceInjectorMixin(PolymerElement) {
           @apply --layout-justified;           
         }
         
+         .flex-1 {
+          flex: 1;
+         }
+        
         .row.team {
             width: 100%;
            justify-content: space-around;
@@ -168,10 +172,13 @@ class DashboardIndex extends ServiceInjectorMixin(PolymerElement) {
         }
         
         @media only screen and (max-width: 699px) {
-          .strengths {
+          .strengths,
+          .example {
             flex-direction: column;
             align-items: center;
           }
+          
+          
         }
         
         @media only screen and (max-width: 400px) {
@@ -216,7 +223,6 @@ class DashboardIndex extends ServiceInjectorMixin(PolymerElement) {
                 <div class="card-content">
                     <h3>Gratuito</h3>
                       <div class="description">Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard</div>
-   
                 </div>
             </paper-card>
             <paper-card strengths image="http://placehold.it/300x150/015b63/ffffff">
@@ -236,15 +242,21 @@ class DashboardIndex extends ServiceInjectorMixin(PolymerElement) {
                 <div class="card-content">
                     <h3>Facile</h3>
                       <div class="description">Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard</div>
-   
                 </div>
             </paper-card>
         </div>
       </div>
       <div class="section column">
-         <div class="row">
-            <div style="height: 300px; flex:1; background-color: red;"></div>
-            <div style="height: 300px; flex:1; background-color: blue;"></div>
+         <div class="row center">
+            <h2>L'idea</h2>
+         </div>
+         <div class="row example">
+            <div class="column center flex-1 padding-34">
+                <img src="http://placehold.it/500x800/015b63/ffffff">
+            </div>
+            <div class="column center flex-1 padding-34">
+                Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard
+            </div>
          </div>
       </div>
       <div class="section column">
