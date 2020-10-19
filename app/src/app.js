@@ -180,7 +180,7 @@ application.getEventManager().on(
     Application.BOOTSTRAP_MODULE,
     (data) => {
 
-        let hydrator = new AggregatePropertyHydrator(['token_type', 'roleId']);
+        let hydrator = new AggregatePropertyHydrator(['token_type', 'roleId', 'grant_type']);
 
         hydrator.addHydratorMap(
             new PropertyHydrator(new AccessTokenEntity()),
@@ -188,6 +188,9 @@ application.getEventManager().on(
         ).addHydratorMap(
              container.get('HydratorContainerAggregate').get('UserEntityHydrator'),
             ["restaurantOwner", "admin"]
+        ).addHydratorMap(
+            new PropertyHydrator(new Object()),
+            ["password"]
         );
 
         authStorage.setHydrator(hydrator);
