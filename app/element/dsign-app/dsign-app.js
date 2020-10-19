@@ -76,6 +76,10 @@ class DsignApp extends LocalizeMixin(AclMixin(ServiceInjectorMixin(PolymerElemen
           display: none;
         }
         
+        .content-pages {
+           height: 100%;
+        }
+        
         .name-module {
            padding-left: 8px;
         }
@@ -123,11 +127,7 @@ class DsignApp extends LocalizeMixin(AclMixin(ServiceInjectorMixin(PolymerElemen
             .auth-container {
              width: 292px;
             }
-        }
-        
-        
-
-        
+        }        
       </style>
 
       <app-location route="{{route}}" url-space-regex="^[[rootPath]]"></app-location>
@@ -149,7 +149,7 @@ class DsignApp extends LocalizeMixin(AclMixin(ServiceInjectorMixin(PolymerElemen
             <paper-icon-button icon="face" on-tap="tapAuthDrawer"></paper-icon-button>
           </app-toolbar>
         </app-header>
-        <div>
+        <div class="content-pages">
           <iron-pages id="moduleEntryPoint" selected="[[page]]" attr-for-selected="name" role="main">
             <activation-code query={{query}} name="activation-code"></activation-code>
             <reset-password query={{query}} name="reset-password"></reset-password>

@@ -252,7 +252,7 @@ class DashboardIndex extends ServiceInjectorMixin(PolymerElement) {
             <div class="column center flex-1 padding-34">
                 <img src="http://placehold.it/500x800/015b63/ffffff">
             </div>
-            <div class="column center flex-1 padding-34">
+            <div class="column center flAx-1 padding-34">
                 Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard
             </div>
          </div>

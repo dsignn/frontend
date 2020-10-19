@@ -108,10 +108,17 @@ class ActivationCode extends LocalizeMixin(AclMixin(ServiceInjectorMixin(Polymer
         }
 
         if (query && query.token) {
-
-            this.activationCodeStorage.save({
-                token: query.token
-            }).then((data) => {
+            let method = 'GET';
+            this.activationCodeStorage.adapter.request(
+                method,
+                this.activationCodeStorage.adapter.urlBuilder.buildUrl(
+                    this.activationCodeStorage.adapter.rootPath,
+                    this.activationCodeStorage.adapter.getNameCollection(), method
+                ),
+                this.activationCodeStorage.adapter.getHeaders('default'),
+                {},
+                {token: encodeURIComponent(query.token)}
+            ).then((data) => {
                 this.$.load.style.display = "none";
                 this.$.ok.style.display = "block";
                 this._notify.notify(this.localize('activation-code-ok'));
@@ -123,7 +130,6 @@ class ActivationCode extends LocalizeMixin(AclMixin(ServiceInjectorMixin(Polymer
             });
         }
     }
-
 }
 
 window.customElements.define('activation-code', ActivationCode);
