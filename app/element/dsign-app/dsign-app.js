@@ -109,7 +109,13 @@ class DsignApp extends LocalizeMixin(AclMixin(ServiceInjectorMixin(PolymerElemen
             width: 100%;
         }
         
-         @media only screen and (max-width: 499px) {
+        @media only screen and (max-width: 499px) {
+            app-header-layout {
+            overflow-x: hidden;
+            }
+        }
+        
+        @media only screen and (max-width: 499px) {
             app-drawer#authDrawer {
              --app-drawer-width: 326px;
             }
@@ -118,6 +124,9 @@ class DsignApp extends LocalizeMixin(AclMixin(ServiceInjectorMixin(PolymerElemen
              width: 292px;
             }
         }
+        
+        
+
         
       </style>
 
