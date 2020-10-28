@@ -70,6 +70,8 @@ class DsignApp extends LocalizeMixin(AclMixin(ServiceInjectorMixin(PolymerElemen
         }
         
         #menuStatic {
+          top: 0;
+          left: 0;
           background-color: white; 
           width: 64px;
           position: fixed;
@@ -165,6 +167,7 @@ class DsignApp extends LocalizeMixin(AclMixin(ServiceInjectorMixin(PolymerElemen
         <div class="layout vertical start-aligned icon-wrapper height-100">
           <template is="dom-if" if="{{isAllowed('application', 'login')}}">
             <div class="auth-container">
+              <user-me></user-me>
               <paper-button on-tap="logout">logout</paper-button>
             </div>
           </template>
@@ -363,9 +366,21 @@ class DsignApp extends LocalizeMixin(AclMixin(ServiceInjectorMixin(PolymerElemen
     authService.eventManager.on(
         Auth.LOGOUT,
         (evt) => {
+          this.hideMenu();
           this._redirectRoleView();
         }
     );
+
+    authService.eventManager.on(
+        Auth.IDENTITY,
+        (evt) => {
+          this.showMenu();
+        }
+    );
+
+    if (authService.getIdentity()) {
+      this.showMenu();
+    }
   }
 
   /**

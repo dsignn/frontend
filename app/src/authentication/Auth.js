@@ -82,6 +82,13 @@ export class Auth extends EventManagerAware {
     }
 
     /**
+     * @returns {null}
+     */
+    getIdentity() {
+        return this.identity;
+    }
+
+    /**
      * @param {string} username
      * @param {string} password
      */
@@ -106,22 +113,14 @@ export class Auth extends EventManagerAware {
             });
         });
     }
-/*
- {
- client_id: "myapp",
- client_secret: "testdrwerewq",
- grant_type: "password",
- password: "suca",
- scope: "basic email",
- username: "antonino.visalli+1@gmail.com"
- }
- */
+
     /**
      *
      */
     logout() {
 
         this._setToken(null);
+        this._setIdentity(null);
         this.eventManager.emit(Auth.LOGOUT);
         this.storage.adapter.removeHeader('Authorization', 'GET');
         localStorage.removeItem(Auth.TOKEN);
