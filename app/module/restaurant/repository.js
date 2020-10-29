@@ -1,8 +1,6 @@
 /**
  * Restaurant repository
  */
-import {ContainerAware} from "@dsign/library/src/container/ContainerAware.js";
-import {config} from './config';
 import {XmlhAdapter} from "@dsign/library/src/storage/adapter/xmlh/XmlhAdapter";
 import {JsonEncode} from "@dsign/library/src/data-transform/JsonEncode";
 import {JsonDecode} from "@dsign/library/src/data-transform/JsonDecode";
@@ -20,12 +18,15 @@ import {RestaurantEntity} from "./src/entity/RestaurantEntity";
 import {MenuEntity} from "./src/entity/MenuEntity";
 import {ListBuilder} from "./src/storage/adapter/xmlh/url/ListBuilder"
 import {MenuItem} from "./src/entity/embedded/MenuItem";
+import {Auth} from "./../../src/authentication/Auth";
 import {FormDataEncode} from "@dsign/library/src/data-transform/FormDataEncode";
+import {AbstractRepository} from "../../src/AbstractRepository";
+import {config} from './config';
 
 /**
  * @class Repository
  */
-export class Repository extends ContainerAware {
+export class Repository extends AbstractRepository {
 
     /**
      * @return {string}
@@ -130,10 +131,13 @@ export class Repository extends ContainerAware {
      */
     initAcl() {
         this.getContainer().get('Acl').addResource('restaurant');
+        this.getContainer().get('Acl').addResource('menu');
 
-        this.getContainer().get('Acl').allow('restaurantOwner', 'restaurant', 'menu');
         this.getContainer().get('Acl').allow('admin', 'restaurant', 'add');
         this.getContainer().get('Acl').allow('admin', 'restaurant', 'menu');
+        this.getContainer().get('Acl').allow('admin', 'menu', 'add');
+        this.getContainer().get('Acl').allow('restaurantOwner', 'restaurant', 'menu');
+        this.getContainer().get('Acl').allow('restaurantOwner', 'menu', 'add');
     }
 
     /**
@@ -150,6 +154,8 @@ export class Repository extends ContainerAware {
 
         adapterStorage.addHeader(    'Content-Type', 'application/json')
             .addHeader(    'Accept', 'application/json');
+
+        this.injectAuthHeader(adapterStorage);
 
         let storage = new Storage(adapterStorage);
         storage.setHydrator(this.getContainer().get('HydratorContainerAggregate').get(Repository.ORGANIZATION_HYDRATOR_SERVICE));
@@ -170,6 +176,8 @@ export class Repository extends ContainerAware {
 
         adapterStorage.addHeader(    'Content-Type', 'application/json')
             .addHeader(    'Accept', 'application/json');
+
+        this.injectAuthHeader(adapterStorage);
 
         let storage = new Storage(adapterStorage);
         storage.setHydrator(this.getContainer().get('HydratorContainerAggregate').get(Repository.MENU_HYDRATOR_SERVICE));

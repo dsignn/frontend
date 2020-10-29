@@ -90,7 +90,7 @@ class RestaurantIndex extends LocalizeMixin(AclMixin(ServiceInjectorMixin(Polyme
                             <menu-view-list selected="{{selectedMenu}}" entity-selected="{{menuSelected}}">
                                <div slot="header" class="header">
                                    <div class="text-content">{{localize('list-menu')}}</div>
-                                   <template is="dom-if" if="{{isAllowed('restaurant', 'add')}}">
+                                   <template is="dom-if" if="{{isAllowed('menu', 'add')}}">
                                        <paper-icon-button id="iconInsertMonitor" icon="insert" class="circle" on-click="displayRestaurantMenuAddView"></paper-icon-button>
                                        <paper-tooltip for="iconInsertMonitor" position="left">{{localize('insert-menu')}}</paper-tooltip>
                                    </template>
