@@ -26,6 +26,7 @@ class DashboardIndex extends ServiceInjectorMixin(PolymerElement) {
             display: block;
             position: relative;
             margin-top: 12px;
+            background: white;
         }
       
         .section {
@@ -63,21 +64,245 @@ class DashboardIndex extends ServiceInjectorMixin(PolymerElement) {
             width: 1080px;
             min-height: 400px;
         }
+
+        .container.box {
+          margin: auto auto;
+      }
+      
+
+      .welcome {
+        border: none;
+        width: 100%;
+        margin: 160px auto 0;
+        background: url(http://127.0.0.1:8081/images/sfondo.jpg);
+        text-align: center;
+        background-repeat: no-repeat;
+        background-size: cover;
+    }
+
+      /*.welcome:after {
+        content: "";
+        display: inline-block;
+        width: 60px;
+        height: 60px;
+        background: white;
+        transform: rotate(45deg);
+        margin: 0 auto -33px;
+    }*/
+
+    .welcome .container.box {
+      margin: 50px 10%;
+  }
         
-        .padding-34 {
+    .gradient {
+      background: linear-gradient(180deg, black, transparent);
+      display: inline-block;
+      width: 100%;
+  }
+
+  h2 {
+    color: white;
+    font-size: 3em;
+    line-height: 1.1em;
+    font-weight: normal;
+    text-transform: uppercase;
+}
+
+.welcome h2 {
+  max-width: 600px;
+  text-align: left
+}
+
+.button {
+  color: white;
+  font-size: 1.7em;
+  text-transform: uppercase;
+  text-decoration: none;
+  background: #015b63;
+  border-radius: 15px;
+  padding: 9px 30px;
+  display: inline-block;
+  margin-top: 30px;
+}
+
+.menu {
+  background: #f0b906;
+  margin-top: -40px;
+  text-align: center;
+  padding-top: 80px;
+}
+
+.menu:after {
+  content: "";
+  display: inline-block;
+  width: 60px;
+  height: 60px;
+  background: #f0b906;
+  transform: rotate(45deg);
+  margin: 0 auto -33px;
+}
+
+.text-block {
+  max-width: 1000px;
+  width: 90%;
+  font-size: 26px;
+  margin: 50px auto;
+  padding: 0;
+  text-align: center;
+}
+
+.flex {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 80px;
+}
+
+.flex div {
+  display:block;
+  width:16.6%;  
+}
+
+
+.flex div a {
+  display: block;
+  background: #015b63;
+  width: 80%;
+  padding-top: 80%;
+  border-radius: 17px;
+  margin: auto auto;
+}
+
+.flex div p {
+  font-size: 18px;
+  max-width: 80%;
+  margin: 5px auto;
+  line-height: 1.3em;
+}
+
+.menu h2{
+  color: black;
+}
+
+.row.strengths {
+  width: 90%;
+  max-width: 1600px;
+  margin: auto auto;
+  text-align: center;
+}
+
+.blue {
+  background: #015b63;
+  padding: 50px 0;
+}
+
+.blue:after{
+  content: "";
+  display: inline-block;
+  width: 60px;
+  height: 60px;
+  background: #015b63;
+  transform: rotate(45deg);
+  margin: 0 auto -80px;
+}
+
+.boxed{
+  border-radius:25px;
+  border:5px solid white;
+  text-align:center;
+  padding:50px;
+  display:inline-block;
+  margin:auto auto;
+}
+
+.boxed ul {
+  margin: 0;
+  padding: 0;
+}
+
+.boxed ul li{
+  color: white;
+  list-style-type: none;
+  text-transform: uppercase;
+  margin: 20px 0;
+  font-size:22px;
+}
+
+.boxed ul li span{
+  font-size:42px;
+  font-weight:bold;
+}
+
+.boxed hr {
+  border-color: black;
+  max-width: 60%;
+  margin: 50px auto;
+}
+
+.white {
+  display: block;
+  text-align: center;
+  padding-bottom: 80px;
+  z-index:10;
+}
+
+.white:after {
+  content: "";
+  display: inline-block;
+  width: 60px;
+  height: 60px;
+  background: white;
+  transform: rotate(45deg);
+  margin: 0 auto -117px;
+}
+
+.white h2{
+  color: black;
+  margin-top: 100px;
+}
+
+.people {
+  margin-top: 80px;
+  text-align: center;
+  margin: 80px auto 50px;
+}
+
+.quote {
+  color: black;
+  text-align: center;
+  margin: 60px auto;
+  max-width: 800px;
+  font-size: 22px;
+}
+
+.review{
+
+}
+
+.quote:hover .review{
+display:none;
+}
+
+  .review2{
+    display: none;
+    margin-right: -800px;
+    transition: all ease 0.2s;
+}
+
+.quote:hover .review2 {
+  display:block;
+  transition: all ease 0.2s;
+margin-right:0;
+}
+
+  .navigation{
+
+  }
+  
+  .padding-34 {
             padding: 34px;
         }
-        
-        .container.box {
-            margin: 165px 34px 12px 34px;
-            padding: 12px;
-            border: 8px solid #f0cd0a;
-            border-radius: 6px;
-            flex-direction: column;
-            padding-top: 50px;
-            z-index: -1;
-            width: 100%;
-        }
+
+
         
         .team-title {
             text-align: center;
@@ -113,28 +338,37 @@ class DashboardIndex extends ServiceInjectorMixin(PolymerElement) {
             max-width: 280px;
         }
 
-        .logo {
-            position: absolute;    
-            height: 300px;
-            width: 100%;
-            background-repeat: no-repeat;
-            background-position: center center;
-            background-size: contain;
-            background-image: url("../../../../images/android-chrome-384x384.png");
-        }
+        .container-logo {
+          display: block;
+          height: 280px;
+          width: 280px;
+          background: white;
+          border-radius: 50%;
+          margin: -160px auto 0px;
+      }
         
+      .logo {
+        height: 300px;
+        width: 300px;
+        background-repeat: no-repeat;
+        background-position: center center;
+        background-size: 100%;
+        background-image: url(http://127.0.0.1:8081/images/android-chrome-384x384.png);
+        transform: translate(-10px, -25px);
+    }
+
         .intro-description {
-          @apply --layout-vertical;
-          @apply --layout-start-justified;
-          flex: 1;
-          text-align: center;
+          text-align: left;
           font-size: 18px;
-          padding-top: 100px;
-        }
+          padding-top: 50px;
+          max-width: 600px;
+      }
         
         .padding-top-30 {
             padding-top: 30px;
         }
+
+
         
         .strengths {
             flex-wrap: wrap;
@@ -198,23 +432,54 @@ class DashboardIndex extends ServiceInjectorMixin(PolymerElement) {
         }
         
       </style>
-    
+      
       <div class="section padding-top-30">
-          <div>
+      <div class="welcome">
+      <div class="gradient">
+       <div class="container-logo">
               <div class="logo"></div>
           </div>
           <div class="container box">
             <div class="intro-description center start">
-                <h2 class="margin-0">Dsign Menù</h2>
-                <p>
-                Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum
-                </p>
+                <h2 class="margin-0">Hai mai pensato a un menu digitale per il tuo ristorante?</h2>
+                <a class="button" href="#how">Scopri di piu</a>
             </div>
-          </div>
+            </div>
+            </div>
+          </div>      
       </div>
-      <div class="section column">
-        <div class="row center">
-            <h2>Punti di forza</h2>
+      <div class="menu">
+      <div class="inside">
+              <h2>Dsign Menu</h2>
+          <div class="text-block">
+                <p class="">Di addio alle continue ristampe dei menu cartacei, all'usura e alla loro poco igienicità.<br/>Da oggi c'è Dsign Menu, il primo <b>menu interamente digitale</b>, l'ieale per i tuoi clienti!<br/>FACILE, VELOCE E PERSONALIZZABILE.</p>
+                <div class="flex">
+                <div class="">
+                <a class="icon" href="#"></a><p>Facile</p>
+                </div>
+                <div class="">
+                <a class="icon" href="#"></a><p>Personalizzabile</p>
+                </div>
+                <div class="">
+                <a class="icon" href="#"></a><p>Sempre aggiornato</p>
+                </div>
+                <div class="">
+                <a class="icon" href="#"></a><p>Garantito dai clienti</p>
+                </div>
+                <div class="">
+                <a class="icon" href="#"></a><p>Veloce</p>
+                </div>
+                <div class="">
+                <a class="icon" href="#"></a><p>Rispettoso dell'ambiente</p>
+                </div>
+            </div>
+            </div>
+            </div>
+          </div>     
+      <div class="section column white">
+      <div>     
+        <div id="how" class="row center">
+            <h2>Come Funziona?</h2>
         </div>
         <div class="row strengths padding-34 space-between">
             <paper-card strengths image="http://placehold.it/300x150/015b63/ffffff">
@@ -231,9 +496,14 @@ class DashboardIndex extends ServiceInjectorMixin(PolymerElement) {
             </paper-card>
             <paper-card strengths image="http://placehold.it/300x150/015b63/ffffff">
                 <div class="card-content">
+                    <h3>Personalizzabile</h3>
+                    <div class="description">Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard</div>
+                </div>
+            </paper-card>
+            <paper-card strengths image="http://placehold.it/300x150/015b63/ffffff">
+                <div class="card-content">
                     <h3>Utile</h3>
                       <div class="description">Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard</div>
-   
                 </div>
             </paper-card>
             <paper-card strengths image="http://placehold.it/300x150/015b63/ffffff">
@@ -242,21 +512,39 @@ class DashboardIndex extends ServiceInjectorMixin(PolymerElement) {
                       <div class="description">Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard</div>
                 </div>
             </paper-card>
+        </div>            
+        <a class="button" href="#how">Provalo subito</a>
+        </div>     
         </div>
-      </div>
-      <div class="section column">
+      <div class="section column blue">
          <div class="row center">
-            <h2>L'idea</h2>
+            <h2>Quanto mi costa?</h2>
          </div>
-         <div class="row example">
-            <div class="column center flex-1 padding-34">
-                <img src="http://placehold.it/500x800/015b63/ffffff">
-            </div>
-            <div class="column center flAx-1 padding-34">
-                Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard
+         <div class="text-block">
+            <div class="boxed">
+              <ul>
+              <li>Piatti illimitati</li>
+              <li>2 template predefiniti</li>
+              <li>Assistenza online</li>
+              <li>Generazione e stampa QR code</li>
+              <hr/>
+              <li><span>Gratis</span></li>
+              </ul>
             </div>
          </div>
       </div>
+      <div class="menu">
+          <div class="container box">
+            <div class="people center start">
+                <h2 class="margin-0">Dicono di noi</h2>
+                <div class="quote">
+                  <div class="review">Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard</div>
+                  <div class="review2">Lorem Ipsum doloret sit amet, consectetuer adipiscing elit, sed diam n. Duis autem vel eum iriure dolor in hendrerit in vuluputate velit esse molestie consequat</div>
+                </div>
+                <div class="navigation"> x x x </div>
+                </div>
+            </div>
+          </div>      
       <div class="section column">
            <div class="row center">
                 <h2 class="team-title">Team</h2>
