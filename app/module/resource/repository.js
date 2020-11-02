@@ -1,7 +1,6 @@
 /**
  * Reosuroce repository
  */
-import {ContainerAware} from "@dsign/library/src/container/ContainerAware.js";
 import {config} from './config';
 import {XmlhAdapter} from "@dsign/library/src/storage/adapter/xmlh/XmlhAdapter";
 import {JsonEncode} from "@dsign/library/src/data-transform/JsonEncode";
@@ -17,11 +16,12 @@ import {AudioEntity} from "./src/entity/AudioEntity";
 import {VideoEntity} from "./src/entity/VideoEntity";
 import {ImageEntity} from "./src/entity/ImageEntity";
 import {PathGeneric} from "@dsign/library/src/path/PathGeneric";
+import {AbstractRepository} from "../../src/AbstractRepository";
 
 /**
  * @class Repository
  */
-export class Repository extends ContainerAware {
+export class Repository extends AbstractRepository {
 
     /**
      * @return {string}
@@ -129,6 +129,8 @@ export class Repository extends ContainerAware {
         adapterStorage.setUpdateMethod('PATCH');
 
         adapterStorage.addHeader(    'Accept', 'application/json');
+
+        this.injectAuthHeader(adapterStorage);
 
         let storage = new Storage(adapterStorage);
         storage.setHydrator(this.getContainer().get('HydratorContainerAggregate').get(Repository.RESOURCE_HYDRATOR_SERVICE));
