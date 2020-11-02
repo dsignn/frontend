@@ -158,7 +158,7 @@ class DsignApp extends LocalizeMixin(AclMixin(ServiceInjectorMixin(PolymerElemen
             <dsing-404 name="404" root-path="[[rootPath]]timeslot"></dsing-404>
           </iron-pages>
         </div>
-        <footer style="height: 100px; background-color: black; color: white">footer</footer>
+        <footer style="line-height: 120px; background-color: #015b63; color: white; text-align:center;">© 2020 Digital Signage - Il tuo benessere a tavola | Partita IVA 01234567899</footer>
       </app-header-layout>
       <app-drawer id="menuDrawer" align="left" swipe-open open>
         <div class="layout vertical center-justified start icon-wrapper"></div>

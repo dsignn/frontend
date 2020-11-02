@@ -54,11 +54,7 @@ class DashboardIndex extends ServiceInjectorMixin(PolymerElement) {
           flex: 1;
          }
         
-        .row.team {
-            width: 100%;
-           justify-content: space-around;
-        } 
-        
+                
         .container {
             @apply --layout-horizontal;
             width: 1080px;
@@ -255,6 +251,16 @@ class DashboardIndex extends ServiceInjectorMixin(PolymerElement) {
   margin: 0 auto -117px;
 }
 
+.second.white:after {
+  content: "";
+  display: inline-block;
+  width: 60px;
+  height: 60px;
+  background: #015b63;
+  transform: rotate(45deg);
+  margin: 0 auto -120px;
+}
+
 .white h2{
   color: black;
   margin-top: 100px;
@@ -298,6 +304,14 @@ margin-right:0;
 
   }
   
+  .row.team {
+    width: 100%;
+    max-width: 1600px;
+    justify-content: space-around;
+    margin: 50px auto 20px;
+}
+
+
   .padding-34 {
             padding: 34px;
         }
@@ -545,9 +559,9 @@ margin-right:0;
                 </div>
             </div>
           </div>      
-      <div class="section column">
+      <div class="section column second white">
            <div class="row center">
-                <h2 class="team-title">Team</h2>
+                <h2 class="team-title">Il Team</h2>
            </div>
            <div class="row team">
                 <div class="user_team">
