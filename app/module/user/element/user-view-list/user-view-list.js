@@ -1,18 +1,19 @@
 import {html, PolymerElement} from '@polymer/polymer/polymer-element.js';
 import {ServiceInjectorMixin} from "@dsign/polymer-mixin/service/injector-mixin";
 import {LocalizeMixin} from "@dsign/polymer-mixin/localize/localize-mixin";
-import {StoragePaginationMixin} from "@dsign/polymer-mixin/storage/pagination-mixin";
+import {RefreshCollectionData} from "../../../../element/mixin/auth/refresh-collection-data";
 import {StorageCrudMixin} from "@dsign/polymer-mixin/storage/crud-mixin";
 import "@fluidnext-polymer/paper-pagination/paper-pagination";
 import "@fluidnext-polymer/paper-pagination/icons/paper-pagination-icons";
 import "./../paper-user/paper-user";
 import {lang} from './language';
 
+
 /**
  * @customElement
  * @polymer
  */
-class UserViewList extends StoragePaginationMixin(StorageCrudMixin(LocalizeMixin(ServiceInjectorMixin(PolymerElement)))) {
+class UserViewList extends RefreshCollectionData(StorageCrudMixin(LocalizeMixin(ServiceInjectorMixin(PolymerElement)))) {
 
     static get template() {
         return html`
@@ -105,6 +106,7 @@ class UserViewList extends StoragePaginationMixin(StorageCrudMixin(LocalizeMixin
                 value : {
                     _notify : "Notify",
                     _localizeService: 'Localize',
+                    _authService: "Auth",
                     "StorageContainerAggregate": {
                         _storage: "UserStorage"
                     }
@@ -115,7 +117,7 @@ class UserViewList extends StoragePaginationMixin(StorageCrudMixin(LocalizeMixin
 
     static get observers() {
         return [
-            'observerPaginationEntities(page, itemPerPage, _storage)'
+            '_changeAuthStorage(_authService, _storage)'
         ]
     }
 

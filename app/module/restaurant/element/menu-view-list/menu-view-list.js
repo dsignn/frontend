@@ -1,7 +1,7 @@
 import { PolymerElement, html } from '@polymer/polymer/polymer-element.js';
 import {LocalizeMixin} from "@dsign/polymer-mixin/localize/localize-mixin";
 import {ServiceInjectorMixin} from "@dsign/polymer-mixin/service/injector-mixin";
-import {StoragePaginationMixin} from "@dsign/polymer-mixin//storage/pagination-mixin";
+import {RefreshCollectionData} from "../../../../element/mixin/auth/refresh-collection-data";
 import '@polymer/iron-pages/iron-pages.js';
 import '@fluidnext-polymer/paper-pagination/paper-pagination';
 import '../paper-menu/paper-menu'
@@ -9,7 +9,7 @@ import '../paper-menu/paper-menu'
 /**
  * @class MenuViewList
  */
-class MenuViewList extends StoragePaginationMixin(LocalizeMixin(ServiceInjectorMixin(PolymerElement))) {
+class MenuViewList extends RefreshCollectionData(LocalizeMixin(ServiceInjectorMixin(PolymerElement))) {
 
     static get template() {
         return html`
@@ -104,12 +104,9 @@ class MenuViewList extends StoragePaginationMixin(LocalizeMixin(ServiceInjectorM
         };
     }
 
-    /**
-     * @inheritDoc
-     */
     static get observers() {
         return [
-            'observerPaginationEntities(page, itemPerPage, _storage)'
+            '_changeAuthStorage(_authService, _storage)'
         ]
     }
 

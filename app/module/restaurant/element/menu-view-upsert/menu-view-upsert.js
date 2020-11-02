@@ -261,6 +261,7 @@ class MenuViewUpsert extends StorageEntityMixin(NotifyMixin(LocalizeMixin(Servic
                     _slugify: "Slugify",
                     _config: "config",
                     _merge: "merge",
+                    _authService: "Auth",
                     StorageContainerAggregate : {
                         _storage :"MenuStorage",
                         _resourceStorage :"ResourceStorage",
@@ -290,7 +291,8 @@ class MenuViewUpsert extends StorageEntityMixin(NotifyMixin(LocalizeMixin(Servic
 
             _organizationStorage: {
                 readOnly: true,
-                observer: 'loadRestaurant'
+                // TODO call when change value autocomplete
+                //observer: 'loadRestaurant'
             },
 
             _uploadMenuResourceStorage: {

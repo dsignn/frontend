@@ -6,7 +6,6 @@ import {Auth} from "./authentication/Auth";
  */
 export class AbstractRepository extends ContainerAware {
 
-
     /**
      * @param storageAdapter
      */
@@ -15,16 +14,16 @@ export class AbstractRepository extends ContainerAware {
         let adapter = storageAdapter;
 
         this.getContainer().get('Auth').eventManager.on(Auth.LOGIN, (data) => {
-            console.log('LOGIN', storageAdapter);
+            console.log('TODO ADD HEADER', data);
+            //adapter.addHeader('Authorization', `Bearer ${this.getContainer().get('Auth').token.access_token}`);
         });
 
         this.getContainer().get('Auth').eventManager.on(Auth.LOGOUT, (data) => {
-            console.log('LOGOUT', storageAdapter);
+            adapter.removeHeader('Authorization');
         });
 
         if(this.getContainer().get('Auth') && this.getContainer().get('Auth').token) {
             adapter.addHeader('Authorization', `Bearer ${this.getContainer().get('Auth').token.access_token}`);
-            console.log('TONI')
         }
     }
 }
