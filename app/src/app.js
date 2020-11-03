@@ -295,6 +295,6 @@ function loadApplication() {
         () => {
             application.loadModules(modules, container);
         },
-        4000
+        60000
     );
 }
