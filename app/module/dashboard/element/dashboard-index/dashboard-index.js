@@ -425,6 +425,101 @@ class DashboardIndex extends ServiceInjectorMixin(PolymerElement) {
   font-size: 22px;
 }
 
+
+
+#team{
+  display:block;
+}
+
+#team .text-block{
+  max-width:1200px;
+}
+
+#team .flex {
+
+  margin-top: 250px;
+}
+
+#team .text-block .flex .step{
+  width: 30%;
+}
+
+#team .text-block .flex .step div {
+  display: block;
+  background: #ddd;
+  border-radius: 15px;
+  position: relative;
+  padding: 120px 20px 50px;
+  width: 100%;
+  min-height: 200px;
+}
+
+#team .text-block .flex .step:hover div {
+  background: #f0b906;
+}
+
+#team .text-block .flex .step:hover div p {
+  color:white;
+}
+
+#team .text-block .flex .step div:before {
+  content: "";
+  display: inline-block;
+  font-size: 3em;
+  height: 150px;
+  width: 150px;
+  background: white;
+  border-radius: 50%;
+  border: 6px solid #015b63;
+  position: absolute;
+  top: -80px;
+  left: 50%;
+  line-height: 150px;
+  z-index: 100;
+  transform: translateX(-50%);
+}
+
+#team .text-block .flex .step:hover div:before {
+  font-size: 4em;
+  height: 200px;
+  width: 200px;
+  top: -110px;
+  left: 50%;
+  line-height: 200px;
+  border:6px solid #f0b906;
+}
+
+#team .text-block .flex .step:first-child div:before {
+  content: "";
+  background: url(https://previews.123rf.com/images/jemastock/jemastock1608/jemastock160801531/61219186-flat-design-face-of-man-icon-vector-illustration.jpg);
+  background-size: contain;
+}
+
+#team .text-block .flex .step:nth-child(2) div:before {
+  content: "";
+  background: url(https://previews.123rf.com/images/jemastock/jemastock1608/jemastock160801531/61219186-flat-design-face-of-man-icon-vector-illustration.jpg);
+  background-size: contain;
+  }
+    
+#team .text-block .flex .step:nth-child(3) div:before {
+  content: "";
+  background: url(https://previews.123rf.com/images/jemastock/jemastock1608/jemastock160801531/61219186-flat-design-face-of-man-icon-vector-illustration.jpg);
+  background-size: contain;
+  }
+
+  #team .text-block .flex p.name {
+    font-size: 24px;
+    margin-bottom: 15px;
+}
+
+#team .text-block .flex p.role {
+  font-size: 20px;
+  margin-bottom: 50px;
+}
+  
+
+
+
   .padding-34 {
             padding: 34px;
         }
@@ -654,28 +749,37 @@ class DashboardIndex extends ServiceInjectorMixin(PolymerElement) {
                 </div>
             </div>
           </div>      
-      <div class="section column second white">
-           <div class="row center">
-                <h2 class="team-title">Il Team</h2>
-           </div>
-           <div class="row team">
-                <div class="user_team">
-                    <div class="user_photo"></div>
-                    <div class="role">CTO</div>
-                    <div class="name">Antonino Visalli</div>
-                </div>
-                <div  class="user_team">
-                    <div class="user_photo"></div>
-                    <div class="role">Web Designer</div>
-                    <div class="name">Paolo Sartorio</div>
-                </div>
-                <div  class="user_team">
-                    <div class="user_photo"></div>
-                    <div class="role">Designer</div>
-                    <div class="name">Paolo Sartorio</div>
-                </div>
-           </div>
-      </div>`;
+          <div class="section column white team">
+            <div id="team" class="row center">
+                <h2>Il Team</h2>
+                <div class="text-block">
+                  <p class="">Lorem Ipsum doloret sit amet, is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard</p>
+                  <div class="flex">
+                    <div class="step">
+                      <div class="">
+                        <p class="name">Antonino Visalli</p>
+                        <p class="role">CTO</p>
+                        <p class="desc">Lorem Ipsum doloret sit amet, is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard</p>
+                      </div>
+                    </div>
+                    <div class="step">
+                      <div class="">
+                        <p class="name">Paolo Sartorio</p>
+                        <p class="role">Web Designer</p>
+                        <p class="desc">Lorem Ipsum doloret sit amet, is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard</p>
+                        </div>
+                    </div>
+                    <div class="step">
+                      <div class="">
+                        <p class="name">Martina Bertinazzi</p>
+                        <p class="role">Graphic</p>
+                        <p class="desc">Lorem Ipsum doloret sit amet, is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard</p>
+                        </div>
+                    </div>
+                  </div>
+                </div>        
+            </div>     
+          </div>`;
   }
 
   constructor() {
