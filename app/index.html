@@ -82,19 +82,28 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         justify-content: center;
       }
 
+      #spinnerContainer {
+        background-image: url('images/android-chrome-384x384.png');
+        background-repeat: no-repeat;
+        background-position: 50% 43%;
+        background-size: 50%;
+      }
+
       paper-spinner {
         --paper-spinner-layer-1-color: var(--default-primary-color);
         --paper-spinner-layer-2-color: var(--default-primary-color);
         --paper-spinner-layer-3-color: var(--default-primary-color);
         --paper-spinner-layer-4-color: var(--default-primary-color);
-        --paper-spinner-stroke-width: 6px;
+        --paper-spinner-stroke-width: 8px;
         width: 300px;
         height: 300px;
       }
     </style>
   </head>
   <body>
-    <paper-spinner id="loader" active></paper-spinner>
+     <div id="spinnerContainer">
+       <paper-spinner id="loader" active></paper-spinner>
+     </div>
     <paper-toast id="notification"></paper-toast>
   </body>
 </html>

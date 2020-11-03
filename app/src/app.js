@@ -93,7 +93,7 @@ application.getEventManager().on(
             300
         );
         let element = document.createElement('dsign-app');
-        document.body.querySelector('paper-spinner#loader').remove();
+        document.body.querySelector('#spinnerContainer').remove();
         document.body.appendChild(element);
 
     }

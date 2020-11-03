@@ -148,7 +148,7 @@ class DsignApp extends LocalizeMixin(AclMixin(ServiceInjectorMixin(PolymerElemen
           <app-toolbar>
             <div main-title>Dsing</div>
             <paper-select-language></paper-select-language>
-            <paper-icon-button icon="face" on-tap="tapAuthDrawer"></paper-icon-button>
+            <paper-icon-button icon="account" on-tap="tapAuthDrawer"></paper-icon-button>
           </app-toolbar>
         </app-header>
         <div class="content-pages">
