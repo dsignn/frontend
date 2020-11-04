@@ -239,6 +239,9 @@ export class Repository extends AbstractRepository {
         );
 
         adapterStorage.addHeader(    'Accept', 'application/json');
+
+        this.injectAuthHeader(adapterStorage);
+
         let storage = new Storage(adapterStorage);
         storage.setHydrator(this.getContainer().get('HydratorContainerAggregate').get(Repository.ORGANIZATION_HYDRATOR_SERVICE));
         this.getContainer().set(Repository.STORAGE_UPLOAD_ORGANIZATION_RESOURCE_SERVICE, storage);
