@@ -70,7 +70,7 @@ class DashboardIndex extends ServiceInjectorMixin(PolymerElement) {
         border: none;
         width: 100%;
         margin: 160px auto 0;
-        background: url(http://127.0.0.1:8081/images/sfondo.jpg);
+        background: url("images/sfondo.jpg");
         text-align: center;
         background-repeat: no-repeat;
         background-size: cover;
@@ -364,7 +364,7 @@ class DashboardIndex extends ServiceInjectorMixin(PolymerElement) {
 
 #how .text-block .flex .step div {
   display: block;
-  background: url(http://127.0.0.1:8081/images/sfondo.jpg);
+  background: url("images/sfondo.jpg");
   border-radius: 15px;
   position: relative;
   background-size: cover;
@@ -539,7 +539,7 @@ class DashboardIndex extends ServiceInjectorMixin(PolymerElement) {
             height: 300px;
             width: 300px;
             border-radius: 50%;
-            background-image: url("http://placehold.it/300x300/015b63/ffffff");
+            background-image: url("https://placehold.it/300x300/015b63/ffffff");
         }
         
         .user_team .name,
@@ -575,7 +575,7 @@ class DashboardIndex extends ServiceInjectorMixin(PolymerElement) {
         background-repeat: no-repeat;
         background-position: center center;
         background-size: 100%;
-        background-image: url(http://127.0.0.1:8081/images/android-chrome-384x384.png);
+        background-image: url("images/android-chrome-384x384.png");
         transform: translate(-10px, -25px);
     }
 
@@ -644,7 +644,7 @@ class DashboardIndex extends ServiceInjectorMixin(PolymerElement) {
               height: 200px;
               width: 200px;
               border-radius: 50%;
-              background-image: url("http://placehold.it/300x300/015b63/ffffff");
+              background-image: url("https://placehold.it/300x300/015b63/ffffff");
           }
           
           .user_team {
@@ -677,22 +677,22 @@ class DashboardIndex extends ServiceInjectorMixin(PolymerElement) {
                 <p class="">Di addio alle continue ristampe dei menu cartacei, all'usura e alla loro poco igienicità.<br/>Da oggi c'è Dsign Menu, il primo <b>menu interamente digitale</b>, l'ieale per i tuoi clienti!<br/>FACILE, VELOCE E PERSONALIZZABILE.</p>
                 <div class="flex">
                 <div class="">
-                <a class="icon"><img src="http://127.0.0.1:8081/images/ico1.png" /></a><p>Facile</p>
+                <a class="icon"><img src="images/ico1.png" /></a><p>Facile</p>
                 </div>
                 <div class="">
-                <a class="icon"><img src="http://127.0.0.1:8081/images/ico2.png" /></a><p>Personalizzabile</p>
+                <a class="icon"><img src="images/ico2.png" /></a><p>Personalizzabile</p>
                 </div>
                 <div class="">
-                <a class="icon"><img src="http://127.0.0.1:8081/images/ico3.png" /></a><p>Sempre aggiornato</p>
+                <a class="icon"><img src="images/ico3.png" /></a><p>Sempre aggiornato</p>
                 </div>
                 <div class="">
-                <a class="icon"><img src="http://127.0.0.1:8081/images/ico6.png" /></a><p>Garantito dai clienti</p>
+                <a class="icon"><img src="images/ico6.png" /></a><p>Garantito dai clienti</p>
                 </div>
                 <div class="">
-                <a class="icon"><img src="http://127.0.0.1:8081/images/ico4.png" /></a><p>Veloce</p>
+                <a class="icon"><img src="images/ico4.png" /></a><p>Veloce</p>
                 </div>
                 <div class="">
-                <a class="icon"><img src="http://127.0.0.1:8081/images/ico5.png" /></a><p>Rispettoso dell'ambiente</p>
+                <a class="icon"><img src="images/ico5.png" /></a><p>Rispettoso dell'ambiente</p>
                 </div>
             </div>
             </div>
