@@ -10,7 +10,7 @@ export const config = {
             menu : {
                 name: "menu"
             },
-            'menu-category' : {
+            menuCategory : {
                 name: "menu-category"
             },
             rpcQrcode: {

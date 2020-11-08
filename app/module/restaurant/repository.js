@@ -190,7 +190,7 @@ export class Repository extends AbstractRepository {
     initMenuCategoryStorage() {
         let adapterStorage = new XmlhAdapter(
             container.get('config')['rest']['path'],
-            container.get('config')['rest']['resources']['menu-category']['name'],
+            container.get('config')['rest']['resources']['menuCategory']['name'],
             new JsonEncode(),
             new JsonDecode(),
             new ListBuilder()

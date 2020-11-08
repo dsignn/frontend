@@ -34,14 +34,14 @@ export const RefreshCollectionData = (superClass) => {
             }
 
             if (_authService.token) {
-                console.log('MI OSNO ACCORTO DI ESSERE LOGGATOd');
+                console.log('RefreshCollectionData già LOGGATO',  this._storage.adapter.getNameCollection());
                 this.getPagedEntities();
             }
 
             _authService.eventManager.on(
                 'login',
                 (data) => {
-                    console.log('DIO CAN LOGIN');
+                    console.log('RefreshCollectionData LOGIN');
 
                     setTimeout(
                         () => {
@@ -58,7 +58,7 @@ export const RefreshCollectionData = (superClass) => {
             _authService.eventManager.on(
                 'logout',
                 (data) => {
-                    console.log('DIO CAN OOUT');
+                    console.log('RefreshCollectionData LOGOUT');
                     this.set('entities', []);
                     this._storage.getEventManager().remove(Storage.POST_SAVE, this.listenerCollection);
                 }

@@ -26,8 +26,6 @@ import {config} from './config.js';
 import {AccessTokenEntity} from './../src/oauth/entity/AccessTokenEntity.js';
 import {AggregatePropertyHydrator} from "@dsign/library/src/hydrator";
 
-console.log('test')
-
 window.MyAppGlobals = { rootPath: '/' };
 
 // Load and register pre-caching Service Worker
