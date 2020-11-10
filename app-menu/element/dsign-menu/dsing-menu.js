@@ -25,7 +25,8 @@ import '@polymer/paper-input/paper-input';
 import '@polymer/paper-button/paper-button';
 import '@dsign/polymer-mixin/localize/localize-mixin';
 import '../../element/paper-select-language/paper-select-language';
-import '../../element/dsign-menu-item-full/dsing-menu-item-full';
+import '../../element/dsign-menu-item-image/dsign-menu-item-image';
+import '../../element/dsign-menu-item-compress/dsign-menu-item-compress';
 import {lang} from './language';
 import {mockMenu} from './mockMenu';
 
@@ -40,8 +41,22 @@ class DsignMenu extends LocalizeMixin(ServiceInjectorMixin(PolymerElement)) {
     static get template() {
         return html`
     <style>
+    
+        /*
+                    --dark-primary-color:       #61ad97;
+            --default-primary-color:    #015b63;
+            --light-primary-color:      #B2DFDB;
+            --text-primary-color:       #FFFFFF;
+            --accent-color:             #f0b80e;
+            --primary-background-color: #FFFFFF;
+            --primary-text-color:       #212121;
+            --secondary-text-color:     #757575;
+            --disabled-text-color:      #BDBDBD;
+            --divider-color:            #BDBDBD;
+        */
+    
        app-toolbar {
-         background-color:  #009688;
+         background-color:  #015b63;
          padding-left: 6px;
          padding-right: 6px;
          color: white;
@@ -187,8 +202,9 @@ class DsignMenu extends LocalizeMixin(ServiceInjectorMixin(PolymerElement)) {
         </app-toolbar>
       </app-header>
       <div id="menuContainer">
-          <template is="dom-repeat" items="[[menu.items]]" as="menuItem">
-              <dsign-menu-item-full menu-item="{{menuItem}}" class="item"></dsign-menu-item-full>
+          <template id="list" is="dom-repeat" items="[[items]]" as="menuItem">
+        ff</br>
+        
           </template>
       </div>
     </app-header-layout>
@@ -201,15 +217,13 @@ class DsignMenu extends LocalizeMixin(ServiceInjectorMixin(PolymerElement)) {
 
     }
 
-    constructor() {
-        super();
-        this.resources = lang;
-        this.menu = mockMenu;
-    }
-
     static get properties() {
         return {
             menu: {
+                observer: 'changeMenu'
+            },
+
+            items: {
 
             },
 
@@ -219,15 +233,65 @@ class DsignMenu extends LocalizeMixin(ServiceInjectorMixin(PolymerElement)) {
                 }
             },
 
+            itemLayout: {
+                value: 'dsign-menu-item-image',
+                readOnly: true
+            },
+
             categories: {
                 value: [
                     'all',
                     'first',
                     'second'
                 ]
-
             }
         };
+    }
+
+    constructor() {
+        super();
+        this.resources = lang;
+        let param = this.parseUrlParam();
+        if (param && param['menu'] &&  param['menu'] === 'compress') {
+            this._setItemLayout('dsign-menu-item-compress');
+        }
+    }
+
+    ready() {
+        super.ready();
+        let elem = document.createElement(this.itemLayout);
+        elem.setAttribute('class', 'item');
+        elem.setAttribute('menu-item', '{{menuItem}}');
+        this.$.list.querySelector('template').appendChild(elem);
+         console.log(this.$.list);
+
+        this.menu = mockMenu;
+    }
+
+    parseUrlParam() {
+        var match,
+            pl     = /\+/g,  // Regex for replacing addition symbol with a space
+            search = /([^&=]+)=?([^&]*)/g,
+            decode = function (s) { return decodeURIComponent(s.replace(pl, " ")); },
+            query  = window.location.search.substring(1);
+
+        let urlParams = {};
+        while (match = search.exec(query))
+            urlParams[decode(match[1])] = decode(match[2]);
+
+        return urlParams;
+    }
+
+    /**
+     * @param menu
+     */
+    changeMenu(menu) {
+        if (!menu) {
+            this.items = [];
+            return
+        }
+
+        this.items = menu.items;
     }
 
     tapMenu(evt) {

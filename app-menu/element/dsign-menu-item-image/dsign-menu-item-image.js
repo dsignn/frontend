@@ -22,9 +22,9 @@ import '@polymer/paper-button/paper-button';
 import {lang} from './language';
 
 /**
- * @class DsignMenuItemFull
+ * @class DsignMenuItemImage
  */
-class DsignMenuItemFull extends LocalizeMixin(ServiceInjectorMixin(PolymerElement)) {
+class DsignMenuItemImage extends LocalizeMixin(ServiceInjectorMixin(PolymerElement)) {
     static get template() {
         return html`
     <style> 
@@ -161,4 +161,4 @@ class DsignMenuItemFull extends LocalizeMixin(ServiceInjectorMixin(PolymerElemen
 
 }
 
-window.customElements.define('dsign-menu-item-full', DsignMenuItemFull);
+window.customElements.define('dsign-menu-item-image', DsignMenuItemImage);
