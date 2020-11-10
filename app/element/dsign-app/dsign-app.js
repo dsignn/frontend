@@ -147,9 +147,14 @@ class DsignApp extends LocalizeMixin(AclMixin(ServiceInjectorMixin(PolymerElemen
      
       <div id="menuStatic">
         <iron-selector id="menuStaticSelector" selected="[[page]]" attr-for-selected="name" class="drawer-list" role="navigation">
+           <!--
           <div class="layout vertical center-center icon-wrapper">
+         
+             TODO remove
             <paper-icon-button icon="arrow-right" on-tap="tapDrawer"></paper-icon-button>
+           
           </div>
+           -->
         </iron-selector>
       </div>
       <app-header-layout fullbleed>
@@ -168,9 +173,12 @@ class DsignApp extends LocalizeMixin(AclMixin(ServiceInjectorMixin(PolymerElemen
         </div>
         <footer style="line-height: 120px; background-color: #015b63; color: white; text-align:center;">© 2020 Digital Signage - Il tuo benessere a tavola | Partita IVA 01234567899</footer>
       </app-header-layout>
+      <!--
+      TODO remove
       <app-drawer id="menuDrawer" align="left" swipe-open open>
         <div class="layout vertical center-justified start icon-wrapper"></div>
       </app-drawer>
+      -->
       <app-drawer id="authDrawer" align="right"  swipe-open open>
         <div class="layout vertical start-aligned icon-wrapper height-100">
           <template is="dom-if" if="{{isAllowed('application', 'login')}}">
@@ -287,11 +295,14 @@ class DsignApp extends LocalizeMixin(AclMixin(ServiceInjectorMixin(PolymerElemen
       icon.module = application.modules[cont];
       this.$.menuStaticSelector.appendChild(icon);
 
+      /*
+      // TODO remove
       drawerIcon = icon.cloneNode(true);
       drawerIcon.module = application.modules[cont];
       drawerIcon.viewText = true;
 
       this.$.menuDrawer.appendChild(drawerIcon);
+      */
     }
   }
 
