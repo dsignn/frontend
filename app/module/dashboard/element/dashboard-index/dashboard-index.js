@@ -299,11 +299,11 @@ class DashboardIndex extends ServiceInjectorMixin(PolymerElement) {
   max-width: 960px;
   font-size: 22px;
   display: flex;
+  justify-content: space-between;
 }
 
 .review{
     display: none;
-    margin-right: -800px;
     transition: all ease 0.2s;
 }
 
@@ -338,11 +338,17 @@ class DashboardIndex extends ServiceInjectorMixin(PolymerElement) {
     margin: 50px auto 20px;
 }
 
+.slideshow-container {
+  width: 60%;
+  min-height: 200px;
+  position:relative;
+}
 
 .left, .right {
   font-size: 130px;
   font-family: auto;
-  color:#015b63;
+  width: 20%;
+  color: #015b63;
 }
 
 .left:hover, .right:hover {
@@ -739,13 +745,16 @@ class DashboardIndex extends ServiceInjectorMixin(PolymerElement) {
           <div class="container box">
             <div class="people center start">
                 <h2 class="margin-0">Dicono di noi</h2>
-                <div class="quote"><div class="left"><</div>
-                  <div class="review active">Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard</div>
-                  <div class="review">Lorem Ipsum doloret sit amet, consectetuer adipiscing elit, sed diam n. Duis autem vel eum iriure dolor in hendrerit in vuluputate velit esse molestie consequat</div>
-                  <div class="review">Lorem Ipsum doloret sit amet, is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard</div>
-                  <div class="right">></div>
+                <div class="quote">
+                  <a class="left prev" onclick="plusSlides(-1)">&#10094;</a>
+                  <div class="slideshow-container">
+                    <div class="review mySlides fade">Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard</div>
+                    <div class="review mySlides fade">Lorem Ipsum doloret sit amet, consectetuer adipiscing elit, sed diam n. Duis autem vel eum iriure dolor in hendrerit in vuluputate velit esse molestie consequat</div>
+                    <div class="review mySlides fade">Lorem Ipsum doloret sit amet, is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard</div>
                   </div>
-                <div class="navigation"><div class="dot active"></div><div class="dot"></div><div class="dot"></div></div>
+                  <a class="right next" onclick="plusSlides(1)">&#10095;</a>
+                </div>
+                <div class="navigation"><span class="dot" onclick="currentSlide(1)"></span><span class="dot" onclick="currentSlide(1)"></span><span class="dot" onclick="currentSlide(1)"></span>
                 </div>
             </div>
           </div>      
@@ -779,7 +788,30 @@ class DashboardIndex extends ServiceInjectorMixin(PolymerElement) {
                   </div>
                 </div>        
             </div>     
-          </div>`;
+          </div>
+          <script>
+          var slideIndex = 1;
+          showSlides(slideIndex);
+          function plusSlides(n) {
+            showSlides(slideIndex += n);
+          }
+            function currentSlide(n) {
+            showSlides(slideIndex = n);
+          }
+          function showSlides(n) {
+            var i;
+            var slides = document.getElementsByClassName("mySlides");
+            var dots = document.getElementsByClassName("dot");
+            if (n > slides.length) {slideIndex = 1}
+            if (n < 1) {slideIndex = slides.length}
+            for (i = 0; i < slides.length; i++) {
+                slides[i].style.display = "none";
+            }
+            for (i = 0; i < dots.length; i++) {
+                dots[i].className = dots[i].className.replace(" active", "");
+            }
+            slides[slideIndex-1].style.display = "block";
+            dots[slideIndex-1].className += " active";}</script>`;
   }
 
   constructor() {
