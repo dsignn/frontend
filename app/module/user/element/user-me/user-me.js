@@ -1,9 +1,12 @@
+import {html, PolymerElement} from "@polymer/polymer/polymer-element";
 import {StoragePaginationMixin} from "@dsign/polymer-mixin/storage/pagination-mixin";
 import {StorageCrudMixin} from "@dsign/polymer-mixin/storage/crud-mixin";
 import {LocalizeMixin} from "@dsign/polymer-mixin/localize/localize-mixin";
 import {ServiceInjectorMixin} from "@dsign/polymer-mixin/service/injector-mixin";
-import {html, PolymerElement} from "@polymer/polymer/polymer-element";
+import {Auth} from "../../../../src/authentication/Auth";
 import "@polymer/paper-input/paper-input";
+import "@polymer/iron-icon/iron-icon";
+import "../../../../element/paper-select-language/paper-select-language";
 import {lang} from './language';
 
 /**
@@ -18,23 +21,31 @@ class UserMe extends StoragePaginationMixin(StorageCrudMixin(LocalizeMixin(Servi
         return html`
             <style>
             
+                :host {
+                    display: block;
+                }
+            
                 .container {
                      @apply --layout-horizontal;
                 }
                 
                 .avatar {
-                    margin: 6px;
-                   border-radius: 50%;
-                   background-color: red;
-                   height: 50px;
-                   width: 50px;
-                   
+                    margin: 6px;      
+                   flex-basis: 30%;
+                   @apply --layout-vertical;
+                   @apply --layout-center-center;
+                }
+                
+                iron-icon {
+                    height: 100%;
+                    width: 100%;
                 }
                 
                 .name {
                     padding-left: 8px;
                      @apply --layout-vertical;
                      @apply --layout-center-justified;
+                     flex-basis: 70%;
                 }
                 
                 .name .text {
@@ -48,17 +59,17 @@ class UserMe extends StoragePaginationMixin(StorageCrudMixin(LocalizeMixin(Servi
             </style>
             <div class="container">
                 <div class="avatar">
-                
+                    <iron-icon icon="account"></iron-icon>
                 </div>
                 <div class="name">
-                    <div class="text">
-                        <paper-input label="{{localize('name')}}"></paper-input>
-                    </div>
-                    <div class="text">
-                         <paper-input label="{{localize('surname')}}"></paper-input>
-                    </div>
+                    <paper-input label="{{localize('name')}}" value="{{userData.name}}" ></paper-input>
+                    <paper-input label="{{localize('surname')}}" value="{{userData.lastName}}" ></paper-input>
                 </div>
             </div>
+            <paper-input label="{{localize('email')}}" value="{{userData.email}}"></paper-input>
+            <paper-input type="password" label="{{localize('password')}}"></paper-input>
+            <paper-input type="password" label="{{localize('repeat-password')}}"></paper-input>
+            <!--<paper-select-language></paper-select-language>-->
         `;
     }
 
@@ -70,7 +81,6 @@ class UserMe extends StoragePaginationMixin(StorageCrudMixin(LocalizeMixin(Servi
         this.resources = lang;
     }
 
-
     /**
      * @returns {object}
      */
@@ -81,9 +91,37 @@ class UserMe extends StoragePaginationMixin(StorageCrudMixin(LocalizeMixin(Servi
              */
             services : {
                 value : {
-                    _localizeService: 'Localize'
+                    _localizeService: 'Localize',
+                    _authService: "Auth",
                 }
+            },
+
+            _authService: {
+                readOnly: true,
+                observer: '_authServiceChanged'
+            },
+
+            userData: {
+                readOnly: true,
             }
+        }
+
+    }
+
+    _authServiceChanged(service) {
+        if (!service) {
+            return;
+        }
+
+        service.eventManager.on(
+            Auth.IDENTITY,
+            () =>  {
+                console.log('evento')
+            }
+        );
+
+        if (service.getIdentity()) {
+            this._setUserData(service.getIdentity());
         }
     }
 

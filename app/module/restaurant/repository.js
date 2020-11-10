@@ -190,7 +190,7 @@ export class Repository extends AbstractRepository {
     initMenuCategoryStorage() {
         let adapterStorage = new XmlhAdapter(
             container.get('config')['rest']['path'],
-            container.get('config')['rest']['resources']['menu-category']['name'],
+            container.get('config')['rest']['resources']['menuCategory']['name'],
             new JsonEncode(),
             new JsonDecode(),
             new ListBuilder()
@@ -216,6 +216,9 @@ export class Repository extends AbstractRepository {
         );
 
         adapterStorage.addHeader(    'Accept', 'application/json');
+
+        this.injectAuthHeader(adapterStorage);
+
         let storage = new Storage(adapterStorage);
         storage.setHydrator(this.getContainer().get('HydratorContainerAggregate').get(Repository.MENU_HYDRATOR_SERVICE));
         this.getContainer().set(Repository.STORAGE_UPLOAD_MENU_RESOURCE_SERVICE, storage);
@@ -236,6 +239,9 @@ export class Repository extends AbstractRepository {
         );
 
         adapterStorage.addHeader(    'Accept', 'application/json');
+
+        this.injectAuthHeader(adapterStorage);
+
         let storage = new Storage(adapterStorage);
         storage.setHydrator(this.getContainer().get('HydratorContainerAggregate').get(Repository.ORGANIZATION_HYDRATOR_SERVICE));
         this.getContainer().set(Repository.STORAGE_UPLOAD_ORGANIZATION_RESOURCE_SERVICE, storage);

@@ -115,6 +115,15 @@ class DsignApp extends LocalizeMixin(AclMixin(ServiceInjectorMixin(PolymerElemen
             width: 100%;
         }
         
+        user-me {
+            margin-bottom: 20px;
+        }
+        
+        .user-me-container {
+             @apply --layout-horizontal;
+             @apply --layout-justified;
+        }
+        
         @media only screen and (max-width: 499px) {
             app-header-layout {
             overflow-x: hidden;
@@ -147,7 +156,6 @@ class DsignApp extends LocalizeMixin(AclMixin(ServiceInjectorMixin(PolymerElemen
         <app-header slot="header" fixed effects="waterfall">
           <app-toolbar>
             <div main-title>Dsing</div>
-            <paper-select-language></paper-select-language>
             <paper-icon-button icon="account" on-tap="tapAuthDrawer"></paper-icon-button>
           </app-toolbar>
         </app-header>
@@ -168,7 +176,10 @@ class DsignApp extends LocalizeMixin(AclMixin(ServiceInjectorMixin(PolymerElemen
           <template is="dom-if" if="{{isAllowed('application', 'login')}}">
             <div class="auth-container">
               <user-me></user-me>
-              <paper-button on-tap="logout">logout</paper-button>
+              <div class="user-me-container">
+                  <paper-button>Modifica</paper-button>
+                  <paper-button on-tap="logout">logout</paper-button>
+              </div>
             </div>
           </template>
           <template is="dom-if" if="{{isAllowed('application', 'logout')}}">

@@ -17,6 +17,7 @@ import '../../../../element/dsign-paper-dropdown/dsign-paper-dropdown';
 import {lang} from './language';
 import {Flatten} from "../../../../src/transform/Flatten";
 import {TranslateTransform} from "../../../../src/util/TranslateTransform";
+import {Auth} from "../../../../src/authentication/Auth";
 
 /**
  * @class MenuViewUpsert
@@ -290,9 +291,7 @@ class MenuViewUpsert extends StorageEntityMixin(NotifyMixin(LocalizeMixin(Servic
             },
 
             _organizationStorage: {
-                readOnly: true,
-                // TODO call when change value autocomplete
-                //observer: 'loadRestaurant'
+                readOnly: true
             },
 
             _uploadMenuResourceStorage: {
@@ -314,7 +313,8 @@ class MenuViewUpsert extends StorageEntityMixin(NotifyMixin(LocalizeMixin(Servic
      */
     static get observers() {
         return [
-            'loadMenuCategory(_menuCategoryStorage, _merge)'
+            'loadMenuCategory(_menuCategoryStorage, _merge)',
+            'changeOrganizationStorage(_organizationStorage, _authService)'
         ]
     }
 
@@ -389,6 +389,31 @@ class MenuViewUpsert extends StorageEntityMixin(NotifyMixin(LocalizeMixin(Servic
             })
     };
 
+    /**
+     * @param storage
+     * @param auth
+     */
+    changeOrganizationStorage(storage, auth) {
+        if (!storage || !auth) {
+            return;
+        }
+
+        if (auth.token) {
+            this.loadRestaurant();
+        }
+
+        auth.eventManager.on(
+            Auth.LOGIN,
+            (evt) => {
+                this.loadRestaurant();
+            }
+        );
+    }
+
+    /**
+     * @param loadMenuCategory
+     * @param merge
+     */
     loadMenuCategory(loadMenuCategory, merge) {
         if (!loadMenuCategory || !merge) {
             return;
@@ -462,7 +487,7 @@ class MenuViewUpsert extends StorageEntityMixin(NotifyMixin(LocalizeMixin(Servic
         this.$.formMenu.submit();
         // TODO
         this._storage.getPaged(1,3,[]).then((data) => {
-            console.log('porco dio', data);
+            //console.log('porco dio', data);
         })
     }
 

@@ -99,6 +99,7 @@ class MenuViewList extends RefreshCollectionData(LocalizeMixin(ServiceInjectorMi
             services : {
                 value : {
                     _storage:  "MenuStorage",
+                    _authService: "Auth"
                 }
             }
         };
