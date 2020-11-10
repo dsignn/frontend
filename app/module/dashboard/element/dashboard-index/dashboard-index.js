@@ -288,6 +288,7 @@ class DashboardIndex extends ServiceInjectorMixin(PolymerElement) {
 
 .people {
   margin-top: 80px;
+  width:100%;
   text-align: center;
   margin: 80px auto 50px;
 }
