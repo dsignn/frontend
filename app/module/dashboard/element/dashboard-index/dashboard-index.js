@@ -371,7 +371,7 @@ class DashboardIndex extends ServiceInjectorMixin(PolymerElement) {
 
 #how .text-block .flex .step div {
   display: block;
-  background: url(http://127.0.0.1:8081/images/sfondo.jpg);
+  background: url(images/sfondo.jpg);
   border-radius: 15px;
   position: relative;
   background-size: cover;
@@ -762,37 +762,38 @@ class DashboardIndex extends ServiceInjectorMixin(PolymerElement) {
                 </div>
             </div>
           </div>      
-          <div class="section column white team">
-            <div id="team" class="row center">
-                <h2>Il Team</h2>
-                <div class="text-block">
-                  <p class="">Lorem Ipsum doloret sit amet, is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard</p>
-                  <div class="flex">
-                    <div class="step">
-                      <div class="">
-                        <p class="name">Antonino Visalli</p>
-                        <p class="role">CTO</p>
-                        <p class="desc">Lorem Ipsum doloret sit amet, is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard</p>
-                      </div>
-                    </div>
-                    <div class="step">
-                      <div class="">
-                        <p class="name">Paolo Sartorio</p>
-                        <p class="role">Web Designer</p>
-                        <p class="desc">Lorem Ipsum doloret sit amet, is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard</p>
-                        </div>
-                    </div>
-                    <div class="step">
-                      <div class="">
-                        <p class="name">Martina Bertinazzi</p>
-                        <p class="role">Graphic</p>
-                        <p class="desc">Lorem Ipsum doloret sit amet, is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard</p>
-                        </div>
-                    </div>
+      </div>
+      <div class="section column white team">
+        <div id="team" class="row center">
+            <h2>Il Team</h2>
+            <div class="text-block">
+              <p class="">Lorem Ipsum doloret sit amet, is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard</p>
+              <div class="flex">
+                <div class="step">
+                  <div class="">
+                    <p class="name">Antonino Visalli</p>
+                    <p class="role">CTO</p>
+                    <p class="desc">Lorem Ipsum doloret sit amet, is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard</p>
                   </div>
-                </div>        
-            </div>     
-          </div>`;
+                </div>
+                <div class="step">
+                  <div class="">
+                    <p class="name">Paolo Sartorio</p>
+                    <p class="role">Web Designer</p>
+                    <p class="desc">Lorem Ipsum doloret sit amet, is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard</p>
+                    </div>
+                </div>
+                <div class="step">
+                  <div class="">
+                    <p class="name">Martina Bertinazzi</p>
+                    <p class="role">Graphic</p>
+                    <p class="desc">Lorem Ipsum doloret sit amet, is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard</p>
+                    </div>
+                </div>
+              </div>
+            </div>        
+        </div>     
+      </div>`;
   }
 
   constructor() {
