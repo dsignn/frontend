@@ -70,7 +70,7 @@ class DashboardIndex extends ServiceInjectorMixin(PolymerElement) {
         border: none;
         width: 100%;
         margin: 160px auto 0;
-        background: url(http://127.0.0.1:8081/images/sfondo.jpg);
+        background: url(images/sfondo.jpg);
         text-align: center;
         background-repeat: no-repeat;
         background-size: cover;
@@ -303,15 +303,14 @@ class DashboardIndex extends ServiceInjectorMixin(PolymerElement) {
   justify-content: space-between;
 }
 
-.review{
-    display: none;
-    transition: all ease 0.2s;
+.review {
+    position: absolute;
+    transition: right ease 1s;
 }
 
 .review.active{
   display:block;
   align-self:center;
-    margin:0 50px;
 }
 
   .navigation{
@@ -342,7 +341,8 @@ class DashboardIndex extends ServiceInjectorMixin(PolymerElement) {
 .slideshow-container {
   width: 60%;
   min-height: 200px;
-  position:relative;
+  position: relative;
+  overflow: hidden;
 }
 
 .left, .right {
@@ -546,7 +546,7 @@ class DashboardIndex extends ServiceInjectorMixin(PolymerElement) {
             height: 300px;
             width: 300px;
             border-radius: 50%;
-            background-image: url("http://placehold.it/300x300/015b63/ffffff");
+            background-image: url("https://placehold.it/300x300/015b63/ffffff");
         }
         
         .user_team .name,
@@ -582,7 +582,7 @@ class DashboardIndex extends ServiceInjectorMixin(PolymerElement) {
         background-repeat: no-repeat;
         background-position: center center;
         background-size: 100%;
-        background-image: url(http://127.0.0.1:8081/images/android-chrome-384x384.png);
+        background-image: url(images/android-chrome-384x384.png);
         transform: translate(-10px, -25px);
     }
 
@@ -651,7 +651,7 @@ class DashboardIndex extends ServiceInjectorMixin(PolymerElement) {
               height: 200px;
               width: 200px;
               border-radius: 50%;
-              background-image: url("http://placehold.it/300x300/015b63/ffffff");
+              background-image: url("https://placehold.it/300x300/015b63/ffffff");
           }
           
           .user_team {
@@ -684,22 +684,22 @@ class DashboardIndex extends ServiceInjectorMixin(PolymerElement) {
                 <p class="">Di addio alle continue ristampe dei menu cartacei, all'usura e alla loro poco igienicità.<br/>Da oggi c'è Dsign Menu, il primo <b>menu interamente digitale</b>, l'ieale per i tuoi clienti!<br/>FACILE, VELOCE E PERSONALIZZABILE.</p>
                 <div class="flex">
                 <div class="">
-                <a class="icon"><img src="http://127.0.0.1:8081/images/ico1.png" /></a><p>Facile</p>
+                <a class="icon"><img src="images/ico1.png" /></a><p>Facile</p>
                 </div>
                 <div class="">
-                <a class="icon"><img src="http://127.0.0.1:8081/images/ico2.png" /></a><p>Personalizzabile</p>
+                <a class="icon"><img src="images/ico2.png" /></a><p>Personalizzabile</p>
                 </div>
                 <div class="">
-                <a class="icon"><img src="http://127.0.0.1:8081/images/ico3.png" /></a><p>Sempre aggiornato</p>
+                <a class="icon"><img src="images/ico3.png" /></a><p>Sempre aggiornato</p>
                 </div>
                 <div class="">
-                <a class="icon"><img src="http://127.0.0.1:8081/images/ico6.png" /></a><p>Garantito dai clienti</p>
+                <a class="icon"><img src="images/ico6.png" /></a><p>Garantito dai clienti</p>
                 </div>
                 <div class="">
-                <a class="icon"><img src="http://127.0.0.1:8081/images/ico4.png" /></a><p>Veloce</p>
+                <a class="icon"><img src="images/ico4.png" /></a><p>Veloce</p>
                 </div>
                 <div class="">
-                <a class="icon"><img src="http://127.0.0.1:8081/images/ico5.png" /></a><p>Rispettoso dell'ambiente</p>
+                <a class="icon"><img src="images/ico5.png" /></a><p>Rispettoso dell'ambiente</p>
                 </div>
             </div>
             </div>
@@ -747,15 +747,18 @@ class DashboardIndex extends ServiceInjectorMixin(PolymerElement) {
             <div class="people center start">
                 <h2 class="margin-0">Dicono di noi</h2>
                 <div class="quote">
-                  <a class="left prev" onclick="plusSlides(-1)">&#10094;</a>
+                  <a class="left prev" on-tap="prevReview">&#10094;</a>
                   <div class="slideshow-container">
-                    <div class="review mySlides fade">Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard</div>
-                    <div class="review mySlides fade">Lorem Ipsum doloret sit amet, consectetuer adipiscing elit, sed diam n. Duis autem vel eum iriure dolor in hendrerit in vuluputate velit esse molestie consequat</div>
-                    <div class="review mySlides fade">Lorem Ipsum doloret sit amet, is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard</div>
+                      <div class="review active">aaaaaaaaaaaaaaaaaaaaaaaaaaaaaa</div>
+                      <div class="review">bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb</div>
+                      <div class="review">cccccccccccccccccccccccccccccccccccc</div>      
                   </div>
-                  <a class="right next" onclick="plusSlides(1)">&#10095;</a>
+                  <a class="right next" on-tap="nextReview">&#10095;</a>
                 </div>
-                <div class="navigation"><span class="dot" onclick="currentSlide(1)"></span><span class="dot" onclick="currentSlide(1)"></span><span class="dot" onclick="currentSlide(1)"></span>
+                <div class="navigation">
+                    <span class="dot"></span>
+                    <span class="dot"></span>
+                    <span class="dot"></span>
                 </div>
             </div>
           </div>      
@@ -789,35 +792,17 @@ class DashboardIndex extends ServiceInjectorMixin(PolymerElement) {
                   </div>
                 </div>        
             </div>     
-          </div>
-          <script>
-          var slideIndex = 1;
-          showSlides(slideIndex);
-          function plusSlides(n) {
-            showSlides(slideIndex += n);
-          }
-            function currentSlide(n) {
-            showSlides(slideIndex = n);
-          }
-          function showSlides(n) {
-            var i;
-            var slides = document.getElementsByClassName("mySlides");
-            var dots = document.getElementsByClassName("dot");
-            if (n > slides.length) {slideIndex = 1}
-            if (n < 1) {slideIndex = slides.length}
-            for (i = 0; i < slides.length; i++) {
-                slides[i].style.display = "none";
-            }
-            for (i = 0; i < dots.length; i++) {
-                dots[i].className = dots[i].className.replace(" active", "");
-            }
-            slides[slideIndex-1].style.display = "block";
-            dots[slideIndex-1].className += " active";}</script>`;
+          </div>`;
   }
 
   constructor() {
     super();
     this.resources = lang;
+  }
+
+  connectedCallback() {
+    super.connectedCallback();
+    this.initReviewDiv();
   }
 
 
@@ -832,6 +817,98 @@ class DashboardIndex extends ServiceInjectorMixin(PolymerElement) {
       }
     };
   }
+
+  prevReview() {
+    let elements = this.shadowRoot.querySelectorAll('.review');
+    let current =  this._getCurrentActiveReviewIndex(elements);
+    let next = current === 0 ? elements.length-1 : current-1;
+
+
+    setTimeout(
+        () => {
+          elements[next].style.display = 'none';
+          elements[next].style.right = '-1200px';
+        },
+        10
+    );
+
+    setTimeout(
+        () => {
+          elements[next].style.display = 'block';
+        },
+        50
+    );
+
+    setTimeout(
+        () => {
+          elements[current].style.right = '1200px';
+          elements[current].classList.remove('active');
+          elements[next].style.right = '0';
+          elements[next].classList.add('active');
+        },
+        100
+    );
+  };
+
+  nextReview() {
+    let elements = this.shadowRoot.querySelectorAll('.review');
+    let current =  this._getCurrentActiveReviewIndex(elements);
+    let next = current === (elements.length-1) ? 0 : current+1;
+
+    setTimeout(
+        () => {
+          elements[next].style.display = 'none';
+          elements[next].style.right = '1200px';
+        },
+        10
+    );
+
+    setTimeout(
+        () => {
+          elements[next].style.display = 'block';
+        },
+        50
+    );
+
+    setTimeout(
+        () => {
+          elements[current].style.right = '-1200px';
+          elements[current].classList.remove('active');
+          elements[next].classList.add('active');
+          elements[next].style.right = '0';
+        },
+        100
+    );
+  }
+
+  /**
+   * @returns {number}
+   * @private
+   */
+  _getCurrentActiveReviewIndex(elements) {
+    let index;
+    for (index = 0; index < elements.length; index++) {
+      if (elements[index].classList.contains('active')) {
+        break;
+      }
+    }
+    return index;
+  }
+
+  /**
+   *
+   */
+  initReviewDiv() {
+    let elements = this.shadowRoot.querySelectorAll('.review');
+    for (let index = 0; index < elements.length; index++) {
+      if (!elements[index].classList.contains('active')) {
+        elements[index].style.right = '1200px';
+      } else {
+        elements[index].style.right = '0';
+      }
+    }
+  }
+
 }
 
 window.customElements.define('dashboard-index', DashboardIndex);
