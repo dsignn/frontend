@@ -57,7 +57,8 @@ class DashboardIndex extends ServiceInjectorMixin(PolymerElement) {
                 
         .container {
             @apply --layout-horizontal;
-            width: 1080px;
+            width:100%;
+            max-width: 1080px;
             min-height: 400px;
         }
 
@@ -76,15 +77,6 @@ class DashboardIndex extends ServiceInjectorMixin(PolymerElement) {
         background-size: cover;
     }
 
-      /*.welcome:after {
-        content: "";
-        display: inline-block;
-        width: 60px;
-        height: 60px;
-        background: white;
-        transform: rotate(45deg);
-        margin: 0 auto -33px;
-    }*/
 
     .welcome .container.box {
       margin: 50px 10%;
@@ -106,6 +98,7 @@ class DashboardIndex extends ServiceInjectorMixin(PolymerElement) {
 
 .welcome h2 {
   max-width: 600px;
+  width:100%;
   text-align: left
 }
 
@@ -311,6 +304,7 @@ class DashboardIndex extends ServiceInjectorMixin(PolymerElement) {
 .review.active{
   display:block;
   align-self:center;
+  width:100%;
 }
 
   .navigation{
@@ -643,10 +637,73 @@ class DashboardIndex extends ServiceInjectorMixin(PolymerElement) {
         }
         
         @media only screen and (max-width: 400px) {
-          .logo  {
-            background-size: 80%;
-          }
+          .logo {
+            transform: translate(-7px, -20px);
+            height: 270px;
+            width: 270px;
+        }
+
+        .container-logo {
+          height: 256px;
+          width: 256px;
+      }
+
+          h2, .welcome h2 {
+            font-size: 2.3em;
+            text-align:center;
+        }
           
+        .flex {
+          flex-flow: row wrap;
+          justify-content: center;
+      }
+
+          .flex div {
+            display: block;
+            width: 49.5%;
+        }
+
+          #how .text-block .flex .step {
+            width: 90%;
+        }
+
+        #how .text-block .flex .step p {
+          margin-top: 60px;
+          margin-bottom: 35px;
+      }
+
+      .intro-description {
+        max-width: 90%;
+        text-align: center;
+    }
+          
+      .welcome .container.box {
+        margin: 50px 5%;
+      }
+
+      .left, .right {
+        font-size: 80px;
+        width: 15%;
+     }
+
+    .slideshow-container {
+      min-height: 150px;
+     }  
+
+      #team .flex {
+        margin-top: 50px;
+      }
+
+      #team .text-block .flex .step div {
+        padding: 120px 10px 50px;
+        width: auto;
+      }
+
+      #team .text-block .flex .step {
+        width: 100%;
+        margin: 130px 0 0;
+     }
+
           .user_photo {
               height: 200px;
               width: 200px;
