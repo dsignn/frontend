@@ -25,8 +25,7 @@ import '@polymer/paper-input/paper-input';
 import '@polymer/paper-button/paper-button';
 import '@dsign/polymer-mixin/localize/localize-mixin';
 import '../../element/paper-select-language/paper-select-language';
-import '../../element/dsign-menu-item-image/dsign-menu-item-image';
-import '../../element/dsign-menu-item-compress/dsign-menu-item-compress';
+import '../../element/dsign-menu-wrap-item/dsing-menu-wrap-item';
 import {lang} from './language';
 import {mockMenu} from './mockMenu';
 
@@ -134,6 +133,10 @@ class DsignMenu extends LocalizeMixin(ServiceInjectorMixin(PolymerElement)) {
         flex-wrap: wrap;
         justify-content: flex-start;
        }
+       
+       dsign-menu-wrap-item {
+        flex-basis: 12%;
+       }
 
        @media only screen and (max-width: 1980px) and (min-width: 1481px) {
            .item {
@@ -202,10 +205,11 @@ class DsignMenu extends LocalizeMixin(ServiceInjectorMixin(PolymerElement)) {
         </app-toolbar>
       </app-header>
       <div id="menuContainer">
-          <template id="list" is="dom-repeat" items="[[items]]" as="menuItem">
-        ff</br>
-        
-          </template>
+          <dom-repeat id="list" items="[[items]]" as="menuItem">
+              <template>
+                    <dsign-menu-wrap-item item="[[menuItem]]" type="[[itemLayout]]"></dsign-menu-wrap-item>
+              </template>
+          </dom-repeat>
       </div>
     </app-header-layout>
     <app-drawer id="drawer" align="right">
@@ -224,7 +228,7 @@ class DsignMenu extends LocalizeMixin(ServiceInjectorMixin(PolymerElement)) {
             },
 
             items: {
-
+                observer: 'changeItems'
             },
 
             services: {
@@ -259,11 +263,24 @@ class DsignMenu extends LocalizeMixin(ServiceInjectorMixin(PolymerElement)) {
 
     ready() {
         super.ready();
+
+        let domRepeat = document.createElement('template');
+        domRepeat.setAttribute('id', 'list');
+        domRepeat.setAttribute('is', 'dom-repeat');
+        domRepeat.setAttribute('as', 'menuItem');
+        domRepeat.setAttribute('items', '[[items]]');
+
+/*
         let elem = document.createElement(this.itemLayout);
         elem.setAttribute('class', 'item');
         elem.setAttribute('menu-item', '{{menuItem}}');
-        this.$.list.querySelector('template').appendChild(elem);
+        domRepeat.appendChild(elem);
+
+        this.$.menuContainer.appendChild(domRepeat);
+
+ */
          console.log(this.$.list);
+
 
         this.menu = mockMenu;
     }
@@ -293,6 +310,17 @@ class DsignMenu extends LocalizeMixin(ServiceInjectorMixin(PolymerElement)) {
 
         this.items = menu.items;
     }
+
+
+    changeItems(items) {
+        if (!items || (Array.isArray(items) && items.length === 0)) {
+            return;
+        }
+
+        console.log('items', items);
+    }
+
+
 
     tapMenu(evt) {
         this.$.drawer.toggle();

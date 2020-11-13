@@ -28,6 +28,10 @@ class DsignMenuItemImage extends LocalizeMixin(ServiceInjectorMixin(PolymerEleme
     static get template() {
         return html`
     <style> 
+              :host {
+                display: block;
+             }
+    
     
        paper-card {
           width: 100%;
@@ -156,6 +160,9 @@ class DsignMenuItemImage extends LocalizeMixin(ServiceInjectorMixin(PolymerEleme
      * @private
      */
     _computePrice(price) {
+        if (!price || !price.value) {
+            return;
+        }
         return price.value;
     }
 
