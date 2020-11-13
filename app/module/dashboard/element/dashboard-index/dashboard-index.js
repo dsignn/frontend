@@ -228,12 +228,12 @@ class DashboardIndex extends ServiceInjectorMixin(PolymerElement) {
   padding: 0;
 }
 
-.boxed ul li{
+.boxed ul li {
   color: white;
   list-style-type: none;
-  text-transform: uppercase;
   margin: 20px 0;
-  font-size:22px;
+  font-size: 22px;
+  max-width: 300px;
 }
 
 .boxed ul li span{
@@ -297,23 +297,25 @@ class DashboardIndex extends ServiceInjectorMixin(PolymerElement) {
 }
 
 .review {
-    position: absolute;
-    transition: right ease 1s;
+  position: absolute;
+  transition: right ease 1s;
+  display: none !important;
+  transform: translateY(-50%);
+  top: 50%;
 }
 
-.review.active{
-  display:block;
-  align-self:center;
-  width:100%;
+.review.active {
+  display: block !important;
+  width: 100%;
 }
 
   .navigation{
 
   }
 
-  .navigation .dot{
-    height: 20px;
-    width: 20px;
+  .navigation .dot {
+    height: 16px;
+    width: 16px;
     border-radius: 50%;
     background: #015b63;
     margin: 0 10px;
@@ -334,14 +336,15 @@ class DashboardIndex extends ServiceInjectorMixin(PolymerElement) {
 
 .slideshow-container {
   width: 60%;
-  min-height: 200px;
+  min-height: 180px;
   position: relative;
   overflow: hidden;
 }
 
 .left, .right {
-  font-size: 130px;
+  font-size: 60px;
   font-family: auto;
+  line-height: 160px;
   width: 20%;
   color: #015b63;
 }
@@ -531,36 +534,6 @@ class DashboardIndex extends ServiceInjectorMixin(PolymerElement) {
             text-align: center;
         }
         
-        .user_team {
-            height: 400px;
-            width: 300px;
-        }
-        
-        .user_photo {
-            height: 300px;
-            width: 300px;
-            border-radius: 50%;
-            background-image: url("https://placehold.it/300x300/015b63/ffffff");
-        }
-        
-        .user_team .name,
-        .user_team .role {
-            text-align: center;
-        }
-
-        .user_team .name {
-            font-size: 18px;
-        }
-
-        .user_team .role {
-            font-size: 24px;
-        }
-        
-        .card-content .description {
-            word-wrap: break-word;
-            max-width: 280px;
-        }
-
         .container-logo {
           display: block;
           height: 280px;
@@ -636,7 +609,7 @@ class DashboardIndex extends ServiceInjectorMixin(PolymerElement) {
           }
         }
         
-        @media only screen and (max-width: 400px) {
+        @media only screen and (max-width: 600px) {
           .logo {
             transform: translate(-7px, -20px);
             height: 270px;
@@ -703,19 +676,7 @@ class DashboardIndex extends ServiceInjectorMixin(PolymerElement) {
         width: 100%;
         margin: 130px 0 0;
      }
-
-          .user_photo {
-              height: 200px;
-              width: 200px;
-              border-radius: 50%;
-              background-image: url("https://placehold.it/300x300/015b63/ffffff");
-          }
-          
-          .user_team {
-            height: 300px;
-            width: 200px;
-          }
-        }
+    }
         
       </style>
       
@@ -736,12 +697,12 @@ class DashboardIndex extends ServiceInjectorMixin(PolymerElement) {
       </div>
       <div class="menu">
       <div class="inside">
-              <h2>Dsign Menu</h2>
+              <h2>Dsign Menù</h2>
           <div class="text-block">
-                <p class="">Di addio alle continue ristampe dei menu cartacei, all'usura e alla loro poco igienicità.<br/>Da oggi c'è Dsign Menu, il primo <b>menu interamente digitale</b>, l'ieale per i tuoi clienti!<br/>FACILE, VELOCE E PERSONALIZZABILE.</p>
+                <p class="">Di addio alle continue ristampe dei menù cartacei, all'usura e alla loro poca igienicità.<br/>Da oggi c'è Dsign Menu, il primo <b>menu interamente digitale</b>, l'ieale per i tuoi clienti!<br/>FACILE, VELOCE E PERSONALIZZABILE.</p>
                 <div class="flex">
                 <div class="">
-                <a class="icon"><img src="images/ico1.png" /></a><p>Facile</p>
+                <a class="icon"><img src="images/ico1.png" /></a><p>Innovativo</p>
                 </div>
                 <div class="">
                 <a class="icon"><img src="images/ico2.png" /></a><p>Personalizzabile</p>
@@ -750,10 +711,10 @@ class DashboardIndex extends ServiceInjectorMixin(PolymerElement) {
                 <a class="icon"><img src="images/ico3.png" /></a><p>Sempre aggiornato</p>
                 </div>
                 <div class="">
-                <a class="icon"><img src="images/ico6.png" /></a><p>Garantito dai clienti</p>
+                <a class="icon"><img src="images/ico7.png" /></a><p>Nessuna APP da scaricare</p>
                 </div>
                 <div class="">
-                <a class="icon"><img src="images/ico4.png" /></a><p>Veloce</p>
+                <a class="icon"><img src="images/ico4.png" /></a><p>Semplicemente Veloce</p>
                 </div>
                 <div class="">
                 <a class="icon"><img src="images/ico5.png" /></a><p>Rispettoso dell'ambiente</p>
@@ -766,16 +727,16 @@ class DashboardIndex extends ServiceInjectorMixin(PolymerElement) {
         <div id="how" class="row center">
             <h2>Come Funziona?</h2>
             <div class="text-block">
-              <p class="">Niente di più semplice, registrati gratuitamente, crea il tuo menu, stampa il QR Code per i tuoi tavoli e guarda i tuoi clienti utilizzare il tuo menu!</p>
+              <p class="">Ti basteranno tre semplici passaggi per avere il tuo menù digitale pronto all'uso!</p>
               <div class="flex">
                 <div class="step">
-                  <div class=""></div><p>Registrati</p>
+                  <div class=""></div><p>Registrati gratuitamente cliccando l'icona in alto a destra</p>
                 </div>
                 <div class="step">
-                  <div class=""></div><p>Crea il tuo menu</p>
+                  <div class=""></div><p>Scegli tra i template predefiniti e crea il tuo menù</p>
                 </div>
                 <div class="step">
-                  <div class=""></div><p>Stampa il tuo QR Code</p>
+                  <div class=""></div><p>Scarica e stampa il QR code per i tuoi tavoli</p>
                 </div>
               </div>
             </div>         
@@ -789,12 +750,11 @@ class DashboardIndex extends ServiceInjectorMixin(PolymerElement) {
          <div class="text-block">
             <div class="boxed">
               <ul>
-              <li>Piatti illimitati</li>
-              <li>2 template predefiniti</li>
-              <li>Nessuna APP da scaricare</li>
-              <li>Generazione e stampa QR code</li>
+              <li>Inserimento piatti ILLIMITATO</li>
+              <li>Due template predefiniti</li>
+              <li>Generazione e stampa QR CODE immediata</li>
               <hr/>
-              <li><span>Gratis</span></li>
+              <li><span>GRATIS</span></li>
               </ul>
             </div>
          </div>
@@ -806,9 +766,9 @@ class DashboardIndex extends ServiceInjectorMixin(PolymerElement) {
                 <div class="quote">
                   <a class="left prev" on-tap="prevReview">&#10094;</a>
                   <div class="slideshow-container">
-                      <div class="review active">aaaaaaaaaaaaaaaaaaaaaaaaaaaaaa</div>
-                      <div class="review">bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb</div>
-                      <div class="review">cccccccccccccccccccccccccccccccccccc</div>      
+                      <div class="review active">Ottima iniziativa. Vista la pandemia, avere il mio menù interamente digitale mi risparmia un sacco di lavoro e di preoccupazioni.<br/><i>Claudio</i></div>
+                      <div class="review">I miei clienti mi hanno fatto i complimenti! App ben fatta, intuitiva e soprattutto igienicamente sicura!<br/><i>Antonio</i></div>
+                      <div class="review">Inizialmente ero un po' preoccupata visto la mia clientela di tutte le età. L'idea però mi è piaciuta fin da subito, l'ho provata e i miei clienti sono soddisfatti.<br/><i>Gabriella</i></div>      
                   </div>
                   <a class="right next" on-tap="nextReview">&#10095;</a>
                 </div>
@@ -824,26 +784,26 @@ class DashboardIndex extends ServiceInjectorMixin(PolymerElement) {
         <div id="team" class="row center">
             <h2>Il Team</h2>
             <div class="text-block">
-              <p class="">Lorem Ipsum doloret sit amet, is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard</p>
+              <p class="">Siamo un gruppo di ragazzi con la passione per il web, per le nuove tecnologie e la comunicazione digitale. La nostra proposta è un'idea fresca e innovativa che pensiamo possa venire in soccorso ai ristoratori che vogliono stare al passo con i tempi.</p>
               <div class="flex">
                 <div class="step">
                   <div class="">
-                    <p class="name">Antonino Visalli</p>
+                    <p class="name">Antonino</p>
                     <p class="role">CTO</p>
                     <p class="desc">Lorem Ipsum doloret sit amet, is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard</p>
                   </div>
                 </div>
                 <div class="step">
                   <div class="">
-                    <p class="name">Paolo Sartorio</p>
+                    <p class="name">Paolo</p>
                     <p class="role">Web Designer</p>
-                    <p class="desc">Lorem Ipsum doloret sit amet, is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard</p>
+                    <p class="desc">Bisogna saper prendere la palla al balzo, come diceva il castratore di canguri</p>
                     </div>
                 </div>
                 <div class="step">
                   <div class="">
-                    <p class="name">Martina Bertinazzi</p>
-                    <p class="role">Graphic</p>
+                    <p class="name">Martina</p>
+                    <p class="role">Creative</p>
                     <p class="desc">Lorem Ipsum doloret sit amet, is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard</p>
                     </div>
                 </div>
