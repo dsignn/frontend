@@ -263,25 +263,6 @@ class DsignMenu extends LocalizeMixin(ServiceInjectorMixin(PolymerElement)) {
 
     ready() {
         super.ready();
-
-        let domRepeat = document.createElement('template');
-        domRepeat.setAttribute('id', 'list');
-        domRepeat.setAttribute('is', 'dom-repeat');
-        domRepeat.setAttribute('as', 'menuItem');
-        domRepeat.setAttribute('items', '[[items]]');
-
-/*
-        let elem = document.createElement(this.itemLayout);
-        elem.setAttribute('class', 'item');
-        elem.setAttribute('menu-item', '{{menuItem}}');
-        domRepeat.appendChild(elem);
-
-        this.$.menuContainer.appendChild(domRepeat);
-
- */
-         console.log(this.$.list);
-
-
         this.menu = mockMenu;
     }
 
