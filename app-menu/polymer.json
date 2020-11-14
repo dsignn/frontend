@@ -3,7 +3,6 @@
   "sources": [
     "images/**/*",
     "src/**/*",
-    "module/**/*",
     "element/**/*"
   ],
   "extraDependencies": [
@@ -14,7 +13,7 @@
   ],
   "builds": [
     {
-      "name": "production",
+      "name": "production-es5-bundle",
       "preset": "es5-bundled",
       "browserCapabilities": [
         "es2015"
@@ -28,9 +27,31 @@
       "html": {
         "minify": false,
         "compile": true,
-        "transformModulesToAmd": true
+        "transformModulesToAmd": false
       },
-      "bundle": true,
+      "bundle": {
+        "stripComments": true
+      },
+      "addServiceWorker": false
+    },
+    {
+      "name": "production-es5-non-bundle",
+      "preset": "es5-bundled",
+      "browserCapabilities": [
+        "es2015"
+      ],
+      "js": {
+        "minify": false
+      },
+      "css": {
+        "minify": false
+      },
+      "html": {
+        "minify": false
+      },
+      "bundle": {
+        "stripComments": true
+      },
       "addServiceWorker": false
     }
   ],

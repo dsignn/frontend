@@ -211,7 +211,6 @@ class DsignMenu extends LocalizeMixin(ServiceInjectorMixin(PolymerElement)) {
     </app-header-layout>
     <app-drawer id="drawer" align="right">
         <div class="drawerContainer">
-            <!--<paper-select-language id="language"></paper-select-language>-->
         </div>
     </app-drawer>
     `;
