@@ -24,8 +24,9 @@ import '@polymer/paper-listbox/paper-listbox';
 import '@polymer/paper-input/paper-input';
 import '@polymer/paper-button/paper-button';
 import '@dsign/polymer-mixin/localize/localize-mixin';
-import '../../element/paper-select-language/paper-select-language';
-import '../../element/dsign-menu-wrap-item/dsing-menu-wrap-item';
+import '../paper-select-language/paper-select-language';
+import '../dsign-menu-wrap-item/dsing-menu-wrap-item';
+import '../dsign-logo/dsing-logo';
 import {lang} from './language';
 import {mockMenu} from './mockMenu';
 
@@ -39,21 +40,7 @@ setPassiveTouchGestures(true);
 class DsignMenu extends LocalizeMixin(ServiceInjectorMixin(PolymerElement)) {
     static get template() {
         return html`
-    <style>
-    
-        /*
-                    --dark-primary-color:       #61ad97;
-            --default-primary-color:    #015b63;
-            --light-primary-color:      #B2DFDB;
-            --text-primary-color:       #FFFFFF;
-            --accent-color:             #f0b80e;
-            --primary-background-color: #FFFFFF;
-            --primary-text-color:       #212121;
-            --secondary-text-color:     #757575;
-            --disabled-text-color:      #BDBDBD;
-            --divider-color:            #BDBDBD;
-        */
-    
+    <style>    
        app-toolbar {
          background-color:  #015b63;
          padding-left: 6px;
@@ -111,6 +98,15 @@ class DsignMenu extends LocalizeMixin(ServiceInjectorMixin(PolymerElement)) {
             font-size: 18px;
             font-family: "Roboto", "Noto", sans-serif;
             color:rgb(33, 33, 33);
+       }
+       
+       .logo {
+          height: 64px;
+          width: 64px;
+          border-radius: 50%;
+          background-position: center center;
+          background-size: 60px;
+          background-color: blue;
        }
        
        app-drawer {
@@ -186,6 +182,7 @@ class DsignMenu extends LocalizeMixin(ServiceInjectorMixin(PolymerElement)) {
     <app-header-layout fullbleed>
       <app-header slot="header" fixed effects="waterfall">
         <app-toolbar>
+            <dsign-logo></dsign-logo>
             <div class="search flex-row" down>
                 <paper-input label="{{localize('search')}}"></paper-input>
                 <paper-icon-button icon="search" down></paper-icon-button>
@@ -214,7 +211,7 @@ class DsignMenu extends LocalizeMixin(ServiceInjectorMixin(PolymerElement)) {
     </app-header-layout>
     <app-drawer id="drawer" align="right">
         <div class="drawerContainer">
-            <paper-select-language id="language"></paper-select-language>
+            <!--<paper-select-language id="language"></paper-select-language>-->
         </div>
     </app-drawer>
     `;
