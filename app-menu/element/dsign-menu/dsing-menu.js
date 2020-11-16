@@ -259,7 +259,14 @@ class DsignMenu extends LocalizeMixin(ServiceInjectorMixin(PolymerElement)) {
 
     ready() {
         super.ready();
-        this.menu = mockMenu;
+        switch (true) {
+            case menu !== undefined || menu !== null:
+                this.menu = menu;
+                break;
+            case dev === true:
+                this.menu = mockMenu;
+                break;
+        }
     }
 
     parseUrlParam() {
