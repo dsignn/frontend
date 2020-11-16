@@ -297,16 +297,14 @@ class DashboardIndex extends ServiceInjectorMixin(PolymerElement) {
 }
 
 .review {
-  position: absolute;
-  transition: right ease 1s;
-  display: none !important;
-  transform: translateY(-50%);
-  top: 50%;
+    position: absolute;
+    transition: right ease 1s;
 }
 
-.review.active {
-  display: block !important;
-  width: 100%;
+.review.active{
+  display:block;
+  align-self:center;
+  width:100%;
 }
 
   .navigation{
@@ -845,7 +843,7 @@ class DashboardIndex extends ServiceInjectorMixin(PolymerElement) {
     setTimeout(
         () => {
           elements[next].style.display = 'none';
-          elements[next].style.right = '-1200px';
+          elements[next].style.right = '-1500px';
         },
         10
     );
@@ -859,7 +857,7 @@ class DashboardIndex extends ServiceInjectorMixin(PolymerElement) {
 
     setTimeout(
         () => {
-          elements[current].style.right = '1200px';
+          elements[current].style.right = '1500px';
           elements[current].classList.remove('active');
           elements[next].style.right = '0';
           elements[next].classList.add('active');
@@ -876,7 +874,7 @@ class DashboardIndex extends ServiceInjectorMixin(PolymerElement) {
     setTimeout(
         () => {
           elements[next].style.display = 'none';
-          elements[next].style.right = '1200px';
+          elements[next].style.right = '1500px';
         },
         10
     );
@@ -890,7 +888,7 @@ class DashboardIndex extends ServiceInjectorMixin(PolymerElement) {
 
     setTimeout(
         () => {
-          elements[current].style.right = '-1200px';
+          elements[current].style.right = '-1500px';
           elements[current].classList.remove('active');
           elements[next].classList.add('active');
           elements[next].style.right = '0';
