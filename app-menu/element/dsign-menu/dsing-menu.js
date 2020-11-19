@@ -182,7 +182,7 @@ class DsignMenu extends LocalizeMixin(ServiceInjectorMixin(PolymerElement)) {
     <app-header-layout fullbleed>
       <app-header slot="header" fixed effects="waterfall">
         <app-toolbar>
-            <dsign-logo></dsign-logo>
+            <dsign-logo organization="{{organization}}"></dsign-logo>
             <div class="search flex-row" down>
                 <paper-input label="{{localize('search')}}"></paper-input>
                 <paper-icon-button icon="search" down></paper-icon-button>
@@ -212,15 +212,17 @@ class DsignMenu extends LocalizeMixin(ServiceInjectorMixin(PolymerElement)) {
     <app-drawer id="drawer" align="right">
         <div class="drawerContainer">
         </div>
-    </app-drawer>
-    `;
-
+    </app-drawer>`;
     }
 
     static get properties() {
         return {
             menu: {
                 observer: 'changeMenu'
+            },
+
+            organization: {
+                notify: true
             },
 
             items: {
@@ -260,7 +262,7 @@ class DsignMenu extends LocalizeMixin(ServiceInjectorMixin(PolymerElement)) {
     ready() {
         super.ready();
         switch (true) {
-            case menu !== undefined || menu !== null:
+            case menu !== undefined:
                 this.menu = menu;
                 break;
             case dev === true:
@@ -289,10 +291,12 @@ class DsignMenu extends LocalizeMixin(ServiceInjectorMixin(PolymerElement)) {
     changeMenu(menu) {
         if (!menu) {
             this.items = [];
+            this.organization = {};
             return
         }
 
         this.items = menu.items;
+        this.organization = menu.organization;
     }
 
 

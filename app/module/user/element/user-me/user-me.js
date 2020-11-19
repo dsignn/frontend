@@ -57,28 +57,23 @@ class UserMe extends StoragePaginationMixin(StorageCrudMixin(LocalizeMixin(Servi
                  background-color: red;
                 }
             </style>
-            <div class="container">
-                <div class="avatar">
-                    <iron-icon icon="account"></iron-icon>
-                </div>
-                <div class="name">
-                    <paper-input label="{{localize('name')}}" value="{{userData.name}}" ></paper-input>
-                    <paper-input label="{{localize('surname')}}" value="{{userData.lastName}}" ></paper-input>
-                </div>
-            </div>
-            <paper-input label="{{localize('email')}}" value="{{userData.email}}"></paper-input>
-            <paper-input type="password" label="{{localize('password')}}"></paper-input>
-            <paper-input type="password" label="{{localize('repeat-password')}}"></paper-input>
-            <!--<paper-select-language></paper-select-language>-->
-        `;
-    }
-
-    /**
-     * @constructor
-     */
-    constructor() {
-        super();
-        this.resources = lang;
+            <iron-form id="formUserMe">
+                <form method="post">
+                    <div class="container">
+                        <div class="avatar">
+                            <iron-icon icon="account"></iron-icon>
+                        </div>
+                        <div class="name">
+                            <paper-input label="{{localize('name')}}" value="{{userData.name}}" ></paper-input>
+                            <paper-input label="{{localize('surname')}}" value="{{userData.lastName}}" ></paper-input>
+                        </div>
+                    </div>
+                    <paper-input label="{{localize('email')}}" value="{{userData.email}}"></paper-input>
+                    <paper-input type="password" label="{{localize('password')}}"></paper-input>
+                    <paper-input type="password" label="{{localize('repeat-password')}}"></paper-input>
+                    <!--<paper-select-language></paper-select-language>-->
+                </form>
+            </iron-form>`;
     }
 
     /**
@@ -106,6 +101,14 @@ class UserMe extends StoragePaginationMixin(StorageCrudMixin(LocalizeMixin(Servi
             }
         }
 
+    }
+
+    /**
+     * @constructor
+     */
+    constructor() {
+        super();
+        this.resources = lang;
     }
 
     _authServiceChanged(service) {

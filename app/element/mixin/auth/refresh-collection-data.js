@@ -45,6 +45,7 @@ export const RefreshCollectionData = (superClass) => {
 
                     setTimeout(
                         () => {
+                            console.log( this._storage);
                             this.getPagedEntities();
                         },
                         500

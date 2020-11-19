@@ -34,8 +34,8 @@ class DsignLogin extends LocalizeMixin(AclMixin(ServiceInjectorMixin(PolymerElem
       <div id="loginUserContainer">
           <iron-form id="loginUser">
             <form method="post">
-              <paper-input id="username" name="email"  label="{{localize('email')}}"></paper-input>
-              <paper-input id="password" type="password" name="password" label="{{localize('password')}}"></paper-input>
+              <paper-input id="username" type="email" name="email" label="{{localize('email')}}" autocomplete="email"></paper-input>
+              <paper-input id="password" type="password" name="password" label="{{localize('password')}}"  autocomplete="current-password"></paper-input>
               <div class="recover" on-tap="toggleRecoverButton">{{localize('recover-password')}}</div>
               <paper-button on-tap="submitLoginButton">{{localize('login')}}</paper-button>  
             </form>

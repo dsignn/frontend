@@ -35,7 +35,6 @@ class DsignLogo extends PolymerElement {
                 background-position: center center;
                 background-repeat: no-repeat;
                 background-size: contain;
-                background-color: red;
             }
         </style>
         <div class="container">
@@ -52,8 +51,23 @@ class DsignLogo extends PolymerElement {
                     'first',
                     'second'
                 ]
+            },
+
+            organization: {
+                observer: 'changeOrganization'
             }
         };
+    }
+
+    changeOrganization(organization) {
+        console.log('CAMBIO ORG', organization)
+        if (!organization) {
+            return;
+        }
+
+        if (organization.logo && organization.logo.src) {
+            this.shadowRoot.querySelector('.logo').style.backgroundImage = `url("${organization.logo.src}")`;
+        }
     }
 }
 

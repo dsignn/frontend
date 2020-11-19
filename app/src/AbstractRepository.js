@@ -14,8 +14,8 @@ export class AbstractRepository extends ContainerAware {
         let adapter = storageAdapter;
 
         this.getContainer().get('Auth').eventManager.on(Auth.LOGIN, (data) => {
-            console.log('TODO ADD HEADER', data);
-            //adapter.addHeader('Authorization', `Bearer ${this.getContainer().get('Auth').token.access_token}`);
+            //console.log('TODO ADD HEADER', data);
+            adapter.addHeader('Authorization', `Bearer ${this.getContainer().get('Auth').token.access_token}`);
         });
 
         this.getContainer().get('Auth').eventManager.on(Auth.LOGOUT, (data) => {

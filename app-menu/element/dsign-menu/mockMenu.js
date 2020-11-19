@@ -80,8 +80,7 @@ export const mockMenu = {
             "photos": [],
             "status": "available",
             "id": "5f3e4a70572b8132565a6198"
-        }
-        ,
+        },
         {
             "name": {
                 "it": "pasta all'arrabbiata",
@@ -236,8 +235,21 @@ export const mockMenu = {
         }
     ],
     "organization": {
-        "id": "5f2bd8d4fd7347473838c2f3",
-        "collection": "organization"
+        "_id": "5f8dbe2601983b21c01c4224",
+        "name": "rrr",
+        "normalize_name": "rrr",
+        "qr_code": {"id": "5f9f30bda3258207400bc654", "collection": "resource"},
+        "logo": {
+            "_id": "5fa32c5a6f73c744004f3a24",
+            "dimension": {"height": 530, "width": 530},
+            "mime_type": "image/png",
+            "name": "logo organization",
+            "size": 46046,
+            "src": "https://dsign-cdn-test.s3.eu-central-1.amazonaws.com/3c8982c4-f115-444d-b659-a053b80f7eda",
+            "s3path": "3c8982c4-f115-444d-b659-a053b80f7eda",
+            "tags": [],
+            "organization_reference": null
+        }
     },
     "name": "fdsfdsa",
     "backgroundHeader": "#009688",
