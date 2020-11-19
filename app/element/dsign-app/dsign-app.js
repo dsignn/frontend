@@ -185,7 +185,7 @@ class DsignApp extends LocalizeMixin(AclMixin(ServiceInjectorMixin(PolymerElemen
             <div class="auth-container">
               <user-me></user-me>
               <div class="user-me-container">
-                  <paper-button>Modifica</paper-button>
+                  <paper-button on-tap="updateUserData">Modifica</paper-button>
                   <paper-button on-tap="logout">logout</paper-button>
               </div>
             </div>
@@ -413,6 +413,13 @@ class DsignApp extends LocalizeMixin(AclMixin(ServiceInjectorMixin(PolymerElemen
       window.history.pushState("", "", "");
       this.page = "dashboard";
     }
+  }
+
+  /**
+   * @param evt
+   */
+  updateUserData(evt) {
+    this.shadowRoot.querySelector('user-me').updateUserData();
   }
 }
 

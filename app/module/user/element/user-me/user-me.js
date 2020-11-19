@@ -1,7 +1,6 @@
 import {html, PolymerElement} from "@polymer/polymer/polymer-element";
-import {StoragePaginationMixin} from "@dsign/polymer-mixin/storage/pagination-mixin";
 import {StorageCrudMixin} from "@dsign/polymer-mixin/storage/crud-mixin";
-import {LocalizeMixin} from "@dsign/polymer-mixin/localize/localize-mixin";
+import {FormErrorMessage} from "../../../../element/mixin/form-error-message/form-error-message";
 import {ServiceInjectorMixin} from "@dsign/polymer-mixin/service/injector-mixin";
 import {Auth} from "../../../../src/authentication/Auth";
 import "@polymer/paper-input/paper-input";
@@ -13,7 +12,7 @@ import {lang} from './language';
  * @customElement
  * @polymer
  */
-class UserMe extends StoragePaginationMixin(StorageCrudMixin(LocalizeMixin(ServiceInjectorMixin(PolymerElement)))) {
+class UserMe extends StorageCrudMixin(FormErrorMessage(ServiceInjectorMixin(PolymerElement))) {
     /**
      * @returns {HTMLTemplateElement}
      */
@@ -64,13 +63,13 @@ class UserMe extends StoragePaginationMixin(StorageCrudMixin(LocalizeMixin(Servi
                             <iron-icon icon="account"></iron-icon>
                         </div>
                         <div class="name">
-                            <paper-input label="{{localize('name')}}" value="{{userData.name}}" ></paper-input>
-                            <paper-input label="{{localize('surname')}}" value="{{userData.lastName}}" ></paper-input>
+                            <paper-input name="name" label="{{localize('name')}}" value="{{userData.name}}" ></paper-input>
+                            <paper-input name="lastName" label="{{localize('surname')}}" value="{{userData.lastName}}" ></paper-input>
                         </div>
                     </div>
-                    <paper-input label="{{localize('email')}}" value="{{userData.email}}"></paper-input>
-                    <paper-input type="password" label="{{localize('password')}}"></paper-input>
-                    <paper-input type="password" label="{{localize('repeat-password')}}"></paper-input>
+                    <paper-input name="email" label="{{localize('email')}}" value="{{userData.email}}"></paper-input>
+                    <paper-input name="password" type="password" label="{{localize('password')}}"></paper-input>
+                    <paper-input name="recoverPassword" type="password" label="{{localize('repeat-password')}}" skip></paper-input>
                     <!--<paper-select-language></paper-select-language>-->
                 </form>
             </iron-form>`;
@@ -88,6 +87,9 @@ class UserMe extends StoragePaginationMixin(StorageCrudMixin(LocalizeMixin(Servi
                 value : {
                     _localizeService: 'Localize',
                     _authService: "Auth",
+                    StorageContainerAggregate: {
+                        _storage: "UserStorage"
+                    }
                 }
             },
 
@@ -111,6 +113,18 @@ class UserMe extends StoragePaginationMixin(StorageCrudMixin(LocalizeMixin(Servi
         this.resources = lang;
     }
 
+    /**
+     * @inheritDoc
+     */
+    ready() {
+        super.ready();
+        this.$.formUserMe.addEventListener('iron-form-presubmit', this.submitUserMe.bind(this));
+    }
+
+    /**
+     * @param service
+     * @private
+     */
     _authServiceChanged(service) {
         if (!service) {
             return;
@@ -126,6 +140,24 @@ class UserMe extends StoragePaginationMixin(StorageCrudMixin(LocalizeMixin(Servi
         if (service.getIdentity()) {
             this._setUserData(service.getIdentity());
         }
+    }
+
+    /***
+     * @param evt
+     */
+    submitUserMe(evt) {
+        evt.preventDefault();
+
+        console.log();
+        console.log('manda i dati', evt, this._storage);
+
+    }
+
+    /**
+     *
+     */
+    updateUserData() {
+        this.$.formUserMe.submit();
     }
 
 }

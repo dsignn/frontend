@@ -127,7 +127,7 @@ class UserViewUpsert extends StorageEntityMixin(LocalizeMixin(ServiceInjectorMix
                 value : {
                     _notify : "Notify",
                     _localizeService: 'Localize',
-                    "StorageContainerAggregate": {
+                    StorageContainerAggregate: {
                         _storage: "UserStorage"
                     }
                 }
