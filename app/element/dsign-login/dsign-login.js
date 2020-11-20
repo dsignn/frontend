@@ -140,6 +140,7 @@ class DsignLogin extends LocalizeMixin(AclMixin(ServiceInjectorMixin(PolymerElem
         this._authService.login(data.email, data.password)
             .then((data) => {
             this._notify.notify(this.localize('login-ok'));
+            this.errorMessageLogin = '';
             this.$.loginUser.reset();
         }).catch((error) => {
             switch (error.status) {
@@ -158,7 +159,7 @@ class DsignLogin extends LocalizeMixin(AclMixin(ServiceInjectorMixin(PolymerElem
      * @param evt
      */
     submitRecoverPasswordButton(evt) {
-        this.errorMessageLogin = 'errorMessageRecover';
+        this.errorMessageRecover = '';
         this.$.recoverPassword.submit();
     }
 
@@ -173,6 +174,7 @@ class DsignLogin extends LocalizeMixin(AclMixin(ServiceInjectorMixin(PolymerElem
         ).then((data) => {
             this._notify.notify(this.localize('recover-password-ok'));
             this.$.recoverPassword.reset();
+            this.errorMessageRecover = '';
         }).catch((error) => {
             switch (error.status) {
                 case 404:
