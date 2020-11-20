@@ -4,13 +4,15 @@ export const lang = {
     "surname": "Cognome",
     "email": "Email",
     "password": "Password",
-    "repeat-password": "Repeat password"
+    "repeat-password": "Repeat password",
+    "notify-update": "Dati utente modificati"
   },
   "en": {
     "name": "Name",
     "surname": "Surname",
     "email": "Email",
     "password": "Password",
-    "repeat-password": "Repeat password"
+    "repeat-password": "Repeat password",
+    "notify-update": "User data modify"
   }
 };

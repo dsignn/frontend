@@ -87,6 +87,7 @@ class UserMe extends StorageCrudMixin(FormErrorMessage(ServiceInjectorMixin(Poly
                 value : {
                     _localizeService: 'Localize',
                     _authService: "Auth",
+                    _notify : "Notify",
                     StorageContainerAggregate: {
                         _storage: "UserStorage"
                     }
@@ -147,8 +148,22 @@ class UserMe extends StorageCrudMixin(FormErrorMessage(ServiceInjectorMixin(Poly
      */
     submitUserMe(evt) {
         evt.preventDefault();
+        this._storage.adapter.updateMethod = 'PATCH';
+        let data = this.getFormData(this.$.formUserMe);
+        data.id = this.userData.id;
 
-        console.log();
+        this._storage.update(data)
+            .then((data) => {
+
+                this._storage.adapter.updateMethod = 'PUT';
+                this._notify.notify(this.localize('notify-update'));
+            })
+            .catch((error) => {
+                console.warn(error)
+                this._storage.adapter.updateMethod = 'PUT';
+            });
+
+        console.log(this.getFormData(this.$.formUserMe));
         console.log('manda i dati', evt, this._storage);
 
     }

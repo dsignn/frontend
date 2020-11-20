@@ -21,10 +21,26 @@ class DsignLogin extends LocalizeMixin(AclMixin(ServiceInjectorMixin(PolymerElem
         }
          .recover {
             text-align: left;
-            font-size: 14px;
+            font-size: 16px;
+            text-transform: uppercase;
             padding: 10px 0;
-            color: #32b0ff;
+            color: var(--default-primary-color);
             cursor: pointer;
+        }
+        
+        .error {
+            margin: 15px 0;
+            height: 20px;
+            text-align: left;
+            letter-spacing: 0.176px;
+            color:var(--error-color);
+            font-size: 12px;
+        }
+        
+        .action {
+            @apply --layout-horizontal;
+            @apply --layout-justified;
+          /*  color: var(var(--error-color));*/
         }
         
         paper-input {
@@ -34,19 +50,25 @@ class DsignLogin extends LocalizeMixin(AclMixin(ServiceInjectorMixin(PolymerElem
       <div id="loginUserContainer">
           <iron-form id="loginUser">
             <form method="post">
-              <paper-input id="username" type="email" name="email" label="{{localize('email')}}" autocomplete="email"></paper-input>
+              <paper-input id="username" type="email" name="email" label="{{localize('email')}}" autocomplete="email"  error-message="{{localize('invalid-email')}}"></paper-input>       
               <paper-input id="password" type="password" name="password" label="{{localize('password')}}"  autocomplete="current-password"></paper-input>
-              <div class="recover" on-tap="toggleRecoverButton">{{localize('recover-password')}}</div>
-              <paper-button on-tap="submitLoginButton">{{localize('login')}}</paper-button>  
+              <div class="error">{{errorMessageLogin}}</div>       
+              <div class="action">
+                <div class="recover" on-tap="toggleRecoverButton">{{localize('recover-password')}}</div>
+                <paper-button on-tap="submitLoginButton">{{localize('login')}}</paper-button>  
+              </div>
             </form>
           </iron-form>
        </div>
       <div id="recoverPasswordContainer">
           <iron-form id="recoverPassword">
             <form method="post">
-              <paper-input id="email" name="identifier" label="{{localize('email')}}" ></paper-input>
-              <div class="recover" on-tap="toggleRecoverButton">{{localize('back')}}</div>
-              <paper-button on-tap="submitRecoverPasswordButton">{{localize('recover-password')}}</paper-button>
+              <paper-input id="email" type="email" name="identifier" label="{{localize('email')}}" autocomplete="email"  error-message="{{localize('invalid-email')}}"></paper-input>
+              <div class="error">{{errorMessageRecover}}</div>  
+              <div class="action">
+                <div class="recover" on-tap="toggleRecoverButton">{{localize('back')}}</div>
+                <paper-button on-tap="submitRecoverPasswordButton">{{localize('recover-password')}}</paper-button>
+              </div>
             </form>
           </iron-form>
       </div>`;
@@ -64,6 +86,14 @@ class DsignLogin extends LocalizeMixin(AclMixin(ServiceInjectorMixin(PolymerElem
                 type: Boolean,
                 readOnly: true,
                 value: false
+            },
+
+            errorMessageLogin: {
+                notify: true
+            },
+
+            errorMessageRecover: {
+                notify: true
             },
 
             services : {
@@ -97,6 +127,7 @@ class DsignLogin extends LocalizeMixin(AclMixin(ServiceInjectorMixin(PolymerElem
      * @param evt
      */
     submitLoginButton(evt) {
+        this.errorMessageLogin = '';
         this.$.loginUser.submit();
     }
 
@@ -111,7 +142,15 @@ class DsignLogin extends LocalizeMixin(AclMixin(ServiceInjectorMixin(PolymerElem
             this._notify.notify(this.localize('login-ok'));
             this.$.loginUser.reset();
         }).catch((error) => {
-            console.log('ERROR', error);
+            switch (error.status) {
+                case 404:
+                case 400:
+                    this.errorMessageLogin = this.localize('credential-not-found');
+                    break;
+                case 401:
+                    this.errorMessageLogin = this.localize('account-not-verified');
+                    break;
+            }
         });
     }
 
@@ -119,6 +158,7 @@ class DsignLogin extends LocalizeMixin(AclMixin(ServiceInjectorMixin(PolymerElem
      * @param evt
      */
     submitRecoverPasswordButton(evt) {
+        this.errorMessageLogin = 'errorMessageRecover';
         this.$.recoverPassword.submit();
     }
 
@@ -134,7 +174,11 @@ class DsignLogin extends LocalizeMixin(AclMixin(ServiceInjectorMixin(PolymerElem
             this._notify.notify(this.localize('recover-password-ok'));
             this.$.recoverPassword.reset();
         }).catch((error) => {
-            console.log('ERROR', error);
+            switch (error.status) {
+                case 404:
+                    this.errorMessageRecover = this.localize('email-not-found');
+                    break;
+            }
         });
     }
 

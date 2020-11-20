@@ -168,7 +168,7 @@ class DsignApp extends LocalizeMixin(AclMixin(ServiceInjectorMixin(PolymerElemen
           <iron-pages id="moduleEntryPoint" selected="[[page]]" attr-for-selected="name" role="main">
             <activation-code query={{query}} name="activation-code"></activation-code>
             <reset-password query={{query}} name="reset-password"></reset-password>
-            <dsing-404 name="404" root-path="[[rootPath]]timeslot"></dsing-404>
+            <dsing-404 name="404" root-path="[[rootPath]]dashboard"></dsing-404>
           </iron-pages>
         </div>
         <footer style="line-height: 120px; background-color: #015b63; color: white; text-align:center;">© 2020 Digital Signage - Il tuo benessere a tavola | Partita IVA 01234567899</footer>
