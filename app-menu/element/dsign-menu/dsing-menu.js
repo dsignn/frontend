@@ -17,6 +17,7 @@ import '@polymer/app-layout/app-drawer/app-drawer';
 import '@polymer/app-layout/app-header/app-header';
 import '@polymer/app-layout/app-header-layout/app-header-layout';
 import '@polymer/app-layout/app-scroll-effects/effects/waterfall';
+import '@polymer/iron-icon/iron-icon';
 import '@polymer/paper-dropdown-menu/paper-dropdown-menu';
 import '@polymer/paper-item/paper-item';
 import '@polymer/paper-icon-button/paper-icon-button';
@@ -133,6 +134,10 @@ class DsignMenu extends LocalizeMixin(ServiceInjectorMixin(PolymerElement)) {
        dsign-menu-wrap-item {
         flex-basis: 12%;
        }
+       
+       #category {
+         padding-bottom: 2px;
+       }
 
        @media only screen and (max-width: 1980px) and (min-width: 1481px) {
            .item {
@@ -183,20 +188,22 @@ class DsignMenu extends LocalizeMixin(ServiceInjectorMixin(PolymerElement)) {
       <app-header slot="header" fixed effects="waterfall">
         <app-toolbar>
             <dsign-logo organization="{{organization}}"></dsign-logo>
-            <div class="search flex-row" down>
-                <paper-input label="{{localize('search')}}"></paper-input>
-                <paper-icon-button icon="search" down></paper-icon-button>
+            <div class="search flex-row">
+                <paper-input id="search" label="{{localize('search')}}" on-input="searchByName"></paper-input>
             </div>
-            <paper-dropdown-menu id="category" label="{{localize('category')}}">
-                <paper-listbox slot="dropdown-content" selected="0">
-                    <dom-repeat id="menu" items="{{categories}}" as="category">
-                      <template>
-                         <paper-item value="{{category}}">{{localize(category)}}</paper-item>
-                      </template>
-                    </dom-repeat>
-                </paper-listbox>
-            </paper-dropdown-menu>
-            <div class="flex-row padding-l-6">
+            <div class="flex-row" down>
+                <paper-dropdown-menu id="category" label="{{localize('category')}}" on-iron-select="searchByCategory">
+                    <paper-listbox slot="dropdown-content">
+                        <dom-repeat id="menu" items="{{categories}}" as="category">
+                          <template>
+                             <paper-item value="{{category}}">{{localize(category)}}</paper-item>
+                          </template>
+                        </dom-repeat>
+                    </paper-listbox>
+                </paper-dropdown-menu>
+                <paper-icon-button icon="clear" on-tap="clearCategory" disable down></paper-icon-button>
+            </div>
+            <div class="flex-row">
                 <paper-icon-button icon="v-menu" on-tap="tapMenu"></paper-icon-button>
             </div>
         </app-toolbar>
@@ -226,7 +233,7 @@ class DsignMenu extends LocalizeMixin(ServiceInjectorMixin(PolymerElement)) {
             },
 
             items: {
-                observer: 'changeItems'
+        //        observer: 'changeItems'
             },
 
             services: {
@@ -241,15 +248,14 @@ class DsignMenu extends LocalizeMixin(ServiceInjectorMixin(PolymerElement)) {
             },
 
             categories: {
-                value: [
-                    'all',
-                    'first',
-                    'second'
-                ]
+                notify: true
             }
         };
     }
 
+    /**
+     * @inheritDoc
+     */
     constructor() {
         super();
         this.resources = lang;
@@ -259,8 +265,18 @@ class DsignMenu extends LocalizeMixin(ServiceInjectorMixin(PolymerElement)) {
         }
     }
 
+    /**
+     * @inheritDoc
+     */
     ready() {
         super.ready();
+        /**
+         * Load category
+         */
+        this.getCategory().then((category) => {
+            this._attachCategory(category);
+        });
+
         switch (true) {
             case menu !== undefined:
                 this.menu = menu;
@@ -271,6 +287,37 @@ class DsignMenu extends LocalizeMixin(ServiceInjectorMixin(PolymerElement)) {
         }
     }
 
+    /**
+     * TODO config url and create service
+     * @returns array
+     */
+    getCategory() {
+
+        return new Promise( (resolve, reject) => {
+            let request = new XMLHttpRequest();
+
+            request.addEventListener("load", (data) => {
+
+                if (request.status >= 300) {
+                    let response = {
+                        status: request.status,
+                        message: request.responseText
+                    };
+
+                    return reject(response)
+                }
+
+                resolve(JSON.parse(request.response)[0]);
+            });
+            request.open("GET", 'http://127.0.0.150/menu-category');
+            request.setRequestHeader('Accept','application/json');
+            request.send();
+        });
+    }
+
+    /**
+     * @return object
+     */
     parseUrlParam() {
         var match,
             pl     = /\+/g,  // Regex for replacing addition symbol with a space
@@ -297,21 +344,134 @@ class DsignMenu extends LocalizeMixin(ServiceInjectorMixin(PolymerElement)) {
 
         this.items = menu.items;
         this.organization = menu.organization;
+
+        if (menu.backgroundHeader) {
+            this._changeBackgroundColorHeader(menu.backgroundHeader)
+        }
+
+        if (menu.colorHeader) {
+            this._changeColorHeader(menu.colorHeader)
+        }
     }
 
-
+    /**
+     * @param items
+     */
     changeItems(items) {
         if (!items || (Array.isArray(items) && items.length === 0)) {
             return;
         }
-
-        console.log('items', items);
     }
-
-
 
     tapMenu(evt) {
         this.$.drawer.toggle();
+    }
+
+    /**
+     * @param color
+     * @private
+     */
+    _changeBackgroundColorHeader(color) {
+        this.shadowRoot.querySelector('app-toolbar').style.backgroundColor = color;
+    }
+
+    /**
+     *
+     * @param color
+     * @private
+     */
+    _changeColorHeader(color) {
+        let icons = this.shadowRoot.querySelectorAll('paper-icon-button');
+        for (let index = 0; icons.length > index; index++) {
+            icons[index].style.color = color;
+        }
+
+        /**
+         * paper input style
+         */
+        this.$.search.shadowRoot.querySelector('label').style.color = color;
+        this.$.search.shadowRoot.querySelector('input').style.color = color;
+        this.$.search.shadowRoot.querySelector('paper-input-container').shadowRoot.querySelector('div.unfocused-line').style.borderColor = color;
+
+        this.$.category.shadowRoot.querySelector('paper-input').shadowRoot.querySelector('label').style.color = color;
+        this.$.category.shadowRoot.querySelector('paper-input').shadowRoot.querySelector('input').style.color = color;
+        this.$.category.shadowRoot.querySelector('paper-input').shadowRoot.querySelector('paper-input-container').shadowRoot.querySelector('div.unfocused-line').style.borderColor = color;
+    }
+
+    /**
+     * @param evt
+     */
+    searchByName(evt) {
+        this.search(evt.target.value, this.$.category.selectedItem ? this.$.category.selectedItem.value : null);
+    }
+
+    /**
+     * @param evt
+     */
+    searchByCategory(evt) {
+        this.search(this.$.search.value ? this.$.search.value : null, evt.detail.item.value);
+    }
+
+    /**
+     * @param evt
+     */
+    clearCategory(evt) {
+        this.$.category.value = null;
+        this.$.category.selectedItem = null;
+        this.search(this.$.search.value ? this.$.search.value : null, null);
+    }
+
+    /**
+     * @param name
+     * @param category
+     */
+    search(name, category) {
+        let nodes = this.shadowRoot.querySelectorAll('dsign-menu-wrap-item ');
+        let lang = this._localizeService.getDefaultLang();
+        let hide = false;
+        for (let index = 0; nodes.length > index; index++) {
+
+
+            switch (true) {
+                case !name === false && nodes[index].item.name[lang].toLowerCase().includes(name.toLowerCase()) === false:
+                    hide = true;
+                case !category === false && nodes[index].item.category !== category:
+                    hide = true;
+                    break;
+            }
+            //console.log(hide);
+            //console.log(name, !name === false && nodes[index].item.name[lang].toLowerCase().includes(name.toLowerCase()) === false);
+            //console.log(category, !category === false && nodes[index].item.category !== category);
+            //console.log('------------------');
+            nodes[index].hide = hide;
+            hide = false;
+        }
+    }
+
+    /**
+     * @param categoryDocument
+     * @private
+     */
+    _attachCategory(categoryDocument) {
+
+        let categoryTranslation = {};
+        let categories = [];
+        let languages = this._localizeService.getLanguages();
+        for (let index = 0; languages.length > index; index++) {
+            categoryTranslation[languages[index]] = {};
+        }
+
+        if (typeof categoryDocument === 'object' && categoryDocument !== null) {
+            for (let property1 in categoryDocument) {
+                categories.push(property1);
+                for (let property2 in categoryDocument[property1]) {
+                    categoryTranslation[property2][property1] = categoryDocument[property1][property2];
+                }
+            }
+        }
+
+        this.resources = Object.assign(this.resources, categoryTranslation);
+        this.categories = categories;
     }
 }
 

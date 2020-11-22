@@ -60,7 +60,6 @@ class DsignLogo extends PolymerElement {
     }
 
     changeOrganization(organization) {
-        console.log('CAMBIO ORG', organization)
         if (!organization) {
             return;
         }

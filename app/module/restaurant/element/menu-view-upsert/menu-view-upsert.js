@@ -155,12 +155,15 @@ class MenuViewUpsert extends StorageEntityMixin(NotifyMixin(LocalizeMixin(Servic
                           </paper-listbox>
                         </dsign-paper-dropdown-menu>
                         <paper-input-color name="backgroundHeader" label="{{localize('background-header')}}" value="{{entity.backgroundHeader}}" required></paper-input-color>
+                        <paper-input-color name="colorHeader" label="{{localize('background-header')}}" value="{{entity.colorHeader}}" required></paper-input-color>
+                       <!--
                         <dsign-paper-dropdown-menu label="{{localize('color-header')}}" value="{{entity.colorHeader}}">
                           <paper-listbox slot="dropdown-content">
                             <paper-item value="clear">{{localize('clear')}}</paper-item>
                             <paper-item value="dark">{{localize('dark')}}</paper-item>
                           </paper-listbox>
                         </dsign-paper-dropdown-menu>
+                        -->
                         <div class="action">
                             <paper-button on-tap="submitMenuButton">{{localize(labelAction)}}</paper-button>
                         </div>

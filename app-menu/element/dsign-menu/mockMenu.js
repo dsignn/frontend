@@ -9,7 +9,7 @@ export const mockMenu = {
                 "it": "ffdas",
                 "en": "fdsafd"
             },
-            "category": "appetizers",
+            "category": "starters",
             "price": {
                 "value": 432,
                 "currency": "EUR"
@@ -33,7 +33,7 @@ export const mockMenu = {
                 "it": "dfsf fsd fds fds f dsf ds f dsf d fsd fd s",
                 "en": "dfsf fsd fds fds f dsf ds f dsf d fsd fd s"
             },
-            "category": "first",
+            "category": "starters",
             "price": {
                 "value": 23,
                 "currency": "EUR"
@@ -52,7 +52,7 @@ export const mockMenu = {
                 "it": "fdsf dsf dsf dsf d f dsf ds f df dsf ds",
                 "en": "fds f dsf ds f ds fds f d fs d fds f ds"
             },
-            "category": "first",
+            "category": "first-courses",
             "price": {
                 "value": 13,
                 "currency": "EUR"
@@ -71,7 +71,7 @@ export const mockMenu = {
                 "it": "fdsf dsf dsf dsf d f dsf ds f df dsf ds",
                 "en": "fds f dsf ds f ds fds f d fs d fds f ds"
             },
-            "category": "first",
+            "category": "first-courses",
             "price": {
                 "value": 13,
                 "currency": "EUR"
@@ -90,7 +90,102 @@ export const mockMenu = {
                 "it": "fdsf dsf dsf dsf d f dsf ds f df dsf ds",
                 "en": "fds f dsf ds f ds fds f d fs d fds f ds"
             },
-            "category": "first",
+            "category": "first-courses",
+            "price": {
+                "value": 13,
+                "currency": "EUR"
+            },
+            "new": 0,
+            "photos": [],
+            "status": "available",
+            "id": "5f3e4a70572b8132565a6198"
+        },
+        {
+            "name": {
+                "it": "carne al sugo",
+                "en": "pasta all'arrabbiata"
+            },
+            "description": {
+                "it": "fdsf dsf dsf dsf d f dsf ds f df dsf ds",
+                "en": "fds f dsf ds f ds fds f d fs d fds f ds"
+            },
+            "category": "first-courses",
+            "price": {
+                "value": 13,
+                "currency": "EUR"
+            },
+            "new": 0,
+            "photos": [],
+            "status": "available",
+            "id": "5f3e4a70572b8132565a6198"
+        },
+        {
+            "name": {
+                "it": "pesche fresco",
+                "en": "pasta all'arrabbiata"
+            },
+            "description": {
+                "it": "fdsf dsf dsf dsf d f dsf ds f df dsf ds",
+                "en": "fds f dsf ds f ds fds f d fs d fds f ds"
+            },
+            "category": "first-courses",
+            "price": {
+                "value": 13,
+                "currency": "EUR"
+            },
+            "new": 0,
+            "photos": [],
+            "status": "available",
+            "id": "5f3e4a70572b8132565a6198"
+        },
+        {
+            "name": {
+                "it": "trofie a pesto",
+                "en": "pasta all'arrabbiata"
+            },
+            "description": {
+                "it": "fdsf dsf dsf dsf d f dsf ds f df dsf ds",
+                "en": "fds f dsf ds f ds fds f d fs d fds f ds"
+            },
+            "category": "first-courses",
+            "price": {
+                "value": 13,
+                "currency": "EUR"
+            },
+            "new": 0,
+            "photos": [],
+            "status": "available",
+            "id": "5f3e4a70572b8132565a6198"
+        },
+        {
+            "name": {
+                "it": "paccheri",
+                "en": "pasta all'arrabbiata"
+            },
+            "description": {
+                "it": "fdsf dsf dsf dsf d f dsf ds f df dsf ds",
+                "en": "fds f dsf ds f ds fds f d fs d fds f ds"
+            },
+            "category": "first-courses",
+            "price": {
+                "value": 13,
+                "currency": "EUR"
+            },
+            "new": 0,
+            "photos": [],
+            "status": "available",
+            "id": "5f3e4a70572b8132565a6198"
+        },
+        {
+            "name": {
+                "it": "spada ai ferri",
+                "en": "pasta all'arrabbiata"
+            },
+            "description": {
+                "it": "fdsf dsf dsf dsf d f dsf ds f df dsf ds",
+                "en": "fds f dsf ds f ds fds f d fs d fds f ds"
+            },
+            "category": "first-courses",
             "price": {
                 "value": 13,
                 "currency": "EUR"
@@ -109,7 +204,7 @@ export const mockMenu = {
                 "it": "fdsf dsf dsf dsf d f dsf ds f df dsf ds",
                 "en": "fds f dsf ds f ds fds f d fs d fds f ds"
             },
-            "category": "first",
+            "category": "first-courses",
             "price": {
                 "value": 13,
                 "currency": "EUR"
@@ -128,102 +223,7 @@ export const mockMenu = {
                 "it": "fdsf dsf dsf dsf d f dsf ds f df dsf ds",
                 "en": "fds f dsf ds f ds fds f d fs d fds f ds"
             },
-            "category": "first",
-            "price": {
-                "value": 13,
-                "currency": "EUR"
-            },
-            "new": 0,
-            "photos": [],
-            "status": "available",
-            "id": "5f3e4a70572b8132565a6198"
-        },
-        {
-            "name": {
-                "it": "pasta all'arrabbiata",
-                "en": "pasta all'arrabbiata"
-            },
-            "description": {
-                "it": "fdsf dsf dsf dsf d f dsf ds f df dsf ds",
-                "en": "fds f dsf ds f ds fds f d fs d fds f ds"
-            },
-            "category": "first",
-            "price": {
-                "value": 13,
-                "currency": "EUR"
-            },
-            "new": 0,
-            "photos": [],
-            "status": "available",
-            "id": "5f3e4a70572b8132565a6198"
-        },
-        {
-            "name": {
-                "it": "pasta all'arrabbiata",
-                "en": "pasta all'arrabbiata"
-            },
-            "description": {
-                "it": "fdsf dsf dsf dsf d f dsf ds f df dsf ds",
-                "en": "fds f dsf ds f ds fds f d fs d fds f ds"
-            },
-            "category": "first",
-            "price": {
-                "value": 13,
-                "currency": "EUR"
-            },
-            "new": 0,
-            "photos": [],
-            "status": "available",
-            "id": "5f3e4a70572b8132565a6198"
-        },
-        {
-            "name": {
-                "it": "pasta all'arrabbiata",
-                "en": "pasta all'arrabbiata"
-            },
-            "description": {
-                "it": "fdsf dsf dsf dsf d f dsf ds f df dsf ds",
-                "en": "fds f dsf ds f ds fds f d fs d fds f ds"
-            },
-            "category": "first",
-            "price": {
-                "value": 13,
-                "currency": "EUR"
-            },
-            "new": 0,
-            "photos": [],
-            "status": "available",
-            "id": "5f3e4a70572b8132565a6198"
-        },
-        {
-            "name": {
-                "it": "pasta all'arrabbiata",
-                "en": "pasta all'arrabbiata"
-            },
-            "description": {
-                "it": "fdsf dsf dsf dsf d f dsf ds f df dsf ds",
-                "en": "fds f dsf ds f ds fds f d fs d fds f ds"
-            },
-            "category": "first",
-            "price": {
-                "value": 13,
-                "currency": "EUR"
-            },
-            "new": 0,
-            "photos": [],
-            "status": "available",
-            "id": "5f3e4a70572b8132565a6198"
-        },
-        {
-            "name": {
-                "it": "pasta all'arrabbiata",
-                "en": "pasta all'arrabbiata"
-            },
-            "description": {
-                "it": "fdsf dsf dsf dsf d f dsf ds f df dsf ds",
-                "en": "fds f dsf ds f ds fds f d fs d fds f ds"
-            },
-            "category": "first",
+            "category": "first-courses",
             "price": {
                 "value": 13,
                 "currency": "EUR"
@@ -252,8 +252,8 @@ export const mockMenu = {
         }
     },
     "name": "fdsfdsa",
-    "backgroundHeader": "#009688",
-    "colorHeader": "clear",
+    "backgroundHeader": "#f0b906",
+    "colorHeader": "#ffffff",
     "enable": false,
     "id": "5f3e4a70572b8132565a6199"
 }

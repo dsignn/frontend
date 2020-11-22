@@ -17,12 +17,12 @@ export class MenuEntity extends EntityIdentifier {
         /**
          * @type {string}
          */
-        this.backgroundHeader = '#009688';
+        this.backgroundHeader = '#015b63';
 
         /**
          * @type {string}
          */
-        this.colorHeader = 'clear';
+        this.colorHeader = '#ffffff';
 
         /**
          * @type {boolean}

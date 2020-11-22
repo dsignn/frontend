@@ -42,9 +42,16 @@ class DsignMenuWrapItem extends LocalizeMixin(ServiceInjectorMixin(PolymerElemen
     static get properties() {
         return {
             type: {
+
             },
 
             item: {
+
+            },
+
+            hide: {
+                value: false,
+                observer: '_hideChanged',
             }
         };
     }
@@ -53,6 +60,24 @@ class DsignMenuWrapItem extends LocalizeMixin(ServiceInjectorMixin(PolymerElemen
         return [
             'changeItem(type, item)'
         ]
+    }
+
+    /**
+     * @param hide
+     * @private
+     */
+    _hideChanged(hide) {
+
+        switch (hide) {
+            case true:
+                this.style.display = 'none';
+                break;
+            case false:
+                this.style.display = 'block';
+                break;
+            default:
+                this.style.display = 'block';
+        }
     }
 
     changeItem(type, item) {
