@@ -166,6 +166,12 @@ class MenuItem extends LocalizeMixin(ServiceInjectorMixin(PolymerElement)) {
                 value: false
             },
 
+            show: {
+                reflectToAttribute: true,
+                observer: 'changedShow',
+                value: false
+            },
+
             /**
              * @type object
              */
@@ -246,6 +252,15 @@ class MenuItem extends LocalizeMixin(ServiceInjectorMixin(PolymerElement)) {
         }
     }
 
+    changedShow(value) {
+
+        if(value) {
+            this.$.formResource.style.display = 'block'
+        } else {
+            this.$.formResource.style.display = 'none'
+        }
+    }
+
     /**
      * @param evt
      */
@@ -290,20 +305,6 @@ class MenuItem extends LocalizeMixin(ServiceInjectorMixin(PolymerElement)) {
             .then((entity) => {
                 this.$.leftSection.style.backgroundImage = `url(${entity.src}?cache=${(new Date()).getTime()})`;
             });
-    }
-
-    /**
-     *
-     */
-    showUploadFile() {
-        this.$.formResource.style.display = 'block'
-    }
-
-    /**
-     *
-     */
-    hideUploadFile() {
-        this.$.formResource.style.display = 'none'
     }
 
     /**

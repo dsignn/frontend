@@ -7,7 +7,8 @@ export const lang = {
     "description": "Descrizione",
     "name-en": "Nome (inglese)",
     "description-en": "Descrizione (inglese)",
-    "menu-item": "Voce di menù",
+    "menu-item-insert": "Aggiungi voce al menu",
+    "menu-item-update": "Modifica voce al menu",
     "status": "Stato",
     "category": "Categoria",
     "restaurant": "Ristorante",
@@ -26,7 +27,7 @@ export const lang = {
     "logo": "Logo",
     "notify-save": "Menù salvato",
     "notify-update": "Menù modificato",
-    "menu-title": "Lista elementi del menu (piatti, bevande)"
+    "menu-title": "Menù"
   },
   "en": {
     "name": "Name",
@@ -35,7 +36,8 @@ export const lang = {
     "description-it": "Description (italian)",
     "name-en": "Name (english)",
     "description-en": "Description (english)",
-    "menu-item": "Menu item",
+    "menu-item-insert": "Add menu item",
+    "menu-item-update": "update menu item",
     "status": "Status",
     "category": "Categoria",
     "restaurant": "Restaurant",

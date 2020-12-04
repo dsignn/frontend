@@ -165,50 +165,16 @@ class MenuViewUpsert extends StorageEntityMixin(NotifyMixin(LocalizeMixin(Servic
                 <h2>{{localize('menu-title')}}</h2>
                 <div id="menuItemContainer">
                      <template id="items" is="dom-repeat" items="[[entity.items]]" as="menuItem">
-                        <menu-item menu-item="{{menuItem}}" index$="{{index}}" on-delete="_deleteMenuItem" on-upload-file="uploadFile"></menu-item>
+                        <menu-item menu-item="{{menuItem}}" index$="{{index}}" on-delete="_deleteMenuItem" on-update="_updateMenuItem" on-upload-file="uploadFile" show="{{showUpdateMenuItem}}"></menu-item>
                      </template>
                 </div>
             </div>
             <div id="content-right">
                 <paper-card>
-                    <h2>{{localize('menu-item')}}</h2>
-                    <iron-form id="formMenuItem">
-                        <form method="post">
-                             <paper-input name="name[it]" label="{{localize('name')}}" required></paper-input>
-                             <!--<paper-input name="name[en]" label="{{localize('name-en')}}" required></paper-input>-->
-                             <paper-input name="description[it]" label="{{localize('description')}}" required></paper-input>
-                             <!--<paper-input name="description[en]" label="{{localize('description-en')}}" required></paper-input>-->
-                             <div class="price">
-                                <paper-input type="number" name="price[value]" label="{{localize('price')}}" required>
-                                    <iron-icon icon="restaurant:eur" slot="suffix"></iron-icon>
-                                </paper-input>
-                                <input hidden name="price[currency]" value="eur">
-                             </div>
-                             <dsign-paper-dropdown-menu id="status" name="status" label="{{localize('status')}}" required>
-                                <paper-listbox slot="dropdown-content">
-                                    <template is="dom-repeat" items="[[status]]" as="state">
-                                       <paper-item value="{{state}}">{{localize(state)}}</paper-item>
-                                    </template>
-                                </paper-listbox>
-                             </dsign-paper-dropdown-menu>
-                             <dsign-paper-dropdown-menu id="category" name="category" label="{{localize('category')}}" required>
-                                <paper-listbox slot="dropdown-content">
-                                    <template is="dom-repeat" items="[[categories]]" as="category">
-                                       <paper-item value="{{category}}">{{localize(category)}}</paper-item>
-                                    </template>
-                                </paper-listbox>
-                             </dsign-paper-dropdown-menu>
-                             <div class="action">
-                                <paper-button on-tap="submitMenuItemButton">{{localize('add')}}</paper-button>
-                             </div>
-                        </form>
-                    </iron-form>
-                </paper-card>
-                <paper-card>
-                    <h2>{{localize('menu-item')}}</h2>
-                    <menu-item-view-upsert id="menuItemViewUpsert"></menu-item-view-upsert>
+                    <h2>{{localize(menuItemUpsertLabel)}}</h2>
+                    <menu-item-view-upsert id="menuItemViewUpsert" on-menu-item-save="appendMenuItem" on-menu-item-update="modifyMenuItem" menu-item="{{menuItem}}"></menu-item-view-upsert>
                     <div class="action">
-                        <paper-button on-tap="submitMenuItem">{{localize('add')}}</paper-button>
+                        <paper-button on-tap="submitMenuItem">{{localize(labelActionMenuItem)}}</paper-button>
                     </div>
                 </paper-card>
             </div>
@@ -242,6 +208,11 @@ class MenuViewUpsert extends StorageEntityMixin(NotifyMixin(LocalizeMixin(Servic
                 value: 'save'
             },
 
+            labelActionMenuItem: {
+                type: String,
+                value: 'save'
+            },
+
             categories: {
                 notify: true,
             },
@@ -253,6 +224,16 @@ class MenuViewUpsert extends StorageEntityMixin(NotifyMixin(LocalizeMixin(Servic
                     'over',
                     'not-available'
                 ]
+            },
+
+            showUpdateMenuItem: {
+                notify: true,
+                value: false
+            },
+
+            menuItemUpsertLabel: {
+                type: String,
+                value: 'menu-item-insert'
             },
 
             /**
@@ -273,16 +254,8 @@ class MenuViewUpsert extends StorageEntityMixin(NotifyMixin(LocalizeMixin(Servic
                         _menuCategoryStorage :"MenuCategoryStorage",
                         _qrCodeGeneratorStorage: "QrCodeGeneratorStorage",
                         _uploadMenuResourceStorage: "UploadMenuResourceStorage"
-                    },
-                    HydratorContainerAggregate: {
-                        _menuItemHydrator: "MenuItemHydrator"
                     }
                 }
-            },
-
-            _flattenService: {
-                readOnly: true,
-                value: new Flatten()
             },
 
             _merge: {
@@ -303,10 +276,6 @@ class MenuViewUpsert extends StorageEntityMixin(NotifyMixin(LocalizeMixin(Servic
 
             _menuCategoryStorage: {
                 readOnly: true,
-            },
-
-            _menuItemHydrator: {
-                readOnly: true,
             }
         };
     }
@@ -316,7 +285,6 @@ class MenuViewUpsert extends StorageEntityMixin(NotifyMixin(LocalizeMixin(Servic
      */
     static get observers() {
         return [
-            'loadMenuCategory(_menuCategoryStorage, _merge)',
             'changeOrganizationStorage(_organizationStorage, _authService)'
         ]
     }
@@ -329,7 +297,6 @@ class MenuViewUpsert extends StorageEntityMixin(NotifyMixin(LocalizeMixin(Servic
     ready() {
         super.ready();
         this.$.formMenu.addEventListener('iron-form-presubmit', this.submitMenu.bind(this));
-        this.$.formMenuItem.addEventListener('iron-form-presubmit', this.submitMenuItem.bind(this));
     }
 
     /**
@@ -371,11 +338,8 @@ class MenuViewUpsert extends StorageEntityMixin(NotifyMixin(LocalizeMixin(Servic
 
         if (newValue.id) {
             this.labelAction = 'update';
-            setTimeout(() => {
-                    this._showItem();
-                },
-                300
-            );
+            this.showUpdateMenuItem = true;
+
         }
     }
 
@@ -419,28 +383,6 @@ class MenuViewUpsert extends StorageEntityMixin(NotifyMixin(LocalizeMixin(Servic
     }
 
     /**
-     * @param loadMenuCategory
-     * @param merge
-     */
-    loadMenuCategory(loadMenuCategory, merge) {
-        if (!loadMenuCategory || !merge) {
-            return;
-        }
-
-        this._menuCategoryStorage.getAll()
-            .then((categories) => {
-                if (categories && categories.length > 0) {
-
-                    this.resources = this._merge.merge(
-                        this.resources,
-                        TranslateTransform.entityFormatToElementFormat(categories[0])
-                    );
-                    this.categories = Object.keys(categories[0]);
-                }
-            })
-    }
-
-    /**
      * @param restaurant
      * @private
      */
@@ -457,35 +399,50 @@ class MenuViewUpsert extends StorageEntityMixin(NotifyMixin(LocalizeMixin(Servic
     }
 
     /**
-     * @param {CustomEvent} evt
+     * @param evt
      */
-    submitMenuItemButton(evt) {
-        this.$.formMenuItem.submit();
-    }
-
-    /**
-     * @param {CustomEvent} evt
-     */
-    submitMenuItem(evt) {
-        evt.preventDefault();
-
-        let data = this._flattenService.unFlatten(this.$.formMenuItem.serializeForm());
-        let menuItem = this._menuItemHydrator.hydrate(data);
-
-        this.entity.appendMenuItem(menuItem);
+    appendMenuItem(evt) {
+        this.entity.appendMenuItem(evt.detail);
         this.$.items.render();
-        this.$.formMenuItem.reset();
-        this.$.status.reset();
-        this.$.category.reset();
     }
 
     /**
      * @param evt
      */
+    modifyMenuItem(evt) {
+
+        let nodes = this.shadowRoot.querySelectorAll('menu-item');
+        for (let index = 0; nodes.length > index; index++) {
+            if (nodes[index].menuItem.id === evt.detail.id) {
+                nodes[index].menuItem = evt.detail;
+                break;
+            }
+        }
+
+        this.labelActionMenuItem = 'save';
+        this.menuItemUpsertLabel = 'menu-item-insert';
+        this.$.items.render();
+    }
+
+    /**
+     * @param evt
+     * @private
+     */
     _deleteMenuItem(evt) {
         let index = parseInt(evt.target.getAttribute('index'));
         this.entity.items.splice(index, 1);
         this.$.items.render();
+    }
+
+    /**
+     * @param evt
+     * @private
+     */
+    _updateMenuItem(evt) {
+
+        this.menuItem = evt.detail;
+        this.labelActionMenuItem = 'update'
+        this.menuItemUpsertLabel = 'menu-item-update';
     }
 
     /**
@@ -513,7 +470,6 @@ class MenuViewUpsert extends StorageEntityMixin(NotifyMixin(LocalizeMixin(Servic
                     this.dispatchEvent(new CustomEvent('saved', {detail: data}));
                     this.entity = this._storage.getHydrator().hydrate({});
                     this.$.formMenu.reset();
-                    this._showItem();
                 }
 
                 this.notify(this.localize(method === 'save' ? 'notify-save' : 'notify-update'));
@@ -551,16 +507,6 @@ class MenuViewUpsert extends StorageEntityMixin(NotifyMixin(LocalizeMixin(Servic
      */
     submitMenuItem(evt) {
         this.$.menuItemViewUpsert.submit();
-    }
-
-    /**
-     * @private
-     */
-    _showItem() {
-        let items = this.shadowRoot.querySelectorAll('menu-item');
-        items.forEach((element) => {
-            element.showUploadFile();
-        })
     }
 }
 

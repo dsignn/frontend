@@ -145,11 +145,11 @@ class MenuItemViewUpsert extends LocalizeMixin(ServiceInjectorMixin(PolymerEleme
         </style>
         <iron-form id="formMenuItem">
             <form method="post">
-                 <paper-input name="name[it]" label="{{localize('name')}}" required></paper-input>
+                 <paper-input value="{{menuItem.name.it}}" name="name[it]" label="{{localize('name')}}" required></paper-input>
                  <!--<paper-input name="name[en]" label="{{localize('name-en')}}" required></paper-input>-->
-                 <paper-input name="description[it]" label="{{localize('description')}}" required></paper-input>
+                 <paper-input value="{{menuItem.description.it}}" name="description[it]" label="{{localize('description')}}" required></paper-input>
                  <!--<paper-input name="description[en]" label="{{localize('description-en')}}" required></paper-input>-->
-                 <dsign-paper-dropdown-menu id="category" name="category" label="{{localize('category')}}" required>
+                 <dsign-paper-dropdown-menu value="{{menuItem.category}}" id="category" name="category" label="{{localize('category')}}" required>
                     <paper-listbox slot="dropdown-content">
                         <template is="dom-repeat" items="[[categories]]" as="category">
                            <paper-item value="{{category}}">{{localize(category)}}</paper-item>
@@ -157,12 +157,11 @@ class MenuItemViewUpsert extends LocalizeMixin(ServiceInjectorMixin(PolymerEleme
                     </paper-listbox>
                  </dsign-paper-dropdown-menu>
                  <div class="price">
-                    <paper-input type="number" name="price[value]" label="{{localize('price')}}" required>
+                    <paper-input value="{{menuItem.price.value}}" type="number" name="price[value]" label="{{localize('price')}}" required>
                         <iron-icon icon="restaurant:eur" slot="suffix"></iron-icon>
                     </paper-input>
-                    <input hidden name="price[currency]" value="eur">
                  </div>
-                 <dsign-paper-dropdown-menu id="status" name="status" label="{{localize('status')}}" required>
+                 <dsign-paper-dropdown-menu value="{{menuItem.status}}" id="status" name="status" label="{{localize('status')}}" required>
                     <paper-listbox slot="dropdown-content">
                         <template is="dom-repeat" items="[[status]]" as="state">
                            <paper-item value="{{state}}">{{localize(state)}}</paper-item>
@@ -181,6 +180,7 @@ class MenuItemViewUpsert extends LocalizeMixin(ServiceInjectorMixin(PolymerEleme
              */
             menuItem: {
               //  observer: '_changeEntity',
+                value: {}
             },
 
             status: {
@@ -201,6 +201,9 @@ class MenuItemViewUpsert extends LocalizeMixin(ServiceInjectorMixin(PolymerEleme
                     StorageContainerAggregate : {
                         _menuCategoryStorage :"MenuCategoryStorage",
                     },
+                    HydratorContainerAggregate: {
+                        _menuItemHydrator: "MenuItemHydrator"
+                    }
                 }
             },
 
@@ -282,8 +285,21 @@ class MenuItemViewUpsert extends LocalizeMixin(ServiceInjectorMixin(PolymerEleme
     submitMenu(evt) {
         evt.preventDefault();
 
-        this.dispatchEvent('menu-item');
-        console.log('tesgt')
+        let data = this._flattenService.unFlatten(this.$.formMenuItem.serializeForm());
+        let menuItem = this._menuItemHydrator.hydrate(data);
+        let event = 'menu-item-save';
+
+        // TODO best solution
+        if (this.menuItem.id) {
+            event = 'menu-item-update';
+            menuItem.id = this.menuItem.id;
+        }
+
+        this.dispatchEvent(new CustomEvent(event, {'detail': menuItem}));
+        this.$.formMenuItem.reset();
+        this.$.status.reset();
+        this.$.category.reset();
+        this.menuItem = {};
     }
 }
 
