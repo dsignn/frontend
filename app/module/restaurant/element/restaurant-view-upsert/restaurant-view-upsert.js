@@ -122,6 +122,7 @@ class RestaurantViewUpsert extends StorageEntityMixin(NotifyMixin(LocalizeMixin(
                         <div class="action">
                             <paper-button on-tap="generateQrCode">{{localize('generate-qrcode')}}</paper-button>
                             <paper-button on-tap="submitRestaurantButton">{{localize(labelAction)}}</paper-button>
+                            <paper-button ont-tap="openPrintable">Printable</paper-button>
                         </div>
                     </form>
                 </iron-form>
@@ -214,6 +215,14 @@ class RestaurantViewUpsert extends StorageEntityMixin(NotifyMixin(LocalizeMixin(
     ready() {
         super.ready();
         this.$.formResource.addEventListener('iron-form-presubmit', this.submitResource.bind(this));
+    }
+
+    /**
+     * @param evt
+     */
+    openPrintable(evt) {
+        var win = window.open('http://127.0.0.1:8081/', '_blank');
+        win.focus();
     }
 
     /**

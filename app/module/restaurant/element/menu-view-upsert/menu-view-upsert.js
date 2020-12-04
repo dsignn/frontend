@@ -3,6 +3,9 @@ import {ServiceInjectorMixin} from "@dsign/polymer-mixin/service/injector-mixin"
 import {LocalizeMixin} from "@dsign/polymer-mixin/localize/localize-mixin";
 import {NotifyMixin} from "@dsign/polymer-mixin/notify/notify-mixin";
 import {StorageEntityMixin} from "@dsign/polymer-mixin/storage/entity-mixin";
+import {Flatten} from "../../../../src/transform/Flatten";
+import {TranslateTransform} from "../../../../src/util/TranslateTransform";
+import {Auth} from "../../../../src/authentication/Auth";
 import '@polymer/paper-input/paper-input';
 import '@fluidnext-polymer/paper-input-color/paper-input-color';
 import '@polymer/paper-card/paper-card';
@@ -14,10 +17,8 @@ import '@polymer/paper-card/paper-card';
 import '@polymer/paper-tooltip/paper-tooltip';
 import '../menu-item/menu-item';
 import '../../../../element/dsign-paper-dropdown/dsign-paper-dropdown';
+import '../menu-item-view-upsert/menu-item-view-upsert';
 import {lang} from './language';
-import {Flatten} from "../../../../src/transform/Flatten";
-import {TranslateTransform} from "../../../../src/util/TranslateTransform";
-import {Auth} from "../../../../src/authentication/Auth";
 
 /**
  * @class MenuViewUpsert
@@ -156,14 +157,6 @@ class MenuViewUpsert extends StorageEntityMixin(NotifyMixin(LocalizeMixin(Servic
                         </dsign-paper-dropdown-menu>
                         <paper-input-color name="backgroundHeader" label="{{localize('background-header')}}" value="{{entity.backgroundHeader}}" required></paper-input-color>
                         <paper-input-color name="colorHeader" label="{{localize('background-header')}}" value="{{entity.colorHeader}}" required></paper-input-color>
-                       <!--
-                        <dsign-paper-dropdown-menu label="{{localize('color-header')}}" value="{{entity.colorHeader}}">
-                          <paper-listbox slot="dropdown-content">
-                            <paper-item value="clear">{{localize('clear')}}</paper-item>
-                            <paper-item value="dark">{{localize('dark')}}</paper-item>
-                          </paper-listbox>
-                        </dsign-paper-dropdown-menu>
-                        -->
                         <div class="action">
                             <paper-button on-tap="submitMenuButton">{{localize(labelAction)}}</paper-button>
                         </div>
@@ -181,10 +174,10 @@ class MenuViewUpsert extends StorageEntityMixin(NotifyMixin(LocalizeMixin(Servic
                     <h2>{{localize('menu-item')}}</h2>
                     <iron-form id="formMenuItem">
                         <form method="post">
-                             <paper-input name="name[it]" label="{{localize('name-it')}}" required></paper-input>
-                             <paper-input name="name[en]" label="{{localize('name-en')}}" required></paper-input>
-                             <paper-input name="description[it]" label="{{localize('description-it')}}" required></paper-input>
-                             <paper-input name="description[en]" label="{{localize('description-en')}}" required></paper-input>
+                             <paper-input name="name[it]" label="{{localize('name')}}" required></paper-input>
+                             <!--<paper-input name="name[en]" label="{{localize('name-en')}}" required></paper-input>-->
+                             <paper-input name="description[it]" label="{{localize('description')}}" required></paper-input>
+                             <!--<paper-input name="description[en]" label="{{localize('description-en')}}" required></paper-input>-->
                              <div class="price">
                                 <paper-input type="number" name="price[value]" label="{{localize('price')}}" required>
                                     <iron-icon icon="restaurant:eur" slot="suffix"></iron-icon>
@@ -211,10 +204,17 @@ class MenuViewUpsert extends StorageEntityMixin(NotifyMixin(LocalizeMixin(Servic
                         </form>
                     </iron-form>
                 </paper-card>
-
+                <paper-card>
+                    <h2>{{localize('menu-item')}}</h2>
+                    <menu-item-view-upsert id="menuItemViewUpsert"></menu-item-view-upsert>
+                    <div class="action">
+                        <paper-button on-tap="submitMenuItem">{{localize('add')}}</paper-button>
+                    </div>
+                </paper-card>
             </div>
         </div>`;
     }
+
     static get properties() {
         return {
 
@@ -371,6 +371,11 @@ class MenuViewUpsert extends StorageEntityMixin(NotifyMixin(LocalizeMixin(Servic
 
         if (newValue.id) {
             this.labelAction = 'update';
+            setTimeout(() => {
+                    this._showItem();
+                },
+                300
+            );
         }
     }
 
@@ -508,6 +513,7 @@ class MenuViewUpsert extends StorageEntityMixin(NotifyMixin(LocalizeMixin(Servic
                     this.dispatchEvent(new CustomEvent('saved', {detail: data}));
                     this.entity = this._storage.getHydrator().hydrate({});
                     this.$.formMenu.reset();
+                    this._showItem();
                 }
 
                 this.notify(this.localize(method === 'save' ? 'notify-save' : 'notify-update'));
@@ -539,6 +545,23 @@ class MenuViewUpsert extends StorageEntityMixin(NotifyMixin(LocalizeMixin(Servic
                 });
             })
     };
+
+    /**
+     * @param evt
+     */
+    submitMenuItem(evt) {
+        this.$.menuItemViewUpsert.submit();
+    }
+
+    /**
+     * @private
+     */
+    _showItem() {
+        let items = this.shadowRoot.querySelectorAll('menu-item');
+        items.forEach((element) => {
+            element.showUploadFile();
+        })
+    }
 }
 
 window.customElements.define('menu-view-upsert', MenuViewUpsert);

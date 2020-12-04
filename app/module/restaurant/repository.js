@@ -22,6 +22,7 @@ import {Auth} from "./../../src/authentication/Auth";
 import {FormDataEncode} from "@dsign/library/src/data-transform/FormDataEncode";
 import {AbstractRepository} from "../../src/AbstractRepository";
 import {config} from './config';
+import {Flatten} from "../../src/transform/Flatten";
 
 /**
  * @class Repository
@@ -114,6 +115,7 @@ export class Repository extends AbstractRepository {
         this.initUploadMenuResourceStorage();
         this.initUploadRestaurantResourceStorage();
         this.initQrCodeStorage();
+        this.initFlattenService();
     }
 
     /**
@@ -279,6 +281,13 @@ export class Repository extends AbstractRepository {
         this.getContainer()
             .get('EntityContainerAggregate')
             .set(Repository.MENU_ENTITY_SERVICE, new MenuEntity());
+    }
+
+    /**
+     *
+     */
+    initFlattenService(){
+        this.getContainer().set('Flatten', new Flatten());
     }
 
     /**

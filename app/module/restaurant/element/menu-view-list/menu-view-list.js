@@ -5,6 +5,8 @@ import {RefreshCollectionData} from "../../../../element/mixin/auth/refresh-coll
 import '@polymer/iron-pages/iron-pages.js';
 import '@fluidnext-polymer/paper-pagination/paper-pagination';
 import '../paper-menu/paper-menu'
+import {Listener} from "@dsign/library/src/event/Listener";
+import {Storage} from "@dsign/library/src/storage/Storage";
 
 /**
  * @class MenuViewList
@@ -96,6 +98,10 @@ class MenuViewList extends RefreshCollectionData(LocalizeMixin(ServiceInjectorMi
                 notify: true
             },
 
+            _storage: {
+                observer: '_changeStorage'
+            },
+
             services : {
                 value : {
                     _storage:  "MenuStorage",
@@ -109,6 +115,21 @@ class MenuViewList extends RefreshCollectionData(LocalizeMixin(ServiceInjectorMi
         return [
             '_changeAuthStorage(_authService, _storage)'
         ]
+    }
+
+    /**
+     * @param storage
+     * @private
+     */
+    _changeStorage(storage) {
+        if (!storage) {
+            return;
+        }
+
+        this.listenerUdate = new Listener( () => {
+            this.getPagedEntities();
+        });
+        this._storage.getEventManager().on(Storage.POST_UPDATE, this.listenerUdate);
     }
 
     /**

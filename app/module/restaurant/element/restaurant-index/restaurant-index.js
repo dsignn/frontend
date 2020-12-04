@@ -132,7 +132,7 @@ class RestaurantIndex extends LocalizeMixin(AclMixin(ServiceInjectorMixin(Polyme
              * @type number
              */
             selectedTab: {
-                value: 0
+                value: 1
             },
 
             selectedRestaurant: {

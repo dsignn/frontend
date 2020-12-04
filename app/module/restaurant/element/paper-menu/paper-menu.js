@@ -66,7 +66,10 @@ class PaperMenu extends StorageEntityMixin(LocalizeMixin(ServiceInjectorMixin(Po
             <paper-card>
                 <div id="left-section"></div>
                 <div id="fastAction">
-                 
+                    <div class="action">
+                        <paper-toggle-button id="paperToggleEnable" on-change="_publicMenu" checked="{{entity.enable}}"></paper-toggle-button>
+                        <paper-tooltip for="paperToggleEnable" position="bottom">{{localize('public-menu')}}</paper-tooltip>
+                    </div>
                 </div>
                 <div id="right-section">
                     <div id="content">
@@ -99,7 +102,8 @@ class PaperMenu extends StorageEntityMixin(LocalizeMixin(ServiceInjectorMixin(Po
             services : {
                 value : {
                     _localizeService: 'Localize',
-                    "StorageContainerAggregate": {
+                    _notify : "Notify",
+                    StorageContainerAggregate: {
                         "_storage":"MenuStorage"
                     }
                 }
@@ -120,6 +124,14 @@ class PaperMenu extends StorageEntityMixin(LocalizeMixin(ServiceInjectorMixin(Po
                 value: true
             }
         }
+    }
+
+    _publicMenu(evt) {
+        this._storage.update(this.entity)
+            .then((data) => {
+                console.log('udate', data);
+                this._notify.notify(this.localize('public-menu-ok'));
+        })
     }
 
     /**

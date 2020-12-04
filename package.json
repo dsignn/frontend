@@ -13,7 +13,7 @@
   "scripts": {
     "postinstall": "cd app && npm install && cd ../app-menu/ && npm install",
     "start-app": "polymer serve --root build-app/production",
-    "start-app-menu": "polymer serve --root build-app-menu/production",
+    "start-app-menu": "polymer serve --root build-app-menu/production-es5-bundle",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "repository": {

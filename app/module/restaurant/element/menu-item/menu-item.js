@@ -75,7 +75,10 @@ class MenuItem extends LocalizeMixin(ServiceInjectorMixin(PolymerElement)) {
                    -webkit-line-clamp: 2;
                    -webkit-box-orient: vertical;
                }
-
+               
+               #formResource {
+                    display: none;
+               }
                 
                 #fastAction .action {
                     height: 30px;
@@ -102,12 +105,12 @@ class MenuItem extends LocalizeMixin(ServiceInjectorMixin(PolymerElement)) {
                 }
         </style>
          <paper-card>
-                <div id="leftSection">
-                   <iron-form id="formResource">
-                    <form method="post">
-                      <paper-input-file id="file" value="{{file}}"></paper-input-file>
-                    </form>
-                  </iron-form>
+                <div id="leftSection">              
+                    <iron-form id="formResource">
+                        <form method="post">
+                            <paper-input-file id="file" value="{{file}}"></paper-input-file>
+                        </form>
+                    </iron-form>
                 </div>             
                 <div id="rightSection">
                     <div id="content">
@@ -156,6 +159,11 @@ class MenuItem extends LocalizeMixin(ServiceInjectorMixin(PolymerElement)) {
             menuItem: {
                 notify: true,
                 value: {}
+            },
+
+            exist: {
+                readOnly: true,
+                value: false
             },
 
             /**
@@ -282,6 +290,20 @@ class MenuItem extends LocalizeMixin(ServiceInjectorMixin(PolymerElement)) {
             .then((entity) => {
                 this.$.leftSection.style.backgroundImage = `url(${entity.src}?cache=${(new Date()).getTime()})`;
             });
+    }
+
+    /**
+     *
+     */
+    showUploadFile() {
+        this.$.formResource.style.display = 'block'
+    }
+
+    /**
+     *
+     */
+    hideUploadFile() {
+        this.$.formResource.style.display = 'none'
     }
 
     /**
