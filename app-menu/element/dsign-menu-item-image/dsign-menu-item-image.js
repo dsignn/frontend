@@ -33,10 +33,11 @@ class DsignMenuItemImage extends LocalizeMixin(ServiceInjectorMixin(PolymerEleme
              }
     
     
-       paper-card {
-          width: 100%;
-          height: 100%;
-       }
+             paper-card {
+                width: 100%;
+                height: 100%;
+                min-width: 320px;
+            }
        
        [padding-6] {
           padding: 6px;
@@ -44,7 +45,8 @@ class DsignMenuItemImage extends LocalizeMixin(ServiceInjectorMixin(PolymerEleme
           
        .header-card {
           display: flex;
-          flex-direction: row;      
+          flex-direction: row;   
+          justify-content:space-between;   
        }
        
         .column-data {
@@ -53,34 +55,24 @@ class DsignMenuItemImage extends LocalizeMixin(ServiceInjectorMixin(PolymerEleme
           flex:1;
         }
         
-        .row-data {
-          display: flex;
-          flex-direction: row;
-          flex:1;
+               
+        .header-card-title {
+            font-family: 'Roboto', 'Noto', sans-serif;
+            -webkit-font-smoothing: antialiased;
+            text-rendering: optimizeLegibility;
+            font-size: 16px;
+            font-weight: 400;
+            letter-spacing: -.012em;
+            line-height: 20px;
+            text-transform: capitalize;
         }
-       
-       .header-card-title {
-          font-family: 'Roboto', 'Noto', sans-serif;
-          -webkit-font-smoothing: antialiased;
-          /* mixin(--paper-font-common-expensive-kerning); */
-          text-rendering: optimizeLegibility;
-          font-size: 22px;
-          font-weight: 400;
-          letter-spacing: -.012em;
-          line-height: 32px;
-          text-transform: capitalize;
-          overflow: hidden;
-          text-overflow: ellipsis;
-          -webkit-line-clamp: 1;
-          display: -webkit-box;
-          -webkit-box-orient: vertical;
-       }
        
        .circle {
             border-radius: 50%;
             background-color: red;
             height: 54px;
             width: 54px;
+            display:none;
        }
        
        .img-card {
@@ -88,9 +80,8 @@ class DsignMenuItemImage extends LocalizeMixin(ServiceInjectorMixin(PolymerEleme
            background-size: cover;
            background-repeat: no-repeat;
            width: 100%;
-           
        }
-       
+
        [text-right] {
            text-align: right;
        }
@@ -100,35 +91,75 @@ class DsignMenuItemImage extends LocalizeMixin(ServiceInjectorMixin(PolymerEleme
             margin: 0 !important;
        }
       
-       .paragraph-card,
-       .price {
-            padding: 0 16px;
-            flex: 1;
-            color: #757575; 
-       }  
+    .price {
+        align-self: flex-end;
+        padding: 3px 2px 0px 5px;
+        font-size: 14px;
+        font-weight: 500;
+        color: white;
+        background: #015b63;
+    }
+
+    .paragraph-card {
+        font-size: 16px;
+        font-weight: normal;
+        color: #757575;
+    }
         
-        .price {
-            padding: 6px;
-            font-size: 18px;
-            font-weight: bold;
-            color: black; 
-        }  
+        .flex {
+            display: flex;
+        }
+
+        .desc{
+            width: 65%;
+        }
+      
+        .image {
+            background: url(http://127.0.0.1:8081/images/fettucce.jpg) no-repeat;
+            width: 35%;
+            background-size: cover;
+            display: flex;
+            border: 3px solid white;
+            flex-direction: row-reverse;
+        }
+
+        paper-icon-button {
+            height: 24px;
+            width: 24px;
+            padding: 0;
+            border: 2px solid #015b63;
+            border-radius: 50%;
+            color: #015b63;
+        }
+
+        paper-icon-button.selected {
+            color: white;
+            background: #015b63;
+        } 
         
+        @media and max-screen(600px){
+            .image {
+                height: 25vw;
+            }
+
+
+        }
           
     </style>
     <paper-card>
-        <div>
-            <div class="header-card" padding-6>
-                <div class="circle" style="margin-right: 6px;"></div>
-                <div class="header-card-title">{{menuItem.name.it}}</div>
-            </div>
-            <div class="img-card">
+        <div class="flex">
+            <div class="image">
                 <div class="price" text-right>{{_computePrice(menuItem.price)}} €</div>
             </div>
-            <div class="row-data" padding-6>
-                <div class="paragraph-card">{{menuItem.description.it}}</div>
-                <paper-icon-button icon="add"></paper-icon-button>
-            </div>
+            <div class="desc">
+                <div class="header-card" padding-6>
+                    <div class="header-card-title">{{menuItem.name.it}}</div>    
+                    <paper-icon-button icon="add"></paper-icon-button>
+                    <div class="circle" style="margin-right: 6px;"></div>
+                </div>
+                <div class="row-data" padding-6>
+                    <div class="paragraph-card">{{menuItem.description.it}}</div>
+                </div>
         </div>
     </paper-card>
     `;
