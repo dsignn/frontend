@@ -27,7 +27,10 @@ export const lang = {
     "logo": "Logo",
     "notify-save": "Menù salvato",
     "notify-update": "Menù modificato",
-    "menu-title": "Menù"
+    "menu-title": "Menù",
+    "layout-type": "Tipo di layout",
+    "dsign-menu-item-image": "Layout con immagine",
+    "dsign-menu-item-compress": "Layout senza immagine"
   },
   "en": {
     "name": "Name",
@@ -56,6 +59,9 @@ export const lang = {
     "logo": "Logo",
     "notify-save": "Menù saved",
     "notify-update": "Menù updated",
-    "menu-title": "Lista elementi del menu (piatti, bevande)"
+    "menu-title": "Lista elementi del menu (piatti, bevande)",
+    "layout-type": "Layout type",
+    "dsign-menu-item-image": "Layout with image",
+    "dsign-menu-item-compress": "Layout without image"
   }
 };

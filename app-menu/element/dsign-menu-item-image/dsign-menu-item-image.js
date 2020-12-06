@@ -28,138 +28,97 @@ class DsignMenuItemImage extends LocalizeMixin(ServiceInjectorMixin(PolymerEleme
     static get template() {
         return html`
     <style> 
-              :host {
-                display: block;
-             }
-    
-    
-             paper-card {
-                width: 100%;
-                height: 100%;
-                min-width: 320px;
-            }
-       
-       [padding-6] {
-          padding: 6px;
-       }
-          
-       .header-card {
-          display: flex;
-          flex-direction: row;   
-          justify-content:space-between;   
-       }
-       
-        .column-data {
-          display: flex;
-          flex-direction: column;
-          flex:1;
+        :host {
+            display: block;
         }
-        
-               
-        .header-card-title {
-            font-family: 'Roboto', 'Noto', sans-serif;
-            -webkit-font-smoothing: antialiased;
-            text-rendering: optimizeLegibility;
-            font-size: 16px;
-            font-weight: 400;
-            letter-spacing: -.012em;
-            line-height: 20px;
-            text-transform: capitalize;
-        }
-       
-       .circle {
-            border-radius: 50%;
-            background-color: red;
-            height: 54px;
-            width: 54px;
-            display:none;
-       }
-       
-       .img-card {
-           min-height: 150px;
-           background-size: cover;
-           background-repeat: no-repeat;
-           width: 100%;
-       }
-
-       [text-right] {
-           text-align: right;
-       }
-       
-       [clear] {
-            padding: 0 !important;
-            margin: 0 !important;
-       }
-      
-    .price {
-        align-self: flex-end;
-        padding: 3px 2px 0px 5px;
-        font-size: 14px;
-        font-weight: 500;
-        color: white;
-        background: #015b63;
-    }
-
-    .paragraph-card {
-        font-size: 16px;
-        font-weight: normal;
-        color: #757575;
-    }
-        
-        .flex {
+   
+        paper-card {
+            width: 100%;
+            height: 260px;
             display: flex;
+            flex-direction: column;
         }
-
-        .desc{
-            width: 65%;
+       
+        .header {
+            height: 40px;
+            width: 100%;
+            display: flex;
+            align-items: center;
+            padding: 4px;
         }
-      
+        
         .image {
-            background: url(http://127.0.0.1:8081/images/fettucce.jpg) no-repeat;
-            width: 35%;
+            flex: 1;
+            background-image: url(http://127.0.0.1:8081/images/fettucce.jpg);
+            background-position: center center;
             background-size: cover;
-            display: flex;
-            border: 3px solid white;
-            flex-direction: row-reverse;
+            background-repeat: no-repeat;
+            position: relative;
         }
-
-        paper-icon-button {
-            height: 24px;
-            width: 24px;
-            padding: 0;
-            border: 2px solid #015b63;
-            border-radius: 50%;
-            color: #015b63;
-        }
-
-        paper-icon-button.selected {
-            color: white;
-            background: #015b63;
-        } 
         
-        @media and max-screen(600px){
-            .image {
-                height: 25vw;
-            }
-
-
+        .content {
+            height: 60px;
         }
-          
+        
+        .header-card-title {
+           text-rendering: optimizeLegibility;
+           font-size: 18px;
+           font-weight: 400;
+           text-transform: capitalize;
+           overflow: hidden;
+           text-overflow: ellipsis;
+           height: 32px;
+           padding: 4px;
+       }
+       
+       .paragraph-card {
+           flex: 1;
+           color: #757575; 
+           display: flex;
+           align-items: start;
+           padding: 4px;
+           height: -webkit-fill-available;
+       }  
+       
+       .price {
+            padding: 2px 8px;
+            font-size: 18px;
+            font-weight: 400;
+            color: white; 
+            background-color: #f0b80e;
+            width: max-content;
+            border-radius: 6px;
+            position: absolute;
+            top: 4px;
+            right: 4px;
+       }  
+       
+       paper-icon-button {
+           position: absolute;
+           bottom: 4px;
+           right: 4px;
+           width: 26px;
+           height: 26px;
+           border-radius: 50%;
+           background-color: #f0b80e;
+           color: white;
+           --paper-icon-button : {
+                padding: 1px;
+           }
+       }
     </style>
     <paper-card>
-        <div class="flex">
-            <div class="image">
-                <div class="price" text-right>{{_computePrice(menuItem.price)}} €</div>
+        <div class="header">
+            <div class="header-card-title">{{menuItem.name.it}}</div>
+        </div>
+        <div class="image">
+            <div class="price">
+                {{_computePrice(menuItem.price)}} €
             </div>
-            <div class="desc">
-                <div class="header-card" padding-6>
-                    <div class="header-card-title">{{menuItem.name.it}}</div>    
-                    <paper-icon-button icon="add"></paper-icon-button>
-                    <div class="circle" style="margin-right: 6px;"></div>
-                </div>
-                <div class="row-data" padding-6>
-                    <div class="paragraph-card">{{menuItem.description.it}}</div>
-                </div>
+            <paper-icon-button icon="add"></paper-icon-button>
+        </div>
+        <div class="content">
+            <div class="paragraph-card">{{menuItem.description.it}}</div>
         </div>
     </paper-card>
     `;

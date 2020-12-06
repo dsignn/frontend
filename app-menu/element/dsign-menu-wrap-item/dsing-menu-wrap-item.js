@@ -30,12 +30,11 @@ class DsignMenuWrapItem extends LocalizeMixin(ServiceInjectorMixin(PolymerElemen
     static get template() {
         return html`
           <style>
-             :host {
-                display: block;
-                margin-bottom: 6px;
-                margin-right: 6px;
-             }
+            .container {
+                @apply --menu-wrap-container;
+            }
           </style>
+          <div id="container" class="container"></div>
         `;
     }
 
@@ -87,7 +86,7 @@ class DsignMenuWrapItem extends LocalizeMixin(ServiceInjectorMixin(PolymerElemen
 
         let element = document.createElement(type);
         element.menuItem = item;
-        this.shadowRoot.appendChild(element);
+        this.$.container.appendChild(element);
 
     }
 }

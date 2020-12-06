@@ -35,6 +35,11 @@ export class MenuEntity extends EntityIdentifier {
         this.items = [];
 
         /**
+         * @type {string}
+         */
+        this.layoutType = 'dsign-menu-item-image';
+
+        /**
          *
          * @type {{}}
          */

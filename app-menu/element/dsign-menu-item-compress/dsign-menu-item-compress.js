@@ -29,100 +29,102 @@ class DsignMenuItemCompress extends LocalizeMixin(ServiceInjectorMixin(PolymerEl
         return html`
     <style> 
     
+       :host {
+          display: block;
+       }
+    
        paper-card {
           width: 100%;
-          height: 100%;
+          height: 120px;
+          display: flex;
        }
        
-       [padding-6] {
-          padding: 6px;
-       }
-          
-       .header-card {
-          display: flex;
-          flex-direction: row;      
+       .header {
+           height: 100%;
+           width: 100px;
+           background-image: url(http://127.0.0.1:8081/images/fettucce.jpg);
+           background-position: center center ;
+           background-repeat: no-repeat;
+           background-size: cover;
+           position: relative;
        }
        
-        .column-data {
-          display: flex;
-          flex-direction: column;
-          flex:1;
-        }
-        
-        .row-data {
-          display: flex;
-          flex-direction: row;
-          flex:1;
-        }
+       .content {
+         flex: 1;
+         display: flex;
+         flex-direction: column;
+       }
+       
+       .action {
+           height: 32px;
+           display: flex;
+           padding: 0 6px;
+           align-items: center;
+           justify-content: flex-end;
+       }
        
        .header-card-title {
-          font-family: 'Roboto', 'Noto', sans-serif;
-          -webkit-font-smoothing: antialiased;
-          /* mixin(--paper-font-common-expensive-kerning); */
-          text-rendering: optimizeLegibility;
-          font-size: 22px;
-          font-weight: 400;
-          letter-spacing: -.012em;
-          line-height: 32px;
-          text-transform: capitalize;
-          overflow: hidden;
-          text-overflow: ellipsis;
-          -webkit-line-clamp: 1;
-          display: -webkit-box;
-          -webkit-box-orient: vertical;
+           text-rendering: optimizeLegibility;
+           font-size: 18px;
+           font-weight: 400;
+           text-transform: capitalize;
+           overflow: hidden;
+           text-overflow: ellipsis;
+           height: 32px;
+           display: flex;
+           align-items: center;
+           padding: 0 6px;
        }
        
-       .circle {
-            border-radius: 50%;
-            background-color: red;
-            height: 54px;
-            width: 54px;
-       }
-       
-       .img-card {
-           min-height: 150px;
-           background-size: cover;
-           background-repeat: no-repeat;
-           width: 100%;
-           
-       }
-       
-       [text-right] {
-           text-align: right;
-       }
-       
-       [clear] {
-            padding: 0 !important;
-            margin: 0 !important;
-       }
-      
-       .paragraph-card,
-       .price {
-            padding: 0 16px;
+       .paragraph-card {
             flex: 1;
             color: #757575; 
+            display: flex;
+            align-items: start;
+            padding: 0 6px;
        }  
-        
-        .price {
-            padding: 6px;
+       
+       [padding-4] {
+          padding: 6px;
+       }
+       
+       paper-icon-button {
+           width: 26px;
+           height: 26px;
+           border-radius: 50%;
+           background-color: #f0b80e;
+           color: white;
+           --paper-icon-button : {
+                padding: 1px;
+           }
+       }
+       
+       .price {
+            padding: 2px 8px;
             font-size: 18px;
-            font-weight: bold;
-            color: black; 
-        }  
-        
+            font-weight: 400;
+            color: white; 
+            background-color: #f0b80e;
+            width: max-content;
+            border-radius: 6px;
+            position: absolute;
+            top: 4px;
+            right: 4px;
+       }     
           
     </style>
     <paper-card>
-        <div>
-            <div class="header-card" padding-6>
-                <div class="circle" style="margin-right: 6px;"></div>
-                <div class="header-card-title">{{menuItem.name.it}}</div>
-                 <div class="price" text-right>{{_computePrice(menuItem.price)}} €</div>
+        <div class="header">
+            <div class="price">
+                {{_computePrice(menuItem.price)}} €
             </div>
-            <div class="row-data" padding-6>
-                <div class="paragraph-card">{{menuItem.description.it}}</div>
-                <paper-icon-button icon="add"></paper-icon-button>
-            </div>
+        </div>
+        <div class="content">
+             <div class="header-card-title">{{menuItem.name.it}}</div>
+             <div class="paragraph-card">{{menuItem.description.it}}</div>
+             <div class="action">
+                 <paper-icon-button icon="add"></paper-icon-button>
+             </div>
         </div>
     </paper-card>
     `;

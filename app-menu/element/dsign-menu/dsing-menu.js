@@ -132,40 +132,109 @@ class DsignMenu extends LocalizeMixin(ServiceInjectorMixin(PolymerElement)) {
        }
        
        dsign-menu-wrap-item {
-        flex-basis: 12%;
+           flex-basis: 10%;
+           --menu-wrap-container : {
+               margin-bottom: 8px;
+               margin-right: 8px;
+           }
        }
        
        #category {
          padding-bottom: 2px;
        }
 
-       @media only screen and (max-width: 1980px) and (min-width: 1481px) {
-           .item {
-                flex-basis: 16.2%;
-            }
+       @media only screen and (max-width: 2600px) and (min-width: 2201px) {
+           dsign-menu-wrap-item {
+                flex-basis: 12.5%;
+           }
+           
+           dsign-menu-wrap-item:nth-child(8n) { 
+               --menu-wrap-container : {
+                   margin-right: 0;
+               }
+           }
+       }
+
+       @media only screen and (max-width: 2200px) and (min-width: 1981px) {
+           dsign-menu-wrap-item {
+               flex-basis: 14.2%;
+           }
+           
+           dsign-menu-wrap-item:nth-child(7n) { 
+               --menu-wrap-container : {
+                   margin-right: 0;
+               }
+           }
+       }  
+       
+       @media only screen and (max-width: 1980px) and (min-width: 1701px) {
+           dsign-menu-wrap-item {
+               flex-basis: 16.66%;
+             
+           }
+           
+           dsign-menu-wrap-item:nth-child(6n) { 
+               --menu-wrap-container : {
+                   margin-right: 0;
+               }
+           }
        }  
             
-       @media only screen and (max-width: 1480px) and (min-width: 1181px) {
-           .item {
-                flex-basis: 19.4%;
-            }
+       @media only screen and (max-width: 1700px) and (min-width: 1201px) {
+           dsign-menu-wrap-item {
+               flex-basis: 20%;
+           }
+           
+           dsign-menu-wrap-item:nth-child(5n) { 
+               --menu-wrap-container : {
+                   margin-right: 0;
+               }
+           }
        }  
 
-       @media only screen and (max-width: 1180px) and (min-width: 981px) {
-           .item {
-                flex-basis: 24.4%;
-            }
+       @media only screen and (max-width: 1200px) and (min-width: 971px) {
+           dsign-menu-wrap-item {
+               flex-basis: 25%;
+           }
+           
+           dsign-menu-wrap-item:nth-child(4n) { 
+               --menu-wrap-container : {
+                   margin-right: 0;
+               }
+           }
        }        
 
-       @media only screen and (max-width: 980px) and (min-width: 781px) {
-           .item {
-                flex-basis: 32.5%;
+       @media only screen and (max-width: 970px) and (min-width: 771px) {
+            dsign-menu-wrap-item {
+                flex-basis: 33.3%;
+            }
+            
+            dsign-menu-wrap-item:nth-child(3n) { 
+               --menu-wrap-container : {
+                   margin-right: 0;
+               }
             }
        }
               
-       @media only screen and (max-width: 780px) and (min-width: 481px) {
-            .item {
-                flex-basis: 48.7%;
+       @media only screen and (max-width: 770px) and (min-width: 501px) {
+            dsign-menu-wrap-item {
+                flex-basis: 50%;
+            }
+            
+            dsign-menu-wrap-item:nth-child(2n) { 
+               --menu-wrap-container : {
+                   margin-right: 0;
+               }
+            }
+       }
+       
+       @media only screen and (max-width: 500px)  {
+            dsign-menu-wrap-item {
+                flex-basis: 100%;
+                --menu-wrap-container : {
+                   margin-bottom: 8px;
+                   margin-right: 0;
+                }
             }
        }
  
@@ -342,6 +411,8 @@ class DsignMenu extends LocalizeMixin(ServiceInjectorMixin(PolymerElement)) {
             return
         }
 
+        // TODO group by category
+        // TODO remove item out of menu
         this.items = menu.items;
         this.organization = menu.organization;
 

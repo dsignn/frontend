@@ -17,6 +17,7 @@ class MenuItem extends LocalizeMixin(ServiceInjectorMixin(PolymerElement)) {
                paper-card {
                    @apply --layout-horizontal;
                    @apply --application-paper-card;
+                   @apply --menu-item-paper-card;
                    margin-right: 4px;
                    margin-bottom: 4px;
                }

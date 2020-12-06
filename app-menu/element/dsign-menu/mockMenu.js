@@ -35,7 +35,7 @@ export const mockMenu = {
             },
             "category": "starters",
             "price": {
-                "value": 23,
+                "value": 123.34,
                 "currency": "EUR"
             },
             "new": 0,
