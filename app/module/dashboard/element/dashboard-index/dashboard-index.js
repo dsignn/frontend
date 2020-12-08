@@ -10,13 +10,15 @@
 
 import { PolymerElement, html } from '@polymer/polymer/polymer-element.js';
 import {LocalizeMixin} from "@dsign/polymer-mixin/localize/localize-mixin.js";
+import {AclMixin} from "@dsign/polymer-mixin/acl/acl-mixin";
 import {ServiceInjectorMixin} from "@dsign/polymer-mixin/service/injector-mixin.js";
 import {lang} from './language.js';
+
 
 /**
  * @class DashboardIndex
  */
-class DashboardIndex extends ServiceInjectorMixin(PolymerElement) {
+class DashboardIndex extends LocalizeMixin(AclMixin(ServiceInjectorMixin(PolymerElement))) {
 
   static get template() {
     return html`
@@ -677,138 +679,139 @@ class DashboardIndex extends ServiceInjectorMixin(PolymerElement) {
     }
         
       </style>
-      
-      <div class="section padding-top-30">
-      <div class="welcome">
-      <div class="gradient">
-       <div class="container-logo">
-              <div class="logo"></div>
+      <template is="dom-if" if="{{isAllowed('dashboard', 'index-view')}}">
+          <div class="section padding-top-30">
+          <div class="welcome">
+          <div class="gradient">
+           <div class="container-logo">
+                  <div class="logo"></div>
+              </div>
+              <div class="container box">
+                <div class="intro-description center start">
+                    <h2 class="margin-0">Hai mai pensato a un menu digitale per il tuo ristorante?</h2>
+                    <a class="button yellow" href="#how">Scopri di piu</a>
+                </div>
+                </div>
+                </div>
+              </div>      
           </div>
-          <div class="container box">
-            <div class="intro-description center start">
-                <h2 class="margin-0">Hai mai pensato a un menu digitale per il tuo ristorante?</h2>
-                <a class="button yellow" href="#how">Scopri di piu</a>
-            </div>
-            </div>
-            </div>
-          </div>      
-      </div>
-      <div class="menu">
-      <div class="inside">
-              <h2>Dsign Menù</h2>
-          <div class="text-block">
-                <p class="">Di addio alle continue ristampe dei menù cartacei, all'usura e alla loro poca igienicità.<br/>Da oggi c'è Dsign Menu, il primo <b>menu interamente digitale</b>, l'ieale per i tuoi clienti!<br/>FACILE, VELOCE E PERSONALIZZABILE.</p>
-                <div class="flex">
-                <div class="">
-                <a class="icon"><img src="images/ico1.png" /></a><p>Innovativo</p>
-                </div>
-                <div class="">
-                <a class="icon"><img src="images/ico2.png" /></a><p>Personalizzabile</p>
-                </div>
-                <div class="">
-                <a class="icon"><img src="images/ico3.png" /></a><p>Sempre aggiornato</p>
-                </div>
-                <div class="">
-                <a class="icon"><img src="images/ico7.png" /></a><p>Nessuna APP da scaricare</p>
-                </div>
-                <div class="">
-                <a class="icon"><img src="images/ico4.png" /></a><p>Semplicemente Veloce</p>
-                </div>
-                <div class="">
-                <a class="icon"><img src="images/ico5.png" /></a><p>Rispettoso dell'ambiente</p>
-                </div>
-            </div>
-            </div>
-            </div>
-          </div>     
-      <div class="section column white">
-        <div id="how" class="row center">
-            <h2>Come Funziona?</h2>
-            <div class="text-block">
-              <p class="">Ti basteranno tre semplici passaggi per avere il tuo menù digitale pronto all'uso!</p>
-              <div class="flex">
-                <div class="step">
-                  <div class=""></div><p>Registrati gratuitamente cliccando l'icona in alto a destra</p>
-                </div>
-                <div class="step">
-                  <div class=""></div><p>Scegli tra i template predefiniti e crea il tuo menù</p>
-                </div>
-                <div class="step">
-                  <div class=""></div><p>Scarica e stampa il QR code per i tuoi tavoli</p>
-                </div>
-              </div>
-            </div>         
-            <a class="button" href="#how">Provalo subito</a>
-        </div>     
-      </div>
-      <div class="section column blue">
-         <div class="row center">
-            <h2>Quanto mi costa?</h2>
-         </div>
-         <div class="text-block">
-            <div class="boxed">
-              <ul>
-              <li>Inserimento piatti ILLIMITATO</li>
-              <li>Due template predefiniti</li>
-              <li>Generazione e stampa QR CODE immediata</li>
-              <hr/>
-              <li><span>GRATIS</span></li>
-              </ul>
-            </div>
-         </div>
-      </div>
-      <div class="menu">
-          <div class="container box">
-            <div class="people center start">
-                <h2 class="margin-0">Dicono di noi</h2>
-                <div class="quote">
-                  <a class="left prev" on-tap="prevReview">&#10094;</a>
-                  <div class="slideshow-container">
-                      <div class="review active">Ottima iniziativa. Vista la pandemia, avere il mio menù interamente digitale mi risparmia un sacco di lavoro e di preoccupazioni.<br/><i>Claudio</i></div>
-                      <div class="review">I miei clienti mi hanno fatto i complimenti! App ben fatta, intuitiva e soprattutto igienicamente sicura!<br/><i>Antonio</i></div>
-                      <div class="review">Inizialmente ero un po' preoccupata visto la mia clientela di tutte le età. L'idea però mi è piaciuta fin da subito, l'ho provata e i miei clienti sono soddisfatti.<br/><i>Gabriella</i></div>      
-                  </div>
-                  <a class="right next" on-tap="nextReview">&#10095;</a>
-                </div>
-                <div class="navigation">
-                    <span class="dot"></span>
-                    <span class="dot"></span>
-                    <span class="dot"></span>
-                </div>
-            </div>
-          </div>      
-      </div>
-      <div class="section column white team">
-        <div id="team" class="row center">
-            <h2>Il Team</h2>
-            <div class="text-block">
-              <p class="">Siamo un gruppo di ragazzi con la passione per il web, per le nuove tecnologie e la comunicazione digitale. La nostra proposta è un'idea fresca e innovativa che pensiamo possa venire in soccorso ai ristoratori che vogliono stare al passo con i tempi.</p>
-              <div class="flex">
-                <div class="step">
-                  <div class="">
-                    <p class="name">Antonino</p>
-                    <p class="role">CTO</p>
-                    <p class="desc">Lorem Ipsum doloret sit amet, is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard</p>
-                  </div>
-                </div>
-                <div class="step">
-                  <div class="">
-                    <p class="name">Paolo</p>
-                    <p class="role">Web Designer</p>
-                    <p class="desc">Bisogna saper prendere la palla al balzo, come diceva il castratore di canguri</p>
+          <div class="menu">
+          <div class="inside">
+                  <h2>Dsign Menù</h2>
+              <div class="text-block">
+                    <p class="">Di addio alle continue ristampe dei menù cartacei, all'usura e alla loro poca igienicità.<br/>Da oggi c'è Dsign Menu, il primo <b>menu interamente digitale</b>, l'ieale per i tuoi clienti!<br/>FACILE, VELOCE E PERSONALIZZABILE.</p>
+                    <div class="flex">
+                    <div class="">
+                    <a class="icon"><img src="images/ico1.png" /></a><p>Innovativo</p>
+                    </div>
+                    <div class="">
+                    <a class="icon"><img src="images/ico2.png" /></a><p>Personalizzabile</p>
+                    </div>
+                    <div class="">
+                    <a class="icon"><img src="images/ico3.png" /></a><p>Sempre aggiornato</p>
+                    </div>
+                    <div class="">
+                    <a class="icon"><img src="images/ico7.png" /></a><p>Nessuna APP da scaricare</p>
+                    </div>
+                    <div class="">
+                    <a class="icon"><img src="images/ico4.png" /></a><p>Semplicemente Veloce</p>
+                    </div>
+                    <div class="">
+                    <a class="icon"><img src="images/ico5.png" /></a><p>Rispettoso dell'ambiente</p>
                     </div>
                 </div>
-                <div class="step">
-                  <div class="">
-                    <p class="name">Martina</p>
-                    <p class="role">Creative</p>
-                    <p class="desc">Lorem Ipsum doloret sit amet, is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard</p>
+                </div>
+                </div>
+              </div>     
+          <div class="section column white">
+            <div id="how" class="row center">
+                <h2>Come Funziona?</h2>
+                <div class="text-block">
+                  <p class="">Ti basteranno tre semplici passaggi per avere il tuo menù digitale pronto all'uso!</p>
+                  <div class="flex">
+                    <div class="step">
+                      <div class=""></div><p>Registrati gratuitamente cliccando l'icona in alto a destra</p>
+                    </div>
+                    <div class="step">
+                      <div class=""></div><p>Scegli tra i template predefiniti e crea il tuo menù</p>
+                    </div>
+                    <div class="step">
+                      <div class=""></div><p>Scarica e stampa il QR code per i tuoi tavoli</p>
+                    </div>
+                  </div>
+                </div>         
+                <a class="button" href="#how">Provalo subito</a>
+            </div>     
+          </div>
+          <div class="section column blue">
+             <div class="row center">
+                <h2>Quanto mi costa?</h2>
+             </div>
+             <div class="text-block">
+                <div class="boxed">
+                  <ul>
+                  <li>Inserimento piatti ILLIMITATO</li>
+                  <li>Due template predefiniti</li>
+                  <li>Generazione e stampa QR CODE immediata</li>
+                  <hr/>
+                  <li><span>GRATIS</span></li>
+                  </ul>
+                </div>
+             </div>
+          </div>
+          <div class="menu">
+              <div class="container box">
+                <div class="people center start">
+                    <h2 class="margin-0">Dicono di noi</h2>
+                    <div class="quote">
+                      <a class="left prev" on-tap="prevReview">&#10094;</a>
+                      <div class="slideshow-container">
+                          <div class="review active">Ottima iniziativa. Vista la pandemia, avere il mio menù interamente digitale mi risparmia un sacco di lavoro e di preoccupazioni.<br/><i>Claudio</i></div>
+                          <div class="review">I miei clienti mi hanno fatto i complimenti! App ben fatta, intuitiva e soprattutto igienicamente sicura!<br/><i>Antonio</i></div>
+                          <div class="review">Inizialmente ero un po' preoccupata visto la mia clientela di tutte le età. L'idea però mi è piaciuta fin da subito, l'ho provata e i miei clienti sono soddisfatti.<br/><i>Gabriella</i></div>      
+                      </div>
+                      <a class="right next" on-tap="nextReview">&#10095;</a>
+                    </div>
+                    <div class="navigation">
+                        <span class="dot"></span>
+                        <span class="dot"></span>
+                        <span class="dot"></span>
                     </div>
                 </div>
-              </div>
-            </div>        
-        </div>     
-      </div>`;
+              </div>      
+          </div>
+          <div class="section column white team">
+            <div id="team" class="row center">
+                <h2>Il Team</h2>
+                <div class="text-block">
+                  <p class="">Siamo un gruppo di ragazzi con la passione per il web, per le nuove tecnologie e la comunicazione digitale. La nostra proposta è un'idea fresca e innovativa che pensiamo possa venire in soccorso ai ristoratori che vogliono stare al passo con i tempi.</p>
+                  <div class="flex">
+                    <div class="step">
+                      <div class="">
+                        <p class="name">Antonino</p>
+                        <p class="role">CTO</p>
+                        <p class="desc">Lorem Ipsum doloret sit amet, is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard</p>
+                      </div>
+                    </div>
+                    <div class="step">
+                      <div class="">
+                        <p class="name">Paolo</p>
+                        <p class="role">Web Designer</p>
+                        <p class="desc">Bisogna saper prendere la palla al balzo, come diceva il castratore di canguri</p>
+                        </div>
+                    </div>
+                    <div class="step">
+                      <div class="">
+                        <p class="name">Martina</p>
+                        <p class="role">Creative</p>
+                        <p class="desc">Lorem Ipsum doloret sit amet, is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard</p>
+                        </div>
+                    </div>
+                  </div>
+                </div>        
+            </div>     
+          </div>
+        </template>`;
   }
 
   constructor() {
@@ -829,6 +832,8 @@ class DashboardIndex extends ServiceInjectorMixin(PolymerElement) {
         value : {
           _notify : "Notify",
           _localizeService: 'Localize',
+          _aclService: "Acl",
+          _authService: "Auth"
         }
       }
     };

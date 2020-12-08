@@ -405,6 +405,7 @@ class DsignPaperDropdownMenu extends LocalizeMixin(ServiceInjectorMixin(
     reset() {
         this.value = null;
         this.valueToView = null;
+        this.querySelector('paper-listbox').selected = null;
     }
 }
 

@@ -33,7 +33,7 @@ class RestaurantIndex extends LocalizeMixin(AclMixin(ServiceInjectorMixin(Polyme
                .header {
                   @apply --layout-horizontal;
                   @apply --layout-center;
-                  padding: 10px 20px;
+                  padding: var(--padding-top-view-list) 0;
                }
                
               .text-content {

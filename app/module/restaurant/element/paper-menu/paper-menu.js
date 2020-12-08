@@ -22,8 +22,7 @@ class PaperMenu extends StorageEntityMixin(LocalizeMixin(ServiceInjectorMixin(Po
                 paper-card {
                     @apply --layout-horizontal;
                     @apply --application-paper-card;
-                    margin-right: 4px;
-                    margin-bottom: 4px;
+                    @apply --paper-card;
                 }
                 
                 #left-section {

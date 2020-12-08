@@ -236,10 +236,8 @@ class DsignMenu extends LocalizeMixin(ServiceInjectorMixin(PolymerElement)) {
                    margin-right: 0;
                 }
             }
-       }
- 
-       @media only screen and (max-device-width: 480px) {
-            #language, #category {
+            
+              #language, #category {
                 width: 96px;
             }
             
@@ -250,8 +248,7 @@ class DsignMenu extends LocalizeMixin(ServiceInjectorMixin(PolymerElement)) {
             .item {
                 flex-basis: 100%;
             }
-       }
-      
+       }      
     </style>
     <app-header-layout fullbleed>
       <app-header slot="header" fixed effects="waterfall">

@@ -17,9 +17,38 @@ export const RefreshCollectionData = (superClass) => {
                 _authService : {
                     type: Object,
                     readOnly: true,
-                }
+                },
             };
         }
+
+        /**
+         *
+         * @param itemPerPage
+         * @param storage
+         * @private
+         */
+        _changeItemPerPage(itemPerPage, storage, authService) {
+            if (!itemPerPage || !storage) {
+                return;
+            }
+            console.log('itemPerPage');
+            this.getPagedEntities();
+        }
+
+        /**
+         * @param page
+         * @param storage
+         * @param authService
+         * @private
+         */
+        _changePage(page, storage, authService) {
+            if (!page || !storage || !authService) {
+                return;
+            }
+            console.log('page');
+            this.getPagedEntities();
+        }
+
 
         /**
          *
@@ -27,28 +56,31 @@ export const RefreshCollectionData = (superClass) => {
          * @param _storage
          * @private
          */
-        _changeAuthStorage(_authService, _storage) {
+        _changeAuthStorage(authService, storage) {
 
-            if(!_authService || !_storage) {
+            if(!authService || !storage) {
                 return;
             }
 
-            if (_authService.token) {
+            if (authService.token) {
          //       console.log('RefreshCollectionData già LOGGATO',  this._storage.adapter.getNameCollection());
                 this.getPagedEntities();
+                this.listenerCollection = new Listener(this.getPagedEntities.bind(this));
+                this._storage.getEventManager().on(Storage.POST_SAVE, this.listenerCollection);
             }
 
-            _authService.eventManager.on(
+            console.log(authService, storage.adapter.getNameCollection());
+            authService.eventManager.on(
                 'login',
                 (data) => {
            //         console.log('RefreshCollectionData LOGIN');
 
                     setTimeout(
                         () => {
-                            console.log( this._storage);
+                            console.log( this._storage, 'WWWWWWWWWWWWWWWWWWWWWW');
                             this.getPagedEntities();
                         },
-                        500
+                        1000
                     );
 
                     this.listenerCollection = new Listener(this.getPagedEntities.bind(this));
@@ -56,7 +88,7 @@ export const RefreshCollectionData = (superClass) => {
                 }
             );
 
-            _authService.eventManager.on(
+            authService.eventManager.on(
                 'logout',
                 (data) => {
          //           console.log('RefreshCollectionData LOGOUT');

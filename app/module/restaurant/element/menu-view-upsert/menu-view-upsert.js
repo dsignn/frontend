@@ -57,7 +57,7 @@ class MenuViewUpsert extends StorageEntityMixin(NotifyMixin(LocalizeMixin(Servic
         
             #container {
                 @apply --layout-horizontal;
-                padding: 10px 20px;
+                padding: var(--padding-top-view-list) 0;
             }
             
             #content-left {
@@ -125,8 +125,16 @@ class MenuViewUpsert extends StorageEntityMixin(NotifyMixin(LocalizeMixin(Servic
                 @apply --layout-wrap;
             }
             
+            #content-left {
+                  @apply --layout-flex-7;
+            }
+            
+            #content-right {
+                  @apply --layout-flex-5;
+            }
+            
             menu-item {
-                flex-basis: 20%;
+                flex-basis: 10%;
                 
             }
             
@@ -134,7 +142,100 @@ class MenuViewUpsert extends StorageEntityMixin(NotifyMixin(LocalizeMixin(Servic
                 width: 100%;
                 padding: 10px;
             }
-            
+                  
+            @media only screen and (max-width: 2600px) and (min-width: 2201px) {
+                menu-item {
+                    flex-basis: 12.5%;
+                }
+               
+                paper-menu:nth-child(8n) { 
+                    --paper-card : {
+                       margin-right: 0;
+                    }
+                }
+            }
+    
+            @media only screen and (max-width: 2200px) and (min-width: 1981px) {
+                menu-item {
+                    flex-basis: 14.27%;
+                }
+                
+                menu-item:nth-child(7n) { 
+                    --paper-card : {
+                       margin-right: 0;
+                    }
+                }
+            }  
+           
+            @media only screen and (max-width: 1980px) and (min-width: 1701px) {
+                menu-item {
+                    flex-basis: 16.6%;
+                }
+                
+                menu-item:nth-child(6n) { 
+                    --paper-card : {
+                       margin-right: 0;
+                    }
+                }
+            }  
+                
+            @media only screen and (max-width: 1700px) and (min-width: 1201px) {
+                menu-item {
+                    flex-basis: 20%;
+                }
+                
+                menu-item:nth-child(5n) { 
+                    --paper-card : {
+                       margin-right: 0;
+                    }
+                }
+            }  
+    
+            @media only screen and (max-width: 1200px) and (min-width: 971px) {
+                menu-item {
+                    flex-basis: 25%;
+                }
+               
+                menu-item:nth-child(4n) { 
+                    --paper-card : {
+                       margin-right: 0;
+                    }
+                }
+            }        
+    
+            @media only screen and (max-width: 970px) and (min-width: 771px) {
+                menu-item {
+                    flex-basis: 33.3%;
+                }
+                
+                menu-item:nth-child(3n) { 
+                    --paper-card : {
+                       margin-right: 0;
+                    }
+                }
+            }
+                  
+            @media only screen and (max-width: 770px) and (min-width: 501px) {
+                menu-item {
+                    flex-basis: 50%;
+                }
+                
+                menu-item:nth-child(2n) { 
+                    --paper-card : {
+                       margin-right: 0;
+                    }
+                }
+            }
+           
+            @media only screen and (max-width: 500px)  {
+                 menu-item {
+                    flex-basis: 100%;
+                    --paper-card : {
+                       margin-right: 0;
+                    }
+                }
+            }  
+             
             @media (max-width: 700px) {
                 #container {
                     @apply --layout-vertical-reverse;
@@ -149,56 +250,6 @@ class MenuViewUpsert extends StorageEntityMixin(NotifyMixin(LocalizeMixin(Servic
                     @apply --layout-flex;
                 }
             }
-            
-            @media (min-width: 701px) and (max-width: 1100px) {
-            
-                #content-left {
-                      @apply --layout-flex-7;
-                }
-                
-                #content-right {
-                      @apply --layout-flex-5;
-                }
-            }
-        /*
-            @media (max-width: 900px) {
-                #menuItemContainer {
-                    background-color: red;
-                }
-            
-                #container {
-                    @apply --layout-vertical-reverse;
-                }
-            
-                #content-left {
-                    @apply --layout-flex;
-                }
-                
-                #content-right {
-                    @apply --layout-flex;
-                }
-            }
-                
-            @media (min-width: 901px) {
-                #menuItemContainer {
-                    background-color: yellow;
-                }
-            
-            
-                #container {
-                     @apply  --layout-horizontal;
-                }
-            
-                #content-left {
-                   @apply --layout-flex-9;
-                }
-                
-                #content-right {
-                   @apply --layout-flex-3;
-                }
-            }
-            
-         */
         </style>
         <slot name="header"></slot>
         <div id="container">
@@ -210,7 +261,7 @@ class MenuViewUpsert extends StorageEntityMixin(NotifyMixin(LocalizeMixin(Servic
                             <paper-toggle-button checked="{{entity.enable}}">{{localize('enable')}}</paper-toggle-button>
                         </div>
                         <dsign-paper-dropdown-menu label="{{localize('restaurant')}}" value="{{entity.organization.id}}" required>
-                          <paper-listbox id="listboxRestaurant" slot="dropdown-content"></paper-listbox>
+                            <paper-listbox id="listboxRestaurant" slot="dropdown-content"></paper-listbox>
                         </dsign-paper-dropdown-menu>
                         <dsign-paper-dropdown-menu label="{{localize('layout-type')}}" value="{{entity.layoutType}}" required>
                             <paper-listbox id="listboxLayoutType" slot="dropdown-content"></paper-listbox>
@@ -533,10 +584,6 @@ class MenuViewUpsert extends StorageEntityMixin(NotifyMixin(LocalizeMixin(Servic
      */
     submitMenuButton(evt) {
         this.$.formMenu.submit();
-        // TODO
-        this._storage.getPaged(1,3,[]).then((data) => {
-            //console.log('porco dio', data);
-        })
     }
 
     /**
@@ -551,8 +598,13 @@ class MenuViewUpsert extends StorageEntityMixin(NotifyMixin(LocalizeMixin(Servic
 
                 if (method === 'save') {
                     this.dispatchEvent(new CustomEvent('saved', {detail: data}));
-                    this.entity = this._storage.getHydrator().hydrate({});
                     this.$.formMenu.reset();
+
+                    let elements = this.shadowRoot.querySelectorAll('dsign-paper-dropdown-menu');
+                    elements.forEach(function(element) {
+                        element.reset();
+                    });
+                    this.entity = this._storage.getHydrator().hydrate({});
                 }
 
                 this.notify(this.localize(method === 'save' ? 'notify-save' : 'notify-update'));

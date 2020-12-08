@@ -17,7 +17,7 @@ class RestaurantViewList extends RefreshCollectionData(LocalizeMixin(ServiceInje
         <style>
         
             #container {
-                padding: var(--padding-top-view-list);
+                padding: var(--padding-top-view-list) 0;
                 @apply --layout-horizontal;
                 @apply --layout-wrap;
             }
@@ -107,7 +107,9 @@ class RestaurantViewList extends RefreshCollectionData(LocalizeMixin(ServiceInje
 
     static get observers() {
         return [
-            '_changeAuthStorage(_authService, _storage)'
+            '_changeAuthStorage(_authService, _storage)',
+            '_changeItemPerPage(itemPerPage, _storage, _authService)',
+            '_changePage(page, _storage, _authService)',
         ]
     }
 
