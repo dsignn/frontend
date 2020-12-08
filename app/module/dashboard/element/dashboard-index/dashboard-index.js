@@ -73,7 +73,7 @@ class DashboardIndex extends LocalizeMixin(AclMixin(ServiceInjectorMixin(Polymer
         border: none;
         width: 100%;
         margin: 160px auto 0;
-        background: url(images/sfondo.jpg);
+        background: url(https://dsign-asset.s3.eu-central-1.amazonaws.com/table-background.jpg);
         text-align: center;
         background-repeat: no-repeat;
         background-size: cover;
@@ -368,7 +368,7 @@ class DashboardIndex extends LocalizeMixin(AclMixin(ServiceInjectorMixin(Polymer
 
 #how .text-block .flex .step div {
   display: block;
-  background: url(images/sfondo.jpg);
+  background: url(https://dsign-asset.s3.eu-central-1.amazonaws.com/table-background.jpg);
   border-radius: 15px;
   position: relative;
   background-size: cover;
@@ -549,7 +549,7 @@ class DashboardIndex extends LocalizeMixin(AclMixin(ServiceInjectorMixin(Polymer
         background-repeat: no-repeat;
         background-position: center center;
         background-size: 100%;
-        background-image: url(images/android-chrome-384x384.png);
+        background-image: url(https://dsign-asset.s3.eu-central-1.amazonaws.com/logo.png);
         transform: translate(-10px, -25px);
     }
 
@@ -702,22 +702,22 @@ class DashboardIndex extends LocalizeMixin(AclMixin(ServiceInjectorMixin(Polymer
                     <p class="">Di addio alle continue ristampe dei menù cartacei, all'usura e alla loro poca igienicità.<br/>Da oggi c'è Dsign Menu, il primo <b>menu interamente digitale</b>, l'ieale per i tuoi clienti!<br/>FACILE, VELOCE E PERSONALIZZABILE.</p>
                     <div class="flex">
                     <div class="">
-                    <a class="icon"><img src="images/ico1.png" /></a><p>Innovativo</p>
+                    <a class="icon"><img src="https://dsign-asset.s3.eu-central-1.amazonaws.com/ico1.png" /></a><p>Innovativo</p>
                     </div>
                     <div class="">
-                    <a class="icon"><img src="images/ico2.png" /></a><p>Personalizzabile</p>
+                    <a class="icon"><img src="https://dsign-asset.s3.eu-central-1.amazonaws.com/ico2.png" /></a><p>Personalizzabile</p>
                     </div>
                     <div class="">
-                    <a class="icon"><img src="images/ico3.png" /></a><p>Sempre aggiornato</p>
+                    <a class="icon"><img src="https://dsign-asset.s3.eu-central-1.amazonaws.com/ico3.png" /></a><p>Sempre aggiornato</p>
                     </div>
                     <div class="">
-                    <a class="icon"><img src="images/ico7.png" /></a><p>Nessuna APP da scaricare</p>
+                    <a class="icon"><img src="https://dsign-asset.s3.eu-central-1.amazonaws.com/ico7.png" /></a><p>Nessuna APP da scaricare</p>
                     </div>
                     <div class="">
-                    <a class="icon"><img src="images/ico4.png" /></a><p>Semplicemente Veloce</p>
+                    <a class="icon"><img src="https://dsign-asset.s3.eu-central-1.amazonaws.com/ico4.png" /></a><p>Semplicemente Veloce</p>
                     </div>
                     <div class="">
-                    <a class="icon"><img src="images/ico5.png" /></a><p>Rispettoso dell'ambiente</p>
+                    <a class="icon"><img src="https://dsign-asset.s3.eu-central-1.amazonaws.com/ico5.png" /></a><p>Rispettoso dell'ambiente</p>
                     </div>
                 </div>
                 </div>
