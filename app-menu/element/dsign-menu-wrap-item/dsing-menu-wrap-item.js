@@ -33,6 +33,7 @@ class DsignMenuWrapItem extends LocalizeMixin(ServiceInjectorMixin(PolymerElemen
             .container {
                 @apply --menu-wrap-container;
             }
+            
           </style>
           <div id="container" class="container"></div>
         `;

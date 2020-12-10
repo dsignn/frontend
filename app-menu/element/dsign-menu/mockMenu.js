@@ -59,7 +59,7 @@ export const mockMenu = {
             },
             "new": 0,
             "photos": [],
-            "status": "available",
+            "status": "not-available",
             "id": "5f3e4a70572b8132565a6198"
         },
         {
@@ -154,7 +154,7 @@ export const mockMenu = {
             },
             "new": 0,
             "photos": [],
-            "status": "available",
+            "status": "not-available",
             "id": "5f3e4a70572b8132565a6198"
         },
         {
@@ -192,7 +192,7 @@ export const mockMenu = {
             },
             "new": 0,
             "photos": [],
-            "status": "available",
+            "status": "not-available",
             "id": "5f3e4a70572b8132565a6198"
         },
         {

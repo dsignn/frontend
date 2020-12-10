@@ -259,7 +259,7 @@ class DsignMenu extends LocalizeMixin(ServiceInjectorMixin(PolymerElement)) {
             </div>
             <div class="flex-row" down>
                 <paper-dropdown-menu id="category" label="{{localize('category')}}" on-iron-select="searchByCategory">
-                    <paper-listbox slot="dropdown-content">
+                    <paper-listbox id="categories" slot="dropdown-content">
                         <dom-repeat id="menu" items="{{categories}}" as="category">
                           <template>
                              <paper-item value="{{category}}">{{localize(category)}}</paper-item>
@@ -299,7 +299,7 @@ class DsignMenu extends LocalizeMixin(ServiceInjectorMixin(PolymerElement)) {
             },
 
             items: {
-        //        observer: 'changeItems'
+                observer: 'changeItems'
             },
 
             services: {
@@ -336,12 +336,6 @@ class DsignMenu extends LocalizeMixin(ServiceInjectorMixin(PolymerElement)) {
      */
     ready() {
         super.ready();
-        /**
-         * Load category
-         */
-        this.getCategory().then((category) => {
-            this._attachCategory(category);
-        });
 
         switch (true) {
             case menu !== undefined:
@@ -405,12 +399,19 @@ class DsignMenu extends LocalizeMixin(ServiceInjectorMixin(PolymerElement)) {
         if (!menu) {
             this.items = [];
             this.organization = {};
-            return
+            return;
         }
 
         // TODO group by category
         // TODO remove item out of menu
         this.items = menu.items;
+        for (let index = 0;  this.items.length > index; index++) {
+            if (this.items[index].status === 'not-available') {
+                console.log('not-available');
+                this.items.splice(index, 1);
+            }
+        }
+        delete this.menu.items;
         this.organization = menu.organization;
 
         if (menu.backgroundHeader) {
@@ -426,11 +427,23 @@ class DsignMenu extends LocalizeMixin(ServiceInjectorMixin(PolymerElement)) {
      * @param items
      */
     changeItems(items) {
+
         if (!items || (Array.isArray(items) && items.length === 0)) {
             return;
         }
+
+        /**
+         * Load category
+         */
+        this.getCategory().then((category) => {
+            this._attachCategory([]);
+            this._attachCategory(this._distinctCategory(this.items, category));
+        });
     }
 
+    /**
+     * @param evt
+     */
     tapMenu(evt) {
         this.$.drawer.toggle();
     }
@@ -441,6 +454,30 @@ class DsignMenu extends LocalizeMixin(ServiceInjectorMixin(PolymerElement)) {
      */
     _changeBackgroundColorHeader(color) {
         this.shadowRoot.querySelector('app-toolbar').style.backgroundColor = color;
+    }
+
+    /**
+     * @param entities
+     * @param categories
+     * @returns {*}
+     * @private
+     */
+    _distinctCategory(entities, categories) {
+        let accumulatorCategories = [];
+        let categoriesToReturn = {};
+        for (let index = 0; entities.length > index; index++) {
+            if (!accumulatorCategories.includes(entities[index].category)) {
+                accumulatorCategories.push(entities[index].category);
+            }
+        }
+
+        for (const property in categories) {
+            if (accumulatorCategories.includes(property)) {
+                categoriesToReturn[property] = categories[property];
+            }
+        }
+        console.log(categoriesToReturn);
+        return categoriesToReturn;
     }
 
     /**
