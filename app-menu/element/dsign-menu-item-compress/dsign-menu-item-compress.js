@@ -42,7 +42,7 @@ class DsignMenuItemCompress extends LocalizeMixin(ServiceInjectorMixin(PolymerEl
        .header {
            height: 100%;
            width: 100px;
-           background-image: url(http://127.0.0.1:8081/images/fettucce.jpg);
+           background-image: url(https://via.placeholder.com/150);
            background-position: center center ;
            background-repeat: no-repeat;
            background-size: cover;
@@ -92,29 +92,30 @@ class DsignMenuItemCompress extends LocalizeMixin(ServiceInjectorMixin(PolymerEl
            width: 26px;
            height: 26px;
            border-radius: 50%;
-           background-color: #f0b80e;
-           color: white;
            --paper-icon-button : {
                 padding: 1px;
            }
+           
+           background-color: var(--munu-background-color);
+           color: var(--munu-color);
        }
        
        .price {
             padding: 2px 8px;
             font-size: 18px;
             font-weight: 400;
-            color: white; 
-            background-color: #f0b80e;
             width: max-content;
             border-radius: 6px;
             position: absolute;
             top: 4px;
             right: 4px;
+            background-color: var(--munu-background-color);
+            color: var(--munu-color);
        }     
           
     </style>
     <paper-card>
-        <div class="header">
+        <div id="image" class="header">
             <div class="price">
                 {{_computePrice(menuItem.price)}} €
             </div>
@@ -139,7 +140,7 @@ class DsignMenuItemCompress extends LocalizeMixin(ServiceInjectorMixin(PolymerEl
     static get properties() {
         return {
             menuItem: {
-
+                observer: '_changeMenu'
             },
 
             services: {
@@ -160,6 +161,22 @@ class DsignMenuItemCompress extends LocalizeMixin(ServiceInjectorMixin(PolymerEl
             return ;
         }
         return price.value;
+    }
+
+    /**
+     * @param menu
+     * @private
+     */
+    _changeMenu(menu) {
+        if (!menu) {
+            return;
+        }
+
+        if (menu.photos && Array.isArray(menu.photos) && menu.photos.length > 0) {
+
+            console.log('SUCAAAAAAAAAAAAAA d', menu.photos[0]);
+            this.$.image.style.backgroundImage = `url(${menu.photos[0].src})`;
+        }
     }
 
 }

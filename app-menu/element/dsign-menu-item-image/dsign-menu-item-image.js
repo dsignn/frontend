@@ -49,7 +49,7 @@ class DsignMenuItemImage extends LocalizeMixin(ServiceInjectorMixin(PolymerEleme
         
         .image {
             flex: 1;
-            background-image: url(http://127.0.0.1:8081/images/fettucce.jpg);
+            background-image: url(https://via.placeholder.com/150);
             background-position: center center;
             background-size: cover;
             background-repeat: no-repeat;
@@ -84,14 +84,15 @@ class DsignMenuItemImage extends LocalizeMixin(ServiceInjectorMixin(PolymerEleme
             padding: 2px 8px;
             font-size: 18px;
             font-weight: 400;
-            color: white; 
-            background-color: #f0b80e;
             width: max-content;
             border-radius: 6px;
             position: absolute;
             top: 4px;
             right: 4px;
+            background-color: var(--munu-background-color);
+            color: var(--munu-color);
        }  
+       
        
        paper-icon-button {
            position: absolute;
@@ -100,18 +101,18 @@ class DsignMenuItemImage extends LocalizeMixin(ServiceInjectorMixin(PolymerEleme
            width: 26px;
            height: 26px;
            border-radius: 50%;
-           background-color: #f0b80e;
-           color: white;
            --paper-icon-button : {
                 padding: 1px;
-           }
+           }       
+           background-color: var(--munu-background-color);
+           color: var(--munu-color);
        }
     </style>
     <paper-card>
         <div class="header">
             <div class="header-card-title">{{menuItem.name.it}}</div>
         </div>
-        <div class="image">
+        <div id="image" class="image">
             <div class="price">
                 {{_computePrice(menuItem.price)}} €
             </div>
@@ -133,7 +134,7 @@ class DsignMenuItemImage extends LocalizeMixin(ServiceInjectorMixin(PolymerEleme
     static get properties() {
         return {
             menuItem: {
-
+                observer: '_changeMenu'
             },
 
             services: {
@@ -142,6 +143,20 @@ class DsignMenuItemImage extends LocalizeMixin(ServiceInjectorMixin(PolymerEleme
                 }
             }
         };
+    }
+
+    /**
+     * @param menu
+     * @private
+     */
+    _changeMenu(menu) {
+        if (!menu) {
+            return;
+        }
+
+        if (menu.photos && Array.isArray(menu.photos) && menu.photos.length > 0) {
+            this.$.image.style.backgroundImage = `url(${menu.photos[0].src})`;
+        }
     }
 
     /**

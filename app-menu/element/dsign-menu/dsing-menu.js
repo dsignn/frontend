@@ -107,7 +107,6 @@ class DsignMenu extends LocalizeMixin(ServiceInjectorMixin(PolymerElement)) {
           border-radius: 50%;
           background-position: center center;
           background-size: 60px;
-          background-color: blue;
        }
        
        app-drawer {
@@ -369,7 +368,7 @@ class DsignMenu extends LocalizeMixin(ServiceInjectorMixin(PolymerElement)) {
 
                 resolve(JSON.parse(request.response)[0]);
             });
-            request.open("GET", 'http://127.0.0.150/menu-category');
+            request.open("GET", `${apiUrl}menu-category`);
             request.setRequestHeader('Accept','application/json');
             request.send();
         });
@@ -414,12 +413,12 @@ class DsignMenu extends LocalizeMixin(ServiceInjectorMixin(PolymerElement)) {
         delete this.menu.items;
         this.organization = menu.organization;
 
-        if (menu.backgroundHeader) {
-            this._changeBackgroundColorHeader(menu.backgroundHeader)
+        if (menu.background_header) {
+            this._changeBackgroundColorHeader(menu.background_header)
         }
 
-        if (menu.colorHeader) {
-            this._changeColorHeader(menu.colorHeader)
+        if (menu.color_header) {
+            this._changeColorHeader(menu.color_header)
         }
     }
 
@@ -476,7 +475,6 @@ class DsignMenu extends LocalizeMixin(ServiceInjectorMixin(PolymerElement)) {
                 categoriesToReturn[property] = categories[property];
             }
         }
-        console.log(categoriesToReturn);
         return categoriesToReturn;
     }
 

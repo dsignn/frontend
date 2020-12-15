@@ -15,12 +15,17 @@ export const mockMenu = {
                 "currency": "EUR"
             },
             "new": 0,
-            "photos": [
-                {
-                    "id": "5f44ee5d64d27d7d07523c02",
-                    "collection": "resource"
-                }
-            ],
+            "photos": [{
+                "_id": "5fb121fbc1a3d65e8d5b9514",
+                "dimension": {"height": 500, "width": 500},
+                "mime_type": "image/png",
+                "name": "photo menù",
+                "size": 19756,
+                "src": "https://dsign-cdn-test.s3.eu-central-1.amazonaws.com/eea7b8bf-c4dd-4ced-bab5-7f0ded15a724",
+                "s3path": "eea7b8bf-c4dd-4ced-bab5-7f0ded15a724",
+                "tags": [],
+                "organization_reference": null
+            }],
             "status": "available",
             "id": "5f3e4a70572b8132565a6196"
         },
@@ -252,8 +257,8 @@ export const mockMenu = {
         }
     },
     "name": "fdsfdsa",
-    "backgroundHeader": "#f0b906",
-    "colorHeader": "#ffffff",
+    "background_header": "#7b0f0f",
+    "color_header": "#37d74a",
     "enable": false,
     "id": "5f3e4a70572b8132565a6199"
 }

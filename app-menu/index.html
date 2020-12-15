@@ -7,8 +7,11 @@
     <script type="module" src="node_modules/@webcomponents/webcomponentsjs/webcomponents-loader.js"></script>
     <script src="node_modules/web-animations-js/web-animations-next-lite.min.js"></script>
     <script>
+        // TODO setting to the php application
+        // TODO Create config file
         const menu = undefined;
         const dev = true;
+        const apiUrl = 'http://127.0.0.150/';
     </script>
     <script type="module">
         import {Container} from '@dsign/library/src/container/Container';
@@ -32,16 +35,23 @@
         });
 
     </script>
-    <script type="module">
-        import './element/dsign-menu/dsing-menu.js';
-        import './element/dsign-menu-icons/dsign-menu-icons.js';
-    </script>
     <style is="custom-style">
+
+        /** TODO setting to the php application **/
+        :root {
+            --munu-background-color: #7b0f0f;
+            --munu-color: #37d74a;
+        }
+
         * {
             padding: 0;
             margin: 0;
         }
     </style>
+    <script type="module">
+        import './element/dsign-menu/dsing-menu.js';
+        import './element/dsign-menu-icons/dsign-menu-icons.js';
+    </script>
 </head>
 <body>
 
