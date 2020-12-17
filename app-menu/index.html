@@ -6,19 +6,25 @@
     <meta name="viewport" content="width=device-width, minimum-scale=1, initial-scale=1, user-scalable=yes">
     <script type="module" src="node_modules/@webcomponents/webcomponentsjs/webcomponents-loader.js"></script>
     <script src="node_modules/web-animations-js/web-animations-next-lite.min.js"></script>
-    <script>
-        // TODO setting to the php application
-        // TODO Create config file
-        const menu = undefined;
-        const dev = true;
-        const apiUrl = 'http://127.0.0.150/';
-    </script>
     <script type="module">
         import {Container} from '@dsign/library/src/container/Container';
         import {Localize} from '@dsign/library/src/localize/Localize';
+        import {EventManager} from '@dsign/library/src/event/EventManager';
+        import {Storage} from '@dsign/library/src/storage/Storage';
+        import {LocalStorageAdapter} from '@dsign/library/src/storage/adapter/local-storage/LocalStorageAdapter';
+        import {FavoriteService} from './src/favorite/FavoriteService';
+        import {config} from './src/config';
 
         const container = new Container();
 
+        /**
+         * Config
+         */
+        container.set('config', config);
+
+        /**
+         * @type {Localize}
+         */
         container.set('Localize', new Localize(
             "it",
             [
@@ -26,6 +32,21 @@
                 "en"
             ]
         ));
+
+        /**
+         * @type {Storage}
+         */
+        const menuStorage = new Storage(
+            new LocalStorageAdapter('dsign', 'favorite')
+        );
+
+        container.set('MenuStorage', menuStorage);
+
+        /**
+         * @type {FavoriteService}
+         */
+        const favoriteService = new FavoriteService(menuStorage, config.menu);
+        container.set('FavoriteService', favoriteService);
 
         window.container = container;
 
@@ -39,8 +60,8 @@
 
         /** TODO setting to the php application **/
         :root {
-            --munu-background-color: #7b0f0f;
-            --munu-color: #37d74a;
+            --munu-background-color: #ff0000;
+            --munu-color: #FFFFFF;
         }
 
         * {

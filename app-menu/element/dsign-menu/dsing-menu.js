@@ -29,7 +29,6 @@ import '../paper-select-language/paper-select-language';
 import '../dsign-menu-wrap-item/dsing-menu-wrap-item';
 import '../dsign-logo/dsing-logo';
 import {lang} from './language';
-import {mockMenu} from './mockMenu';
 
 // Gesture events like tap and track generated from touch will not be
 // preventable, allowing for better scrolling performance.
@@ -140,6 +139,11 @@ class DsignMenu extends LocalizeMixin(ServiceInjectorMixin(PolymerElement)) {
        
        #category {
          padding-bottom: 2px;
+       }
+       
+       h2  {
+        text-align: center;
+        text-transform: uppercase;
        }
 
        @media only screen and (max-width: 2600px) and (min-width: 2201px) {
@@ -283,6 +287,7 @@ class DsignMenu extends LocalizeMixin(ServiceInjectorMixin(PolymerElement)) {
     </app-header-layout>
     <app-drawer id="drawer" align="right">
         <div class="drawerContainer">
+            <h2>Preferiti</h2>
         </div>
     </app-drawer>`;
     }
@@ -297,13 +302,13 @@ class DsignMenu extends LocalizeMixin(ServiceInjectorMixin(PolymerElement)) {
                 notify: true
             },
 
-            items: {
-                observer: 'changeItems'
-            },
+            items: { },
 
             services: {
                 value: {
                     _localizeService: 'Localize',
+                    _favoriteService: 'FavoriteService',
+                    _config: 'config'
                 }
             },
 
@@ -312,10 +317,29 @@ class DsignMenu extends LocalizeMixin(ServiceInjectorMixin(PolymerElement)) {
                 readOnly: true
             },
 
+            apiUrl: { },
+
+            _favoriteService: {
+                readOnly: true,
+                observer: 'changeFavoriteService'
+            },
+
+            _config: {
+                readOnly: true,
+                observer: 'changeConfig'
+            },
+
             categories: {
                 notify: true
             }
         };
+    }
+
+
+    static get observers() {
+        return [
+            '_observeCategory(items, apiUrl)'
+        ];
     }
 
     /**
@@ -327,22 +351,6 @@ class DsignMenu extends LocalizeMixin(ServiceInjectorMixin(PolymerElement)) {
         let param = this.parseUrlParam();
         if (param && param['menu'] &&  param['menu'] === 'compress') {
             this._setItemLayout('dsign-menu-item-compress');
-        }
-    }
-
-    /**
-     * @inheritDoc
-     */
-    ready() {
-        super.ready();
-
-        switch (true) {
-            case menu !== undefined:
-                this.menu = menu;
-                break;
-            case dev === true:
-                this.menu = mockMenu;
-                break;
         }
     }
 
@@ -368,10 +376,39 @@ class DsignMenu extends LocalizeMixin(ServiceInjectorMixin(PolymerElement)) {
 
                 resolve(JSON.parse(request.response)[0]);
             });
-            request.open("GET", `${apiUrl}menu-category`);
+            request.open("GET", `${this.apiUrl}menu-category`);
             request.setRequestHeader('Accept','application/json');
             request.send();
         });
+    }
+
+    /**
+     * @param {object} config
+     */
+    changeConfig(config) {
+        if (!config) {
+            return;
+        }
+
+        this.apiUrl = config.apiUrl;
+    }
+
+    /**
+     * @param items
+     * @param apiUrl
+     * @private
+     */
+    _observeCategory(items, apiUrl) {
+        if (!items || !apiUrl) {
+            return;
+        }
+
+        this.getCategory().then((category) => {
+            this._attachCategory([]);
+            this._attachCategory(this._distinctCategory(this.items, category));
+        });
+
+        console.log('recupera le categorie')
     }
 
     /**
@@ -401,12 +438,9 @@ class DsignMenu extends LocalizeMixin(ServiceInjectorMixin(PolymerElement)) {
             return;
         }
 
-        // TODO group by category
-        // TODO remove item out of menu
         this.items = menu.items;
         for (let index = 0;  this.items.length > index; index++) {
             if (this.items[index].status === 'not-available') {
-                console.log('not-available');
                 this.items.splice(index, 1);
             }
         }
@@ -433,11 +467,23 @@ class DsignMenu extends LocalizeMixin(ServiceInjectorMixin(PolymerElement)) {
 
         /**
          * Load category
-         */
+
         this.getCategory().then((category) => {
             this._attachCategory([]);
             this._attachCategory(this._distinctCategory(this.items, category));
         });
+         */
+    }
+
+    /**
+     * @param serive
+     */
+    changeFavoriteService(service) {
+        if (!service) {
+            return;
+        }
+
+        this.menu = service.getMenu();
     }
 
     /**
