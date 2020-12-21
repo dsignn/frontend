@@ -3,16 +3,20 @@
 <head>
     <meta charset="UTF-8">
     <title>Menu</title>
+
     <meta name="viewport" content="width=device-width, minimum-scale=1, initial-scale=1, user-scalable=yes">
     <script type="module" src="node_modules/@webcomponents/webcomponentsjs/webcomponents-loader.js"></script>
     <script src="node_modules/web-animations-js/web-animations-next-lite.min.js"></script>
+    <script>
+        // TODO setting to the php application
+        const base_url = '';
+    </script>
     <script type="module">
         import {Container} from '@dsign/library/src/container/Container';
         import {Localize} from '@dsign/library/src/localize/Localize';
-        import {EventManager} from '@dsign/library/src/event/EventManager';
         import {Storage} from '@dsign/library/src/storage/Storage';
         import {LocalStorageAdapter} from '@dsign/library/src/storage/adapter/local-storage/LocalStorageAdapter';
-        import {FavoriteService} from './src/favorite/FavoriteService';
+        import {FavoriteService} from  './src/favorite/FavoriteService'
         import {config} from './src/config';
 
         const container = new Container();
@@ -43,10 +47,9 @@
         container.set('MenuStorage', menuStorage);
 
         /**
-         * @type {FavoriteService}
+         * @type FavoriteService
          */
-        const favoriteService = new FavoriteService(menuStorage, config.menu);
-        container.set('FavoriteService', favoriteService);
+        container.set('FavoriteService', new FavoriteService(menuStorage, config.menu));
 
         window.container = container;
 

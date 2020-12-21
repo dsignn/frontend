@@ -11,6 +11,7 @@
 import {PolymerElement, html} from '@polymer/polymer/polymer-element.js';
 import {LocalizeMixin} from "@dsign/polymer-mixin/localize/localize-mixin";
 import {ServiceInjectorMixin} from "@dsign/polymer-mixin/service/injector-mixin";
+import {ItemFavorite} from "../mixin/item-favorite/item-favorite";
 import '@polymer/paper-dropdown-menu/paper-dropdown-menu';
 import '@polymer/paper-item/paper-item';
 import '@polymer/paper-icon-button/paper-icon-button';
@@ -24,7 +25,7 @@ import {lang} from './language';
 /**
  * @class DsignMenuItemImage
  */
-class DsignMenuItemImage extends LocalizeMixin(ServiceInjectorMixin(PolymerElement)) {
+class DsignMenuItemImage extends ItemFavorite(LocalizeMixin(ServiceInjectorMixin(PolymerElement))) {
     static get template() {
         return html`
     <style> 
@@ -116,7 +117,7 @@ class DsignMenuItemImage extends LocalizeMixin(ServiceInjectorMixin(PolymerEleme
             <div class="price">
                 {{_computePrice(menuItem.price)}} €
             </div>
-            <paper-icon-button icon="add"></paper-icon-button>
+            <paper-icon-button icon="add" on-tap="addFavorite"></paper-icon-button>
         </div>
         <div class="content">
             <div class="paragraph-card">{{menuItem.description.it}}</div>
@@ -140,6 +141,7 @@ class DsignMenuItemImage extends LocalizeMixin(ServiceInjectorMixin(PolymerEleme
             services: {
                 value: {
                     _localizeService: 'Localize',
+                    _favoriteService: 'FavoriteService',
                 }
             }
         };

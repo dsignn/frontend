@@ -27,6 +27,7 @@ import '@polymer/paper-button/paper-button';
 import '@dsign/polymer-mixin/localize/localize-mixin';
 import '../paper-select-language/paper-select-language';
 import '../dsign-menu-wrap-item/dsing-menu-wrap-item';
+import '../dsign-menu-favorites/dsign-menu-favorites';
 import '../dsign-logo/dsing-logo';
 import {lang} from './language';
 
@@ -307,7 +308,6 @@ class DsignMenu extends LocalizeMixin(ServiceInjectorMixin(PolymerElement)) {
             services: {
                 value: {
                     _localizeService: 'Localize',
-                    _favoriteService: 'FavoriteService',
                     _config: 'config'
                 }
             },
@@ -318,11 +318,6 @@ class DsignMenu extends LocalizeMixin(ServiceInjectorMixin(PolymerElement)) {
             },
 
             apiUrl: { },
-
-            _favoriteService: {
-                readOnly: true,
-                observer: 'changeFavoriteService'
-            },
 
             _config: {
                 readOnly: true,
@@ -391,6 +386,7 @@ class DsignMenu extends LocalizeMixin(ServiceInjectorMixin(PolymerElement)) {
         }
 
         this.apiUrl = config.apiUrl;
+        this.menu = config.menu;
     }
 
     /**
@@ -454,36 +450,6 @@ class DsignMenu extends LocalizeMixin(ServiceInjectorMixin(PolymerElement)) {
         if (menu.color_header) {
             this._changeColorHeader(menu.color_header)
         }
-    }
-
-    /**
-     * @param items
-     */
-    changeItems(items) {
-
-        if (!items || (Array.isArray(items) && items.length === 0)) {
-            return;
-        }
-
-        /**
-         * Load category
-
-        this.getCategory().then((category) => {
-            this._attachCategory([]);
-            this._attachCategory(this._distinctCategory(this.items, category));
-        });
-         */
-    }
-
-    /**
-     * @param serive
-     */
-    changeFavoriteService(service) {
-        if (!service) {
-            return;
-        }
-
-        this.menu = service.getMenu();
     }
 
     /**

@@ -12,18 +12,50 @@ export class FavoriteService extends EventManagerAware {
      */
     constructor(storage, menu) {
         super();
-        this.storage = storage;
-        this.menu = menu;
+
+        /**
+         * @type {EventManager}
+         */
         this.eventManager = new EventManager();
+
+        /**
+         * @type {Storage}
+         */
+        this.storage = storage;
+
+        /**
+         * @type Object
+         */
+        this.favoriteItem = {};
+
+        this.setMenu(menu);
     }
 
     /**
-     *
+     * @param id
+     * @private
+     */
+    _loadFavoriteMenu(id) {
+        this.storage.get(id).then((data) => {
+            console.log('CARICA FAVORITE', data);
+            if(data) {
+                this.favoriteItem = data
+            } else {
+                this.favoriteItem = {
+                    id: this.menu.organization.id,
+                    items: []
+                }
+            }
+        });
+    }
+
+    /**
      * @param menu
      * @returns {FavoriteService}
      */
     setMenu(menu) {
         this.menu = menu;
+        this._loadFavoriteMenu(this.menu.organization._id);
         return this;
     }
 
@@ -34,7 +66,58 @@ export class FavoriteService extends EventManagerAware {
         return this.menu;
     }
 
-    add() {
-        console.log('ADD');
+    /**
+     * @param {object} menuItem
+     * @returns {FavoriteService}
+     */
+    addFavorite(menuItem) {
+        console.log('ADD', this.hasFavorite(menuItem));
+        if (this.hasFavorite(menuItem.id)) {
+            let intMenuItem = this.getFavorite(menuItem.id);
+            console.log('TROVATO', intMenuItem);
+            intMenuItem.count++;
+        } else {
+            console.log('NON TROVATO');
+            menuItem.count = 1;
+            this.favoriteItem.items.push(menuItem);
+        }
+        this.storage.update(this.favoriteItem);
+        return this;
+    }
+
+    /**
+     * @param {object} menuItem
+     * @returns {FavoriteService}
+     */
+    removeFavorite(menuItem) {
+        if (this.hasFavorite(menuItem.id)) {
+            let intMenuItem = this.getFavorite(menuItem.id);
+            if (intMenuItem.count > 0) {
+                intMenuItem.count--;
+                this.storage.update(this.favoriteItem);
+            }
+        }
+
+        return this;
+    }
+
+    /**
+     * @param {string} id
+     * @returns {boolean}
+     */
+    hasFavorite(id) {
+        return this.favoriteItem.items.findIndex((element) => {
+            return element.id === id;
+        }) > -1;
+    }
+
+    /**
+     * @param {string} id
+     * @returns {object}
+     */
+    getFavorite(id) {
+        return this.favoriteItem.items.find((element) => {
+            return element.id === id;
+        });
     }
 }

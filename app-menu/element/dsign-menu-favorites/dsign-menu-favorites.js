@@ -1,5 +1,6 @@
-import {html} from "@polymer/polymer/polymer-element";
-
+import {PolymerElement, html} from "@polymer/polymer/polymer-element";
+import {ServiceInjectorMixin} from "@dsign/polymer-mixin/service/injector-mixin";
+import {LocalizeMixin} from "@dsign/polymer-mixin/localize/localize-mixin";
 
 /**
  * @class DsignMenuFavorites
