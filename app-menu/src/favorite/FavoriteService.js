@@ -1,22 +1,13 @@
-import {EventManager} from '@dsign/library/src/event/EventManager.js';
-import {EventManagerAware} from '@dsign/library/src/event/EventManagerAware.js';
-
 /**
- * @class Flatten
+ * @class FavoriteService
  */
-export class FavoriteService extends EventManagerAware {
+export class FavoriteService {
 
     /**
      * @param storage
      * @param menu
      */
     constructor(storage, menu) {
-        super();
-
-        /**
-         * @type {EventManager}
-         */
-        this.eventManager = new EventManager();
 
         /**
          * @type {Storage}
@@ -26,7 +17,7 @@ export class FavoriteService extends EventManagerAware {
         /**
          * @type Object
          */
-        this.favoriteItem = {};
+        this.favoriteItem = [];
 
         this.setMenu(menu);
     }
@@ -36,15 +27,10 @@ export class FavoriteService extends EventManagerAware {
      * @private
      */
     _loadFavoriteMenu(id) {
-        this.storage.get(id).then((data) => {
-            console.log('CARICA FAVORITE', data);
+        this.storage.getAll(id).then((data) => {
+
             if(data) {
                 this.favoriteItem = data
-            } else {
-                this.favoriteItem = {
-                    id: this.menu.organization.id,
-                    items: []
-                }
             }
         });
     }
@@ -67,21 +53,30 @@ export class FavoriteService extends EventManagerAware {
     }
 
     /**
+     * @return {EventManagerInterface}
+     */
+    getEventManager() {
+        return this.storage.getEventManager();
+    }
+
+    /**
      * @param {object} menuItem
      * @returns {FavoriteService}
      */
     addFavorite(menuItem) {
-        console.log('ADD', this.hasFavorite(menuItem));
+
         if (this.hasFavorite(menuItem.id)) {
             let intMenuItem = this.getFavorite(menuItem.id);
-            console.log('TROVATO', intMenuItem);
-            intMenuItem.count++;
+            intMenuItem.totalCount++;
+            menuItem = intMenuItem;
         } else {
-            console.log('NON TROVATO');
-            menuItem.count = 1;
-            this.favoriteItem.items.push(menuItem);
+            menuItem.totalCount = 1;
+            menuItem.currentCount = 0;
+            menuItem.restaurantId = this.getMenu().id;
+            this.favoriteItem.push(menuItem);
         }
-        this.storage.update(this.favoriteItem);
+
+        this.storage.update(menuItem);
         return this;
     }
 
@@ -92,9 +87,9 @@ export class FavoriteService extends EventManagerAware {
     removeFavorite(menuItem) {
         if (this.hasFavorite(menuItem.id)) {
             let intMenuItem = this.getFavorite(menuItem.id);
-            if (intMenuItem.count > 0) {
-                intMenuItem.count--;
-                this.storage.update(this.favoriteItem);
+            if (intMenuItem.totalCount > 0) {
+                intMenuItem.totalCount--;
+                this.storage.update(intMenuItem);
             }
         }
 
@@ -102,11 +97,27 @@ export class FavoriteService extends EventManagerAware {
     }
 
     /**
+     * @param menuItem
+     * @returns {Promise<any>}
+     */
+    upsertFavorite(menuItem) {
+        return this.storage.update(menuItem);
+    }
+
+    /**
+     * @param menuItem
+     * @returns {Promise<any>}
+     */
+    deleteFavorite(menuItem) {
+        return this.storage.delete(menuItem);
+    }
+
+    /**
      * @param {string} id
      * @returns {boolean}
      */
     hasFavorite(id) {
-        return this.favoriteItem.items.findIndex((element) => {
+        return this.favoriteItem.findIndex((element) => {
             return element.id === id;
         }) > -1;
     }
@@ -116,8 +127,28 @@ export class FavoriteService extends EventManagerAware {
      * @returns {object}
      */
     getFavorite(id) {
-        return this.favoriteItem.items.find((element) => {
+        return this.favoriteItem.find((element) => {
             return element.id === id;
         });
+    }
+
+    /**
+     * @returns {number}
+     */
+    getAmount() {
+        let amount = 0;
+        for (let index = 0; this.favoriteItem.length > index; index++) {
+            amount = amount + (this.favoriteItem[index].price.value * this.favoriteItem[index].totalCount);
+        }
+
+        return amount
+    }
+
+    /**
+     * @returns {Promise}
+     */
+    getFavorites() {
+        // TODO add filter
+        return this.storage.getAll();
     }
 }

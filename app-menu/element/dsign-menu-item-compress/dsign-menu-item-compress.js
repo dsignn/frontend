@@ -20,11 +20,12 @@ import '@polymer/neon-animation/neon-animation';
 import '@polymer/paper-input/paper-input';
 import '@polymer/paper-button/paper-button';
 import {lang} from './language';
+import {ItemFavorite} from "../mixin/item-favorite/item-favorite";
 
 /**
  * @class DsignMenuItemCompress
  */
-class DsignMenuItemCompress extends LocalizeMixin(ServiceInjectorMixin(PolymerElement)) {
+class DsignMenuItemCompress extends ItemFavorite(LocalizeMixin(ServiceInjectorMixin(PolymerElement))) {
     static get template() {
         return html`
     <style> 
@@ -67,13 +68,14 @@ class DsignMenuItemCompress extends LocalizeMixin(ServiceInjectorMixin(PolymerEl
            text-rendering: optimizeLegibility;
            font-size: 18px;
            font-weight: 400;
-           text-transform: capitalize;
            overflow: hidden;
            text-overflow: ellipsis;
            height: 32px;
-           display: flex;
+           display: inline-flex;
            align-items: center;
            padding: 0 6px;
+           word-wrap: break-word; 
+           white-space: nowrap;
        }
        
        .paragraph-card {
@@ -121,10 +123,10 @@ class DsignMenuItemCompress extends LocalizeMixin(ServiceInjectorMixin(PolymerEl
             </div>
         </div>
         <div class="content">
-             <div class="header-card-title">{{menuItem.name.it}}</div>
+             <div class="header-card-title">{{_capitalize(menuItem.name.it)}}</div>
              <div class="paragraph-card">{{menuItem.description.it}}</div>
              <div class="action">
-                 <paper-icon-button icon="add"></paper-icon-button>
+                 <paper-icon-button icon="add" on-tap="addFavorite"></paper-icon-button>
              </div>
         </div>
     </paper-card>
@@ -146,9 +148,19 @@ class DsignMenuItemCompress extends LocalizeMixin(ServiceInjectorMixin(PolymerEl
             services: {
                 value: {
                     _localizeService: 'Localize',
+                    _favoriteService: 'FavoriteService',
                 }
             }
         };
+    }
+
+    /**
+     * @param value
+     * @returns {string}
+     * @private
+     */
+    _capitalize(value) {
+        return typeof value === 'string' ? value.charAt(0).toUpperCase() + value.slice(1) : '';
     }
 
     /**
@@ -173,8 +185,6 @@ class DsignMenuItemCompress extends LocalizeMixin(ServiceInjectorMixin(PolymerEl
         }
 
         if (menu.photos && Array.isArray(menu.photos) && menu.photos.length > 0) {
-
-            console.log('SUCAAAAAAAAAAAAAA d', menu.photos[0]);
             this.$.image.style.backgroundImage = `url(${menu.photos[0].src})`;
         }
     }

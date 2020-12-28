@@ -12,6 +12,8 @@ import {PolymerElement, html} from '@polymer/polymer/polymer-element.js';
 import {setPassiveTouchGestures, setRootPath} from '@polymer/polymer/lib/utils/settings.js';
 import {LocalizeMixin} from "@dsign/polymer-mixin/localize/localize-mixin";
 import {ServiceInjectorMixin} from "@dsign/polymer-mixin/service/injector-mixin";
+import {Storage} from "@dsign/library/src/storage/Storage";
+import {Listener} from "@dsign/library/src/event/Listener";
 import '@polymer/app-layout/app-toolbar/app-toolbar';
 import '@polymer/app-layout/app-drawer/app-drawer';
 import '@polymer/app-layout/app-header/app-header';
@@ -59,6 +61,39 @@ class DsignMenu extends LocalizeMixin(ServiceInjectorMixin(PolymerElement)) {
        
        app-toolbar paper-dropdown-menu paper-item {
             color: #757575;; ;
+       }
+       
+       dsign-menu-favorites {
+            margin-bottom: 4px;
+       }
+       
+       h2.title {
+          font-family: var(--paper-font-common-base_-_font-family);
+          margin: 0;
+          margin-top: 10px;
+          margin-bottom: 10px;
+          text-align: center;
+          text-transform: uppercase;
+       }
+       
+       .subtitle {
+            display: flex;
+            flex-direction: row;
+            padding-bottom: 6px;
+       }
+       
+       .amount {
+            flex: 1;
+            display: flex;
+            align-items: center;
+            justify-content: flex-end;
+            padding-right: 4px;
+            font-size: 18px;
+            font-family: var(--paper-font-common-base_-_font-family);
+       }
+       
+       [no-padding] {
+            padding: 0;
        }
        
        .item {
@@ -113,6 +148,22 @@ class DsignMenu extends LocalizeMixin(ServiceInjectorMixin(PolymerElement)) {
         padding: 6px;
        }
        
+       #action {
+           display: flex;
+           justify-content: center;
+           width: 40px;
+       }
+       
+       paper-icon-button.menu-drawer {
+           color: #000000 !important;
+           width: 20px;
+           height: 20px;
+           border-radius: 50%;
+           --paper-icon-button : {
+                padding: 0;
+           }       
+       }
+       
        .drawerContainer {
         padding: 6px;
        }
@@ -141,11 +192,11 @@ class DsignMenu extends LocalizeMixin(ServiceInjectorMixin(PolymerElement)) {
        #category {
          padding-bottom: 2px;
        }
-       
-       h2  {
-        text-align: center;
-        text-transform: uppercase;
+              
+       app-drawer {           
+           --app-drawer-width: 400px;
        }
+  
 
        @media only screen and (max-width: 2600px) and (min-width: 2201px) {
            dsign-menu-wrap-item {
@@ -221,6 +272,11 @@ class DsignMenu extends LocalizeMixin(ServiceInjectorMixin(PolymerElement)) {
        }
               
        @media only screen and (max-width: 770px) and (min-width: 501px) {
+       
+            app-drawer {           
+                --app-drawer-width: 250px;
+            }
+       
             dsign-menu-wrap-item {
                 flex-basis: 50%;
             }
@@ -233,6 +289,10 @@ class DsignMenu extends LocalizeMixin(ServiceInjectorMixin(PolymerElement)) {
        }
        
        @media only screen and (max-width: 500px)  {
+            app-drawer {           
+                --app-drawer-width: 250px;
+            }
+       
             dsign-menu-wrap-item {
                 flex-basis: 100%;
                 --menu-wrap-container : {
@@ -288,7 +348,23 @@ class DsignMenu extends LocalizeMixin(ServiceInjectorMixin(PolymerElement)) {
     </app-header-layout>
     <app-drawer id="drawer" align="right">
         <div class="drawerContainer">
-            <h2>Preferiti</h2>
+            <h2 class="title">Preferiti</h2>
+            <div class="subtitle">
+                <div class="amount">{{amount}}</div>
+                <div id="action">
+                    <paper-menu-button id="paperAction" no-padding ignore-select horizontal-align="right">
+                        <paper-icon-button class="menu-drawer" icon="v-menu" slot="dropdown-trigger" alt="multi menu"></paper-icon-button>
+                        <paper-listbox slot="dropdown-content" multi>
+                            <paper-item on-click="_reset">{{localize('reset-dishes-arrived')}}</paper-item>
+                        </paper-listbox>
+                    </paper-menu-button>
+                </div>
+            </div>
+            <dom-repeat id="favorites" items="[[favorites]]" as="favorite">
+              <template>
+                <dsign-menu-favorites menu-item="{{favorite}}"></dsign-menu-favorites>
+              </template>
+            </dom-repeat>
         </div>
     </app-drawer>`;
     }
@@ -308,8 +384,13 @@ class DsignMenu extends LocalizeMixin(ServiceInjectorMixin(PolymerElement)) {
             services: {
                 value: {
                     _localizeService: 'Localize',
-                    _config: 'config'
+                    _config: 'config',
+                    _favoriteService: 'FavoriteService'
                 }
+            },
+
+            amount: {
+                notify: true
             },
 
             itemLayout: {
@@ -318,6 +399,15 @@ class DsignMenu extends LocalizeMixin(ServiceInjectorMixin(PolymerElement)) {
             },
 
             apiUrl: { },
+
+            favorites: {
+                value: []
+            },
+
+            _favoriteService: {
+                readOnly: true,
+                observer: 'changeFavoriteService'
+            },
 
             _config: {
                 readOnly: true,
@@ -390,6 +480,44 @@ class DsignMenu extends LocalizeMixin(ServiceInjectorMixin(PolymerElement)) {
     }
 
     /**
+     * @param service
+     */
+    changeFavoriteService(service) {
+        if (!service) {
+            return;
+        }
+
+        service.getEventManager().on(Storage.POST_UPDATE, new Listener(this.updateFavoriteEvt.bind(this)));
+        service.getEventManager().on(Storage.POST_REMOVE, new Listener(this.deleteFavoriteEvt.bind(this)));
+
+        this.updateFavoriteEvt();
+        this._updateAmount();
+    }
+
+    /**
+     * @private
+     */
+    _updateAmount() {
+        // TODO add metadata to localize service
+        this.amount = new Intl.NumberFormat('it-IT', { style: 'currency', currency: 'EUR' }).format(this._favoriteService.getAmount());
+    }
+
+    /**
+     * @param evt
+     */
+    updateFavoriteEvt(evt) {
+        this._favoriteService.getFavorites().then((data) => {
+            this.favorites = data;
+            this._updateAmount();
+            this.$.favorites.render();
+        });
+    }
+
+    deleteFavoriteEvt(evt) {
+        this._updateAmount();
+    }
+
+    /**
      * @param items
      * @param apiUrl
      * @private
@@ -403,8 +531,6 @@ class DsignMenu extends LocalizeMixin(ServiceInjectorMixin(PolymerElement)) {
             this._attachCategory([]);
             this._attachCategory(this._distinctCategory(this.items, category));
         });
-
-        console.log('recupera le categorie')
     }
 
     /**
@@ -457,6 +583,22 @@ class DsignMenu extends LocalizeMixin(ServiceInjectorMixin(PolymerElement)) {
      */
     tapMenu(evt) {
         this.$.drawer.toggle();
+    }
+
+    /**
+     * @param evt
+     * @private
+     */
+    _reset(evt) {
+
+       let elements = this.shadowRoot.querySelectorAll('dsign-menu-favorites');
+       for (let index = 0; elements.length > index; index++) {
+           //_favoriteService
+           console.log('sss', elements[index].menuItem)
+           elements[index].menuItem.currentCount = 0;
+           this._favoriteService.upsertFavorite(elements[index].menuItem);
+       }
+        this.$.paperAction.close();
     }
 
     /**

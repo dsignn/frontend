@@ -71,11 +71,11 @@ export const config = {
                 "new": 0,
                 "photos": [],
                 "status": "not-available",
-                "id": "5f3e4a70572b8132565a6198"
+                "id": "5f3e4a70572b8132565a619a"
             },
             {
                 "name": {
-                    "it": "pasta all'arrabbiata",
+                    "it": "pasta alla norma",
                     "en": "pasta all'arrabbiata"
                 },
                 "description": {
@@ -90,11 +90,11 @@ export const config = {
                 "new": 0,
                 "photos": [],
                 "status": "available",
-                "id": "5f3e4a70572b8132565a6198"
+                "id": "5f3e4a70572b8132565a619e"
             },
             {
                 "name": {
-                    "it": "pasta all'arrabbiata",
+                    "it": "pasta panna e gamberettiiiiii",
                     "en": "pasta all'arrabbiata"
                 },
                 "description": {
@@ -109,7 +109,7 @@ export const config = {
                 "new": 0,
                 "photos": [],
                 "status": "available",
-                "id": "5f3e4a70572b8132565a6198"
+                "id": "5f3e4a70572b8132565a619f"
             },
             {
                 "name": {
@@ -128,7 +128,7 @@ export const config = {
                 "new": 0,
                 "photos": [],
                 "status": "available",
-                "id": "5f3e4a70572b8132565a6198"
+                "id": "5f3e4a70572b8132565a6199"
             },
             {
                 "name": {
@@ -147,7 +147,7 @@ export const config = {
                 "new": 0,
                 "photos": [],
                 "status": "available",
-                "id": "5f3e4a70572b8132565a6198"
+                "id": "5f3e4a70572b8132565a6191"
             },
             {
                 "name": {
@@ -166,7 +166,7 @@ export const config = {
                 "new": 0,
                 "photos": [],
                 "status": "not-available",
-                "id": "5f3e4a70572b8132565a6198"
+                "id": "5f3e4a70572b8132565a6192"
             },
             {
                 "name": {
@@ -185,7 +185,7 @@ export const config = {
                 "new": 0,
                 "photos": [],
                 "status": "available",
-                "id": "5f3e4a70572b8132565a6198"
+                "id": "5f3e4a70572b8132565a6194"
             },
             {
                 "name": {
@@ -204,11 +204,11 @@ export const config = {
                 "new": 0,
                 "photos": [],
                 "status": "not-available",
-                "id": "5f3e4a70572b8132565a6198"
+                "id": "5f3e4a70572b8132565a6195"
             },
             {
                 "name": {
-                    "it": "pasta all'arrabbiata",
+                    "it": "tiramisu",
                     "en": "pasta all'arrabbiata"
                 },
                 "description": {
@@ -227,7 +227,7 @@ export const config = {
             },
             {
                 "name": {
-                    "it": "pasta all'arrabbiata",
+                    "it": "passito",
                     "en": "pasta all'arrabbiata"
                 },
                 "description": {
@@ -242,7 +242,7 @@ export const config = {
                 "new": 0,
                 "photos": [],
                 "status": "available",
-                "id": "5f3e4a70572b8132565a6198"
+                "id": "5f3e4a70572b8132565a6194"
             }
         ],
         "organization": {

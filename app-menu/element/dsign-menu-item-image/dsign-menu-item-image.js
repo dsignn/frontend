@@ -65,7 +65,6 @@ class DsignMenuItemImage extends ItemFavorite(LocalizeMixin(ServiceInjectorMixin
            text-rendering: optimizeLegibility;
            font-size: 18px;
            font-weight: 400;
-           text-transform: capitalize;
            overflow: hidden;
            text-overflow: ellipsis;
            height: 32px;
@@ -111,7 +110,7 @@ class DsignMenuItemImage extends ItemFavorite(LocalizeMixin(ServiceInjectorMixin
     </style>
     <paper-card>
         <div class="header">
-            <div class="header-card-title">{{menuItem.name.it}}</div>
+            <div class="header-card-title">{{_capitalize(menuItem.name.it )}}</div>
         </div>
         <div id="image" class="image">
             <div class="price">
@@ -145,6 +144,15 @@ class DsignMenuItemImage extends ItemFavorite(LocalizeMixin(ServiceInjectorMixin
                 }
             }
         };
+    }
+
+    /**
+     * @param value
+     * @returns {string}
+     * @private
+     */
+    _capitalize(value) {
+        return typeof value === 'string' ? value.charAt(0).toUpperCase() + value.slice(1) : '';
     }
 
     /**
