@@ -44,6 +44,10 @@ class RestaurantViewUpsert extends StorageEntityMixin(NotifyMixin(LocalizeMixin(
                  @apply --layout-center;
             }
             
+            #stampButton {
+                visibility: hidden;
+            }
+            
             paper-input-file {
                outline: none;
                color: var(--accent-color);
@@ -120,9 +124,9 @@ class RestaurantViewUpsert extends StorageEntityMixin(NotifyMixin(LocalizeMixin(
                             <div class="url" slot="prefix">{{_config.app.basePath}}menu/</div>
                         </paper-input>
                         <div class="action">
-                            <paper-button on-tap="generateQrCode">{{localize('generate-qrcode')}}</paper-button>
                             <paper-button on-tap="submitRestaurantButton">{{localize(labelAction)}}</paper-button>
-                            <paper-button ont-tap="openPrintable">Printable</paper-button>
+                            <paper-button on-tap="generateQrCode">{{localize('generate-qrcode')}}</paper-button>
+                            <paper-button id="stampButton" on-tap="openPrintable">{{localize('page-stamp')}}</paper-button>
                         </div>
                     </form>
                 </iron-form>
@@ -221,7 +225,7 @@ class RestaurantViewUpsert extends StorageEntityMixin(NotifyMixin(LocalizeMixin(
      * @param evt
      */
     openPrintable(evt) {
-        var win = window.open('http://127.0.0.1:8081/', '_blank');
+        let win = window.open(`${this._config.app.rootPath}/print-qrcode/${this.entity.id}`, '_blank');
         win.focus();
     }
 
@@ -270,6 +274,12 @@ class RestaurantViewUpsert extends StorageEntityMixin(NotifyMixin(LocalizeMixin(
         if (newValue && oldValue && newValue.id !== oldValue.id ) {
             this._updateQrCode();
             this._updateLogo();
+        }
+
+        if (newValue.hasQrCode()) {
+            this.$.stampButton.style.visibility = 'visible';
+        } else {
+            this.$.stampButton.style.visibility = 'hidden';
         }
 
         if (!newValue.logo || !newValue.logo.id) {

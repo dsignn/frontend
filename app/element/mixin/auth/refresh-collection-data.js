@@ -25,13 +25,13 @@ export const RefreshCollectionData = (superClass) => {
          *
          * @param itemPerPage
          * @param storage
+         * @param authService
          * @private
          */
         _changeItemPerPage(itemPerPage, storage, authService) {
             if (!itemPerPage || !storage) {
                 return;
             }
-            console.log('itemPerPage');
             this.getPagedEntities();
         }
 
@@ -45,15 +45,14 @@ export const RefreshCollectionData = (superClass) => {
             if (!page || !storage || !authService) {
                 return;
             }
-            console.log('page');
             this.getPagedEntities();
         }
 
 
         /**
          *
-         * @param _authService
-         * @param _storage
+         * @param authService
+         * @param storage
          * @private
          */
         _changeAuthStorage(authService, storage) {
@@ -63,26 +62,21 @@ export const RefreshCollectionData = (superClass) => {
             }
 
             if (authService.token) {
-         //       console.log('RefreshCollectionData già LOGGATO',  this._storage.adapter.getNameCollection());
+
                 this.getPagedEntities();
                 this.listenerCollection = new Listener(this.getPagedEntities.bind(this));
                 this._storage.getEventManager().on(Storage.POST_SAVE, this.listenerCollection);
             }
 
-            console.log(authService, storage.adapter.getNameCollection());
             authService.eventManager.on(
                 'login',
                 (data) => {
-           //         console.log('RefreshCollectionData LOGIN');
-
                     setTimeout(
                         () => {
-                            console.log( this._storage, 'WWWWWWWWWWWWWWWWWWWWWW');
                             this.getPagedEntities();
                         },
                         1000
                     );
-
                     this.listenerCollection = new Listener(this.getPagedEntities.bind(this));
                     this._storage.getEventManager().on(Storage.POST_SAVE, this.listenerCollection);
                 }
@@ -91,7 +85,6 @@ export const RefreshCollectionData = (superClass) => {
             authService.eventManager.on(
                 'logout',
                 (data) => {
-         //           console.log('RefreshCollectionData LOGOUT');
                     this.set('entities', []);
                     this._storage.getEventManager().remove(Storage.POST_SAVE, this.listenerCollection);
                 }

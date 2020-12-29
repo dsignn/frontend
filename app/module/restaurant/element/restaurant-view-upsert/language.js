@@ -8,7 +8,8 @@ export const lang = {
     "qr-code": "Qr Code",
     "logo": "Logo",
     "notify-save": "Ristorante salvato",
-    "notify-update": "Ristorante modificato"
+    "notify-update": "Ristorante modificato",
+    "page-stamp": "Pagina di stampa"
   },
   "en": {
     "name": "Name",
@@ -19,6 +20,7 @@ export const lang = {
     "qr-code": "Qr Code",
     "logo": "Logo",
     "notify-save": "Restaurant saved",
-    "notify-update": "Restaurant updated"
+    "notify-update": "Restaurant updated",
+    "page-stamp": "Stamp page"
   }
 };

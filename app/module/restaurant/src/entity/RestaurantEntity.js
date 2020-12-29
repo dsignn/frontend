@@ -23,4 +23,15 @@ export class RestaurantEntity extends EntityIdentifier {
          */
         this.qrCode = {};
     }
+
+    /**
+     * @returns {boolean}
+     */
+    hasQrCode () {
+        let has = false;
+        if (this.qrCode && this.qrCode.id && this.qrCode.id && typeof this.qrCode.id === 'string' && this.qrCode.id.length > 0) {
+            has = true;
+        }
+        return has;
+    }
 }
