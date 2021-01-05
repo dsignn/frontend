@@ -205,9 +205,6 @@ class DsignMenuFavorites extends LocalizeMixin(ServiceInjectorMixin(PolymerEleme
             });
         } else {
             this.menuItem.totalCount--;
-            if (this.menuItem.currentCount > this.menuItem.totalCount) {
-                this.menuItem.currentCount = this.menuItem.totalCount;
-            }
             this._updateView();
             this._favoriteService.upsertFavorite(this.menuItem);
             this._checkAction();

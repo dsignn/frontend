@@ -11,7 +11,8 @@ export const config = {
     },
     app: {
         basePath: 'http://127.0.0.1:8081/',
-        moduleRelativePath: 'module'
+        moduleRelativePath: 'module',
+        rootPath: 'http://127.0.0.200'
     },
     modules:  [
         {
@@ -36,6 +37,31 @@ export const config = {
                     "path":  {
                         directory: 'element/dashboard-icons',
                         nameFile: 'dashboard-icons',
+                        extension: 'js'
+                    }
+                }
+            ]
+        },
+        {
+            "title": "Restaurant",
+            "name": "restaurant",
+            "icon": "restaurant:menu",
+            "entryPoint": {
+                "name": "restaurant-index",
+                "path": {
+                    directory: 'element/restaurant-index',
+                    nameFile: 'restaurant-index',
+                    extension: 'js'
+                }
+            },
+            "configEntryPoint": "repository.js",
+            "autoloads": [],
+            "autoloadsWs": [
+                {
+                    "name": "restaurant-icons",
+                    "path":  {
+                        directory: 'element/restaurant-icons',
+                        nameFile: 'restaurant-icons',
                         extension: 'js'
                     }
                 }
@@ -73,10 +99,43 @@ export const config = {
                     }
                 },
                 {
+                    "name": "user-me",
+                    "path":  {
+                        directory: 'element/user-me',
+                        nameFile: 'user-me',
+                        extension: 'js'
+                    }
+                },
+                {
                     "name": "activation-code",
                     "path":  {
                         directory: 'element/activation-code',
                         nameFile: 'activation-code',
+                        extension: 'js'
+                    }
+                }
+            ]
+        },
+        {
+            "title": "Resource",
+            "name": "resource",
+            "icon": "resource:menu",
+            "entryPoint": {
+                "name": "resource-index",
+                "path": {
+                    directory: 'element/resource-index',
+                    nameFile: 'resource-index',
+                    extension: 'js'
+                }
+            },
+            "configEntryPoint": "repository.js",
+            "autoloads": [],
+            "autoloadsWs": [
+                {
+                    "name": "resource-icons",
+                    "path":  {
+                        directory: 'element/resource-icons',
+                        nameFile: 'resource-icons',
                         extension: 'js'
                     }
                 }
@@ -108,32 +167,6 @@ export const config = {
                 }
             ]
         },
-        {
-            "title": "Restaurant",
-            "name": "restaurant",
-            "icon": "restaurant:menu",
-            "entryPoint": {
-                "name": "restaurant-index",
-                "path": {
-                    directory: 'element/restaurant-index',
-                    nameFile: 'restaurant-index',
-                    extension: 'js'
-                }
-            },
-            "configEntryPoint": "repository.js",
-            "autoloads": [],
-            "autoloadsWs": [
-                {
-                    "name": "restaurant-icons",
-                    "path":  {
-                        directory: 'element/restaurant-icons',
-                        nameFile: 'restaurant-icons',
-                        extension: 'js'
-                    }
-                }
-            ]
-        }
-
         {
             "title": "Monitor",
             "name": "monitor",
@@ -211,8 +244,8 @@ export const config = {
                 name: "access-token",
                 options: {
                     scope: 'basic email',
-                    clientId: 'myapp',
-                    clientSecret: 'testdrwerewq',
+                    clientId: 'dsign-client',
+                    clientSecret: 'dsign4!',
                     grantType: 'password'
                 }
             }

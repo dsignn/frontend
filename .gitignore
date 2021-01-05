@@ -1,6 +1,7 @@
 # Application
 package-lock.json
 app/src/config.js
+app-menu/src/config.js
 app/npm-debug.log
 app-menu/npm-debug.log
 build-app

@@ -3,28 +3,31 @@
 <head>
     <meta charset="UTF-8">
     <title>Menu</title>
-
+    <script type="module">
+        /*
+            TODO setting to the php application
+          <script type="text/javascript" src="{{ base_url }}/config.js"> </ script>
+        */
+        // const baseUrlJs = "{{ base_url }}";
+        import {config} from './src/config';
+        window.configApp = config;
+    </script>
     <meta name="viewport" content="width=device-width, minimum-scale=1, initial-scale=1, user-scalable=yes">
     <script type="module" src="node_modules/@webcomponents/webcomponentsjs/webcomponents-loader.js"></script>
     <script src="node_modules/web-animations-js/web-animations-next-lite.min.js"></script>
-    <script>
-        // TODO setting to the php application
-        const base_url = '';
-    </script>
     <script type="module">
         import {Container} from '@dsign/library/src/container/Container';
         import {Localize} from '@dsign/library/src/localize/Localize';
         import {Storage} from '@dsign/library/src/storage/Storage';
         import {LocalStorageAdapter} from '@dsign/library/src/storage/adapter/local-storage/LocalStorageAdapter';
-        import {FavoriteService} from  './src/favorite/FavoriteService'
-        import {config} from './src/config';
+        import {FavoriteService} from  '@dsign/library/src/frontend/favorite/FavoriteService';
 
         const container = new Container();
 
         /**
          * Config
          */
-        container.set('config', config);
+        container.set('config', configApp);
 
         /**
          * @type {Localize}
@@ -49,7 +52,7 @@
         /**
          * @type FavoriteService
          */
-        container.set('FavoriteService', new FavoriteService(menuStorage, config.menu));
+        container.set('FavoriteService', new FavoriteService(menuStorage, configApp.menu));
 
         window.container = container;
 
