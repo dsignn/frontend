@@ -143,31 +143,6 @@ export const config = {
         },
         /*
         {
-            "title": "Resource",
-            "name": "resource",
-            "icon": "resource:menu",
-            "entryPoint": {
-                "name": "resource-index",
-                "path": {
-                    directory: 'element/resource-index',
-                    nameFile: 'resource-index',
-                    extension: 'js'
-                }
-            },
-            "configEntryPoint": "repository.js",
-            "autoloads": [],
-            "autoloadsWs": [
-                {
-                    "name": "resource-icons",
-                    "path":  {
-                        directory: 'element/resource-icons',
-                        nameFile: 'resource-icons',
-                        extension: 'js'
-                    }
-                }
-            ]
-        },
-        {
             "title": "Monitor",
             "name": "monitor",
             "icon": "monitor:menu",
