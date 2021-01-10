@@ -161,8 +161,7 @@ class DsignMenuFavorites extends LocalizeMixin(ServiceInjectorMixin(PolymerEleme
         }
 
         this.updateListener = new Listener(function (evt) {
-            console.log('EVENTO', evt.data, this.menuItem.id);
-            if (evt.data.id === this.menuItem.id) {
+            if (evt.data['_id'] === this.menuItem['_id']) {
                 this.menuItem = evt.data;
                 this._updateView();
                 this._checkAction();
@@ -189,9 +188,7 @@ class DsignMenuFavorites extends LocalizeMixin(ServiceInjectorMixin(PolymerEleme
      */
     _remove(evt) {
         this.menuItem.currentCount--;
-        this._updateView();
         this._favoriteService.upsertFavorite(this.menuItem);
-        this._checkAction();
     }
 
     /**
@@ -204,9 +201,9 @@ class DsignMenuFavorites extends LocalizeMixin(ServiceInjectorMixin(PolymerEleme
                 this.remove();
             });
         } else {
-            this.menuItem.totalCount--;
+
             this._updateView();
-            this._favoriteService.upsertFavorite(this.menuItem);
+            this._favoriteService.removeFavorite(this.menuItem);
             this._checkAction();
             this.$.paperAction.close();
         }

@@ -13,6 +13,7 @@ import {setPassiveTouchGestures, setRootPath} from '@polymer/polymer/lib/utils/s
 import {LocalizeMixin} from "@dsign/polymer-mixin/localize/localize-mixin";
 import {ServiceInjectorMixin} from "@dsign/polymer-mixin/service/injector-mixin";
 import {Storage} from "@dsign/library/src/storage/Storage";
+import {FavoriteService} from "@dsign/library/src/frontend/favorite/FavoriteService";
 import {Listener} from "@dsign/library/src/event/Listener";
 import '@polymer/app-layout/app-toolbar/app-toolbar';
 import '@polymer/app-layout/app-drawer/app-drawer';
@@ -341,7 +342,7 @@ class DsignMenu extends LocalizeMixin(ServiceInjectorMixin(PolymerElement)) {
       <div id="menuContainer">
           <dom-repeat id="list" items="[[items]]" as="menuItem">
               <template>
-                    <dsign-menu-wrap-item item="[[menuItem]]" type="[[itemLayout]]"></dsign-menu-wrap-item>
+                    <dsign-menu-wrap-item item="[[menuItem]]" type="[[layoutType]]"></dsign-menu-wrap-item>
               </template>
           </dom-repeat>
       </div>
@@ -393,7 +394,7 @@ class DsignMenu extends LocalizeMixin(ServiceInjectorMixin(PolymerElement)) {
                 notify: true
             },
 
-            itemLayout: {
+            layoutType: {
                 value: 'dsign-menu-item-image',
                 readOnly: true
             },
@@ -435,7 +436,7 @@ class DsignMenu extends LocalizeMixin(ServiceInjectorMixin(PolymerElement)) {
         this.resources = lang;
         let param = this.parseUrlParam();
         if (param && param['menu'] &&  param['menu'] === 'compress') {
-            this._setItemLayout('dsign-menu-item-compress');
+            this._setLayoutType('dsign-menu-item-compress');
         }
     }
 
@@ -487,8 +488,9 @@ class DsignMenu extends LocalizeMixin(ServiceInjectorMixin(PolymerElement)) {
             return;
         }
 
-        service.getEventManager().on(Storage.POST_UPDATE, new Listener(this.updateFavoriteEvt.bind(this)));
         service.getEventManager().on(Storage.POST_REMOVE, new Listener(this.deleteFavoriteEvt.bind(this)));
+        service.getEventManager().on(FavoriteService.RESET_FAVORITES, new Listener(this.updateFavoriteEvt.bind(this)));
+        service.getEventManager().on(FavoriteService.NEW_FAVORITES, new Listener(this.updateFavoriteEvt.bind(this)));
 
         this.updateFavoriteEvt();
         this._updateAmount();
@@ -576,6 +578,11 @@ class DsignMenu extends LocalizeMixin(ServiceInjectorMixin(PolymerElement)) {
         if (menu.color_header) {
             this._changeColorHeader(menu.color_header)
         }
+
+        if (menu.layout_type) {
+            console.log('CAMBIO', menu.layout_type);
+            this._setLayoutType(menu.layout_type);
+        }
     }
 
     /**
@@ -590,15 +597,7 @@ class DsignMenu extends LocalizeMixin(ServiceInjectorMixin(PolymerElement)) {
      * @private
      */
     _reset(evt) {
-
-       let elements = this.shadowRoot.querySelectorAll('dsign-menu-favorites');
-       for (let index = 0; elements.length > index; index++) {
-           //_favoriteService
-           console.log('sss', elements[index].menuItem)
-           elements[index].menuItem.currentCount = 0;
-           this._favoriteService.upsertFavorite(elements[index].menuItem);
-       }
-        this.$.paperAction.close();
+        this._favoriteService.resetFavorites();
     }
 
     /**

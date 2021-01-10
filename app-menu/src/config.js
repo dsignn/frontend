@@ -33,7 +33,7 @@ export const config = {
                     "organization_reference": null
                 }],
                 "status": "available",
-                "id": "5f3e4a70572b8132565a6196"
+                "_id": "5f3e4a70572b8132565a6196"
             },
             {
                 "name": {
@@ -52,7 +52,7 @@ export const config = {
                 "new": 0,
                 "photos": [],
                 "status": "over",
-                "id": "5f3e4a70572b8132565a6197"
+                "_id": "5f3e4a70572b8132565a6197"
             },
             {
                 "name": {
@@ -71,7 +71,7 @@ export const config = {
                 "new": 0,
                 "photos": [],
                 "status": "not-available",
-                "id": "5f3e4a70572b8132565a619a"
+                "_id": "5f3e4a70572b8132565a619a"
             },
             {
                 "name": {
@@ -90,7 +90,7 @@ export const config = {
                 "new": 0,
                 "photos": [],
                 "status": "available",
-                "id": "5f3e4a70572b8132565a619e"
+                "_id": "5f3e4a70572b8132565a619e"
             },
             {
                 "name": {
@@ -109,7 +109,7 @@ export const config = {
                 "new": 0,
                 "photos": [],
                 "status": "available",
-                "id": "5f3e4a70572b8132565a619f"
+                "_id": "5f3e4a70572b8132565a619f"
             },
             {
                 "name": {
@@ -128,7 +128,7 @@ export const config = {
                 "new": 0,
                 "photos": [],
                 "status": "available",
-                "id": "5f3e4a70572b8132565a6199"
+                "_id": "5f3e4a70572b8132565a6199"
             },
             {
                 "name": {
@@ -147,7 +147,7 @@ export const config = {
                 "new": 0,
                 "photos": [],
                 "status": "available",
-                "id": "5f3e4a70572b8132565a6191"
+                "_id": "5f3e4a70572b8132565a6191"
             },
             {
                 "name": {
@@ -166,7 +166,7 @@ export const config = {
                 "new": 0,
                 "photos": [],
                 "status": "not-available",
-                "id": "5f3e4a70572b8132565a6192"
+                "_id": "5f3e4a70572b8132565a6192"
             },
             {
                 "name": {
@@ -185,7 +185,7 @@ export const config = {
                 "new": 0,
                 "photos": [],
                 "status": "available",
-                "id": "5f3e4a70572b8132565a6194"
+                "_id": "5f3e4a70572b8132565a6194"
             },
             {
                 "name": {
@@ -204,7 +204,7 @@ export const config = {
                 "new": 0,
                 "photos": [],
                 "status": "not-available",
-                "id": "5f3e4a70572b8132565a6195"
+                "_id": "5f3e4a70572b8132565a6195"
             },
             {
                 "name": {
@@ -223,7 +223,7 @@ export const config = {
                 "new": 0,
                 "photos": [],
                 "status": "available",
-                "id": "5f3e4a70572b8132565a6198"
+                "_id": "5f3e4a70572b8132565a6198"
             },
             {
                 "name": {
@@ -242,7 +242,7 @@ export const config = {
                 "new": 0,
                 "photos": [],
                 "status": "available",
-                "id": "5f3e4a70572b8132565a6194"
+                "_id": "5f3e4a70572b8132565a6194"
             }
         ],
         "organization": {
@@ -266,6 +266,7 @@ export const config = {
         "background_header": "#FF0000",
         "color_header": "#FFFFFF",
         "enable": false,
-        "id": "5f3e4a70572b8132565a6199"
+        "id": "5f3e4a70572b8132565a6199",
+        "layout_type": "dsign-menu-item-image"
     }
 };
