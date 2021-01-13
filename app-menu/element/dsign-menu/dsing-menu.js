@@ -491,7 +491,7 @@ class DsignMenu extends LocalizeMixin(ServiceInjectorMixin(PolymerElement)) {
         service.getEventManager().on(Storage.POST_REMOVE, new Listener(this.deleteFavoriteEvt.bind(this)));
         service.getEventManager().on(FavoriteService.RESET_FAVORITES, new Listener(this.updateFavoriteEvt.bind(this)));
         service.getEventManager().on(FavoriteService.NEW_FAVORITES, new Listener(this.updateFavoriteEvt.bind(this)));
-        service.getEventManager().on(Storage.POST_UPDATE, new Listener(this.updateAmount.bind(this)));
+        service.getEventManager().on(Storage.POST_UPDATE, new Listener(this.updateAmountEvt.bind(this)));
 
         this.updateFavoriteEvt();
         this._updateAmount();
@@ -508,7 +508,7 @@ class DsignMenu extends LocalizeMixin(ServiceInjectorMixin(PolymerElement)) {
     /**
      * @param evt
      */
-    updateAmount(evt) {
+    updateAmountEvt(evt) {
         setTimeout(() => {
                 this._updateAmount()
             },

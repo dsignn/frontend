@@ -97,6 +97,10 @@ class DsignMenuIcon extends AclMixin(ServiceInjectorMixin(PolymerElement)) {
       classText: {
         readOnly: true,
         value:'not-display'
+      },
+
+      name: {
+        reflectToAttribute: true
       }
     }
   }

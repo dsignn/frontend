@@ -18,6 +18,7 @@ import {JsonDecode} from '@dsign/library/src/data-transform/JsonDecode.js';
 import {FormDataEncode} from '@dsign/library/src/data-transform/FormDataEncode.js';
 import {Application} from '@dsign/library/src/core/Application.js';
 import {Module} from '@dsign/library/src/core/module/Module.js';
+import {Widget} from '@dsign/library/src/core/widget/Widget.js';
 import {WebComponent} from '@dsign/library/src/core/webcomponent/WebComponent.js';
 import {AutoLoadClass} from '@dsign/library/src/core/autoload/AutoLoadClass.js';
 import {PathGeneric} from '@dsign/library/src/path/PathGeneric.js';
@@ -66,6 +67,11 @@ moduleHydrator.addValueStrategy('autoloadsWs', new HydratorStrategy(webComponent
 moduleHydrator.addValueStrategy('entryPoint', new HydratorStrategy(webComponentHydrator));
 moduleHydrator.addValueStrategy('autoloads', new HydratorStrategy(autoLoadClassHydrator));
 
+let widgetHydrator = new PropertyHydrator(new Widget());
+widgetHydrator.addValueStrategy('webComponent', new HydratorStrategy(webComponentHydrator));
+widgetHydrator.addValueStrategy('webComponentData', new HydratorStrategy(webComponentHydrator));
+
+
 /**
  * Application
  */
@@ -74,10 +80,21 @@ const application = new Application();
 application.setBasePath(config.app.basePath)
     .setModulePath(`${config.app.basePath}${config.app.moduleRelativePath}`);
 
+// let widgets = [];
 let modules = [];
 config.modules.forEach(function(module, index) {
     modules.push(moduleHydrator.hydrate(module));
+    /*
+    if (module.widgets && Array.isArray(module.widgets) && module.widgets.length > 0) {
+
+        for (let cont2 = 0; module.widgets.length > cont2; cont2++) {
+            widgets.push(widgetHydrator.hydrate(module.widgets[cont2]));
+        }
+    }
+    */
 });
+
+//application.setWidgets(widgets);
 
 application.getEventManager().on(
     Application.BOOTSTRAP_MODULE,

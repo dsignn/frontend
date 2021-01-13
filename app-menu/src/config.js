@@ -3,6 +3,7 @@
  */
 export const config = {
     dev: true,
+    bucket: 'https://dsign-asset.s3.eu-central-1.amazonaws.com/categories',
     apiUrl: 'http://127.0.0.150/',
     menu: {
         "items": [
@@ -267,6 +268,6 @@ export const config = {
         "color_header": "#FFFFFF",
         "enable": false,
         "id": "5f3e4a70572b8132565a6199",
-        "layout_type": "dsign-menu-item-image"
+        "layout_type": "dsign-menu-item-compress"
     }
 };

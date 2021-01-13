@@ -133,18 +133,42 @@ class DsignMenuItemImage extends ItemFavorite(LocalizeMixin(ServiceInjectorMixin
 
     static get properties() {
         return {
-            menuItem: {
-                observer: '_changeMenu'
-            },
+            menuItem: {},
 
             services: {
                 value: {
+                    _config: 'config',
                     _localizeService: 'Localize',
                     _favoriteService: 'FavoriteService',
                 }
             }
         };
     }
+
+    static get observers() {
+        return [
+            '_observeMenu(menuItem, _config)'
+        ];
+    }
+
+    /**
+     * @param menu
+     * @param config
+     * @private
+     */
+    _observeMenu(menu, config) {
+        if (!menu || !config) {
+            return;
+        }
+
+        if (menu.photos && Array.isArray(menu.photos) && menu.photos.length > 0) {
+            this.$.image.style.backgroundImage = `url(${menu.photos[0].src})`;
+        } else {
+            this.$.image.style.backgroundImage = `url(${config.bucket}/${menu.category}.png)`;
+            this.$.image.style.backgroundSize = `contain`;
+        }
+    }
+
 
     /**
      * @param value
@@ -153,20 +177,6 @@ class DsignMenuItemImage extends ItemFavorite(LocalizeMixin(ServiceInjectorMixin
      */
     _capitalize(value) {
         return typeof value === 'string' ? value.charAt(0).toUpperCase() + value.slice(1) : '';
-    }
-
-    /**
-     * @param menu
-     * @private
-     */
-    _changeMenu(menu) {
-        if (!menu) {
-            return;
-        }
-
-        if (menu.photos && Array.isArray(menu.photos) && menu.photos.length > 0) {
-            this.$.image.style.backgroundImage = `url(${menu.photos[0].src})`;
-        }
     }
 
     /**

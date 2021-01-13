@@ -34,5 +34,7 @@ export class Repository extends ContainerAware {
         this.getContainer().get('Acl').allow('restaurantOwner', 'dashboard', 'menu');
         this.getContainer().get('Acl').allow('guest', 'dashboard', 'menu');
         this.getContainer().get('Acl').allow('guest', 'dashboard', 'index-view');
+        this.getContainer().get('Acl').allow('admin', 'dashboard', 'index-logged');
+        this.getContainer().get('Acl').allow('restaurantOwner', 'dashboard', 'index-logged');
     }
 }

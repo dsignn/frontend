@@ -129,9 +129,7 @@ class DsignMenuItemCompress extends ItemFavorite(LocalizeMixin(ServiceInjectorMi
                  <paper-icon-button icon="add" on-tap="addFavorite"></paper-icon-button>
              </div>
         </div>
-    </paper-card>
-    `;
-
+    </paper-card>`;
     }
 
     constructor() {
@@ -147,11 +145,18 @@ class DsignMenuItemCompress extends ItemFavorite(LocalizeMixin(ServiceInjectorMi
 
             services: {
                 value: {
+                    _config: 'config',
                     _localizeService: 'Localize',
                     _favoriteService: 'FavoriteService',
                 }
             }
         };
+    }
+
+    static get observers() {
+        return [
+            '_observeMenu(menuItem, _config)'
+        ];
     }
 
     /**
@@ -177,17 +182,22 @@ class DsignMenuItemCompress extends ItemFavorite(LocalizeMixin(ServiceInjectorMi
 
     /**
      * @param menu
+     * @param config
      * @private
      */
-    _changeMenu(menu) {
-        if (!menu) {
+    _observeMenu(menu, config) {
+        if (!menu || !config) {
             return;
         }
 
         if (menu.photos && Array.isArray(menu.photos) && menu.photos.length > 0) {
             this.$.image.style.backgroundImage = `url(${menu.photos[0].src})`;
+        } else {
+            this.$.image.style.backgroundImage = `url(${config.bucket}/${menu.category}.png)`;
+            this.$.image.style.backgroundSize = `contain`;
         }
     }
+
 
 }
 
