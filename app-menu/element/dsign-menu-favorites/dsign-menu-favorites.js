@@ -28,7 +28,6 @@ class DsignMenuFavorites extends LocalizeMixin(ServiceInjectorMixin(PolymerEleme
        .header {
            height: 100%;
            width: 50px;
-           background-image: url(https://via.placeholder.com/150);
            background-position: center center ;
            background-repeat: no-repeat;
            background-size: cover;
@@ -127,6 +126,7 @@ class DsignMenuFavorites extends LocalizeMixin(ServiceInjectorMixin(PolymerEleme
         return {
             services: {
                 value: {
+                    _config: 'config',
                     _favoriteService: 'FavoriteService',
                     _localizeService: 'Localize',
                 }
@@ -141,6 +141,13 @@ class DsignMenuFavorites extends LocalizeMixin(ServiceInjectorMixin(PolymerEleme
                 observer: 'changeMenuItem'
             },
         };
+    }
+
+
+    static get observers() {
+        return [
+            '_observeMenu(menuItem, _config)'
+        ];
     }
 
     /**
@@ -252,6 +259,24 @@ class DsignMenuFavorites extends LocalizeMixin(ServiceInjectorMixin(PolymerEleme
             this.$.add.disabled = false;
         } else {
             this.$.add.disabled = true;
+        }
+    }
+
+    /**
+     * @param menu
+     * @param config
+     * @private
+     */
+    _observeMenu(menu, config) {
+        if (!menu || !config) {
+            return;
+        }
+
+        if (menu.photos && Array.isArray(menu.photos) && menu.photos.length > 0) {
+            this.$.image.style.backgroundImage = `url(${menu.photos[0].src})`;
+        } else {
+            this.$.image.style.backgroundImage = `url(${config.bucket}/${menu.category}.png)`;
+            this.$.image.style.backgroundSize = `contain`;
         }
     }
 }

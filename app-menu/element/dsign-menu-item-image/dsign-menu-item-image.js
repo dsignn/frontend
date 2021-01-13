@@ -50,7 +50,6 @@ class DsignMenuItemImage extends ItemFavorite(LocalizeMixin(ServiceInjectorMixin
         
         .image {
             flex: 1;
-            background-image: url(https://via.placeholder.com/150);
             background-position: center center;
             background-size: cover;
             background-repeat: no-repeat;

@@ -43,7 +43,6 @@ class DsignMenuItemCompress extends ItemFavorite(LocalizeMixin(ServiceInjectorMi
        .header {
            height: 100%;
            width: 100px;
-           background-image: url(https://via.placeholder.com/150);
            background-position: center center ;
            background-repeat: no-repeat;
            background-size: cover;
