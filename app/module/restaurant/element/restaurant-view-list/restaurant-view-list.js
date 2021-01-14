@@ -31,6 +31,7 @@ class RestaurantViewList extends RefreshCollectionData(StorageCrudMixin(Localize
             @media (max-width: 500px) {
                 paper-restaurant {
                     flex-basis: 100%;
+                    margin-bottom: 6px;
                 }
             }
 

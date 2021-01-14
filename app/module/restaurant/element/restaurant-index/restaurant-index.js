@@ -36,6 +36,11 @@ class RestaurantIndex extends LocalizeMixin(AclMixin(ServiceInjectorMixin(Polyme
                   padding: var(--padding-top-view-list) 0;
                }
                
+               .title-tab {
+                text-transform: uppercase;
+                font-size: 18px;
+               }
+               
               .text-content {
                   font-size: 20px;
                   flex: 1;
@@ -47,8 +52,8 @@ class RestaurantIndex extends LocalizeMixin(AclMixin(ServiceInjectorMixin(Polyme
                 }
             </style>
             <paper-tabs selected="{{selectedTab}}" tabindex="0">
-                <paper-tab>{{localize('restaurants')}}</paper-tab>
-                <paper-tab>{{localize('menu')}}</paper-tab>
+                <paper-tab class="title-tab">{{localize('restaurants')}}</paper-tab>
+                <paper-tab class="title-tab">{{localize('menu')}}</paper-tab>
             </paper-tabs>
             <iron-pages id="restaurant" selected="{{selectedTab}}">
                 <div id="restaurant"> 
@@ -132,7 +137,7 @@ class RestaurantIndex extends LocalizeMixin(AclMixin(ServiceInjectorMixin(Polyme
              * @type number
              */
             selectedTab: {
-                value: 1
+                value: 0
             },
 
             selectedRestaurant: {

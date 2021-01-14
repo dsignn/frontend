@@ -128,7 +128,6 @@ class PaperMenu extends StorageEntityMixin(LocalizeMixin(ServiceInjectorMixin(Po
     _publicMenu(evt) {
         this._storage.update(this.entity)
             .then((data) => {
-                console.log('udate', data);
                 this._notify.notify(this.localize('public-menu-ok'));
         })
     }

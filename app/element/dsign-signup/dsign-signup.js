@@ -65,7 +65,7 @@ class DsignSignup extends FormErrorMessage(AclMixin(ServiceInjectorMixin(Polymer
                 value="{{url}}"
                 always-float-label
                 disabled>
-                <div class="url" slot="prefix">{{_getUrl(_config.app.menuPath)}}menu/</div>
+                <div class="url" slot="prefix">{{_getUrl(_config.app.menuPath)}}/</div>
               </paper-input>
               <paper-button on-tap="submitSignupButton">{{localize('signup')}}</paper-button>
             </form>

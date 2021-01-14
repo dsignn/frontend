@@ -166,7 +166,7 @@ class DsignApp extends LocalizeMixin(AclMixin(ServiceInjectorMixin(PolymerElemen
         </app-header>
         <div class="content-pages">
           <iron-pages id="moduleEntryPoint" selected="[[page]]" attr-for-selected="name" role="main">
-            <activation-code query={{query}} name="activation-code"></activation-code>
+            <activation-code root-path="[[rootPath]]" query={{query}} name="activation-code"></activation-code>
             <reset-password query={{query}} name="reset-password"></reset-password>
             <dsing-404 name="404" root-path="[[rootPath]]dashboard"></dsing-404>
           </iron-pages>

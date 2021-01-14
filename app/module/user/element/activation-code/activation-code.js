@@ -55,6 +55,12 @@ class ActivationCode extends LocalizeMixin(AclMixin(ServiceInjectorMixin(Polymer
                 <h2 class="error">{{localize('error')}}</h2>
                 <div center>{{localize(errorMessage)}}</div>
             </div>
+            <div center style="padding-top: 20px">
+                <a href="[[rootPath]]dashboard">
+                    <paper-button>home page</paper-button>
+                </a>
+            </div>
+         
         </div>
       </div>`;
 

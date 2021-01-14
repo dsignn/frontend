@@ -3,11 +3,12 @@ import {LocalizeMixin} from "@dsign/polymer-mixin/localize/localize-mixin";
 import {ServiceInjectorMixin} from "@dsign/polymer-mixin/service/injector-mixin";
 import {StorageCrudMixin} from "@dsign/polymer-mixin/storage/crud-mixin";
 import {RefreshCollectionData} from "../../../../element/mixin/auth/refresh-collection-data";
+import {Listener} from "@dsign/library/src/event/Listener";
+import {Storage} from "@dsign/library/src/storage/Storage";
 import '@polymer/iron-pages/iron-pages.js';
 import '@fluidnext-polymer/paper-pagination/paper-pagination';
 import '../paper-menu/paper-menu'
-import {Listener} from "@dsign/library/src/event/Listener";
-import {Storage} from "@dsign/library/src/storage/Storage";
+import {lang} from './language';
 
 /**
  * @class MenuViewList
@@ -126,7 +127,8 @@ class MenuViewList extends RefreshCollectionData(StorageCrudMixin(LocalizeMixin(
              paper-menu {
                 flex-basis: 100%;
                 --paper-card : {
-                   margin-right: 0;
+                    margin-right: 0;
+                    margin-bottom: 6px;
                 }
             }
        }   
@@ -186,6 +188,11 @@ class MenuViewList extends RefreshCollectionData(StorageCrudMixin(LocalizeMixin(
             '_changeItemPerPage(itemPerPage, _storage, _authService)',
             '_changePage(page, _storage, _authService)',
         ]
+    }
+
+    constructor() {
+        super();
+        this.resources = lang;
     }
 
     /**

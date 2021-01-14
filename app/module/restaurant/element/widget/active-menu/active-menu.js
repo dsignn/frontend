@@ -2,6 +2,7 @@ import {LocalizeMixin} from "@dsign/polymer-mixin/localize/localize-mixin";
 import {ServiceInjectorMixin} from "@dsign/polymer-mixin/service/injector-mixin";
 import {html, PolymerElement} from "@polymer/polymer/polymer-element";
 import "@polymer/paper-button/paper-button";
+import "../../menu-active/menu-active";
 
 /**
  * @customElement
@@ -32,7 +33,8 @@ class ActiveMenu extends LocalizeMixin(ServiceInjectorMixin(PolymerElement)) {
                 </div>
             </template>
             <template is="dom-if" if="{{isEntity()}}">
-                trovato
+                <div style="padding: 6px; font-size: 34px; text-align: center;">Menu attivo</div>
+                <menu-active entity="{{entity}}"></menu-active>
             </template>`
     }
 
@@ -119,7 +121,6 @@ console.log('test', entity);
         this._storage.getAll({enable:true}).then((data) => {
             if (data.length > 0) {
                 this.entity = data[0];
-                console.log('fffff');
             }
         });
     }
