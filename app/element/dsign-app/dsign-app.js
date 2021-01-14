@@ -172,12 +172,6 @@ class DsignApp extends LocalizeMixin(AclMixin(ServiceInjectorMixin(PolymerElemen
           </iron-pages>
         </div>
       </app-header-layout>
-      <!--
-      TODO remove
-      <app-drawer id="menuDrawer" align="left" swipe-open open>
-        <div class="layout vertical center-justified start icon-wrapper"></div>
-      </app-drawer>
-      -->
       <app-drawer id="authDrawer" align="right"  swipe-open open>
         <div class="layout vertical start-aligned icon-wrapper height-100">
           <template is="dom-if" if="{{isAllowed('application', 'login')}}">

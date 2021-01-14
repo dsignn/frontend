@@ -225,7 +225,7 @@ class RestaurantViewUpsert extends StorageEntityMixin(NotifyMixin(LocalizeMixin(
      * @param evt
      */
     openPrintable(evt) {
-        let win = window.open(`${this._config.app.rootPath}/print-qrcode/${this.entity.id}`, '_blank');
+        let win = window.open(`${this._config.app.menuPath}/print-qrcode/${this.entity.id}`, '_blank');
         win.focus();
     }
 
