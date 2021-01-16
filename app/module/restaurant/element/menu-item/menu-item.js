@@ -123,7 +123,7 @@ class MenuItem extends LocalizeMixin(ServiceInjectorMixin(PolymerElement)) {
                         <div class="description">{{description}}</div>
                     </div>
                     <div id="crud">
-                        <template is="dom-if" if="{{hideCrud}}">
+                        <template is="dom-if" if="{{showCrud}}">
                             <paper-menu-button ignore-select horizontal-align="right">
                                 <paper-icon-button icon="v-menu" slot="dropdown-trigger" alt="multi menu"></paper-icon-button>
                                 <paper-listbox slot="dropdown-content" multi>
@@ -175,9 +175,9 @@ class MenuItem extends LocalizeMixin(ServiceInjectorMixin(PolymerElement)) {
                 value: false
             },
 
-            hideCrud: {
+            showCrud: {
                 type: Boolean,
-                value:false
+                value: false
             },
 
             /**

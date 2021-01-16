@@ -61,6 +61,21 @@
             document.body.appendChild(ele);
         });
 
+        container.set('Notify', {
+            notify:  (text) => {
+
+                let id = 'notification';
+                let paperToast = document.getElementById(id);
+                if (!paperToast) {
+                    console.warn('Element by id ' + id + ' not found');
+                    return;
+                }
+
+                paperToast.text = text;
+                paperToast.open();
+            }
+        });
+
     </script>
     <style is="custom-style">
 
@@ -70,17 +85,27 @@
             --munu-color: #FFFFFF;
         }
 
+        body {
+            overflow-x: hidden;
+        }
+
         * {
             padding: 0;
             margin: 0;
+        }
+
+        paper-toast {
+            padding: 16px 24px !important;
+            margin: 12px !important;
         }
     </style>
     <script type="module">
         import './element/dsign-menu/dsing-menu.js';
         import './element/dsign-menu-icons/dsign-menu-icons.js';
+        import '@polymer/paper-toast/paper-toast';
     </script>
 </head>
 <body>
-
+    <paper-toast id="notification"></paper-toast>
 </body>
 </html>

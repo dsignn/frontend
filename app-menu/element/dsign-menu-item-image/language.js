@@ -4,13 +4,15 @@ export const lang = {
         "category": "Categoria",
         'all': "Tutti",
         'first': "Primi",
-        'second': "Secondi"
+        'second': "Secondi",
+        'plate-add': "Piatto aggiunto"
     },
     "en": {
         "search": "Search",
         "category": "Category",
         'all': "All",
         'first': "First",
-        'second': "Main courses"
+        'second': "Main courses",
+        'plate-add': "plate add"
     }
 };

@@ -3,8 +3,8 @@ import {ServiceInjectorMixin} from "@dsign/polymer-mixin/service/injector-mixin"
 import {LocalizeMixin} from "@dsign/polymer-mixin/localize/localize-mixin";
 import {NotifyMixin} from "@dsign/polymer-mixin/notify/notify-mixin";
 import {StorageEntityMixin} from "@dsign/polymer-mixin/storage/entity-mixin";
-import {Flatten} from "../../../../src/transform/Flatten";
-import {TranslateTransform} from "../../../../src/util/TranslateTransform";
+import {Listener} from "@dsign/library/src/event";
+import {Storage} from "@dsign/library/src/storage/Storage";
 import {Auth} from "../../../../src/authentication/Auth";
 import '@polymer/paper-input/paper-input';
 import '@fluidnext-polymer/paper-input-color/paper-input-color';
@@ -19,6 +19,7 @@ import '../menu-item/menu-item';
 import '../../../../element/dsign-paper-dropdown/dsign-paper-dropdown';
 import '../menu-item-view-upsert/menu-item-view-upsert';
 import {lang} from './language';
+
 
 /**
  * @class MenuViewUpsert
@@ -287,7 +288,7 @@ class MenuViewUpsert extends StorageEntityMixin(NotifyMixin(LocalizeMixin(Servic
         <h2>{{localize('menu-title')}}</h2>
         <div id="menuItemContainer">
              <template id="items" is="dom-repeat" items="[[entity.items]]" as="menuItem">
-                 <menu-item menu-item="{{menuItem}}" index$="{{index}}" on-delete="_deleteMenuItem" on-update="_updateMenuItem" on-upload-file="uploadFile" show="{{showUpdateMenuItem}}"></menu-item>
+                 <menu-item menu-item="{{menuItem}}" index$="{{index}}" on-delete="_deleteMenuItem" on-update="_updateMenuItem" on-upload-file="uploadFile" show="{{showUpdateMenuItem}}" show-crud></menu-item>
              </template>
         </div>`;
     }
@@ -372,6 +373,10 @@ class MenuViewUpsert extends StorageEntityMixin(NotifyMixin(LocalizeMixin(Servic
                         _uploadMenuResourceStorage: "UploadMenuResourceStorage"
                     }
                 }
+            },
+
+            _config: {
+                observer: '_changeConfig',
             },
 
             _merge: {
@@ -460,6 +465,20 @@ class MenuViewUpsert extends StorageEntityMixin(NotifyMixin(LocalizeMixin(Servic
     }
 
     /**
+     * @param config
+     * @private
+     */
+    _changeConfig(config) {
+        if (!config) {
+            return;
+        }
+
+        this._getCategories().then((data) => {
+            this.allCategory = data;
+        })
+    }
+
+    /**
      * @param value
      * @private
      */
@@ -537,7 +556,58 @@ class MenuViewUpsert extends StorageEntityMixin(NotifyMixin(LocalizeMixin(Servic
      */
     appendMenuItem(evt) {
         this.entity.appendMenuItem(evt.detail);
+        if (this.allCategory) {
+            let tmp = this.sortFavorites( this.entity.items);
+            this.entity.items = [];
+            this.entity.items = tmp;
+        }
+        this.notifyPath('entity.items');
         this.$.items.render();
+    }
+
+    /**
+     * @returns {Promise<unknown>}
+     * @private
+     */
+    _getCategories() {
+
+        return new Promise( (resolve, reject) => {
+            let request = new XMLHttpRequest();
+
+            request.addEventListener("load", (data) => {
+
+                if (request.status >= 300) {
+                    let response = {
+                        status: request.status,
+                        message: request.responseText
+                    };
+
+                    return reject(response)
+                }
+                resolve(JSON.parse(request.response));
+            });
+
+            request.open("GET", `${this._config.rest.path}/menu-category`);
+            request.setRequestHeader('Accept','application/json');
+            request.send();
+        });
+    }
+
+    /**
+     * @param favorites
+     * @returns {[]}
+     */
+    sortFavorites(favorites) {
+        let tmpFavorites = [];
+        for (let property in this.allCategory) {
+            for (let index = 0; favorites.length > index; index++) {
+                if (favorites[index].category === property) {
+                    tmpFavorites.push(favorites[index]);
+                }
+            }
+
+        }
+        return tmpFavorites;
     }
 
     /**
@@ -555,6 +625,13 @@ class MenuViewUpsert extends StorageEntityMixin(NotifyMixin(LocalizeMixin(Servic
 
         this.labelActionMenuItem = 'save';
         this.menuItemUpsertLabel = 'menu-item-insert';
+
+        if (this.allCategory) {
+            let tmp = this.sortFavorites( this.entity.items);
+            this.entity.items = [];
+            this.entity.items = tmp;
+        }
+        this.notifyPath('entity.items');
         this.$.items.render();
     }
 

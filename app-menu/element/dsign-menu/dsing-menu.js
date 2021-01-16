@@ -417,6 +417,10 @@ class DsignMenu extends LocalizeMixin(ServiceInjectorMixin(PolymerElement)) {
 
             categories: {
                 notify: true
+            },
+
+            allCategory: {
+                observer: 'changeAllCategory'
             }
         };
     }
@@ -459,8 +463,7 @@ class DsignMenu extends LocalizeMixin(ServiceInjectorMixin(PolymerElement)) {
 
                     return reject(response)
                 }
-
-                resolve(JSON.parse(request.response)[0]);
+                resolve(JSON.parse(request.response));
             });
             request.open("GET", `${this.apiUrl}menu-category`);
             request.setRequestHeader('Accept','application/json');
@@ -493,8 +496,17 @@ class DsignMenu extends LocalizeMixin(ServiceInjectorMixin(PolymerElement)) {
         service.getEventManager().on(FavoriteService.NEW_FAVORITES, new Listener(this.updateFavoriteEvt.bind(this)));
         service.getEventManager().on(Storage.POST_UPDATE, new Listener(this.updateAmountEvt.bind(this)));
 
-        this.updateFavoriteEvt();
         this._updateAmount();
+    }
+
+    /**
+     * @param categories
+     */
+    changeAllCategory(categories) {
+        if (!categories) {
+            return;
+        }
+        this.updateFavoriteEvt();
     }
 
     /**
@@ -521,14 +533,40 @@ class DsignMenu extends LocalizeMixin(ServiceInjectorMixin(PolymerElement)) {
      */
     updateFavoriteEvt(evt) {
         this._favoriteService.getFavorites().then((data) => {
-            this.favorites = data;
+            this.favorites = this.sortFavorites(data);
             this._updateAmount();
             this.$.favorites.render();
         });
     }
 
+    /**
+     * @param favorites
+     * @returns {[]}
+     */
+    sortFavorites(favorites) {
+        let tmpFavorites = [];
+        for (let property in this.allCategory) {
+            for (let index = 0; favorites.length > index; index++) {
+                if (favorites[index].category === property) {
+                    tmpFavorites.push(favorites[index]);
+                }
+            }
+
+        }
+        return tmpFavorites;
+    }
+
     deleteFavoriteEvt(evt) {
+        let favorites = this.shadowRoot.querySelectorAll('dsign-menu-favorites');
+        for (let index = 0; favorites.length > index; index++) {
+            if (favorites[index].menuItem._id === evt.data._id) {
+                console.log('ELIMINA TROVATO', evt);
+                favorites[index].remove();
+                break;
+            }
+        }
         this._updateAmount();
+
     }
 
     /**
@@ -543,6 +581,7 @@ class DsignMenu extends LocalizeMixin(ServiceInjectorMixin(PolymerElement)) {
 
         this.getCategory().then((category) => {
             this._attachCategory([]);
+            this.allCategory = category;
             this._attachCategory(this._distinctCategory(this.items, category));
         });
     }
@@ -592,7 +631,6 @@ class DsignMenu extends LocalizeMixin(ServiceInjectorMixin(PolymerElement)) {
         }
 
         if (menu.layout_type) {
-            console.log('CAMBIO', menu.layout_type);
             this._setLayoutType(menu.layout_type);
         }
     }

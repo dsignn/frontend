@@ -268,6 +268,6 @@ export const config = {
         "color_header": "#FFFFFF",
         "enable": false,
         "id": "5f3e4a70572b8132565a6199",
-        "layout_type": "dsign-menu-item-compress"
+        "layout_type": "dsign-menu-item-image"
     }
 };

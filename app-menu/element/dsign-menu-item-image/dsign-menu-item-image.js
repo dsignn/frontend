@@ -139,6 +139,7 @@ class DsignMenuItemImage extends ItemFavorite(LocalizeMixin(ServiceInjectorMixin
                     _config: 'config',
                     _localizeService: 'Localize',
                     _favoriteService: 'FavoriteService',
+                    _notifyService: 'Notify',
                 }
             }
         };

@@ -23,6 +23,7 @@ import {FormDataEncode} from "@dsign/library/src/data-transform/FormDataEncode";
 import {AbstractRepository} from "../../src/AbstractRepository";
 import {config} from './config';
 import {Flatten} from "../../src/transform/Flatten";
+import {Listener} from "@dsign/library/src/event";
 
 /**
  * @class Repository
@@ -140,6 +141,7 @@ export class Repository extends AbstractRepository {
         this.getContainer().get('Acl').allow('admin', 'menu', 'add');
         this.getContainer().get('Acl').allow('restaurantOwner', 'restaurant', 'menu');
         this.getContainer().get('Acl').allow('restaurantOwner', 'menu', 'add');
+        this.getContainer().get('Acl').allow('admin', 'restaurant', 'delete');
     }
 
     /**
@@ -182,6 +184,7 @@ export class Repository extends AbstractRepository {
         this.injectAuthHeader(adapterStorage);
 
         let storage = new Storage(adapterStorage);
+        
         storage.setHydrator(this.getContainer().get('HydratorContainerAggregate').get(Repository.MENU_HYDRATOR_SERVICE));
         this.getContainer().set(Repository.STORAGE_MENU_SERVICE, storage);
     }

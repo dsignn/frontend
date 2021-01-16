@@ -77,7 +77,9 @@ class PaperRestaurant extends StorageEntityMixin(LocalizeMixin(ServiceInjectorMi
                             <paper-icon-button icon="v-menu" slot="dropdown-trigger" alt="multi menu"></paper-icon-button>
                             <paper-listbox slot="dropdown-content" multi>
                                 <paper-item on-click="_update">{{localize('modify')}}</paper-item>
-                                <paper-item  on-click="_delete">{{localize('delete')}}</paper-item>
+                                <template is="dom-if" if="{{isAllowed('restaurant', 'delete')}}">
+                                    <paper-item  on-click="_delete">{{localize('delete')}}</paper-item>
+                                </template>
                             </paper-listbox>
                         </paper-menu-button>
                     </div>

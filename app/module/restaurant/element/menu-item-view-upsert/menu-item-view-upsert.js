@@ -243,14 +243,11 @@ class MenuItemViewUpsert extends LocalizeMixin(ServiceInjectorMixin(PolymerEleme
 
         this._menuCategoryStorage.getAll()
             .then((categories) => {
-                if (categories && categories.length > 0) {
-
-                    this.resources = this._merge.merge(
-                        this.resources,
-                        TranslateTransform.entityFormatToElementFormat(categories[0])
-                    );
-                    this.categories = Object.keys(categories[0]);
-                }
+                this.resources = this._merge.merge(
+                    this.resources,
+                    TranslateTransform.entityFormatToElementFormat(categories)
+                );
+                this.categories = Object.keys(categories);
             })
     }
 

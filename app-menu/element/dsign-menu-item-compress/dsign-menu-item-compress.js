@@ -138,15 +138,14 @@ class DsignMenuItemCompress extends ItemFavorite(LocalizeMixin(ServiceInjectorMi
 
     static get properties() {
         return {
-            menuItem: {
-                observer: '_changeMenu'
-            },
+            menuItem: { },
 
             services: {
                 value: {
                     _config: 'config',
                     _localizeService: 'Localize',
                     _favoriteService: 'FavoriteService',
+                    _notifyService: 'Notify'
                 }
             }
         };
