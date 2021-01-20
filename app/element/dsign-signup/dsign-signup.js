@@ -153,14 +153,29 @@ class DsignSignup extends FormErrorMessage(AclMixin(ServiceInjectorMixin(Polymer
     submitSignup(evt) {
         evt.preventDefault();
 
-        this.userStorage.save(
-            this.$.signupUser.serializeForm()
-        ).then((data) => {
+        let userData = this.$.signupUser.serializeForm();
+        console.log('DATA USER', userData);
+
+        if (userData.password !== userData.confirmPassword) {
+            console.log('DATA USER ERROR', userData);
+            this.errorMessage(this.$.signupUser, {
+                message: "Unprocessable Entity",
+                status: 422,
+                errors: {
+                    confirmPassword: this.localize('password-not-equal')
+                }
+            });
+            return;
+        }
+
+
+        this.userStorage.save(userData).then((data) => {
             this._notify.notify(this.localize('signup-ok'));
             this.$.signupUser.reset();
         }).catch((error) => {
             this.errorMessage(this.$.signupUser, error);
         });
+
     }
 
     /**

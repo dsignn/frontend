@@ -10,6 +10,7 @@ export const lang = {
     "signup": "Registrati",
     "recover-password": "Recupera password",
     "signup-ok": "Registrazione eseguita con successo verrà inviata una mail per completare la registrazione",
+    "password-not-equal": "Le passowd inserite sono diverse"
   },
   "en": {
     "name": "Name",
@@ -22,5 +23,6 @@ export const lang = {
     "signup": "Signup",
     "recover-password": "Recover password",
     "signup-ok": "Registrazione eseguita con successo verrà inviata una mail per completare la registrazione",
+    "password-not-equal": "the passowd are not equal"
   }
 };

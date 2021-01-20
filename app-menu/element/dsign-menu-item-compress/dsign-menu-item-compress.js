@@ -35,14 +35,15 @@ class DsignMenuItemCompress extends ItemFavorite(LocalizeMixin(ServiceInjectorMi
        }
     
        paper-card {
+          @apply --layout;
           width: 100%;
           height: 120px;
-          display: flex;
        }
        
        .header {
            height: 100%;
-           width: 100px;
+           width: 100px !important;
+           min-width: 100px;
            background-position: center center ;
            background-repeat: no-repeat;
            background-size: cover;
@@ -50,39 +51,42 @@ class DsignMenuItemCompress extends ItemFavorite(LocalizeMixin(ServiceInjectorMi
        }
        
        .content {
-         flex: 1;
-         display: flex;
-         flex-direction: column;
+         @apply --layout-vertical;
+         @apply --layout-flex;
+         width: 0vw;
        }
        
        .action {
            height: 32px;
            display: flex;
            padding: 0 6px;
-           align-items: center;
-           justify-content: flex-end;
+           @apply --layout-center;
+            @apply --layout-end-justified;
        }
        
        .header-card-title {
            text-rendering: optimizeLegibility;
            font-size: 18px;
-           font-weight: 400;
+           font-weight: 500;
+           height: 32px;
+           line-height: 32px;
+           display: block;
+           padding: 0 6px;
+           white-space: nowrap;
            overflow: hidden;
            text-overflow: ellipsis;
-           height: 32px;
-           display: inline-flex;
-           align-items: center;
-           padding: 0 6px;
-           word-wrap: break-word; 
-           white-space: nowrap;
        }
        
        .paragraph-card {
-            flex: 1;
-            color: #757575; 
-            display: flex;
-            align-items: start;
-            padding: 0 6px;
+           @apply --layout;
+           @apply --layout-start;
+           @apply --layout-flex;
+           color: #757575;
+           text-overflow: ellipsis;
+           padding: 0 6px;
+           overflow: hidden;
+           -webkit-line-clamp: 2;
+           -webkit-box-orient: vertical;  
        }  
        
        [padding-4] {
@@ -193,6 +197,7 @@ class DsignMenuItemCompress extends ItemFavorite(LocalizeMixin(ServiceInjectorMi
         } else {
             this.$.image.style.backgroundImage = `url(${config.bucket}/${menu.category}.png)`;
             this.$.image.style.backgroundSize = `contain`;
+            this.$.image.style.backgroundColor = `#eeeeee`;
         }
     }
 

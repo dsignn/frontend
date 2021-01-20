@@ -34,22 +34,21 @@ class DsignMenuItemImage extends ItemFavorite(LocalizeMixin(ServiceInjectorMixin
         }
    
         paper-card {
+            @apply --layout-vertical;
             width: 100%;
             height: 260px;
-            display: flex;
-            flex-direction: column;
         }
        
         .header {
+            @apply --layout;
+            @apply --layout-center;
             height: 40px;
             width: 100%;
-            display: flex;
-            align-items: center;
             padding: 4px;
         }
         
         .image {
-            flex: 1;
+            @apply --layout-flex;
             background-position: center center;
             background-size: cover;
             background-repeat: no-repeat;
@@ -61,22 +60,30 @@ class DsignMenuItemImage extends ItemFavorite(LocalizeMixin(ServiceInjectorMixin
         }
         
         .header-card-title {
+           @apply --layout-flex;
+           @apply --layout-center;
            text-rendering: optimizeLegibility;
            font-size: 18px;
-           font-weight: 400;
+           font-weight: 500;
+           height: 32px;
+           line-height: 32px;
+           display: block;
+           padding: 0 6px;
+           white-space: nowrap;
            overflow: hidden;
            text-overflow: ellipsis;
-           height: 32px;
-           padding: 4px;
        }
        
        .paragraph-card {
-           flex: 1;
-           color: #757575; 
-           display: flex;
-           align-items: start;
+           @apply --layout;
+           @apply --layout-flex;
+           @apply --layout-start;
+           color: #757575;
+           text-overflow: ellipsis;
            padding: 4px;
-           height: -webkit-fill-available;
+           overflow: hidden;
+           -webkit-line-clamp: 3;
+           -webkit-box-orient: vertical;  
        }  
        
        .price {
@@ -166,6 +173,7 @@ class DsignMenuItemImage extends ItemFavorite(LocalizeMixin(ServiceInjectorMixin
         } else {
             this.$.image.style.backgroundImage = `url(${config.bucket}/${menu.category}.png)`;
             this.$.image.style.backgroundSize = `contain`;
+            this.$.image.style.backgroundColor = `#eeeeee`;
         }
     }
 

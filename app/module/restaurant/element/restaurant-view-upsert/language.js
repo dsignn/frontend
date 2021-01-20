@@ -1,6 +1,7 @@
 export const lang = {
   "it": {
-    "name": "Nome",
+    "name-restaurant": "Nome ristorante",
+    "whatsapp-phone": "Numero di telefono whattapp",
     "add" : "Aggiugi",
     "save" : "Salva",
     "update" : "Modifica",
@@ -13,6 +14,7 @@ export const lang = {
   },
   "en": {
     "name": "Name",
+    "whatsapp-phone": "Whattapp phone number",
     "add" : "Add",
     "save" : "Save",
     "update" : "Update",

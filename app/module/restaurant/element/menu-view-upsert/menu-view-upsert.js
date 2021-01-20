@@ -258,7 +258,7 @@ class MenuViewUpsert extends StorageEntityMixin(NotifyMixin(LocalizeMixin(Servic
                 <iron-form id="formMenu">
                     <form method="post">
                         <div class="top">
-                            <paper-input  name="name" label="{{localize('name')}}" value="{{entity.name}}" required></paper-input>
+                            <paper-input  name="name" label="{{localize('name-menu')}}" value="{{entity.name}}" required></paper-input>
                             <paper-toggle-button checked="{{entity.enable}}">{{localize('enable')}}</paper-toggle-button>
                         </div>
                         <dsign-paper-dropdown-menu label="{{localize('restaurant')}}" value="{{entity.organization.id}}" required>
@@ -268,7 +268,7 @@ class MenuViewUpsert extends StorageEntityMixin(NotifyMixin(LocalizeMixin(Servic
                             <paper-listbox id="listboxLayoutType" slot="dropdown-content"></paper-listbox>
                         </dsign-paper-dropdown-menu>
                         <paper-input-color name="backgroundHeader" label="{{localize('background-header')}}" value="{{entity.backgroundHeader}}" required></paper-input-color>
-                        <paper-input-color name="colorHeader" label="{{localize('background-header')}}" value="{{entity.colorHeader}}" required></paper-input-color>
+                        <paper-input-color name="colorHeader" label="{{localize('color-header')}}" value="{{entity.colorHeader}}" required></paper-input-color>
                         <div class="action padding-top-52">
                             <paper-button class="margin-0" on-tap="submitMenuButton">{{localize(labelAction)}}</paper-button>
                         </div>

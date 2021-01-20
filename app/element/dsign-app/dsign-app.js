@@ -387,6 +387,13 @@ class DsignApp extends LocalizeMixin(AclMixin(ServiceInjectorMixin(PolymerElemen
     );
 
     authService.eventManager.on(
+        Auth.LOGIN,
+        (evt) => {
+          this.$.authDrawer.close();
+        }
+    );
+
+    authService.eventManager.on(
         Auth.IDENTITY,
         (evt) => {
           this.showMenu();

@@ -1,6 +1,6 @@
 export const lang = {
   "it": {
-    "name": "Nome",
+    "name-dish": "Nome piatto",
     "enable": "Menù attivo",
     "name-it": "Nome (italiano)",
     "description-it": "Descrizione (italiano)",
@@ -29,7 +29,7 @@ export const lang = {
     "menu-title": "Lista elementi del menu (piatti, bevande)"
   },
   "en": {
-    "name": "Name",
+    "name-dish": "Name dish",
     "enable": "Menù enable",
     "name-it": "Name (italian)",
     "description-it": "Description (italian)",

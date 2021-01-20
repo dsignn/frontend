@@ -3,6 +3,7 @@ import {ServiceInjectorMixin} from "@dsign/polymer-mixin/service/injector-mixin"
 import {LocalizeMixin} from "@dsign/polymer-mixin/localize/localize-mixin";
 import {NotifyMixin} from "@dsign/polymer-mixin/notify/notify-mixin";
 import {StorageEntityMixin} from "@dsign/polymer-mixin/storage/entity-mixin";
+import {Storage} from "@dsign/library/src/storage";
 import '@polymer/paper-input/paper-input';
 import '@fluidnext-polymer/paper-autocomplete/paper-autocomplete';
 import '@polymer/iron-form/iron-form';
@@ -113,7 +114,8 @@ class RestaurantViewUpsert extends StorageEntityMixin(NotifyMixin(LocalizeMixin(
             <div id="content-left">
                 <iron-form id="formRestaurant">
                     <form method="post">
-                        <paper-input id="name" name="name" label="{{localize('name')}}" value="{{entity.name}}" on-value-changed="changeNameRestaurant" required></paper-input>
+                        <paper-input id="name" name="name" label="{{localize('name-restaurant')}}" value="{{entity.name}}" on-value-changed="changeNameRestaurant" required></paper-input>
+                         <paper-input id="whatsappPhone" name="whatsappPhone" label="{{localize('whatsapp-phone')}}" value="{{entity.whatsappPhone}}" required></paper-input>
                         <paper-input 
                             id="url"
                             name="url"
@@ -121,7 +123,7 @@ class RestaurantViewUpsert extends StorageEntityMixin(NotifyMixin(LocalizeMixin(
                             value="{{url}}"
                             always-float-label
                             disabled>
-                            <div class="url" slot="prefix">{{_config.app.basePath}}menu/</div>
+                            <div class="url" slot="prefix">{{_config.app.menuPath}}/</div>
                         </paper-input>
                         <div class="action">
                             <paper-button on-tap="submitRestaurantButton">{{localize(labelAction)}}</paper-button>
@@ -219,6 +221,7 @@ class RestaurantViewUpsert extends StorageEntityMixin(NotifyMixin(LocalizeMixin(
     ready() {
         super.ready();
         this.$.formResource.addEventListener('iron-form-presubmit', this.submitResource.bind(this));
+        this.$.formRestaurant.addEventListener('iron-form-presubmit', this.submitRestaurant.bind(this));
     }
 
     /**
@@ -248,6 +251,7 @@ class RestaurantViewUpsert extends StorageEntityMixin(NotifyMixin(LocalizeMixin(
         this._qrCodeGeneratorStorage.get(this.entity.id)
             .then((restaurant) => {
                 this.entity = restaurant;
+                this._storage.getEventManager().emit(Storage.POST_UPDATE, this.entity);
                 this._updateQrCode();
             });
     }
@@ -386,6 +390,7 @@ class RestaurantViewUpsert extends StorageEntityMixin(NotifyMixin(LocalizeMixin(
                     },
                     300
                 );
+                this._storage.getEventManager().emit(Storage.POST_UPDATE, this.entity);
             }).catch((error) => {
             console.error(error)
         });

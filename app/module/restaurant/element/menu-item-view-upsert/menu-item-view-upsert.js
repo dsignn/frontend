@@ -145,7 +145,7 @@ class MenuItemViewUpsert extends LocalizeMixin(ServiceInjectorMixin(PolymerEleme
         </style>
         <iron-form id="formMenuItem">
             <form method="post">
-                 <paper-input value="{{menuItem.name.it}}" name="name[it]" label="{{localize('name')}}" required></paper-input>
+                 <paper-input value="{{menuItem.name.it}}" name="name[it]" label="{{localize('name-dish')}}" required></paper-input>
                  <!--<paper-input name="name[en]" label="{{localize('name-en')}}" required></paper-input>-->
                  <paper-input value="{{menuItem.description.it}}" name="description[it]" label="{{localize('description')}}" required></paper-input>
                  <!--<paper-input name="description[en]" label="{{localize('description-en')}}" required></paper-input>-->

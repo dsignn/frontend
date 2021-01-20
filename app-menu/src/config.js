@@ -6,246 +6,115 @@ export const config = {
     bucket: 'https://dsign-asset.s3.eu-central-1.amazonaws.com/categories',
     apiUrl: 'http://127.0.0.150/',
     menu: {
-        "items": [
-            {
-                "name": {
-                    "it": "pasta al pesto",
-                    "en": "pasta al pesto"
-                },
-                "description": {
-                    "it": "ffdas",
-                    "en": "fdsafd"
-                },
-                "category": "starters",
-                "price": {
-                    "value": 432,
-                    "currency": "EUR"
-                },
-                "new": 0,
-                "photos": [{
-                    "_id": "5fb121fbc1a3d65e8d5b9514",
-                    "dimension": {"height": 500, "width": 500},
-                    "mime_type": "image/png",
-                    "name": "photo menù",
-                    "size": 19756,
-                    "src": "https://dsign-cdn-test.s3.eu-central-1.amazonaws.com/eea7b8bf-c4dd-4ced-bab5-7f0ded15a724",
-                    "s3path": "eea7b8bf-c4dd-4ced-bab5-7f0ded15a724",
-                    "tags": [],
-                    "organization_reference": null
-                }],
-                "status": "available",
-                "_id": "5f3e4a70572b8132565a6196"
-            },
-            {
-                "name": {
-                    "it": "pasta al pomodoro",
-                    "en": "pasta al pomodoro"
-                },
-                "description": {
-                    "it": "dfsf fsd fds fds f dsf ds f dsf d fsd fd s",
-                    "en": "dfsf fsd fds fds f dsf ds f dsf d fsd fd s"
-                },
-                "category": "starters",
-                "price": {
-                    "value": 123.34,
-                    "currency": "EUR"
-                },
-                "new": 0,
-                "photos": [],
-                "status": "over",
-                "_id": "5f3e4a70572b8132565a6197"
-            },
-            {
-                "name": {
-                    "it": "pasta all'arrabbiata",
-                    "en": "pasta all'arrabbiata"
-                },
-                "description": {
-                    "it": "fdsf dsf dsf dsf d f dsf ds f df dsf ds",
-                    "en": "fds f dsf ds f ds fds f d fs d fds f ds"
-                },
-                "category": "first-courses",
-                "price": {
-                    "value": 13,
-                    "currency": "EUR"
-                },
-                "new": 0,
-                "photos": [],
-                "status": "not-available",
-                "_id": "5f3e4a70572b8132565a619a"
-            },
-            {
-                "name": {
-                    "it": "pasta alla norma",
-                    "en": "pasta all'arrabbiata"
-                },
-                "description": {
-                    "it": "fdsf dsf dsf dsf d f dsf ds f df dsf ds",
-                    "en": "fds f dsf ds f ds fds f d fs d fds f ds"
-                },
-                "category": "first-courses",
-                "price": {
-                    "value": 13,
-                    "currency": "EUR"
-                },
-                "new": 0,
-                "photos": [],
-                "status": "available",
-                "_id": "5f3e4a70572b8132565a619e"
-            },
-            {
-                "name": {
-                    "it": "pasta panna e gamberettiiiiii",
-                    "en": "pasta all'arrabbiata"
-                },
-                "description": {
-                    "it": "fdsf dsf dsf dsf d f dsf ds f df dsf ds",
-                    "en": "fds f dsf ds f ds fds f d fs d fds f ds"
-                },
-                "category": "first-courses",
-                "price": {
-                    "value": 13,
-                    "currency": "EUR"
-                },
-                "new": 0,
-                "photos": [],
-                "status": "available",
-                "_id": "5f3e4a70572b8132565a619f"
-            },
-            {
-                "name": {
-                    "it": "carne al sugo",
-                    "en": "pasta all'arrabbiata"
-                },
-                "description": {
-                    "it": "fdsf dsf dsf dsf d f dsf ds f df dsf ds",
-                    "en": "fds f dsf ds f ds fds f d fs d fds f ds"
-                },
-                "category": "first-courses",
-                "price": {
-                    "value": 13,
-                    "currency": "EUR"
-                },
-                "new": 0,
-                "photos": [],
-                "status": "available",
-                "_id": "5f3e4a70572b8132565a6199"
-            },
-            {
-                "name": {
-                    "it": "pesche fresco",
-                    "en": "pasta all'arrabbiata"
-                },
-                "description": {
-                    "it": "fdsf dsf dsf dsf d f dsf ds f df dsf ds",
-                    "en": "fds f dsf ds f ds fds f d fs d fds f ds"
-                },
-                "category": "first-courses",
-                "price": {
-                    "value": 13,
-                    "currency": "EUR"
-                },
-                "new": 0,
-                "photos": [],
-                "status": "available",
-                "_id": "5f3e4a70572b8132565a6191"
-            },
-            {
-                "name": {
-                    "it": "trofie a pesto",
-                    "en": "pasta all'arrabbiata"
-                },
-                "description": {
-                    "it": "fdsf dsf dsf dsf d f dsf ds f df dsf ds",
-                    "en": "fds f dsf ds f ds fds f d fs d fds f ds"
-                },
-                "category": "first-courses",
-                "price": {
-                    "value": 13,
-                    "currency": "EUR"
-                },
-                "new": 0,
-                "photos": [],
-                "status": "not-available",
-                "_id": "5f3e4a70572b8132565a6192"
-            },
-            {
-                "name": {
-                    "it": "paccheri",
-                    "en": "pasta all'arrabbiata"
-                },
-                "description": {
-                    "it": "fdsf dsf dsf dsf d f dsf ds f df dsf ds",
-                    "en": "fds f dsf ds f ds fds f d fs d fds f ds"
-                },
-                "category": "first-courses",
-                "price": {
-                    "value": 13,
-                    "currency": "EUR"
-                },
-                "new": 0,
-                "photos": [],
-                "status": "available",
-                "_id": "5f3e4a70572b8132565a6194"
-            },
-            {
-                "name": {
-                    "it": "spada ai ferri",
-                    "en": "pasta all'arrabbiata"
-                },
-                "description": {
-                    "it": "fdsf dsf dsf dsf d f dsf ds f df dsf ds",
-                    "en": "fds f dsf ds f ds fds f d fs d fds f ds"
-                },
-                "category": "first-courses",
-                "price": {
-                    "value": 13,
-                    "currency": "EUR"
-                },
-                "new": 0,
-                "photos": [],
-                "status": "not-available",
-                "_id": "5f3e4a70572b8132565a6195"
-            },
-            {
-                "name": {
-                    "it": "tiramisu",
-                    "en": "pasta all'arrabbiata"
-                },
-                "description": {
-                    "it": "fdsf dsf dsf dsf d f dsf ds f df dsf ds",
-                    "en": "fds f dsf ds f ds fds f d fs d fds f ds"
-                },
-                "category": "first-courses",
-                "price": {
-                    "value": 13,
-                    "currency": "EUR"
-                },
-                "new": 0,
-                "photos": [],
-                "status": "available",
-                "_id": "5f3e4a70572b8132565a6198"
-            },
-            {
-                "name": {
-                    "it": "passito",
-                    "en": "pasta all'arrabbiata"
-                },
-                "description": {
-                    "it": "fdsf dsf dsf dsf d f dsf ds f df dsf ds",
-                    "en": "fds f dsf ds f ds fds f d fs d fds f ds"
-                },
-                "category": "first-courses",
-                "price": {
-                    "value": 13,
-                    "currency": "EUR"
-                },
-                "new": 0,
-                "photos": [],
-                "status": "available",
-                "_id": "5f3e4a70572b8132565a6194"
-            }
-        ],
+        "items": [{
+            "name": {"it": "Tagliere di salumi"},
+            "description": {"it": "Crudo, cotto, salame e mortadella"},
+            "category": "starters",
+            "price": {"value": 12, "currency": "EUR"},
+            "new": 0,
+            "photos": [],
+            "status": "available",
+            "_id": "5fff26e543648400c45e0bec"
+        }, {
+            "name": {"it": "Tagliere di formaggi e miele"},
+            "description": {"it": "Pecorino, Parmigiano, Toma con miele di castagno e millefiori"},
+            "category": "starters",
+            "price": {"value": 13, "currency": "EUR"},
+            "new": 0,
+            "photos": [],
+            "status": "available",
+            "_id": "5fff26e543648400c45e0bed"
+        }, {
+            "name": {"it": "Alici marinate"},
+            "description": {"it": "Alici del Mar Cantabrico in marinatura di aceto e limone"},
+            "category": "starters",
+            "price": {"value": 8, "currency": "EUR"},
+            "new": 0,
+            "photos": [],
+            "status": "available",
+            "_id": "5fff26e543648400c45e0bee"
+        }, {
+            "name": {"it": "Tagliatelle alla carbonara"},
+            "description": {"it": "Tagliatelle all uovo con uova, pecorino e pepe"},
+            "category": "first-courses",
+            "price": {"value": 12, "currency": "EUR"},
+            "new": 0,
+            "photos": [],
+            "status": "available",
+            "_id": "5fff26e543648400c45e0bef"
+        }, {
+            "name": {"it": "Penne all arrabbiata"},
+            "description": {"it": "Pasta di grano duro con sugo di pomodoro piccante"},
+            "category": "first-courses",
+            "price": {"value": 9, "currency": "EUR"},
+            "new": 0,
+            "photos": [],
+            "status": "available",
+            "_id": "5fff29b0a3400e2f50205028"
+        }, {
+            "name": {"it": "Orata al cartoccio"},
+            "description": {"it": "Orata con patate al forno"},
+            "category": "main-courses",
+            "price": {"value": 15, "currency": "EUR"},
+            "new": 0,
+            "photos": [],
+            "status": "available",
+            "_id": "5fff2fd043648400c45e0bf1"
+        }, {
+            "name": {"it": "Filetto al Pepe Verde"},
+            "description": {"it": "Filetto di manzo con panna e pepe verde"},
+            "category": "main-courses",
+            "price": {"value": 18, "currency": "EUR"},
+            "new": 0,
+            "photos": [],
+            "status": "available",
+            "_id": "5fff2fd043648400c45e0bf2"
+        }, {
+            "name": {"it": "Fritto Misto di paranza del golfo del messico"},
+            "description": {"it": "Frittura di gamberi, calamari e moscardini"},
+            "category": "main-courses",
+            "price": {"value": 15, "currency": "EUR"},
+            "new": 0,
+            "photos": [],
+            "status": "available",
+            "_id": "5fff2fd043648400c45e0bf3"
+        }, {
+            "name": {"it": "Acqua ferrarelle"},
+            "description": {"it": "leggermente gassata"},
+            "category": "beverage",
+            "price": {"value": 3, "currency": "EUR"},
+            "new": 0,
+            "photos": [],
+            "status": "available",
+            "_id": "5fff2fd043648400c45e0bf4"
+        }, {
+            "name": {"it": "Lagrein 2018"},
+            "description": {"it": "Vino rosso dell alto adige"},
+            "category": "wine",
+            "price": {"value": 18, "currency": "EUR"},
+            "new": 0,
+            "photos": [],
+            "status": "available",
+            "_id": "5fff2fd043648400c45e0bf5"
+        }, {
+            "name": {"it": "Falanghina 2019"},
+            "description": {"it": "vino bianco del beneventano"},
+            "category": "wine",
+            "price": {"value": 14, "currency": "EUR"},
+            "new": 0,
+            "photos": [],
+            "status": "available",
+            "_id": "5fff2fd043648400c45e0bf6"
+        }, {
+            "name": {"it": "Panna cotta al cioccolato"},
+            "description": {"it": "panna cotta alla vaniglia con crema di cioccolato"},
+            "category": "desserts",
+            "price": {"value": 5, "currency": "EUR"},
+            "new": 0,
+            "photos": [],
+            "status": "available",
+            "_id": "5fff2fd043648400c45e0bf7"
+        }],
         "organization": {
             "_id": "5f8dbe2601983b21c01c4224",
             "name": "rrr",
@@ -268,6 +137,6 @@ export const config = {
         "color_header": "#FFFFFF",
         "enable": false,
         "id": "5f3e4a70572b8132565a6199",
-        "layout_type": "dsign-menu-item-image"
+        "layout_type": "dsign-menu-item-compress"
     }
 };

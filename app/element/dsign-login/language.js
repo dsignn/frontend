@@ -2,7 +2,7 @@ export const lang = {
   "it": {
     "email": "Email",
     "password" : "Password",
-    "login": "Accendi",
+    "login": "Accedi",
     "login-ok": "Bentornato",
     "recover-password": "Recupera password",
     "back": 'Indietro',

@@ -78,16 +78,15 @@ class DsignMenu extends LocalizeMixin(ServiceInjectorMixin(PolymerElement)) {
        }
        
        .subtitle {
-            display: flex;
-            flex-direction: row;
+            @apply --layout-horizontal;
             padding-bottom: 6px;
        }
        
        .amount {
-            flex: 1;
-            display: flex;
-            align-items: center;
-            justify-content: flex-end;
+            @apply --layout;
+            @apply --layout-flex;
+            @apply --layout-center;
+            @apply --layout-end-justified;
             padding-right: 4px;
             font-size: 18px;
             font-family: var(--paper-font-common-base_-_font-family);
@@ -101,6 +100,7 @@ class DsignMenu extends LocalizeMixin(ServiceInjectorMixin(PolymerElement)) {
        
          background-color: #eee;
          flex-basis: 13.9%;
+         -webkit-flex-basis: 13.9%;
          margin: 0 6px 6px 0;
        }
        
@@ -110,12 +110,11 @@ class DsignMenu extends LocalizeMixin(ServiceInjectorMixin(PolymerElement)) {
        }
        
        .flex-row {
-         display: flex;
-         flex-direction: row;
+         @apply --layout-horizontal;
        }
        
        [down] {
-         align-items: flex-end;
+         @apply --layout-end;
        }
        
        .search paper-input {
@@ -150,8 +149,8 @@ class DsignMenu extends LocalizeMixin(ServiceInjectorMixin(PolymerElement)) {
        }
        
        #action {
-           display: flex;
-           justify-content: center;
+           @æpply --layout;
+           @apply --layout-center-justified;
            width: 40px;
        }
        
@@ -172,18 +171,17 @@ class DsignMenu extends LocalizeMixin(ServiceInjectorMixin(PolymerElement)) {
        paper-select-language {
          width: 100%;
        }   
-       
               
        #menuContainer {
-        padding: 6px;
-        display: flex;
-        flex-direction: row;
-        flex-wrap: wrap;
-        justify-content: flex-start;
+         @apply --layout-horizontal;
+         @apply --layout-start-justified;
+         @apply --layout-wrap;
+         padding: 6px;
        }
        
        dsign-menu-wrap-item {
            flex-basis: 10%;
+           -webkit-flex-basis: 10%;
            --menu-wrap-container : {
                margin-bottom: 8px;
                margin-right: 8px;
@@ -202,6 +200,7 @@ class DsignMenu extends LocalizeMixin(ServiceInjectorMixin(PolymerElement)) {
        @media only screen and (max-width: 2600px) and (min-width: 2201px) {
            dsign-menu-wrap-item {
                 flex-basis: 12.5%;
+                -webkit-flex-basis: 12.5%
            }
            
            dsign-menu-wrap-item:nth-child(8n) { 
@@ -214,6 +213,7 @@ class DsignMenu extends LocalizeMixin(ServiceInjectorMixin(PolymerElement)) {
        @media only screen and (max-width: 2200px) and (min-width: 1981px) {
            dsign-menu-wrap-item {
                flex-basis: 14.2%;
+               -webkit-flex-basis: 14.2%;
            }
            
            dsign-menu-wrap-item:nth-child(7n) { 
@@ -226,7 +226,8 @@ class DsignMenu extends LocalizeMixin(ServiceInjectorMixin(PolymerElement)) {
        @media only screen and (max-width: 1980px) and (min-width: 1701px) {
            dsign-menu-wrap-item {
                flex-basis: 16.66%;
-             
+               -webkit-flex-basis: 16.66%;
+               max-width: 16.66%;
            }
            
            dsign-menu-wrap-item:nth-child(6n) { 
@@ -239,6 +240,7 @@ class DsignMenu extends LocalizeMixin(ServiceInjectorMixin(PolymerElement)) {
        @media only screen and (max-width: 1700px) and (min-width: 1201px) {
            dsign-menu-wrap-item {
                flex-basis: 20%;
+               -webkit-flex-basis: 20%;
            }
            
            dsign-menu-wrap-item:nth-child(5n) { 
@@ -251,6 +253,7 @@ class DsignMenu extends LocalizeMixin(ServiceInjectorMixin(PolymerElement)) {
        @media only screen and (max-width: 1200px) and (min-width: 971px) {
            dsign-menu-wrap-item {
                flex-basis: 25%;
+               -webkit-flex-basis: 25%;
            }
            
            dsign-menu-wrap-item:nth-child(4n) { 
@@ -263,6 +266,7 @@ class DsignMenu extends LocalizeMixin(ServiceInjectorMixin(PolymerElement)) {
        @media only screen and (max-width: 970px) and (min-width: 771px) {
             dsign-menu-wrap-item {
                 flex-basis: 33.3%;
+                -webkit-flex-basis: 33.3%;
             }
             
             dsign-menu-wrap-item:nth-child(3n) { 
@@ -280,6 +284,7 @@ class DsignMenu extends LocalizeMixin(ServiceInjectorMixin(PolymerElement)) {
        
             dsign-menu-wrap-item {
                 flex-basis: 50%;
+                -webkit-flex-basis:  50%;
             }
             
             dsign-menu-wrap-item:nth-child(2n) { 
@@ -296,6 +301,7 @@ class DsignMenu extends LocalizeMixin(ServiceInjectorMixin(PolymerElement)) {
        
             dsign-menu-wrap-item {
                 flex-basis: 100%;
+                -webkit-flex-basis:  100%;
                 --menu-wrap-container : {
                    margin-bottom: 8px;
                    margin-right: 0;
@@ -308,10 +314,12 @@ class DsignMenu extends LocalizeMixin(ServiceInjectorMixin(PolymerElement)) {
             
              #menuContainer {
                 flex-direction: column;
+                @apply --layout-vertical;
              }
             
             .item {
                 flex-basis: 100%;
+               -webkit-flex-basis:  100%;
             }
        }      
     </style>
@@ -560,7 +568,6 @@ class DsignMenu extends LocalizeMixin(ServiceInjectorMixin(PolymerElement)) {
         let favorites = this.shadowRoot.querySelectorAll('dsign-menu-favorites');
         for (let index = 0; favorites.length > index; index++) {
             if (favorites[index].menuItem._id === evt.data._id) {
-                console.log('ELIMINA TROVATO', evt);
                 favorites[index].remove();
                 break;
             }
@@ -724,6 +731,7 @@ class DsignMenu extends LocalizeMixin(ServiceInjectorMixin(PolymerElement)) {
     clearCategory(evt) {
         this.$.category.value = null;
         this.$.category.selectedItem = null;
+        this.$.categories.selected= null;
         this.search(this.$.search.value ? this.$.search.value : null, null);
     }
 

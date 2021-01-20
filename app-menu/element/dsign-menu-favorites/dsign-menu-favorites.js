@@ -20,9 +20,9 @@ class DsignMenuFavorites extends LocalizeMixin(ServiceInjectorMixin(PolymerEleme
        }
        
        paper-card {
+          @apply --layout;
           width: 100%;
           height: 50px;
-          display: flex;
        }
        
        .header {
@@ -39,22 +39,21 @@ class DsignMenuFavorites extends LocalizeMixin(ServiceInjectorMixin(PolymerEleme
        }
        
        .header-card-content {
+          @apply --layout-vertical;
           height: 25px;
-          display: flex;
-          flex-direction: column;
           padding-left: 6px;
           padding-right: 6px;
        }
        
        .header-card-title {
-          justify-content: center;
-          align-items: flex-start;
+          @apply --layout-center-justified;
+          @apply --layout-start;
        }
        
        .header-card-action {
-           align-items: center;
-           justify-content: flex-end;
-           flex-direction: row;
+          @apply --layout-horizontal;
+          @apply --layout-center;
+          @apply --layout-end-justified;
        }
        
        paper-icon-button {
@@ -74,13 +73,13 @@ class DsignMenuFavorites extends LocalizeMixin(ServiceInjectorMixin(PolymerEleme
        }
        
        .count {
-          display: flex;
-          flex: 1;
+          @apply --layout;
+          @apply --layout-flex;
        }
        
        #action {
-           display: flex;
-           align-items: center;
+           @apply --layout;
+           @apply --layout-center;
        }
        
        #action paper-icon-button {

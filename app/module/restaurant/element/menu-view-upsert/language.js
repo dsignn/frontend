@@ -1,6 +1,6 @@
 export const lang = {
   "it": {
-    "name": "Nome",
+    "name-menu": "Nome menù",
     "enable": "Menù attivo",
     "name-it": "Nome (italiano)",
     "description-it": "Descrizione (italiano)",
@@ -34,7 +34,7 @@ export const lang = {
     "dsign-menu-item-compress": "Layout senza immagine"
   },
   "en": {
-    "name": "Name",
+    "name-menu": "Name menu",
     "enable": "Menù enable",
     "name-it": "Name (italian)",
     "description-it": "Description (italian)",

@@ -2,12 +2,10 @@ import {html, PolymerElement} from "@polymer/polymer/polymer-element";
 import {AclMixin} from "@dsign/polymer-mixin/acl/acl-mixin";
 import {ServiceInjectorMixin} from "@dsign/polymer-mixin/service/injector-mixin";
 import {LocalizeMixin} from "@dsign/polymer-mixin/localize/localize-mixin";
-import {Storage} from "@dsign/library/src/storage/Storage";
 import '../menu-item/menu-item'
 import '@polymer/paper-item/paper-item'
 import {lang} from "./language";
 import {Auth} from "../../../../src/authentication/Auth";
-import {Listener} from "@dsign/library/src/event/Listener";
 
 /**
  * @ActivationCode
@@ -207,10 +205,6 @@ class MenuActive extends LocalizeMixin(AclMixin(ServiceInjectorMixin(PolymerElem
                         _menuStorage :"MenuStorage",
                     }
                 }
-            },
-
-            _menuStorage: {
-                observer: '_menuStorageChanged'
             }
         };
     }
@@ -251,33 +245,6 @@ class MenuActive extends LocalizeMixin(AclMixin(ServiceInjectorMixin(PolymerElem
             }
         );
     }
-
-    /**
-     * @param storage
-     * @private
-     */
-    _menuStorageChanged(storage) {
-        if (!storage) {
-            return;
-        }
-
-        this.updateEntity = new Listener((evt) => {
-            if (evt.data.enable) {
-                this.entity = evt.data;
-            }
-        });
-
-        this.deleteEntity = new Listener((evt) => {
-            if (evt.data.enable) {
-                this.entity = null;
-            }
-        });
-
-        storage.getEventManager().on(Storage.POST_SAVE, this.updateEntity);
-        storage.getEventManager().on(Storage.POST_UPDATE, this.updateEntity);
-        storage.getEventManager().on(Storage.POST_REMOVE, this.deleteEntity);
-    }
-
 
     /**
      *

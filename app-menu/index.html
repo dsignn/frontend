@@ -3,6 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <title>Menu</title>
+    <!-- <meta name="theme-color" content="{{ menu.background_header }}"> -->
     <script type="module">
         /*
             TODO setting to the php application
@@ -40,12 +41,21 @@
             ]
         ));
 
+        let adapter = new LocalStorageAdapter('dsign', 'favorite');
+        adapter.setFilterCallback(function(filter) {
+            if (filter.restaurantId) {
+                return this.data.filter((element) => {
+                    return element.restaurantId === filter.restaurantId;
+                })
+            }
+
+            return this.data;;
+        }.bind(adapter));
+
         /**
          * @type {Storage}
          */
-        const menuStorage = new Storage(
-            new LocalStorageAdapter('dsign', 'favorite')
-        );
+        const menuStorage = new Storage(adapter);
 
         container.set('MenuStorage', menuStorage);
 
@@ -102,6 +112,7 @@
     <script type="module">
         import './element/dsign-menu/dsing-menu.js';
         import './element/dsign-menu-icons/dsign-menu-icons.js';
+        import '@polymer/iron-flex-layout/iron-flex-layout';
         import '@polymer/paper-toast/paper-toast';
     </script>
 </head>
