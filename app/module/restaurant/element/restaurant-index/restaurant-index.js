@@ -114,7 +114,7 @@ class RestaurantIndex extends LocalizeMixin(AclMixin(ServiceInjectorMixin(Polyme
                        <div id="update"> 
                            <menu-view-upsert entity="{{menuSelected}}">
                                 <div slot="header" class="header">
-                                    <div class="text-content">{{localize('update-restaurant')}}</div>
+                                    <div class="text-content">{{localize('update-menu')}}</div>
                                     <paper-icon-button id="iconInsertMonitor" icon="arrow-back" class="circle" on-click="displayRestaurantMenuListView"></paper-icon-button>
                                     <paper-tooltip for="iconInsertMonitor" position="left">{{localize('update-menu')}}</paper-tooltip>
                                 </div>

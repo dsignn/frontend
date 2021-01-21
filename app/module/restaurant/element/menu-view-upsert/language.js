@@ -7,8 +7,7 @@ export const lang = {
     "description": "Descrizione",
     "name-en": "Nome (inglese)",
     "description-en": "Descrizione (inglese)",
-    "menu-item-insert": "Aggiungi voce al menu",
-    "menu-item-update": "Modifica voce al menu",
+    "menu-item-title": "Voce di menù",
     "status": "Stato",
     "category": "Categoria",
     "restaurant": "Ristorante",
@@ -31,7 +30,9 @@ export const lang = {
     "menu-title": "Menù",
     "layout-type": "Tipo di layout",
     "dsign-menu-item-image": "Layout con immagine",
-    "dsign-menu-item-compress": "Layout senza immagine"
+    "dsign-menu-item-compress": "Layout senza immagine",
+    "add-item-menu": "Aggiungi voce di menù",
+    "update-item-menu": "Modifica voce di menù"
   },
   "en": {
     "name-menu": "Name menu",
@@ -40,8 +41,7 @@ export const lang = {
     "description-it": "Description (italian)",
     "name-en": "Name (english)",
     "description-en": "Description (english)",
-    "menu-item-insert": "Add menu item",
-    "menu-item-update": "update menu item",
+    "menu-item-title": "Menu item",
     "status": "Status",
     "category": "Categoria",
     "restaurant": "Restaurant",
@@ -64,6 +64,8 @@ export const lang = {
     "menu-title": "Lista elementi del menu (piatti, bevande)",
     "layout-type": "Layout type",
     "dsign-menu-item-image": "Layout with image",
-    "dsign-menu-item-compress": "Layout without image"
+    "dsign-menu-item-compress": "Layout without image",
+    "add-item-menu": "Add menu item",
+    "update-item-menu": "Update menu item"
   }
 };

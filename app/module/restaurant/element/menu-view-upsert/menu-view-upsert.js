@@ -3,8 +3,7 @@ import {ServiceInjectorMixin} from "@dsign/polymer-mixin/service/injector-mixin"
 import {LocalizeMixin} from "@dsign/polymer-mixin/localize/localize-mixin";
 import {NotifyMixin} from "@dsign/polymer-mixin/notify/notify-mixin";
 import {StorageEntityMixin} from "@dsign/polymer-mixin/storage/entity-mixin";
-import {Listener} from "@dsign/library/src/event";
-import {Storage} from "@dsign/library/src/storage/Storage";
+import {MongoIdGenerator} from "@dsign/library/src/storage/util/MongoIdGenerator";
 import {Auth} from "../../../../src/authentication/Auth";
 import '@polymer/paper-input/paper-input';
 import '@fluidnext-polymer/paper-input-color/paper-input-color';
@@ -277,7 +276,7 @@ class MenuViewUpsert extends StorageEntityMixin(NotifyMixin(LocalizeMixin(Servic
             </div>
             <div id="content-right">
                 <paper-card>
-                    <h2>{{localize(menuItemUpsertLabel)}}</h2>
+                    <h2>{{localize(menuItemLabel)}}</h2>
                     <menu-item-view-upsert id="menuItemViewUpsert" on-menu-item-save="appendMenuItem" on-menu-item-update="modifyMenuItem" menu-item="{{menuItem}}"></menu-item-view-upsert>
                     <div class="action">
                         <paper-button on-tap="submitMenuItem">{{localize(labelActionMenuItem)}}</paper-button>
@@ -319,7 +318,7 @@ class MenuViewUpsert extends StorageEntityMixin(NotifyMixin(LocalizeMixin(Servic
 
             labelActionMenuItem: {
                 type: String,
-                value: 'save'
+                value: 'add-item-menu'
             },
 
             categories: {
@@ -348,9 +347,9 @@ class MenuViewUpsert extends StorageEntityMixin(NotifyMixin(LocalizeMixin(Servic
                 value: false
             },
 
-            menuItemUpsertLabel: {
+            menuItemLabel: {
                 type: String,
-                value: 'menu-item-insert'
+                value: 'menu-item-title'
             },
 
             /**
@@ -555,6 +554,8 @@ class MenuViewUpsert extends StorageEntityMixin(NotifyMixin(LocalizeMixin(Servic
      * @param evt
      */
     appendMenuItem(evt) {
+
+        evt.detail.id = MongoIdGenerator.statcGenerateId();
         this.entity.appendMenuItem(evt.detail);
         if (this.allCategory) {
             let tmp = this.sortFavorites( this.entity.items);
@@ -623,8 +624,7 @@ class MenuViewUpsert extends StorageEntityMixin(NotifyMixin(LocalizeMixin(Servic
             }
         }
 
-        this.labelActionMenuItem = 'save';
-        this.menuItemUpsertLabel = 'menu-item-insert';
+        this.labelActionMenuItem = 'add-item-menu';
 
         if (this.allCategory) {
             let tmp = this.sortFavorites( this.entity.items);
@@ -652,8 +652,7 @@ class MenuViewUpsert extends StorageEntityMixin(NotifyMixin(LocalizeMixin(Servic
     _updateMenuItem(evt) {
 
         this.menuItem = evt.detail;
-        this.labelActionMenuItem = 'update'
-        this.menuItemUpsertLabel = 'menu-item-update';
+        this.labelActionMenuItem = 'update-item-menu';
     }
 
     /**
