@@ -43,8 +43,7 @@ class DsignMenuItemImage extends ItemFavorite(LocalizeMixin(ServiceInjectorMixin
             @apply --layout;
             @apply --layout-center;
             height: 40px;
-            width: 100%;
-            padding: 4px;
+            padding: 6px;
         }
         
         .image {
@@ -53,10 +52,13 @@ class DsignMenuItemImage extends ItemFavorite(LocalizeMixin(ServiceInjectorMixin
             background-size: cover;
             background-repeat: no-repeat;
             position: relative;
+            border-bottom: 2px solid #eeeeee;
+            border-top: 2px solid #eeeeee;
         }
         
         .content {
             height: 60px;
+            padding: 6px;
         }
         
         .header-card-title {
@@ -80,7 +82,7 @@ class DsignMenuItemImage extends ItemFavorite(LocalizeMixin(ServiceInjectorMixin
            @apply --layout-start;
            color: #757575;
            text-overflow: ellipsis;
-           padding: 4px;
+           font-size: 15px;
            overflow: hidden;
            -webkit-line-clamp: 3;
            -webkit-box-orient: vertical;  
@@ -171,9 +173,8 @@ class DsignMenuItemImage extends ItemFavorite(LocalizeMixin(ServiceInjectorMixin
         if (menu.photos && Array.isArray(menu.photos) && menu.photos.length > 0) {
             this.$.image.style.backgroundImage = `url(${menu.photos[0].src})`;
         } else {
-            this.$.image.style.backgroundImage = `url(${config.bucket}/${menu.category}.png)`;
-            this.$.image.style.backgroundSize = `contain`;
-            this.$.image.style.backgroundColor = `#eeeeee`;
+            this.$.image.style.backgroundImage = 'url(https://dsign-asset.s3.eu-central-1.amazonaws.com/dish-not-found.png)';
+            this.$.image.style.backgroundSize = `cover`;
         }
     }
 

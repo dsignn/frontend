@@ -27,15 +27,20 @@ class DsignMenuFavorites extends LocalizeMixin(ServiceInjectorMixin(PolymerEleme
        
        .header {
            height: 100%;
-           width: 50px;
+           width: 50px !important;
            background-position: center center ;
            background-repeat: no-repeat;
            background-size: cover;
            position: relative;
+           border-right: 2px solid #eeeeee;
        }
        
        .content {
           flex: 1;
+          display: block;
+          white-space: nowrap;
+          overflow: hidden;
+          text-overflow: ellipsis;
        }
        
        .header-card-content {
@@ -48,6 +53,11 @@ class DsignMenuFavorites extends LocalizeMixin(ServiceInjectorMixin(PolymerEleme
        .header-card-title {
           @apply --layout-center-justified;
           @apply --layout-start;
+          display: block;
+          white-space: nowrap;
+          overflow: hidden;
+          text-overflow: ellipsis;
+          text-align: start;
        }
        
        .header-card-action {
@@ -78,6 +88,7 @@ class DsignMenuFavorites extends LocalizeMixin(ServiceInjectorMixin(PolymerEleme
        }
        
        #action {
+           width: 40px !important;
            @apply --layout;
            @apply --layout-center;
        }
@@ -274,8 +285,8 @@ class DsignMenuFavorites extends LocalizeMixin(ServiceInjectorMixin(PolymerEleme
         if (menu.photos && Array.isArray(menu.photos) && menu.photos.length > 0) {
             this.$.image.style.backgroundImage = `url(${menu.photos[0].src})`;
         } else {
-            this.$.image.style.backgroundImage = `url(${config.bucket}/${menu.category}.png)`;
-            this.$.image.style.backgroundSize = `contain`;
+            this.$.image.style.backgroundImage = 'url(https://dsign-asset.s3.eu-central-1.amazonaws.com/dish-not-found.png)';
+            this.$.image.style.backgroundSize = `cover`;
         }
     }
 }
