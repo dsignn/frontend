@@ -200,7 +200,8 @@ class DsignMenu extends LocalizeMixin(ServiceInjectorMixin(PolymerElement)) {
        @media only screen and (max-width: 2600px) and (min-width: 2201px) {
            dsign-menu-wrap-item {
                 flex-basis: 12.5%;
-                -webkit-flex-basis: 12.5%
+                -webkit-flex-basis: 12.5%;
+                max-width: 12.5%;
            }
            
            dsign-menu-wrap-item:nth-child(8n) { 
@@ -214,6 +215,7 @@ class DsignMenu extends LocalizeMixin(ServiceInjectorMixin(PolymerElement)) {
            dsign-menu-wrap-item {
                flex-basis: 14.2%;
                -webkit-flex-basis: 14.2%;
+               max-width: 14.2%;
            }
            
            dsign-menu-wrap-item:nth-child(7n) { 
@@ -241,6 +243,7 @@ class DsignMenu extends LocalizeMixin(ServiceInjectorMixin(PolymerElement)) {
            dsign-menu-wrap-item {
                flex-basis: 20%;
                -webkit-flex-basis: 20%;
+               max-width: 20%;
            }
            
            dsign-menu-wrap-item:nth-child(5n) { 
@@ -254,6 +257,7 @@ class DsignMenu extends LocalizeMixin(ServiceInjectorMixin(PolymerElement)) {
            dsign-menu-wrap-item {
                flex-basis: 25%;
                -webkit-flex-basis: 25%;
+               max-width: 25%;
            }
            
            dsign-menu-wrap-item:nth-child(4n) { 
@@ -267,6 +271,7 @@ class DsignMenu extends LocalizeMixin(ServiceInjectorMixin(PolymerElement)) {
             dsign-menu-wrap-item {
                 flex-basis: 33.3%;
                 -webkit-flex-basis: 33.3%;
+                max-width: 33.3%;
             }
             
             dsign-menu-wrap-item:nth-child(3n) { 
@@ -285,6 +290,7 @@ class DsignMenu extends LocalizeMixin(ServiceInjectorMixin(PolymerElement)) {
             dsign-menu-wrap-item {
                 flex-basis: 50%;
                 -webkit-flex-basis:  50%;
+                max-width: 50%;
             }
             
             dsign-menu-wrap-item:nth-child(2n) { 
