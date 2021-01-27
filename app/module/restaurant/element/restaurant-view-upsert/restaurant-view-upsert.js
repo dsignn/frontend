@@ -31,6 +31,14 @@ class RestaurantViewUpsert extends StorageEntityMixin(NotifyMixin(LocalizeMixin(
                 padding: 10px 20px;
             }
             
+            .top {
+                @apply --layout-horizontal;
+            }
+            
+            #name {
+                width: 100%;
+            }
+            
             #content-left {
                 padding-right: 16px;
             }
@@ -114,8 +122,11 @@ class RestaurantViewUpsert extends StorageEntityMixin(NotifyMixin(LocalizeMixin(
             <div id="content-left">
                 <iron-form id="formRestaurant">
                     <form method="post">
-                        <paper-input id="name" name="name" label="{{localize('name-restaurant')}}" value="{{entity.name}}" on-value-changed="changeNameRestaurant" required></paper-input>
-                         <paper-input id="whatsappPhone" name="whatsappPhone" label="{{localize('whatsapp-phone')}}" value="{{entity.whatsappPhone}}" required></paper-input>
+                        <div class="top">
+                            <paper-input id="name" name="name" label="{{localize('name-restaurant')}}" value="{{entity.name}}" on-value-changed="changeNameRestaurant" required></paper-input>
+                            <paper-toggle-button checked="{{entity.open}}">{{localize('active-order')}}</paper-toggle-button>
+                        </div>
+                        <paper-input id="whatsappPhone" name="whatsappPhone" label="{{localize('whatsapp-phone')}}" value="{{entity.whatsappPhone}}" required></paper-input>
                         <paper-input 
                             id="url"
                             name="url"

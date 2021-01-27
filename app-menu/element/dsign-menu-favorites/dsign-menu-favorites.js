@@ -53,6 +53,7 @@ class DsignMenuFavorites extends LocalizeMixin(ServiceInjectorMixin(PolymerEleme
        .header-card-title {
           @apply --layout-center-justified;
           @apply --layout-start;
+          line-height: 24px;
           display: block;
           white-space: nowrap;
           overflow: hidden;

@@ -15,6 +15,7 @@ import {ServiceInjectorMixin} from "@dsign/polymer-mixin/service/injector-mixin"
 import {Storage} from "@dsign/library/src/storage/Storage";
 import {FavoriteService} from "@dsign/library/src/frontend/favorite/FavoriteService";
 import {Listener} from "@dsign/library/src/event/Listener";
+import {mergeDeep} from "@dsign/library/src/object/Utils";
 import '@polymer/app-layout/app-toolbar/app-toolbar';
 import '@polymer/app-layout/app-drawer/app-drawer';
 import '@polymer/app-layout/app-header/app-header';
@@ -79,6 +80,7 @@ class DsignMenu extends LocalizeMixin(ServiceInjectorMixin(PolymerElement)) {
        
        .subtitle {
             @apply --layout-horizontal;
+            @apply --layout-center;
             padding-bottom: 6px;
        }
        
@@ -88,7 +90,8 @@ class DsignMenu extends LocalizeMixin(ServiceInjectorMixin(PolymerElement)) {
             @apply --layout-center;
             @apply --layout-end-justified;
             padding-right: 4px;
-            font-size: 18px;
+            font-size: 20px;
+            font-weight: bold;
             font-family: var(--paper-font-common-base_-_font-family);
        }
        
@@ -149,10 +152,11 @@ class DsignMenu extends LocalizeMixin(ServiceInjectorMixin(PolymerElement)) {
        }
        
        #action {
-           @æpply --layout;
-           @apply --layout-center-justified;
+           @apply --layout;
+           @apply --layout-center;
            width: 40px;
        }
+       
        
        paper-icon-button.menu-drawer {
            color: #000000 !important;
@@ -162,6 +166,20 @@ class DsignMenu extends LocalizeMixin(ServiceInjectorMixin(PolymerElement)) {
            --paper-icon-button : {
                 padding: 0;
            }       
+       }
+       
+       paper-icon-button.copy {
+           width: 34px;
+           height: 34px;
+           --paper-icon-button : {
+                padding: 3px;
+           }   
+       }
+       
+       #order {
+          @apply --layout;
+          @apply --layout-horizontal;
+          @apply --layout-center;
        }
        
        .drawerContainer {
@@ -176,7 +194,7 @@ class DsignMenu extends LocalizeMixin(ServiceInjectorMixin(PolymerElement)) {
          @apply --layout-horizontal;
          @apply --layout-start-justified;
          @apply --layout-wrap;
-         padding: 6px;
+         padding: 3px;
        }
        
        dsign-menu-wrap-item {
@@ -365,9 +383,15 @@ class DsignMenu extends LocalizeMixin(ServiceInjectorMixin(PolymerElement)) {
         <div class="drawerContainer">
             <h2 class="title">Preferiti</h2>
             <div class="subtitle">
+                <div id="order">
+                    <a href="https://api.whatsapp.com/send?phone={{organization.whatsapp_phone}}" target="_blank">
+                        <paper-icon-button class="menu-drawer copy" icon="whatapp"></paper-icon-button>
+                    </a>
+                    <paper-icon-button on-tap="_copyClipboard" class="menu-drawer copy" icon="copy"></paper-icon-button>
+                </div>
                 <div class="amount">{{amount}}</div>
                 <div id="action">
-                    <paper-menu-button id="paperAction" no-padding ignore-select horizontal-align="right">
+                    <paper-menu-button id="paperAction" ignore-select horizontal-align="right">
                         <paper-icon-button class="menu-drawer" icon="v-menu" slot="dropdown-trigger" alt="multi menu"></paper-icon-button>
                         <paper-listbox slot="dropdown-content" multi>
                             <paper-item on-click="_reset">{{localize('reset-dishes-arrived')}}</paper-item>
@@ -391,7 +415,8 @@ class DsignMenu extends LocalizeMixin(ServiceInjectorMixin(PolymerElement)) {
             },
 
             organization: {
-                notify: true
+                notify: true,
+                observer: 'changeOrganization'
             },
 
             items: { },
@@ -400,7 +425,8 @@ class DsignMenu extends LocalizeMixin(ServiceInjectorMixin(PolymerElement)) {
                 value: {
                     _localizeService: 'Localize',
                     _config: 'config',
-                    _favoriteService: 'FavoriteService'
+                    _favoriteService: 'FavoriteService',
+                    _notifyService: 'Notify',
                 }
             },
 
@@ -497,6 +523,20 @@ class DsignMenu extends LocalizeMixin(ServiceInjectorMixin(PolymerElement)) {
         this.menu = config.menu;
     }
 
+    changeOrganization(organization) {
+
+        if(!organization) {
+            this.$.order.style.visibility = 'hidden';
+            return;
+        }
+
+        if (organization['whatsapp_phone'] && organization.open === true) {
+            this.$.order.style.visibility = 'visibile';
+        } else {
+            this.$.order.style.visibility = 'hidden';
+        }
+    }
+
     /**
      * @param service
      */
@@ -540,6 +580,37 @@ class DsignMenu extends LocalizeMixin(ServiceInjectorMixin(PolymerElement)) {
             },
             500
         )
+    }
+
+    /**
+     * @param evt
+     * @private
+     */
+    _copyClipboard(evt) {
+
+
+        let el = document.createElement('textarea');
+        el.value = this._getOrder();
+
+        if (!el.value) {
+            return;
+        }
+
+        document.body.appendChild(el);
+        el.select();
+        document.execCommand('copy');
+        document.body.removeChild(el);
+        this._notifyService.notify(this.localize('plate-copy-on-clipboard'));
+    }
+
+    _getOrder() {
+        let order = '';
+        let elements = this.shadowRoot.querySelectorAll('dsign-menu-favorites');
+        elements.forEach((ele) => {
+            order += `${ele.menuItem.totalCount} - ${ele.menuItem.name.it}\n`
+        });
+
+        return order;
     }
 
     /**
@@ -661,8 +732,9 @@ class DsignMenu extends LocalizeMixin(ServiceInjectorMixin(PolymerElement)) {
      */
     _reset(evt) {
         this._favoriteService.resetFavorites();
+        evt.target.classList.remove('iron-selected');
+        this.$.paperAction.opened = false;
     }
-
     /**
      * @param color
      * @private
@@ -790,7 +862,7 @@ class DsignMenu extends LocalizeMixin(ServiceInjectorMixin(PolymerElement)) {
             }
         }
 
-        this.resources = Object.assign(this.resources, categoryTranslation);
+        this.resources = mergeDeep(this.resources, categoryTranslation);
         this.categories = categories;
     }
 }

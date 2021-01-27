@@ -77,15 +77,12 @@ class DsignMenuItemImage extends ItemFavorite(LocalizeMixin(ServiceInjectorMixin
        }
        
        .paragraph-card {
-           @apply --layout;
-           @apply --layout-flex;
-           @apply --layout-start;
+           display: block;
+           height: 60px;
            color: #757575;
-           text-overflow: ellipsis;
            font-size: 15px;
            overflow: hidden;
-           -webkit-line-clamp: 3;
-           -webkit-box-orient: vertical;  
+           overflow-y: auto;
        }  
        
        .price {

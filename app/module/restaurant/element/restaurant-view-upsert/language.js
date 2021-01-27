@@ -2,6 +2,7 @@ export const lang = {
   "it": {
     "name-restaurant": "Nome ristorante",
     "whatsapp-phone": "Numero di telefono whattapp",
+    "active-order": "Ordini attivi",
     "add" : "Aggiugi",
     "save" : "Salva",
     "update" : "Modifica",
@@ -15,6 +16,7 @@ export const lang = {
   "en": {
     "name": "Name",
     "whatsapp-phone": "Whattapp phone number",
+    "active-order": "Active order",
     "add" : "Add",
     "save" : "Save",
     "update" : "Update",

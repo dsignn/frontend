@@ -3,7 +3,8 @@ export const lang = {
         "search": "Cerca",
         "category": "Categoria",
         'all': "Tutti",
-        "reset-dishes-arrived": "Resetta piatti arrivati"
+        "reset-dishes-arrived": "Resetta piatti arrivati",
+        "plate-copy-on-clipboard": "Ordine copiato"
     },
     "en": {
         "search": "Search",
@@ -11,6 +12,7 @@ export const lang = {
         'all': "All",
         'first': "First",
         'second': "Main courses",
-        "reset-dishes-arrived": "Reset arrived dishes"
+        "reset-dishes-arrived": "Reset arrived dishes",
+        "plate-copy-on-clipboard": "Order copied"
     }
 };
