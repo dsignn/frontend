@@ -71,6 +71,7 @@ class DsignMenuItemImage extends ItemFavorite(LocalizeMixin(ServiceInjectorMixin
            line-height: 32px;
            display: block;
            padding: 0 6px;
+           width: 1vw;
            white-space: nowrap;
            overflow: hidden;
            text-overflow: ellipsis;

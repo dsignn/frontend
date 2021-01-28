@@ -69,6 +69,13 @@ class DsignMenu extends LocalizeMixin(ServiceInjectorMixin(PolymerElement)) {
             margin-bottom: 4px;
        }
        
+       .btn-order {
+           @apply --layout-flex;
+           background-color: var(--munu-background-color);
+           color: var(--munu-color);
+           margin: 0;
+       }
+       
        h2.title {
           font-family: var(--paper-font-common-base_-_font-family);
           margin: 0;
@@ -166,6 +173,9 @@ class DsignMenu extends LocalizeMixin(ServiceInjectorMixin(PolymerElement)) {
            --paper-icon-button : {
                 padding: 0;
            }       
+       }
+       #paperAction {
+            padding-left: 12px;
        }
        
        paper-icon-button.copy {
@@ -335,12 +345,7 @@ class DsignMenu extends LocalizeMixin(ServiceInjectorMixin(PolymerElement)) {
               #language, #category {
                 width: 96px;
             }
-            
-             #menuContainer {
-                flex-direction: column;
-                @apply --layout-vertical;
-             }
-            
+                       
             .item {
                 flex-basis: 100%;
                -webkit-flex-basis:  100%;
@@ -381,14 +386,10 @@ class DsignMenu extends LocalizeMixin(ServiceInjectorMixin(PolymerElement)) {
     </app-header-layout>
     <app-drawer id="drawer" align="right">
         <div class="drawerContainer">
-            <h2 class="title">Preferiti</h2>
+            <div id="order" style="display: flex">
+                <paper-button class="btn-order" on-tap="_sendOrder">Ordina su whattapp</paper-button>
+            </div>
             <div class="subtitle">
-                <div id="order">
-                    <a href="https://api.whatsapp.com/send?phone={{organization.whatsapp_phone}}" target="_blank">
-                        <paper-icon-button class="menu-drawer copy" icon="whatapp"></paper-icon-button>
-                    </a>
-                    <paper-icon-button on-tap="_copyClipboard" class="menu-drawer copy" icon="copy"></paper-icon-button>
-                </div>
                 <div class="amount">{{amount}}</div>
                 <div id="action">
                     <paper-menu-button id="paperAction" ignore-select horizontal-align="right">
@@ -613,6 +614,16 @@ class DsignMenu extends LocalizeMixin(ServiceInjectorMixin(PolymerElement)) {
         return order;
     }
 
+    _sendOrder() {
+
+        console.log('test')
+        let ele = document.createElement('a');
+        ele.href = `https://api.whatsapp.com/send?phone=${this.organization.whatsapp_phone}&text=${encodeURIComponent(this._getOrder())}`;
+        ele.target="_blank";
+        ele.click();
+        console.log('ttetete')
+    }
+
     /**
      * @param evt
      */
@@ -641,6 +652,9 @@ class DsignMenu extends LocalizeMixin(ServiceInjectorMixin(PolymerElement)) {
         return tmpFavorites;
     }
 
+    /**
+     * @param evt
+     */
     deleteFavoriteEvt(evt) {
         let favorites = this.shadowRoot.querySelectorAll('dsign-menu-favorites');
         for (let index = 0; favorites.length > index; index++) {
@@ -831,10 +845,6 @@ class DsignMenu extends LocalizeMixin(ServiceInjectorMixin(PolymerElement)) {
                     hide = true;
                     break;
             }
-            //console.log(hide);
-            //console.log(name, !name === false && nodes[index].item.name[lang].toLowerCase().includes(name.toLowerCase()) === false);
-            //console.log(category, !category === false && nodes[index].item.category !== category);
-            //console.log('------------------');
             nodes[index].hide = hide;
             hide = false;
         }
