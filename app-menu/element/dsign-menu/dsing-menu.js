@@ -584,26 +584,9 @@ class DsignMenu extends LocalizeMixin(ServiceInjectorMixin(PolymerElement)) {
     }
 
     /**
-     * @param evt
+     * @returns {string}
      * @private
      */
-    _copyClipboard(evt) {
-
-
-        let el = document.createElement('textarea');
-        el.value = this._getOrder();
-
-        if (!el.value) {
-            return;
-        }
-
-        document.body.appendChild(el);
-        el.select();
-        document.execCommand('copy');
-        document.body.removeChild(el);
-        this._notifyService.notify(this.localize('plate-copy-on-clipboard'));
-    }
-
     _getOrder() {
         let order = '';
         let elements = this.shadowRoot.querySelectorAll('dsign-menu-favorites');
@@ -615,13 +598,11 @@ class DsignMenu extends LocalizeMixin(ServiceInjectorMixin(PolymerElement)) {
     }
 
     _sendOrder() {
-
-        console.log('test')
+        
         let ele = document.createElement('a');
         ele.href = `https://api.whatsapp.com/send?phone=${this.organization.whatsapp_phone}&text=${encodeURIComponent(this._getOrder())}`;
         ele.target="_blank";
         ele.click();
-        console.log('ttetete')
     }
 
     /**
