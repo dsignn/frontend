@@ -4,7 +4,8 @@ export const lang = {
         "category": "Categoria",
         'all': "Tutti",
         "reset-dishes-arrived": "Resetta piatti arrivati",
-        "plate-copy-on-clipboard": "Ordine copiato"
+        "plate-copy-on-clipboard": "Ordine copiato",
+        "order-whatsapp": "Ordina su whatsapp"
     },
     "en": {
         "search": "Search",
@@ -13,6 +14,7 @@ export const lang = {
         'first': "First",
         'second': "Main courses",
         "reset-dishes-arrived": "Reset arrived dishes",
-        "plate-copy-on-clipboard": "Order copied"
+        "plate-copy-on-clipboard": "Order copied",
+        "order-whatsapp": "Order on whatsapp"
     }
 };

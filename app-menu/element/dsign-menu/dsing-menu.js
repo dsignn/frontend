@@ -32,6 +32,7 @@ import '@dsign/polymer-mixin/localize/localize-mixin';
 import '../paper-select-language/paper-select-language';
 import '../dsign-menu-wrap-item/dsing-menu-wrap-item';
 import '../dsign-menu-favorites/dsign-menu-favorites';
+import '../dsign-badge/dsing-badge';
 import '../dsign-logo/dsing-logo';
 import {lang} from './language';
 
@@ -75,6 +76,12 @@ class DsignMenu extends LocalizeMixin(ServiceInjectorMixin(PolymerElement)) {
            color: var(--munu-color);
            margin: 0;
        }
+       
+       dsign-badge {
+         --paper-badge-background: var(--munu-color);
+         --paper-badge-text-color: var(--munu-background-color);
+       }
+     
        
        h2.title {
           font-family: var(--paper-font-common-base_-_font-family);
@@ -372,7 +379,8 @@ class DsignMenu extends LocalizeMixin(ServiceInjectorMixin(PolymerElement)) {
                 <paper-icon-button icon="clear" on-tap="clearCategory" disable down></paper-icon-button>
             </div>
             <div class="flex-row">
-                <paper-icon-button icon="v-menu" on-tap="tapMenu"></paper-icon-button>
+                <paper-icon-button id="btn-menu" icon="v-menu" on-tap="tapMenu"></paper-icon-button>
+                <dsign-badge id="badgeMenu" for="btn-menu" label="{{totalOrder}}" class="red"></dsign-badge>
             </div>
         </app-toolbar>
       </app-header>
@@ -387,7 +395,7 @@ class DsignMenu extends LocalizeMixin(ServiceInjectorMixin(PolymerElement)) {
     <app-drawer id="drawer" align="right">
         <div class="drawerContainer">
             <div id="order" style="display: flex">
-                <paper-button class="btn-order" on-tap="_sendOrder">Ordina su whattapp</paper-button>
+                <paper-button class="btn-order" on-tap="_sendOrder">{{localize('order-whatsapp')}}</paper-button>
             </div>
             <div class="subtitle">
                 <div class="amount">{{amount}}</div>
@@ -431,6 +439,11 @@ class DsignMenu extends LocalizeMixin(ServiceInjectorMixin(PolymerElement)) {
                 }
             },
 
+            totalOrder: {
+                value: 0,
+                observer: 'changeTotalOrder'
+            },
+
             amount: {
                 notify: true
             },
@@ -443,6 +456,7 @@ class DsignMenu extends LocalizeMixin(ServiceInjectorMixin(PolymerElement)) {
             apiUrl: { },
 
             favorites: {
+                notify: true,
                 value: []
             },
 
@@ -513,6 +527,19 @@ class DsignMenu extends LocalizeMixin(ServiceInjectorMixin(PolymerElement)) {
     }
 
     /**
+     * @param totalOrder
+     */
+    changeTotalOrder(totalOrder) {
+
+        if(!totalOrder) {
+            this.$.badgeMenu.style.visibility = 'hidden'
+            return;
+        }
+
+        this.$.badgeMenu.style.visibility = 'visible'
+    }
+
+    /**
      * @param {object} config
      */
     changeConfig(config) {
@@ -552,6 +579,7 @@ class DsignMenu extends LocalizeMixin(ServiceInjectorMixin(PolymerElement)) {
         service.getEventManager().on(Storage.POST_UPDATE, new Listener(this.updateAmountEvt.bind(this)));
 
         this._updateAmount();
+        this._updateTotalCount();
     }
 
     /**
@@ -573,11 +601,23 @@ class DsignMenu extends LocalizeMixin(ServiceInjectorMixin(PolymerElement)) {
     }
 
     /**
+     * @private
+     */
+    _updateTotalCount() {
+        let total = 0;
+        this.favorites.forEach((item) => {
+            total = total + item.totalCount;
+        });
+        this.totalOrder = total;
+    }
+
+    /**
      * @param evt
      */
     updateAmountEvt(evt) {
         setTimeout(() => {
-                this._updateAmount()
+                this._updateAmount();
+                this._updateTotalCount();
             },
             500
         )
@@ -598,7 +638,7 @@ class DsignMenu extends LocalizeMixin(ServiceInjectorMixin(PolymerElement)) {
     }
 
     _sendOrder() {
-        
+
         let ele = document.createElement('a');
         ele.href = `https://api.whatsapp.com/send?phone=${this.organization.whatsapp_phone}&text=${encodeURIComponent(this._getOrder())}`;
         ele.target="_blank";
@@ -610,9 +650,20 @@ class DsignMenu extends LocalizeMixin(ServiceInjectorMixin(PolymerElement)) {
      */
     updateFavoriteEvt(evt) {
         this._favoriteService.getFavorites().then((data) => {
+
             this.favorites = this.sortFavorites(data);
-            this._updateAmount();
-            this.$.favorites.render();
+            var tmp = this.favorites;
+            this.favorites =  [];
+
+            // TODO understand why without tmp dont work
+            setTimeout(
+                () => {
+                    this.favorites = tmp;
+                    this._updateAmount();
+                    this._updateTotalCount();
+                },
+                100
+            );
         });
     }
 
@@ -638,14 +689,16 @@ class DsignMenu extends LocalizeMixin(ServiceInjectorMixin(PolymerElement)) {
      */
     deleteFavoriteEvt(evt) {
         let favorites = this.shadowRoot.querySelectorAll('dsign-menu-favorites');
+
         for (let index = 0; favorites.length > index; index++) {
             if (favorites[index].menuItem._id === evt.data._id) {
                 favorites[index].remove();
+                this.favorites.splice(index, 1);
                 break;
             }
         }
         this._updateAmount();
-
+        this._updateTotalCount();
     }
 
     /**
