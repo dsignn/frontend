@@ -69,8 +69,8 @@ class DsignMenuFavorites extends LocalizeMixin(ServiceInjectorMixin(PolymerEleme
        
        paper-icon-button {
            margin-left: 4px;
-           width: 20px;
-           height: 20px;
+           width: 22px;
+           height: 22px;
            border-radius: 50%;
            --paper-icon-button : {
                 padding: 0;
@@ -86,6 +86,7 @@ class DsignMenuFavorites extends LocalizeMixin(ServiceInjectorMixin(PolymerEleme
        .count {
           @apply --layout;
           @apply --layout-flex;
+          font-weight: 500;
        }
        
        #action {
