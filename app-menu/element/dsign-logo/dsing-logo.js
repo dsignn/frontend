@@ -67,6 +67,16 @@ class DsignLogo extends PolymerElement {
         if (organization.logo && organization.logo.src) {
             this.shadowRoot.querySelector('.logo').style.backgroundImage = `url("${organization.logo.src}")`;
         }
+
+        if (!!organization["site_url"]) {
+            let element = document.createElement('a')
+            element.href = organization["site_url"];
+            element.target = "_blank";
+
+            element.appendChild(this.shadowRoot.querySelector('div.logo'));
+
+            this.shadowRoot.querySelector('div.container').appendChild(element);
+        }
     }
 }
 

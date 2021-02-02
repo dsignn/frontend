@@ -123,7 +123,6 @@ class DsignMenu extends LocalizeMixin(ServiceInjectorMixin(PolymerElement)) {
        
        .search {
          width: 100%;
-         padding: 0 12px;
        }
        
        .flex-row {
@@ -212,6 +211,10 @@ class DsignMenu extends LocalizeMixin(ServiceInjectorMixin(PolymerElement)) {
          @apply --layout-start-justified;
          @apply --layout-wrap;
          padding: 3px;
+       }
+       
+       .divider {
+            width: 6px;
        }
        
        dsign-menu-wrap-item {
@@ -362,10 +365,13 @@ class DsignMenu extends LocalizeMixin(ServiceInjectorMixin(PolymerElement)) {
     <app-header-layout fullbleed>
       <app-header slot="header" fixed effects="waterfall">
         <app-toolbar>
-            <dsign-logo organization="{{organization}}"></dsign-logo>
+            <template is="dom-if" if="{{hasLogo}}">
+                <dsign-logo organization="{{organization}}"></dsign-logo>
+            </template>
             <div class="search flex-row">
                 <paper-input id="search" label="{{localize('search')}}" on-input="searchByName"></paper-input>
             </div>
+            <div class="divider"></div>
             <div class="flex-row" down>
                 <paper-dropdown-menu id="category" label="{{localize('category')}}" on-iron-select="searchByCategory">
                     <paper-listbox id="categories" slot="dropdown-content">
@@ -476,6 +482,10 @@ class DsignMenu extends LocalizeMixin(ServiceInjectorMixin(PolymerElement)) {
 
             allCategory: {
                 observer: 'changeAllCategory'
+            },
+
+            hasLogo: {
+                value: false
             }
         };
     }
@@ -551,6 +561,9 @@ class DsignMenu extends LocalizeMixin(ServiceInjectorMixin(PolymerElement)) {
         this.menu = config.menu;
     }
 
+    /**
+     * @param organization
+     */
     changeOrganization(organization) {
 
         if(!organization) {
@@ -562,6 +575,10 @@ class DsignMenu extends LocalizeMixin(ServiceInjectorMixin(PolymerElement)) {
             this.$.order.style.visibility = 'visibile';
         } else {
             this.$.order.style.visibility = 'hidden';
+        }
+
+        if (organization && organization["logo"] && organization["logo"]["_id"]) {
+            this.hasLogo = true;
         }
     }
 
