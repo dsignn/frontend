@@ -126,7 +126,8 @@ class RestaurantViewUpsert extends StorageEntityMixin(NotifyMixin(LocalizeMixin(
                             <paper-input id="name" name="name" label="{{localize('name-restaurant')}}" value="{{entity.name}}" on-value-changed="changeNameRestaurant" required></paper-input>
                             <paper-toggle-button checked="{{entity.open}}">{{localize('active-order')}}</paper-toggle-button>
                         </div>
-                        <paper-input id="whatsappPhone" name="whatsappPhone" label="{{localize('whatsapp-phone')}}" value="{{entity.whatsappPhone}}" required></paper-input>
+                        <paper-input id="whatsappPhone" name="whatsappPhone" label="{{localize('whatsapp-phone')}}" value="{{entity.whatsappPhone}}"></paper-input>
+                        <paper-input id="siteUrl" name="siteUrl" label="{{localize('site-url')}}" value="{{entity.siteUrl}}"></paper-input>
                         <paper-input 
                             id="url"
                             name="url"
