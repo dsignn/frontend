@@ -12,11 +12,12 @@ import '@polymer/paper-button/paper-button';
 import '@polymer/paper-card/paper-card';
 import '@polymer/paper-tooltip/paper-tooltip';
 import {lang} from './language';
+import {FormErrorMessage} from "../../../../element/mixin/form-error-message/form-error-message";
 
 /**
  * @class RestaurantViewUpsert
  */
-class RestaurantViewUpsert extends StorageEntityMixin(NotifyMixin(LocalizeMixin(ServiceInjectorMixin(PolymerElement)))) {
+class RestaurantViewUpsert extends FormErrorMessage(StorageEntityMixin(NotifyMixin(ServiceInjectorMixin(PolymerElement)))) {
 
     static get template() {
         return html`
@@ -377,7 +378,9 @@ class RestaurantViewUpsert extends StorageEntityMixin(NotifyMixin(LocalizeMixin(
                 }
 
                 this.notify(this.localize(method === 'save' ? 'notify-save' : 'notify-update'));
-            });
+            }).catch((error) => {
+                this.errorMessage(this.$.formRestaurant, error);
+        });
     }
 
     /**

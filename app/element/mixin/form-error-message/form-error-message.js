@@ -83,9 +83,15 @@ export const FormErrorMessage = (superClass) => {
 
             for (const element of elements) {
                 if (flattenErrors[element.getAttribute('name')]) {
-                    console.log('HO TROVATO UN ERRORE', element.getAttribute('name'));
+                    // TODO split the localize error message to the api
+                    console.log('HO TROVATO UN ERRORE', element.getAttribute('name'), flattenErrors);
                     element.invalid = true;
-                    element.errorMessage = flattenErrors[element.getAttribute('name')];
+
+                    let error = flattenErrors[element.getAttribute('name')];
+                    if(this.localize && this.localize(error)) {
+                        error = this.localize(error)
+                    }
+                    element.errorMessage = error;
                 }
             }
         }

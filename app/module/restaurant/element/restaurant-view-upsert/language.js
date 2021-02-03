@@ -12,7 +12,8 @@ export const lang = {
     "logo": "Logo",
     "notify-save": "Ristorante salvato",
     "notify-update": "Ristorante modificato",
-    "page-stamp": "Pagina di stampa"
+    "page-stamp": "Pagina di stampa",
+    "Name organization already exist'": "Nome ristante già presente"
   },
   "en": {
     "name": "Name",
