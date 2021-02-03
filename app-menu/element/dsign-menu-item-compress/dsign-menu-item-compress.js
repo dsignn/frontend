@@ -11,6 +11,9 @@
 import {PolymerElement, html} from '@polymer/polymer/polymer-element.js';
 import {LocalizeMixin} from "@dsign/polymer-mixin/localize/localize-mixin";
 import {ServiceInjectorMixin} from "@dsign/polymer-mixin/service/injector-mixin";
+import {Storage} from "@dsign/library/src/storage/Storage";
+import {ItemFavorite} from "../mixin/item-favorite/item-favorite";
+import "../dsign-badge/dsing-badge";
 import '@polymer/paper-dropdown-menu/paper-dropdown-menu';
 import '@polymer/paper-item/paper-item';
 import '@polymer/paper-icon-button/paper-icon-button';
@@ -20,7 +23,8 @@ import '@polymer/neon-animation/neon-animation';
 import '@polymer/paper-input/paper-input';
 import '@polymer/paper-button/paper-button';
 import {lang} from './language';
-import {ItemFavorite} from "../mixin/item-favorite/item-favorite";
+
+
 
 /**
  * @class DsignMenuItemCompress
@@ -105,6 +109,18 @@ class DsignMenuItemCompress extends ItemFavorite(LocalizeMixin(ServiceInjectorMi
            color: var(--munu-color);
        }
        
+       dsign-badge {
+         z-index: 1;
+         --paper-badge-background: var(--munu-color);
+         --paper-badge-text-color: var(--munu-background-color);
+         border: 1px solid var(--munu-background-color);
+         border-radius: 50%;
+         font-weight: bold;
+         --paper-badge : {
+            font-weight: 700;
+         }
+       }
+       
        .price {
             padding: 2px 8px;
             font-size: 18px;
@@ -129,7 +145,8 @@ class DsignMenuItemCompress extends ItemFavorite(LocalizeMixin(ServiceInjectorMi
              <div class="header-card-title">{{_capitalize(menuItem.name.it)}}</div>
              <div class="paragraph-card">{{menuItem.description.it}}</div>
              <div class="action">
-                 <paper-icon-button icon="add" on-tap="addFavorite"></paper-icon-button>
+                 <dsign-badge id="badgeMenu" for="btn-menu" label="{{dishCount}}" class="red" offset-x="-2"></dsign-badge>
+                 <paper-icon-button icon="add" id="btn-menu" on-tap="addFavorite"></paper-icon-button>
              </div>
         </div>
     </paper-card>`;
@@ -157,7 +174,7 @@ class DsignMenuItemCompress extends ItemFavorite(LocalizeMixin(ServiceInjectorMi
 
     static get observers() {
         return [
-            '_observeMenu(menuItem, _config)'
+            '_observeMenu(menuItem, _config, _favoriteService)'
         ];
     }
 
@@ -183,14 +200,18 @@ class DsignMenuItemCompress extends ItemFavorite(LocalizeMixin(ServiceInjectorMi
     }
 
     /**
+     *
      * @param menu
      * @param config
+     * @param favoriteService
      * @private
      */
-    _observeMenu(menu, config) {
-        if (!menu || !config) {
+    _observeMenu(menu, config, favoriteService) {
+        if (!menu || !config || !favoriteService) {
             return;
         }
+
+        console.log(favoriteService);
 
         if (menu.photos && Array.isArray(menu.photos) && menu.photos.length > 0) {
             this.$.image.style.backgroundImage = `url(${menu.photos[0].src})`;
@@ -199,9 +220,15 @@ class DsignMenuItemCompress extends ItemFavorite(LocalizeMixin(ServiceInjectorMi
             this.$.image.style.backgroundSize = `contain`;
             this.$.image.style.backgroundColor = `#eeeeee`;
         }
+
+        favoriteService.getEventManager().on(Storage.POST_REMOVE, this.updateDishCount.bind(this));
+        favoriteService.getEventManager().on(Storage.POST_UPDATE, this.updateDishCount.bind(this));
+        favoriteService.getEventManager().on(Storage.POST_SAVE,  this.updateDishCount.bind(this));
+
+        if (menu) {
+            this.initDishCount(menu);
+        }
     }
-
-
 }
 
 window.customElements.define('dsign-menu-item-compress', DsignMenuItemCompress);

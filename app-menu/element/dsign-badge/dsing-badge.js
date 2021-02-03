@@ -168,6 +168,16 @@ Polymer({
       value: '',
     },
 
+    offsetX: {
+      type: Number,
+      value: 0,
+    },
+
+    offsetY: {
+      type: Number,
+      value: 0,
+    },
+
     _boundNotifyResize: {
       type: Function,
       value: function() {
@@ -261,8 +271,8 @@ Polymer({
     var thisRect = this.getBoundingClientRect();
 
     this.style.left = targetRect.left - parentRect.left +
-        (targetRect.width - thisRect.width - targetRect.width / 2) + 'px';
+        (targetRect.width - thisRect.width + this.offsetX - targetRect.width / 2) + 'px';
     this.style.top =
-        targetRect.top - parentRect.top + 4 - (thisRect.height / 2) + 'px';
+        targetRect.top - parentRect.top + + this.offsetY - (thisRect.height / 2) + 'px';
   }
 })

@@ -80,6 +80,9 @@ class DsignMenu extends LocalizeMixin(ServiceInjectorMixin(PolymerElement)) {
        dsign-badge {
          --paper-badge-background: var(--munu-color);
          --paper-badge-text-color: var(--munu-background-color);
+         --paper-badge : {
+            font-weight: 700;
+         }
        }
      
        
@@ -386,7 +389,7 @@ class DsignMenu extends LocalizeMixin(ServiceInjectorMixin(PolymerElement)) {
             </div>
             <div class="flex-row">
                 <paper-icon-button id="btn-menu" icon="v-menu" on-tap="tapMenu"></paper-icon-button>
-                <dsign-badge id="badgeMenu" for="btn-menu" label="{{totalOrder}}" class="red"></dsign-badge>
+                <dsign-badge id="badgeMenu" for="btn-menu" label="{{totalOrder}}" offset-y="6"></dsign-badge>
             </div>
         </app-toolbar>
       </app-header>

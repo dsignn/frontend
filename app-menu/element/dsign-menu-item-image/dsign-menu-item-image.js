@@ -12,6 +12,7 @@ import {PolymerElement, html} from '@polymer/polymer/polymer-element.js';
 import {LocalizeMixin} from "@dsign/polymer-mixin/localize/localize-mixin";
 import {ServiceInjectorMixin} from "@dsign/polymer-mixin/service/injector-mixin";
 import {ItemFavorite} from "../mixin/item-favorite/item-favorite";
+import {Storage} from "@dsign/library/src/storage/Storage";
 import '@polymer/paper-dropdown-menu/paper-dropdown-menu';
 import '@polymer/paper-item/paper-item';
 import '@polymer/paper-icon-button/paper-icon-button';
@@ -99,6 +100,17 @@ class DsignMenuItemImage extends ItemFavorite(LocalizeMixin(ServiceInjectorMixin
             color: var(--munu-color);
        }  
        
+        dsign-badge {
+         z-index: 1;
+         --paper-badge-background: var(--munu-color);
+         --paper-badge-text-color: var(--munu-background-color);
+         border: 1px solid var(--munu-background-color);
+         border-radius: 50%;
+         font-weight: bold;
+         --paper-badge : {
+            font-weight: 700;
+         }
+       }
        
        paper-icon-button {
            position: absolute;
@@ -122,7 +134,8 @@ class DsignMenuItemImage extends ItemFavorite(LocalizeMixin(ServiceInjectorMixin
             <div class="price">
                 {{_computePrice(menuItem.price)}} €
             </div>
-            <paper-icon-button icon="add" on-tap="addFavorite"></paper-icon-button>
+            <dsign-badge id="badgeMenu" for="btn-menu" label="{{dishCount}}" class="red" offset-x="-2"></dsign-badge>
+            <paper-icon-button icon="add" id="btn-menu"  on-tap="addFavorite"></paper-icon-button>
         </div>
         <div class="content">
             <div class="paragraph-card">{{menuItem.description.it}}</div>
@@ -154,17 +167,19 @@ class DsignMenuItemImage extends ItemFavorite(LocalizeMixin(ServiceInjectorMixin
 
     static get observers() {
         return [
-            '_observeMenu(menuItem, _config)'
+            '_observeMenu(menuItem, _config, _favoriteService)'
         ];
     }
 
     /**
+     *
      * @param menu
      * @param config
+     * @param favoriteService
      * @private
      */
-    _observeMenu(menu, config) {
-        if (!menu || !config) {
+    _observeMenu(menu, config, favoriteService) {
+        if (!menu || !config || !favoriteService) {
             return;
         }
 
@@ -173,6 +188,14 @@ class DsignMenuItemImage extends ItemFavorite(LocalizeMixin(ServiceInjectorMixin
         } else {
             this.$.image.style.backgroundImage = 'url(https://dsign-asset.s3.eu-central-1.amazonaws.com/dish-not-found.png)';
             this.$.image.style.backgroundSize = `cover`;
+        }
+
+        favoriteService.getEventManager().on(Storage.POST_REMOVE, this.updateDishCount.bind(this));
+        favoriteService.getEventManager().on(Storage.POST_UPDATE, this.updateDishCount.bind(this));
+        favoriteService.getEventManager().on(Storage.POST_SAVE,  this.updateDishCount.bind(this));
+
+        if (menu) {
+            this.initDishCount(menu);
         }
     }
 
