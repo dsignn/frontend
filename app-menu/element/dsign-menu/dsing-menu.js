@@ -84,6 +84,15 @@ class DsignMenu extends LocalizeMixin(ServiceInjectorMixin(PolymerElement)) {
             font-weight: 700;
          }
        }
+       
+       .restaurant-title {
+           font-family: var(--paper-font-common-base_-_font-family);
+           text-transform: capitalize;
+           margin-top: 10px;
+           margin-bottom: 10px;
+           font-size: 22px;
+           text-align: center;
+       }
      
        
        h2.title {
@@ -98,7 +107,8 @@ class DsignMenu extends LocalizeMixin(ServiceInjectorMixin(PolymerElement)) {
        .subtitle {
             @apply --layout-horizontal;
             @apply --layout-center;
-            padding-bottom: 6px;
+            padding-bottom: 10px;
+            padding-top: 10px;
        }
        
        .amount {
@@ -108,7 +118,7 @@ class DsignMenu extends LocalizeMixin(ServiceInjectorMixin(PolymerElement)) {
             @apply --layout-end-justified;
             padding-right: 4px;
             font-size: 20px;
-            font-weight: bold;
+            font-weight: 600;
             font-family: var(--paper-font-common-base_-_font-family);
        }
        
@@ -227,6 +237,10 @@ class DsignMenu extends LocalizeMixin(ServiceInjectorMixin(PolymerElement)) {
                margin-bottom: 8px;
                margin-right: 8px;
            }
+       }
+       
+       #whatsappIcon {
+        margin-right: 6px;
        }
        
        #category {
@@ -403,19 +417,15 @@ class DsignMenu extends LocalizeMixin(ServiceInjectorMixin(PolymerElement)) {
     </app-header-layout>
     <app-drawer id="drawer" align="right">
         <div class="drawerContainer">
+            <div class="restaurant-title">{{organization.name}}</div>
             <div id="order" style="display: flex">
-                <paper-button class="btn-order" on-tap="_sendOrder">{{localize('order-whatsapp')}}</paper-button>
+                <paper-button class="btn-order" on-tap="_sendOrder">
+                    <iron-icon id="whatsappIcon" icon="whatsapp"></iron-icon>
+                    {{localize('order-whatsapp')}}
+                </paper-button>
             </div>
             <div class="subtitle">
                 <div class="amount">{{amount}}</div>
-                <div id="action">
-                    <paper-menu-button id="paperAction" ignore-select horizontal-align="right">
-                        <paper-icon-button class="menu-drawer" icon="v-menu" slot="dropdown-trigger" alt="multi menu"></paper-icon-button>
-                        <paper-listbox slot="dropdown-content" multi>
-                            <paper-item on-click="_reset">{{localize('reset-dishes-arrived')}}</paper-item>
-                        </paper-listbox>
-                    </paper-menu-button>
-                </div>
             </div>
             <dom-repeat id="favorites" items="[[favorites]]" as="favorite">
               <template>
@@ -794,15 +804,6 @@ class DsignMenu extends LocalizeMixin(ServiceInjectorMixin(PolymerElement)) {
         this.$.drawer.toggle();
     }
 
-    /**
-     * @param evt
-     * @private
-     */
-    _reset(evt) {
-        this._favoriteService.resetFavorites();
-        evt.target.classList.remove('iron-selected');
-        this.$.paperAction.opened = false;
-    }
     /**
      * @param color
      * @private
