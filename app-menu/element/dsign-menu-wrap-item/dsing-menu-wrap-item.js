@@ -49,6 +49,10 @@ class DsignMenuWrapItem extends LocalizeMixin(ServiceInjectorMixin(PolymerElemen
 
             },
 
+            restaurant: {
+                notify: true
+            },
+
             hide: {
                 value: false,
                 observer: '_hideChanged',
@@ -87,6 +91,7 @@ class DsignMenuWrapItem extends LocalizeMixin(ServiceInjectorMixin(PolymerElemen
 
         let element = document.createElement(type);
         element.menuItem = item;
+        element.restaurant = this.restaurant;
         this.$.container.appendChild(element);
 
     }

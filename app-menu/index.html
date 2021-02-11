@@ -21,7 +21,6 @@
         import {Localize} from '@dsign/library/src/localize/Localize';
         import {Storage} from '@dsign/library/src/storage/Storage';
         import {LocalStorageAdapter} from '@dsign/library/src/storage/adapter/local-storage/LocalStorageAdapter';
-        import {FavoriteService} from  '@dsign/library/src/frontend/favorite/FavoriteService';
 
         const container = new Container();
 
@@ -59,11 +58,6 @@
 
         container.set('MenuStorage', menuStorage);
 
-        /**
-         * @type FavoriteService
-         */
-        container.set('FavoriteService', new FavoriteService(menuStorage, configApp.menu));
-
         window.container = container;
 
         window.addEventListener('load', function() {
@@ -87,7 +81,7 @@
         });
 
     </script>
-    <style is="custom-style">
+    <style is="custom-style" id="colorCustomStyle">
 
         /** TODO setting to the php application **/
         :root {

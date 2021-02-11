@@ -133,10 +133,43 @@ class DsignMenuItemCompress extends ItemFavorite(LocalizeMixin(ServiceInjectorMi
             background-color: var(--munu-background-color);
             color: var(--munu-color);
        }     
+       
+       .triangle {
+           position: absolute;
+           width: 0;
+           height: 0;
+           font-size: 8px;
+           border-top: 86px solid #fc0303;
+           border-right: 86px solid transparent;
+       }
+       
+       .status-dish {
+          top: 24px;
+          left: 2px;
+          transform:rotate(315deg);
+          -webkit-transform: rotate(315deg);
+          -o-transform: rotate(315deg);
+          -moz-transform: rotate(315deg);
+          -ms-transform: rotate(315deg);
+          position: absolute;
+          font-size: 14px;
+          font-weight: 500;
+          text-transform: uppercase;
+       }
+       
+       paper-icon-button[disabled] {
+            background-color:#757575;
+       }
+       
+       [hidden] {
+          visibility: hidden;
+       }
           
     </style>
     <paper-card>
         <div id="image" class="header">
+            <div class="triangle"></div>
+            <div class="status-dish">{{localize(statusLabel)}}</div>
             <div class="price">
                 {{_computePrice(menuItem.price)}} €
             </div>
@@ -165,17 +198,36 @@ class DsignMenuItemCompress extends ItemFavorite(LocalizeMixin(ServiceInjectorMi
                 value: {
                     _config: 'config',
                     _localizeService: 'Localize',
-                    _favoriteService: 'FavoriteService',
+                    _menuStorage: 'MenuStorage',
                     _notifyService: 'Notify'
                 }
-            }
+            },
+
+            /**
+             * @type Number
+             */
+            dishCount: {
+                value: 0,
+                observer: 'changeDishCount'
+            },
         };
     }
 
     static get observers() {
         return [
-            '_observeMenu(menuItem, _config, _favoriteService)'
+            '_observeMenu(menuItem, _config, _menuStorage)'
         ];
+    }
+
+    /**
+     * @param dishCount
+     */
+    changeDishCount(dishCount) {
+        if (!dishCount) {
+            this.$.badgeMenu.style.visibility = 'hidden';
+            return;
+        }
+        this.$.badgeMenu.style.visibility = 'visible';
     }
 
     /**
@@ -203,15 +255,13 @@ class DsignMenuItemCompress extends ItemFavorite(LocalizeMixin(ServiceInjectorMi
      *
      * @param menu
      * @param config
-     * @param favoriteService
+     * @param {Storage} menuStorage
      * @private
      */
-    _observeMenu(menu, config, favoriteService) {
-        if (!menu || !config || !favoriteService) {
+    _observeMenu(menu, config, menuStorage) {
+        if (!menu || !config || !menuStorage) {
             return;
         }
-
-        console.log(favoriteService);
 
         if (menu.photos && Array.isArray(menu.photos) && menu.photos.length > 0) {
             this.$.image.style.backgroundImage = `url(${menu.photos[0].src})`;
@@ -221,13 +271,45 @@ class DsignMenuItemCompress extends ItemFavorite(LocalizeMixin(ServiceInjectorMi
             this.$.image.style.backgroundColor = `#eeeeee`;
         }
 
-        favoriteService.getEventManager().on(Storage.POST_REMOVE, this.updateDishCount.bind(this));
-        favoriteService.getEventManager().on(Storage.POST_UPDATE, this.updateDishCount.bind(this));
-        favoriteService.getEventManager().on(Storage.POST_SAVE,  this.updateDishCount.bind(this));
+        menuStorage.getEventManager().on(Storage.POST_REMOVE, this.updateDishCount.bind(this));
+        menuStorage.getEventManager().on(Storage.POST_UPDATE, this.updateDishCount.bind(this));
+        menuStorage.getEventManager().on(Storage.POST_SAVE,  this.updateDishCount.bind(this));
 
         if (menu) {
             this.initDishCount(menu);
+            this._changeStatus(menu.status);
         }
+    }
+
+    _changeStatus(status) {
+
+        switch (status) {
+            case 'available':
+                this.statusLabel = '';
+                this.shadowRoot.querySelector('.triangle').setAttribute('hidden', '');
+                this.shadowRoot.querySelector('.status-dish').setAttribute('hidden', '');
+                this.enableButton(false);
+                break;
+            case 'over':
+                this.statusLabel = 'finished';
+                this.shadowRoot.querySelector('.triangle').removeAttribute('hidden');
+                this.shadowRoot.querySelector('.status-dish').removeAttribute('hidden');
+                this.enableButton(true);
+                break;
+            case 'not-available':
+                this.statusLabel = 'off-the-menu';
+                this.shadowRoot.querySelector('.triangle').removeAttribute('hidden');
+                this.shadowRoot.querySelector('.status-dish').removeAttribute('hidden');
+                this.enableButton(true);
+                break;
+        }
+    }
+
+    /**
+     * @param enable
+     */
+    enableButton(enable) {
+        this.$['btn-menu'].disabled = enable;
     }
 }
 

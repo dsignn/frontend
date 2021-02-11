@@ -3,16 +3,16 @@ export const lang = {
         "search": "Cerca",
         "category": "Categoria",
         'all': "Tutti",
-        'first': "Primi",
-        'second': "Secondi",
-        'plate-add': "Piatto aggiunto"
+        'plate-add': "Piatto aggiunto",
+        "off-the-menu": "Fuori menù",
+        "finished": "Finito"
     },
     "en": {
         "search": "Search",
         "category": "Category",
         'all': "All",
-        'first': "First",
-        'second': "Main courses",
-        'plate-add': "plate add"
+        'plate-add': "plate add",
+        "off-the-menu": "Off the menu",
+        "finished": "finished"
     }
 };

@@ -125,12 +125,45 @@ class DsignMenuItemImage extends ItemFavorite(LocalizeMixin(ServiceInjectorMixin
            background-color: var(--munu-background-color);
            color: var(--munu-color);
        }
+       
+       paper-icon-button[disabled] {
+            background-color:#757575;
+       }
+       
+       .triangle {
+           position: absolute;
+           width: 0;
+           height: 0;
+           font-size: 8px;
+           border-top: 86px solid #fc0303;
+           border-right: 86px solid transparent;
+       }
+       
+       .status-dish {
+          top: 24px;
+          left: 10px;
+          transform:rotate(315deg);
+          -webkit-transform: rotate(315deg);
+          -o-transform: rotate(315deg);
+          -moz-transform: rotate(315deg);
+          -ms-transform: rotate(315deg);
+          position: absolute;
+          font-size: 14px;
+          font-weight: 500;
+          text-transform: uppercase;
+       }
+          
+       [hidden] {
+          visibility: hidden;
+       }
     </style>
     <paper-card>
         <div class="header">
             <div class="header-card-title">{{_capitalize(menuItem.name.it )}}</div>
         </div>
         <div id="image" class="image">
+            <div class="triangle"></div>
+            <div class="status-dish">{{localize(statusLabel)}}</div>
             <div class="price">
                 {{_computePrice(menuItem.price)}} €
             </div>
@@ -152,50 +185,83 @@ class DsignMenuItemImage extends ItemFavorite(LocalizeMixin(ServiceInjectorMixin
 
     static get properties() {
         return {
-            menuItem: {},
+            menuItem: {
+
+            },
 
             services: {
                 value: {
                     _config: 'config',
                     _localizeService: 'Localize',
-                    _favoriteService: 'FavoriteService',
+                    _menuStorage: 'MenuStorage',
                     _notifyService: 'Notify',
                 }
-            }
+            },
+
+            statusLabel: {
+                notify: true
+            },
+
+            /**
+             * @type Number
+             */
+            dishCount: {
+                value: 0,
+                observer: 'changeDishCount'
+            },
         };
     }
 
     static get observers() {
         return [
-            '_observeMenu(menuItem, _config, _favoriteService)'
+            '_observeMenu(menuItem, _config, _menuStorage)'
         ];
+    }
+
+    /**
+     *
+     */
+    ready() {
+        super.ready();
+        this.$.image.style.backgroundImage = 'url(https://dsign-asset.s3.eu-central-1.amazonaws.com/dish-not-found.png)';
+    }
+
+    /**
+     * @param dishCount
+     */
+    changeDishCount(dishCount) {
+        if (!dishCount) {
+            this.$.badgeMenu.style.visibility = 'hidden';
+            return;
+        }
+        this.$.badgeMenu.style.visibility = 'visible';
     }
 
     /**
      *
      * @param menu
      * @param config
-     * @param favoriteService
+     * @param {Storage} menuStorage
      * @private
      */
-    _observeMenu(menu, config, favoriteService) {
-        if (!menu || !config || !favoriteService) {
+    _observeMenu(menu, config, menuStorage) {
+        if (!menu || !config || !menuStorage) {
             return;
         }
 
         if (menu.photos && Array.isArray(menu.photos) && menu.photos.length > 0) {
             this.$.image.style.backgroundImage = `url(${menu.photos[0].src})`;
         } else {
-            this.$.image.style.backgroundImage = 'url(https://dsign-asset.s3.eu-central-1.amazonaws.com/dish-not-found.png)';
             this.$.image.style.backgroundSize = `cover`;
         }
 
-        favoriteService.getEventManager().on(Storage.POST_REMOVE, this.updateDishCount.bind(this));
-        favoriteService.getEventManager().on(Storage.POST_UPDATE, this.updateDishCount.bind(this));
-        favoriteService.getEventManager().on(Storage.POST_SAVE,  this.updateDishCount.bind(this));
+        menuStorage.getEventManager().on(Storage.POST_REMOVE, this.updateDishCount.bind(this));
+        menuStorage.getEventManager().on(Storage.POST_UPDATE, this.updateDishCount.bind(this));
+        menuStorage.getEventManager().on(Storage.POST_SAVE,  this.updateDishCount.bind(this));
 
         if (menu) {
             this.initDishCount(menu);
+            this._changeStatus(menu.status);
         }
     }
 
@@ -221,6 +287,36 @@ class DsignMenuItemImage extends ItemFavorite(LocalizeMixin(ServiceInjectorMixin
         return price.value;
     }
 
+    _changeStatus(status) {
+
+        switch (status) {
+            case 'available':
+                this.statusLabel = '';
+                this.shadowRoot.querySelector('.triangle').setAttribute('hidden', '');
+                this.shadowRoot.querySelector('.status-dish').setAttribute('hidden', '');
+                this.enableButton(false);
+                break;
+            case 'over':
+                this.statusLabel = 'finished';
+                this.shadowRoot.querySelector('.triangle').removeAttribute('hidden');
+                this.shadowRoot.querySelector('.status-dish').removeAttribute('hidden');
+                this.enableButton(true);
+                break;
+            case 'not-available':
+                this.statusLabel = 'off-the-menu';
+                this.shadowRoot.querySelector('.triangle').removeAttribute('hidden');
+                this.shadowRoot.querySelector('.status-dish').removeAttribute('hidden');
+                this.enableButton(true);
+                break;
+        }
+    }
+
+    /**
+     * @param enable
+     */
+    enableButton(enable) {
+        this.$['btn-menu'].disabled = enable;
+    }
 }
 
 window.customElements.define('dsign-menu-item-image', DsignMenuItemImage);

@@ -13,7 +13,6 @@ import {setPassiveTouchGestures, setRootPath} from '@polymer/polymer/lib/utils/s
 import {LocalizeMixin} from "@dsign/polymer-mixin/localize/localize-mixin";
 import {ServiceInjectorMixin} from "@dsign/polymer-mixin/service/injector-mixin";
 import {Storage} from "@dsign/library/src/storage/Storage";
-import {FavoriteService} from "@dsign/library/src/frontend/favorite/FavoriteService";
 import {Listener} from "@dsign/library/src/event/Listener";
 import {mergeDeep} from "@dsign/library/src/object/Utils";
 import '@polymer/app-layout/app-toolbar/app-toolbar';
@@ -410,7 +409,7 @@ class DsignMenu extends LocalizeMixin(ServiceInjectorMixin(PolymerElement)) {
       <div id="menuContainer">
           <dom-repeat id="list" items="[[items]]" as="menuItem">
               <template>
-                    <dsign-menu-wrap-item item="[[menuItem]]" type="[[layoutType]]"></dsign-menu-wrap-item>
+                    <dsign-menu-wrap-item item="[[menuItem]]" type="[[layoutType]]" restaurant="[[organization]]"></dsign-menu-wrap-item>
               </template>
           </dom-repeat>
       </div>
@@ -427,7 +426,7 @@ class DsignMenu extends LocalizeMixin(ServiceInjectorMixin(PolymerElement)) {
             <div class="subtitle">
                 <div class="amount">{{amount}}</div>
             </div>
-            <dom-repeat id="favorites" items="[[favorites]]" as="favorite">
+            <dom-repeat id="favorites" items="[[favorites]]" as="favorite" sort="sortArrayFavorites">
               <template>
                 <dsign-menu-favorites menu-item="{{favorite}}"></dsign-menu-favorites>
               </template>
@@ -447,13 +446,15 @@ class DsignMenu extends LocalizeMixin(ServiceInjectorMixin(PolymerElement)) {
                 observer: 'changeOrganization'
             },
 
-            items: { },
+            items: {
+                notify: true,
+            },
 
             services: {
                 value: {
                     _localizeService: 'Localize',
                     _config: 'config',
-                    _favoriteService: 'FavoriteService',
+                    _menuStorage: 'MenuStorage',
                     _notifyService: 'Notify',
                 }
             },
@@ -474,14 +475,18 @@ class DsignMenu extends LocalizeMixin(ServiceInjectorMixin(PolymerElement)) {
 
             apiUrl: { },
 
+            menuUrl: {
+                observer: 'changeMenuUrl'
+            },
+
             favorites: {
                 notify: true,
                 value: []
             },
 
-            _favoriteService: {
+            _menuStorage: {
                 readOnly: true,
-                observer: 'changeFavoriteService'
+                observer: 'changeMenuStorage'
             },
 
             _config: {
@@ -493,12 +498,19 @@ class DsignMenu extends LocalizeMixin(ServiceInjectorMixin(PolymerElement)) {
                 notify: true
             },
 
-            allCategory: {
-                observer: 'changeAllCategory'
-            },
+            allCategory: { },
 
             hasLogo: {
                 value: false
+            },
+
+            /**
+             *
+             */
+            interval: {
+                type: Number,
+                readOnly: true,
+                value: 400000
             }
         };
     }
@@ -506,7 +518,8 @@ class DsignMenu extends LocalizeMixin(ServiceInjectorMixin(PolymerElement)) {
 
     static get observers() {
         return [
-            '_observeCategory(items, apiUrl)'
+            '_observeCategory(items, apiUrl)',
+            '_observeMenuStorage(_menuStorage, organization, allCategory)'
         ];
     }
 
@@ -555,11 +568,11 @@ class DsignMenu extends LocalizeMixin(ServiceInjectorMixin(PolymerElement)) {
     changeTotalOrder(totalOrder) {
 
         if(!totalOrder) {
-            this.$.badgeMenu.style.visibility = 'hidden'
+            this.$.badgeMenu.style.visibility = 'hidden';
             return;
         }
 
-        this.$.badgeMenu.style.visibility = 'visible'
+        this.$.badgeMenu.style.visibility = 'visible';
     }
 
     /**
@@ -571,6 +584,7 @@ class DsignMenu extends LocalizeMixin(ServiceInjectorMixin(PolymerElement)) {
         }
 
         this.apiUrl = config.apiUrl;
+        this.menuUrl = config.menuUrl;
         this.menu = config.menu;
     }
 
@@ -596,105 +610,104 @@ class DsignMenu extends LocalizeMixin(ServiceInjectorMixin(PolymerElement)) {
     }
 
     /**
-     * @param service
+     *
+     * @param menuStorage
+     * @param organization
+     * @param allCategory
+     * @private
      */
-    changeFavoriteService(service) {
-        if (!service) {
+    _observeMenuStorage(menuStorage, organization, allCategory) {
+
+        if (!menuStorage || !organization || !allCategory) {
             return;
         }
 
-        service.getEventManager().on(Storage.POST_REMOVE, new Listener(this.deleteFavoriteEvt.bind(this)));
-        service.getEventManager().on(FavoriteService.RESET_FAVORITES, new Listener(this.updateFavoriteEvt.bind(this)));
-        service.getEventManager().on(FavoriteService.NEW_FAVORITES, new Listener(this.updateFavoriteEvt.bind(this)));
-        service.getEventManager().on(Storage.POST_UPDATE, new Listener(this.updateAmountEvt.bind(this)));
-
-        this._updateAmount();
-        this._updateTotalCount();
-    }
-
-    /**
-     * @param categories
-     */
-    changeAllCategory(categories) {
-        if (!categories) {
-            return;
-        }
-        this.updateFavoriteEvt();
+        this._getFavorites()
     }
 
     /**
      * @private
      */
-    _updateAmount() {
-        // TODO add metadata to localize service
-        this.amount = new Intl.NumberFormat('it-IT', { style: 'currency', currency: 'EUR' }).format(this._favoriteService.getAmount());
+    _getFavorites() {
+        this._menuStorage.getAll({restaurantId: this.organization._id})
+            .then((data) => {
+                this.favorites = this.sortFavorites(this.checkStatusFavorite(data));
+                this._updateAmount();
+                this._updateTotalCount();
+            });
     }
 
     /**
-     * @private
+     * @param {Storage} menuStorage
      */
-    _updateTotalCount() {
-        let total = 0;
-        this.favorites.forEach((item) => {
-            total = total + item.totalCount;
-        });
-        this.totalOrder = total;
+    changeMenuStorage(menuStorage) {
+        if (!menuStorage) {
+            return;
+        }
+
+        menuStorage.getEventManager().on(Storage.POST_REMOVE, new Listener(this.deleteFavoriteEvt.bind(this)));
+        menuStorage.getEventManager().on(Storage.POST_UPDATE, new Listener(this.updateFavoriteEvt.bind(this)));
+        menuStorage.getEventManager().on(Storage.POST_SAVE, new Listener(this.saveFavoriteEvt.bind(this)));
     }
 
     /**
      * @param evt
      */
-    updateAmountEvt(evt) {
-        setTimeout(() => {
-                this._updateAmount();
-                this._updateTotalCount();
-            },
-            500
-        )
-    }
+    deleteFavoriteEvt(evt) {
 
-    /**
-     * @returns {string}
-     * @private
-     */
-    _getOrder() {
-        let order = '';
-        let elements = this.shadowRoot.querySelectorAll('dsign-menu-favorites');
-        elements.forEach((ele) => {
-            order += `${ele.menuItem.totalCount} - ${ele.menuItem.name.it}\n`
-        });
-
-        return order;
-    }
-
-    _sendOrder() {
-
-        let ele = document.createElement('a');
-        ele.href = `https://api.whatsapp.com/send?phone=${this.organization.whatsapp_phone}&text=${encodeURIComponent(this._getOrder())}`;
-        ele.target="_blank";
-        ele.click();
+        for (let index = 0; this.favorites.length > index; index++) {
+            if (this.favorites[index]._id === evt.data._id) {
+                this.splice('favorites', index, 1);
+                break;
+            }
+        }
+        this._updateAmount();
+        this._updateTotalCount();
     }
 
     /**
      * @param evt
      */
     updateFavoriteEvt(evt) {
-        this._favoriteService.getFavorites().then((data) => {
+        this._updateAmount();
+        this._updateTotalCount();
+    }
 
-            this.favorites = this.sortFavorites(data);
-            var tmp = this.favorites;
-            this.favorites =  [];
+    /**
+     * @param evt
+     */
+    saveFavoriteEvt(evt) {
+        this.push('favorites', evt.data);
+        this._updateAmount();
+        this._updateTotalCount();
+    }
 
-            // TODO understand why without tmp dont work
-            setTimeout(
-                () => {
-                    this.favorites = tmp;
-                    this._updateAmount();
-                    this._updateTotalCount();
-                },
-                100
-            );
-        });
+    /**
+     *
+     * @param favorites
+     * @returns {*}
+     */
+    checkStatusFavorite(favorites) {
+        for (let index = 0; favorites.length > index; index++) {
+
+
+            let dish = this.items.find((element) => {
+                return element._id ===  favorites[index]._id;
+            });
+
+            switch (true) {
+                case dish === undefined && favorites[index].status !== 'not-available':
+                    favorites[index].status = 'not-available';
+                    this._menuStorage.update(favorites[index]);
+                    break;
+                case dish !== undefined && favorites[index].status !== dish.status:
+                    favorites[index].status = dish.status;
+                    this._menuStorage.update(favorites[index]);
+                    break
+            }
+        }
+
+        return favorites;
     }
 
     /**
@@ -715,20 +728,105 @@ class DsignMenu extends LocalizeMixin(ServiceInjectorMixin(PolymerElement)) {
     }
 
     /**
-     * @param evt
+     * @param a
+     * @param b
      */
-    deleteFavoriteEvt(evt) {
-        let favorites = this.shadowRoot.querySelectorAll('dsign-menu-favorites');
+    sortArrayFavorites(a, b) {
+        if(!this.allCategory || !a || !b) {
+            return -1;
+        }
 
-        for (let index = 0; favorites.length > index; index++) {
-            if (favorites[index].menuItem._id === evt.data._id) {
-                favorites[index].remove();
-                this.favorites.splice(index, 1);
-                break;
+        for (let property in this.allCategory) {
+            if (a.category === property) {
+                return -1
+            }
+
+            if (b.category === property) {
+                return 1
             }
         }
+        return 0;
+    }
+
+    /**
+     * @private
+     */
+    _updateAmount() {
+
+        setTimeout(
+            () => {
+                let amount = 0;
+                for (let index = 0; this.favorites.length > index; index++) {
+                    if (this.favorites[index].status !== 'available') {
+                        continue;
+                    }
+                    amount = amount + (this.favorites[index].price.value * this.favorites[index].totalCount);
+                }
+
+                this.amount = new Intl.NumberFormat('it-IT', { style: 'currency', currency: 'EUR' }).format(amount);
+            },
+            100
+        );
+    }
+
+    /**
+     * @private
+     */
+    _updateTotalCount() {
+
+        setTimeout(
+            () => {
+                let total = 0;
+                for (let index = 0; this.favorites.length > index; index++) {
+                    if (this.favorites[index].status !== 'available') {
+                        continue;
+                    }
+                    total = total + this.favorites[index].totalCount;
+                }
+
+                this.totalOrder = total;
+            },
+            100
+        );
+    }
+
+    /**
+     * @param evt
+     */
+    updateAmountEvt(evt) {
         this._updateAmount();
         this._updateTotalCount();
+    }
+
+    /**
+     * @returns {string}
+     * @private
+     */
+    _getOrder() {
+        let order = '';
+
+        order = order + this.amount + '\n'
+
+        for (let index = 0; this.favorites.length > index; index++) {
+            if (this.favorites[index].status !== 'available') {
+                continue;
+            }
+
+            order += `${this.favorites[index].totalCount} - ${this.favorites[index].name.it}\n`
+        }
+
+        return order;
+    }
+
+    /**
+     * @private
+     */
+    _sendOrder() {
+
+        let ele = document.createElement('a');
+        ele.href = `https://api.whatsapp.com/send?phone=${this.organization.whatsapp_phone}&text=${encodeURIComponent(this._getOrder())}`;
+        ele.target="_blank";
+        ele.click();
     }
 
     /**
@@ -741,11 +839,15 @@ class DsignMenu extends LocalizeMixin(ServiceInjectorMixin(PolymerElement)) {
             return;
         }
 
-        this.getCategory().then((category) => {
-            this._attachCategory([]);
-            this.allCategory = category;
-            this._attachCategory(this._distinctCategory(this.items, category));
-        });
+        if (!this.allCategory) {
+            this.getCategory().then((category) => {
+                this._attachCategory([]);
+                this.allCategory = category;
+                this._attachCategory(this._distinctCategory(this.items, this.allCategory));
+            });
+        } else {
+            this._attachCategory(this._distinctCategory(this.items, this.allCategory));
+        }
     }
 
     /**
@@ -769,19 +871,33 @@ class DsignMenu extends LocalizeMixin(ServiceInjectorMixin(PolymerElement)) {
      * @param menu
      */
     changeMenu(menu) {
+
         if (!menu) {
             this.items = [];
             this.organization = {};
             return;
         }
 
-        this.items = menu.items;
-        for (let index = 0;  this.items.length > index; index++) {
-            if (this.items[index].status === 'not-available') {
-                this.items.splice(index, 1);
+        this.items = [];
+        this.notifyPath('items');
+        this.$.list.render();
+
+        for (let index = 0;  menu.items.length > index; index++) {
+            if (menu.items[index].status === 'not-available') {
+                this.splice('menu.items', index, 1);
+                //menu.items.splice(index, 1);
             }
         }
-        delete this.menu.items;
+
+        this.items = menu.items;
+        //delete this.menu.items;
+        setTimeout(
+            () => {
+                this.search(this.$.search.value, this.$.category.selectedItem ? this.$.category.selectedItem.value : null);
+            },
+            50
+        );
+
         this.organization = menu.organization;
 
         if (menu.background_header) {
@@ -795,6 +911,8 @@ class DsignMenu extends LocalizeMixin(ServiceInjectorMixin(PolymerElement)) {
         if (menu.layout_type) {
             this._setLayoutType(menu.layout_type);
         }
+
+        this.appendStylesheetColor();
     }
 
     /**
@@ -878,7 +996,7 @@ class DsignMenu extends LocalizeMixin(ServiceInjectorMixin(PolymerElement)) {
     clearCategory(evt) {
         this.$.category.value = null;
         this.$.category.selectedItem = null;
-        this.$.categories.selected= null;
+        this.$.categories.selected = null;
         this.search(this.$.search.value ? this.$.search.value : null, null);
     }
 
@@ -891,7 +1009,6 @@ class DsignMenu extends LocalizeMixin(ServiceInjectorMixin(PolymerElement)) {
         let lang = this._localizeService.getDefaultLang();
         let hide = false;
         for (let index = 0; nodes.length > index; index++) {
-
 
             switch (true) {
                 case !name === false && nodes[index].item.name[lang].toLowerCase().includes(name.toLowerCase()) === false:
@@ -929,6 +1046,61 @@ class DsignMenu extends LocalizeMixin(ServiceInjectorMixin(PolymerElement)) {
 
         this.resources = mergeDeep(this.resources, categoryTranslation);
         this.categories = categories;
+    }
+
+    /**
+     * @param apiUrl
+     */
+    changeMenuUrl(apiUrl) {
+        if (!apiUrl) {
+            return;
+        }
+        this.pollingMenu();
+    }
+
+    /**
+     *
+     */
+    pollingMenu() {
+
+        setInterval(
+            () => {
+
+                let request = new XMLHttpRequest();
+                request.onload = (event) => {
+
+                    if (request.status >= 300) {
+                        console.warn(request.response);
+                        return;
+                    }
+
+                    this.menu = JSON.parse(request.response);
+                };
+                request.open("GET", `${this.menuUrl}${this.organization.normalize_name}`);
+                request.setRequestHeader('accept', 'application/json');
+                request.send();
+            },
+            this.interval
+        )
+    }
+
+    /**
+     *
+     */
+    appendStylesheetColor() {
+
+        let css = `:root { --munu-background-color: ${this.menu.background_header}; --munu-color: ${this.menu.color_header}; } body { overflow-x: hidden; } * { padding: 0; margin: 0; } paper-toast { padding: 16px 24px !important; margin: 12px !important; }}`;
+
+        let style = document.createElement('style');
+        style.setAttribute('is', "custom-style");
+        style.setAttribute('id', 'colorCustomStyle');
+        style.appendChild(document.createTextNode(css));
+
+        let oldElement = document.head.querySelector('colorCustomStyle');
+        if (oldElement) {
+            oldElement.remove();
+        }
+        document.head.appendChild(style);
     }
 }
 

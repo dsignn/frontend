@@ -2,14 +2,15 @@ import {PolymerElement, html} from "@polymer/polymer/polymer-element";
 import {ServiceInjectorMixin} from "@dsign/polymer-mixin/service/injector-mixin";
 import {LocalizeMixin} from "@dsign/polymer-mixin/localize/localize-mixin";
 import {Storage} from "@dsign/library/src/storage/Storage";
+import {Listener} from "@dsign/library/src/event/Listener";
+import {ItemFavorite} from "../mixin/item-favorite/item-favorite";
 import '@polymer/paper-icon-button/paper-icon-button';
 import {lang} from './language';
-import {Listener} from "@dsign/library/src/event/Listener";
 
 /**
  * @class DsignMenuFavorites
  */
-class DsignMenuFavorites extends LocalizeMixin(ServiceInjectorMixin(PolymerElement)) {
+class DsignMenuFavorites extends ItemFavorite(LocalizeMixin(ServiceInjectorMixin(PolymerElement))) {
 
     static get template() {
         return html`
@@ -27,7 +28,7 @@ class DsignMenuFavorites extends LocalizeMixin(ServiceInjectorMixin(PolymerEleme
        
        .header {
            height: 100%;
-           width: 50px !important;
+           width: 60px !important;
            background-position: center center ;
            background-repeat: no-repeat;
            background-size: cover;
@@ -46,8 +47,8 @@ class DsignMenuFavorites extends LocalizeMixin(ServiceInjectorMixin(PolymerEleme
        .header-card-content {
           @apply --layout-vertical;
           height: 30px;
-          padding-left: 6px;
-          padding-right: 6px;
+          padding-left: 4px;
+          padding-right: 4px;
        }
        
        .header-card-title {
@@ -63,13 +64,14 @@ class DsignMenuFavorites extends LocalizeMixin(ServiceInjectorMixin(PolymerEleme
        }
        
        .header-card-action {
+          position: relative;
           @apply --layout-horizontal;
           @apply --layout-center;
           @apply --layout-end-justified;
        }
        
        paper-icon-button {
-           margin-left: 4px;
+
            width: 22px;
            height: 22px;
            border-radius: 50%;
@@ -86,7 +88,7 @@ class DsignMenuFavorites extends LocalizeMixin(ServiceInjectorMixin(PolymerEleme
        
        .count {
           font-weight: 500;
-          min-width: 40px;
+          min-width: 34px;
           text-align: center;
        }
        
@@ -108,19 +110,46 @@ class DsignMenuFavorites extends LocalizeMixin(ServiceInjectorMixin(PolymerEleme
            background-color: #FFFFFF;
            color: #000000;
        }
-          
+       
+       .triangle {
+           position: absolute;
+           width: 0;
+           height: 0;
+           font-size: 8px;
+           border-top: 56px solid #fc0303;
+           border-right: 56px solid transparent;
+       }
+       
+       .status-dish {
+          top: 10px;
+          right: 26px;
+          transform:rotate(315deg);
+          -webkit-transform: rotate(315deg);
+          -o-transform: rotate(315deg);
+          -moz-transform: rotate(315deg);
+          -ms-transform: rotate(315deg);
+          position: absolute;
+          font-size: 10px;
+          font-weight: 500;
+          text-transform: uppercase;
+       }
+       
+       [hidden] {
+          visibility: hidden;
+       }
     </style>
     <paper-card>
         <div id="image" class="header">
-          
+            <div class="triangle"></div>
+            <div class="status-dish">{{localize(statusLabel)}}</div>
         </div>
         <div class="content">
              <div class="header-card-content header-card-title">{{_capitalize(menuItem.name.it)}}</div>
              <div class="header-card-content header-card-action">
                
-                   <paper-icon-button id="remove" icon="remove" on-tap="_remove"></paper-icon-button>
+                   <paper-icon-button id="remove" icon="remove" on-tap="removeFavorite"></paper-icon-button>
                    <div class="count"> {{menuItem.totalCount}}</div>
-                   <paper-icon-button id="add" icon="add" on-tap="_add"></paper-icon-button>
+                   <paper-icon-button id="add" icon="add" on-tap="addOneFavorite"></paper-icon-button>
                    <div class="partial-price">{{amount(menuItem)}}</div>
              </div>
         </div>
@@ -139,22 +168,27 @@ class DsignMenuFavorites extends LocalizeMixin(ServiceInjectorMixin(PolymerEleme
             services: {
                 value: {
                     _config: 'config',
-                    _favoriteService: 'FavoriteService',
                     _localizeService: 'Localize',
+                    _menuStorage: 'MenuStorage',
                 }
-            },
-
-            _favoriteService: {
-                observer: 'changeFavoriteService'
             },
 
             menuItem: {
                 notify: true
             },
 
-            amount:{
+            amount: {
                 type: Function,
                 computed: '__computeAmount(menuItem)'
+            },
+
+            statusLabel: {
+                notify: true
+            },
+
+            _menuStorage: {
+                readOnly: true,
+                observer: 'changeMenuStorage'
             }
         };
     }
@@ -162,7 +196,8 @@ class DsignMenuFavorites extends LocalizeMixin(ServiceInjectorMixin(PolymerEleme
 
     static get observers() {
         return [
-            '_observeMenu(menuItem, _config)'
+            '_observeMenu(menuItem, _config)',
+            '_observeMenuStatus(menuItem.status)'
         ];
     }
 
@@ -196,53 +231,59 @@ class DsignMenuFavorites extends LocalizeMixin(ServiceInjectorMixin(PolymerEleme
     }
 
     /**
-     * @param service
+     * @param status
      */
-    changeFavoriteService(service) {
-        if (!service) {
+    _observeMenuStatus(status) {
+
+        if (!status) {
+            return;
+        }
+
+        switch (status) {
+            case 'available':
+                this.statusLabel = '';
+                this.shadowRoot.querySelector('.triangle').setAttribute('hidden', '');
+                this.shadowRoot.querySelector('.status-dish').setAttribute('hidden', '');
+                this.shadowRoot.querySelector('.status-dish').style.top = '10px';
+                this.shadowRoot.querySelector('.partial-price').style.textDecoration = 'auto';
+                this.enableButton(false);
+                break;
+            case 'over':add
+                this.statusLabel = 'finished';
+                this.shadowRoot.querySelector('.triangle').removeAttribute('hidden');
+                this.shadowRoot.querySelector('.status-dish').removeAttribute('hidden');
+                this.shadowRoot.querySelector('.status-dish').style.top = '16px';
+                this.shadowRoot.querySelector('.partial-price').style.textDecoration = 'line-through';
+                this.enableButton(true);
+                break;
+            case 'not-available':
+                this.statusLabel = 'off-the-menu';
+                this.shadowRoot.querySelector('.triangle').removeAttribute('hidden');
+                this.shadowRoot.querySelector('.status-dish').removeAttribute('hidden');
+                this.shadowRoot.querySelector('.partial-price').style.textDecoration = 'line-through';
+                this.enableButton(true);
+                break;
+        }
+    }
+
+    /**
+     * @param {Storage} menuStorage
+     */
+    changeMenuStorage(menuStorage) {
+        if (!menuStorage) {
             return;
         }
 
         this.updateListener = new Listener(function (evt) {
             if (evt.data['_id'] === this.menuItem['_id']) {
-                console.log('rererere')
                 this.menuItem =  null;
+                this.notifyPath('menuItem');
                 this.menuItem = evt.data;
                 this._updateView();
             }
         }.bind(this));
 
-        service.getEventManager().on(Storage.BEFORE_UPDATE,  this.updateListener);
-    }
-
-    /**
-     * @param evt
-     * @private
-     */
-    _remove(evt) {
-        if (this.menuItem.totalCount === 1) {
-            this._favoriteService.deleteFavorite(this.menuItem).then(() => {
-                this.remove();
-            });
-        } else {
-
-            this._updateView();
-            this._favoriteService.removeFavorite(this.menuItem);
-        }
-    }
-
-    /**
-     * @param evt
-     * @private
-     */
-    _add(evt) {
-        this.menuItem.totalCount++;
-        this._updateView();
-        this._favoriteService.upsertFavorite(this.menuItem).then((data) => {
-            this.menuItem = null;
-            this.menuItem =  data;
-
-        });
+        menuStorage.getEventManager().on(Storage.POST_UPDATE,  this.updateListener);
     }
 
     /**
@@ -269,6 +310,14 @@ class DsignMenuFavorites extends LocalizeMixin(ServiceInjectorMixin(PolymerEleme
             this.$.image.style.backgroundImage = 'url(https://dsign-asset.s3.eu-central-1.amazonaws.com/dish-not-found.png)';
             this.$.image.style.backgroundSize = `cover`;
         }
+    }
+
+    /**
+     * @param enable
+     */
+    enableButton(enable) {
+        this.$.remove.disabled = enable;
+        this.$.add.disabled = enable;
     }
 }
 

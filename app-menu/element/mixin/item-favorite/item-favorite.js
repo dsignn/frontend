@@ -12,6 +12,11 @@ export const ItemFavorite = (superClass) => {
 
         static get properties() {
             return {
+
+                restaurant: {
+
+                },
+
                 /**
                  * @type object
                  */
@@ -21,14 +26,13 @@ export const ItemFavorite = (superClass) => {
                  * @type Number
                  */
                 dishCount: {
-                    value: 0,
-                    observer: 'changeDishCount'
+                    value: 0
                 },
 
                 /**
-                 *
+                 * @type Storage
                  */
-                _favoriteService: {
+                _menuStorage: {
                     readOnly: true
                 }
             };
@@ -39,14 +43,18 @@ export const ItemFavorite = (superClass) => {
          * @param menuItem
          */
         initDishCount(menuItem) {
-            if(!this._favoriteService) {
+            if(!this._menuStorage) {
                 return;
             }
 
-            let favorite = this._favoriteService.getFavorite(menuItem);
-            if (favorite) {
-                this.dishCount = favorite.totalCount;
-            }
+            this._menuStorage.get(menuItem._id)
+                .then((data) => {
+                    if (!data) {
+                        return;
+                    }
+
+                    this.dishCount = data.totalCount;
+                });
         }
 
         /**
@@ -70,32 +78,70 @@ export const ItemFavorite = (superClass) => {
         }
 
         /**
-         * @param dishCount
+         * @param evt
          */
-        changeDishCount(dishCount) {
-            if (!dishCount) {
-                this.$.badgeMenu.style.visibility = 'hidden';
+        addFavorite(evt) {
+
+            if(!this._menuStorage || !this.menuItem || !this.restaurant) {
                 return;
             }
-            this.$.badgeMenu.style.visibility = 'visible';
+
+            this._menuStorage.get(this.menuItem._id)
+                .then((data) => {
+                    let method = 'update';
+                    if (!data) {
+                        data = JSON.parse(JSON.stringify(this.menuItem));
+                        data.totalCount = 1;
+                        data.restaurantId = this.restaurant._id;
+                        method = 'save';
+                    } else {
+                        data.totalCount = data.totalCount + 1;
+                    }
+
+                    this._menuStorage[method](data);
+                })
+                .catch((error) => {
+                    console.error(error)
+                });
         }
 
         /**
          * @param evt
          */
-        addFavorite(evt) {
-
-            if(!this._favoriteService) {
+        addOneFavorite(evt) {
+            if (!this._menuStorage || !this.menuItem) {
                 return;
             }
 
-            this._favoriteService.addFavorite(this.menuItem);
+            this.menuItem.totalCount = this.menuItem.totalCount + 1;
+            this._menuStorage.update(this.menuItem);
+        }
 
-            /*
-            if (this._notifyService && this.localize) {
-                this._notifyService.notify(this.localize('plate-add'));
+        /**
+         * @param evt
+         */
+        removeFavorite(evt) {
+            if(!this._menuStorage || !this.menuItem) {
+                return;
             }
-            */
+
+            this._menuStorage.get(this.menuItem._id)
+                .then((data) => {
+                    if (!data) {
+                        return;
+                    }
+
+                    let method = 'delete';
+                    if(data.totalCount > 1) {
+                        data.totalCount = data.totalCount - 1;
+                        method = 'update';
+                    }
+
+                    this._menuStorage[method](data);
+                })
+                .catch((error) => {
+                    console.error(error)
+                });
         }
     }
 };

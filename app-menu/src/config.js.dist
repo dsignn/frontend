@@ -2,270 +2,434 @@
  * Config Application
  */
 export const config = {
-    dev: true,
-    apiUrl: 'http://127.0.0.150/',
-    menu: {
-        "items": [
-            {
-                "name": {
-                    "it": "pasta al pesto",
-                    "en": "pasta al pesto"
-                },
-                "description": {
-                    "it": "ffdas",
-                    "en": "fdsafd"
-                },
-                "category": "starters",
-                "price": {
-                    "value": 432,
-                    "currency": "EUR"
-                },
-                "new": 0,
-                "photos": [{
-                    "_id": "5fb121fbc1a3d65e8d5b9514",
-                    "dimension": {"height": 500, "width": 500},
-                    "mime_type": "image/png",
-                    "name": "photo menù",
-                    "size": 19756,
-                    "src": "https://dsign-cdn-test.s3.eu-central-1.amazonaws.com/eea7b8bf-c4dd-4ced-bab5-7f0ded15a724",
-                    "s3path": "eea7b8bf-c4dd-4ced-bab5-7f0ded15a724",
-                    "tags": [],
-                    "organization_reference": null
-                }],
-                "status": "available",
-                "id": "5f3e4a70572b8132565a6196"
-            },
-            {
-                "name": {
-                    "it": "pasta al pomodoro",
-                    "en": "pasta al pomodoro"
-                },
-                "description": {
-                    "it": "dfsf fsd fds fds f dsf ds f dsf d fsd fd s",
-                    "en": "dfsf fsd fds fds f dsf ds f dsf d fsd fd s"
-                },
-                "category": "starters",
-                "price": {
-                    "value": 123.34,
-                    "currency": "EUR"
-                },
-                "new": 0,
-                "photos": [],
-                "status": "over",
-                "id": "5f3e4a70572b8132565a6197"
-            },
-            {
-                "name": {
-                    "it": "pasta all'arrabbiata",
-                    "en": "pasta all'arrabbiata"
-                },
-                "description": {
-                    "it": "fdsf dsf dsf dsf d f dsf ds f df dsf ds",
-                    "en": "fds f dsf ds f ds fds f d fs d fds f ds"
-                },
-                "category": "first-courses",
-                "price": {
-                    "value": 13,
-                    "currency": "EUR"
-                },
-                "new": 0,
-                "photos": [],
-                "status": "not-available",
-                "id": "5f3e4a70572b8132565a619a"
-            },
-            {
-                "name": {
-                    "it": "pasta alla norma",
-                    "en": "pasta all'arrabbiata"
-                },
-                "description": {
-                    "it": "fdsf dsf dsf dsf d f dsf ds f df dsf ds",
-                    "en": "fds f dsf ds f ds fds f d fs d fds f ds"
-                },
-                "category": "first-courses",
-                "price": {
-                    "value": 13,
-                    "currency": "EUR"
-                },
-                "new": 0,
-                "photos": [],
-                "status": "available",
-                "id": "5f3e4a70572b8132565a619e"
-            },
-            {
-                "name": {
-                    "it": "pasta panna e gamberettiiiiii",
-                    "en": "pasta all'arrabbiata"
-                },
-                "description": {
-                    "it": "fdsf dsf dsf dsf d f dsf ds f df dsf ds",
-                    "en": "fds f dsf ds f ds fds f d fs d fds f ds"
-                },
-                "category": "first-courses",
-                "price": {
-                    "value": 13,
-                    "currency": "EUR"
-                },
-                "new": 0,
-                "photos": [],
-                "status": "available",
-                "id": "5f3e4a70572b8132565a619f"
-            },
-            {
-                "name": {
-                    "it": "carne al sugo",
-                    "en": "pasta all'arrabbiata"
-                },
-                "description": {
-                    "it": "fdsf dsf dsf dsf d f dsf ds f df dsf ds",
-                    "en": "fds f dsf ds f ds fds f d fs d fds f ds"
-                },
-                "category": "first-courses",
-                "price": {
-                    "value": 13,
-                    "currency": "EUR"
-                },
-                "new": 0,
-                "photos": [],
-                "status": "available",
-                "id": "5f3e4a70572b8132565a6199"
-            },
-            {
-                "name": {
-                    "it": "pesche fresco",
-                    "en": "pasta all'arrabbiata"
-                },
-                "description": {
-                    "it": "fdsf dsf dsf dsf d f dsf ds f df dsf ds",
-                    "en": "fds f dsf ds f ds fds f d fs d fds f ds"
-                },
-                "category": "first-courses",
-                "price": {
-                    "value": 13,
-                    "currency": "EUR"
-                },
-                "new": 0,
-                "photos": [],
-                "status": "available",
-                "id": "5f3e4a70572b8132565a6191"
-            },
-            {
-                "name": {
-                    "it": "trofie a pesto",
-                    "en": "pasta all'arrabbiata"
-                },
-                "description": {
-                    "it": "fdsf dsf dsf dsf d f dsf ds f df dsf ds",
-                    "en": "fds f dsf ds f ds fds f d fs d fds f ds"
-                },
-                "category": "first-courses",
-                "price": {
-                    "value": 13,
-                    "currency": "EUR"
-                },
-                "new": 0,
-                "photos": [],
-                "status": "not-available",
-                "id": "5f3e4a70572b8132565a6192"
-            },
-            {
-                "name": {
-                    "it": "paccheri",
-                    "en": "pasta all'arrabbiata"
-                },
-                "description": {
-                    "it": "fdsf dsf dsf dsf d f dsf ds f df dsf ds",
-                    "en": "fds f dsf ds f ds fds f d fs d fds f ds"
-                },
-                "category": "first-courses",
-                "price": {
-                    "value": 13,
-                    "currency": "EUR"
-                },
-                "new": 0,
-                "photos": [],
-                "status": "available",
-                "id": "5f3e4a70572b8132565a6194"
-            },
-            {
-                "name": {
-                    "it": "spada ai ferri",
-                    "en": "pasta all'arrabbiata"
-                },
-                "description": {
-                    "it": "fdsf dsf dsf dsf d f dsf ds f df dsf ds",
-                    "en": "fds f dsf ds f ds fds f d fs d fds f ds"
-                },
-                "category": "first-courses",
-                "price": {
-                    "value": 13,
-                    "currency": "EUR"
-                },
-                "new": 0,
-                "photos": [],
-                "status": "not-available",
-                "id": "5f3e4a70572b8132565a6195"
-            },
-            {
-                "name": {
-                    "it": "tiramisu",
-                    "en": "pasta all'arrabbiata"
-                },
-                "description": {
-                    "it": "fdsf dsf dsf dsf d f dsf ds f df dsf ds",
-                    "en": "fds f dsf ds f ds fds f d fs d fds f ds"
-                },
-                "category": "first-courses",
-                "price": {
-                    "value": 13,
-                    "currency": "EUR"
-                },
-                "new": 0,
-                "photos": [],
-                "status": "available",
-                "id": "5f3e4a70572b8132565a6198"
-            },
-            {
-                "name": {
-                    "it": "passito",
-                    "en": "pasta all'arrabbiata"
-                },
-                "description": {
-                    "it": "fdsf dsf dsf dsf d f dsf ds f df dsf ds",
-                    "en": "fds f dsf ds f ds fds f d fs d fds f ds"
-                },
-                "category": "first-courses",
-                "price": {
-                    "value": 13,
-                    "currency": "EUR"
-                },
-                "new": 0,
-                "photos": [],
-                "status": "available",
-                "id": "5f3e4a70572b8132565a6194"
-            }
-        ],
+    "dev": false,
+    "apiUrl": "https://api-staging.ds-ign.it/",
+    "menuUrl": "http://127.0.0.200/",
+    "bucket": "https://dsign-asset.s3.eu-central-1.amazonaws.com/categories",
+    "menu": {
+        "_id": "5ff983ead0e4fb4c0b2c1512",
         "organization": {
-            "_id": "5f8dbe2601983b21c01c4224",
+            "_id": "5f9d962420ad2a55f40a8fa6",
             "name": "rrr",
             "normalize_name": "rrr",
-            "qr_code": {"id": "5f9f30bda3258207400bc654", "collection": "resource"},
+            "qr_code": {"id": "5fa1660520ad2a55f40a8fa8", "collection": "resource"},
             "logo": {
-                "_id": "5fa32c5a6f73c744004f3a24",
-                "dimension": {"height": 530, "width": 530},
-                "mime_type": "image/png",
+                "_id": "6009c0f8c4574c45be4477c2",
+                "dimension": {"height": 69, "width": 68},
+                "mime_type": "image/jpeg",
                 "name": "logo organization",
-                "size": 46046,
-                "src": "https://dsign-cdn-test.s3.eu-central-1.amazonaws.com/3c8982c4-f115-444d-b659-a053b80f7eda",
-                "s3path": "3c8982c4-f115-444d-b659-a053b80f7eda",
+                "size": 1981,
+                "src": "https://dsign-cdn-test.s3.eu-central-1.amazonaws.com/82f24023-b084-4869-96e5-902d3ce2eea9",
+                "s3path": "82f24023-b084-4869-96e5-902d3ce2eea9",
                 "tags": [],
                 "organization_reference": null
-            }
+            },
+            "whatsapp_phone": "+393407626126",
+            "open": true,
+            "site_url": "https://cruditemilano.it"
         },
-        "name": "fdsfdsa",
-        "background_header": "#FF0000",
-        "color_header": "#FFFFFF",
-        "enable": false,
-        "id": "5f3e4a70572b8132565a6199"
+        "name": "menu",
+        "background_header": "#0b112b",
+        "color_header": "yellow",
+        "enable": true,
+        "layout_type": "dsign-menu-item-image",
+        "items": [
+            {
+            "name": {"it": "Catalana di gamberi"},
+            "description": {"it": "Mazzancolla, camone, sedano croccante e salsa catalana"},
+            "category": "starters",
+            "price": {"value": 16, "currency": "EUR"},
+            "new": 0,
+            "photos": [{
+                "_id": "6009c240c4574c45be4477c3",
+                "dimension": {"height": 1080, "width": 1920},
+                "mime_type": "image/jpeg",
+                "name": "photo menù",
+                "size": 173262,
+                "src": "https://dsign-cdn-test.s3.eu-central-1.amazonaws.com/bc9a0b32-865b-4b72-8de6-fd248ee5e94a",
+                "s3path": "bc9a0b32-865b-4b72-8de6-fd248ee5e94a",
+                "tags": [],
+                "organization_reference": null
+            }],
+            "status": "available",
+            "_id": "6009a602bddf2e9ec0c3de4b"
+        }, {
+            "name": {"it": "Pinzimonio con verdure e crostacei"},
+            "description": {"it": "Sedano, carote, ravanelli, cetrioli, gamberi, scampi, salsa allo yogurt, salsa senapata, salsa al limone"},
+            "category": "starters",
+            "price": {"value": 16, "currency": "EUR"},
+            "new": 0,
+            "photos": [{
+                "_id": "6009c27cc4574c45be4477c4",
+                "dimension": {"height": 1080, "width": 1920},
+                "mime_type": "image/jpeg",
+                "name": "photo menù",
+                "size": 649320,
+                "src": "https://dsign-cdn-test.s3.eu-central-1.amazonaws.com/2809daba-5d6c-487d-9560-55bd251a0088",
+                "s3path": "2809daba-5d6c-487d-9560-55bd251a0088",
+                "tags": [],
+                "organization_reference": null
+            }],
+            "status": "available",
+            "_id": "6009a611c8588aa85d4e0eac"
+        }, {
+            "name": {"it": "Antipasto da condivisione (2 caldi e 2 freddi)"},
+            "description": {"it": "Quattro assaggi di antipasti caldi e freddi da degustare in condivisione"},
+            "category": "starters",
+            "price": {"value": 18, "currency": "EUR"},
+            "new": 0,
+            "photos": [],
+            "status": "available",
+            "_id": "5ffc3b65d0e4fb4c0b2c1513"
+        }, {
+            "name": {"it": "Gratinato da tradizione"},
+            "description": {"it": "Capasanta, cannolicchi e cozze"},
+            "category": "starters",
+            "price": {"value": 18, "currency": "EUR"},
+            "new": 0,
+            "photos": [{
+                "_id": "6009c2c9c4574c45be4477c5",
+                "dimension": {"height": 1080, "width": 1920},
+                "mime_type": "image/jpeg",
+                "name": "photo menù",
+                "size": 217563,
+                "src": "https://dsign-cdn-test.s3.eu-central-1.amazonaws.com/2bf65cab-5f35-49fe-904b-52159df1296f",
+                "s3path": "2bf65cab-5f35-49fe-904b-52159df1296f",
+                "tags": [],
+                "organization_reference": null
+            }],
+            "status": "available",
+            "_id": "6009c2aa05d7c4c7a9f523a1"
+        }, {
+            "name": {"it": "Riso al curry con branzino"},
+            "description": {"it": "Riso basmati, funghi, branzino, salsa teriaki, anacardi, ceci e porri."},
+            "category": "first-courses",
+            "price": {"value": 18, "currency": "EUR"},
+            "new": 0,
+            "photos": [],
+            "status": "available",
+            "_id": "60100de7ab31d7a1e06e8f39"
+        }, {
+            "name": {"it": "Couscous classico di pesce"},
+            "description": {"it": "Semola, zuppa di pesce, zucchine, peperoni e melanzane, pescato da zuppa"},
+            "category": "first-courses",
+            "price": {"value": 20, "currency": "EUR"},
+            "new": 0,
+            "photos": [{
+                "_id": "60100e464e53213ae5146ba2",
+                "dimension": {"height": 1080, "width": 1920},
+                "mime_type": "image/jpeg",
+                "name": "photo menù",
+                "size": 596384,
+                "src": "https://dsign-cdn-test.s3.eu-central-1.amazonaws.com/b30de061-83cb-401a-8d04-2d5d9f802b93",
+                "s3path": "b30de061-83cb-401a-8d04-2d5d9f802b93",
+                "tags": [],
+                "organization_reference": null
+            }],
+            "status": "available",
+            "_id": "60100e267f2f920f4811d144"
+        }, {
+            "name": {"it": "Paella di pesce "},
+            "description": {"it": "Paella di pesce (per due persone)"},
+            "category": "first-courses",
+            "price": {"value": 44, "currency": "EUR"},
+            "new": 0,
+            "photos": [],
+            "status": "available",
+            "_id": "60100e58856cdfe7e2c5dbe4"
+        }, {
+            "name": {"it": "Strascinati con le vongole veraci e ceci"},
+            "description": {"it": "Strascinati con vongole veraci e ceci"},
+            "category": "first-courses",
+            "price": {"value": 16, "currency": "EUR"},
+            "new": 0,
+            "photos": [{
+                "_id": "60100ea84e53213ae5146ba3",
+                "dimension": {"height": 1080, "width": 1920},
+                "mime_type": "image/jpeg",
+                "name": "photo menù",
+                "size": 187863,
+                "src": "https://dsign-cdn-test.s3.eu-central-1.amazonaws.com/2126073c-0981-4e4f-a5a2-7756d5b16f4c",
+                "s3path": "2126073c-0981-4e4f-a5a2-7756d5b16f4c",
+                "tags": [],
+                "organization_reference": null
+            }],
+            "status": "available",
+            "_id": "60100e708551fcfd46370045"
+        }, {
+            "name": {"it": "Spaghetto alla chitarra con riccio"},
+            "description": {"it": "Spaghetto alla chitarra con riccio"},
+            "category": "first-courses",
+            "price": {"value": 20, "currency": "EUR"},
+            "new": 0,
+            "photos": [],
+            "status": "available",
+            "_id": "60100eb9a99fe29a226a372d"
+        }, {
+            "name": {"it": "Linguine con astice"},
+            "description": {"it": "Linguine, mezzo astice, pomodorini"},
+            "category": "first-courses",
+            "price": {"value": 20, "currency": "EUR"},
+            "new": 0,
+            "photos": [],
+            "status": "available",
+            "_id": "60100ecc989697ca5f244c83"
+        }, {
+            "name": {"it": "Fusillone broccolo e baccalà"},
+            "description": {"it": "Fusillone secco con broccoli e baccalà"},
+            "category": "first-courses",
+            "price": {"value": 16, "currency": "EUR"},
+            "new": 0,
+            "photos": [{
+                "_id": "60100f074e53213ae5146ba4",
+                "dimension": {"height": 1080, "width": 1920},
+                "mime_type": "image/jpeg",
+                "name": "photo menù",
+                "size": 229484,
+                "src": "https://dsign-cdn-test.s3.eu-central-1.amazonaws.com/7a2d711b-1451-4e2c-947e-c132aa41f380",
+                "s3path": "7a2d711b-1451-4e2c-947e-c132aa41f380",
+                "tags": [],
+                "organization_reference": null
+            }],
+            "status": "available",
+            "_id": "60100ee2c6728e028e672cfe"
+        }, {
+            "name": {"it": "Couscous reale (per due persone)"},
+            "description": {"it": "Semola, zuppa di pesce, zucchine, peperoni, melanzane, pescato di zuppa, astice, scampo, gamberi e conchiglie"},
+            "category": "first-courses",
+            "price": {"value": 60, "currency": "EUR"},
+            "new": 0,
+            "photos": [{
+                "_id": "60100fa34e53213ae5146ba5",
+                "dimension": {"height": 1080, "width": 1920},
+                "mime_type": "image/jpeg",
+                "name": "photo menù",
+                "size": 335415,
+                "src": "https://dsign-cdn-test.s3.eu-central-1.amazonaws.com/183ebd54-606e-40a1-b94f-a956db1e8571",
+                "s3path": "183ebd54-606e-40a1-b94f-a956db1e8571",
+                "tags": [],
+                "organization_reference": null
+            }],
+            "status": "available",
+            "_id": "60100f84852fc780d65dd5b9"
+        }, {
+            "name": {"it": "Plateau Plage"},
+            "description": {"it": "6 ostriche (assortite), 2 clams, 2 tartufi di mare, 2 mandorle, 2 fasolari, 6 bulot, cruditè di calamaro, seppia e polipo del Mediterrano"},
+            "category": "plateau",
+            "price": {"value": 55, "currency": "EUR"},
+            "new": 0,
+            "photos": [],
+            "status": "available",
+            "_id": "60100bbf17045288c7eb3b29"
+        }, {
+            "name": {"it": "Plateau Royale"},
+            "description": {"it": "6 ostriche (assortite), 1 clams, 2 mandorle di mare, 1 tartufo di mare,1 capasanta, 5 boulots, bigorneaux, 1 scampo del Mediterraneo, 1 gamberi rossi, 2 gamberi grigi, ½ granciporro, ½ astice real, 1 fasolaro, 1 percebes (la composizione potrebbe subire variazioni in base all’effettiva disponibilità delle materie prime)"},
+            "category": "plateau",
+            "price": {"value": 80, "currency": "EUR"},
+            "new": 0,
+            "photos": [{
+                "_id": "60100c3d2548ce4bbc0ea393",
+                "dimension": {"height": 1080, "width": 1366},
+                "mime_type": "image/jpeg",
+                "name": "photo menù",
+                "size": 295191,
+                "src": "https://dsign-cdn-test.s3.eu-central-1.amazonaws.com/d1cdcf57-8161-4cf1-b889-61621fc9bc07",
+                "s3path": "d1cdcf57-8161-4cf1-b889-61621fc9bc07",
+                "tags": [],
+                "organization_reference": null
+            }],
+            "status": "available",
+            "_id": "60100c08efb93ac00758ad97"
+        }, {
+            "name": {"it": "Plateau Mediterraneo"},
+            "description": {"it": "10 ostriche, 2 fasolari, 4 gamberi rosa, 2 scampi, 2 tartufi, 4 mandorle, 2 clam, 6 boulots, 2 gamberi rosa, percebes, 2 ricci, 2 capesante, ½ astice, ½ granchio, carpaccio e tartare di tonno e salmone (la composizione potrebbe subire variazioni in base all’effettiva disponibilità delle materie prime)"},
+            "category": "plateau",
+            "price": {"value": 160, "currency": "EUR"},
+            "new": 0,
+            "photos": [],
+            "status": "available",
+            "_id": "60100c7f5ca8192cdea2a9f9"
+        }, {
+            "name": {"it": "Plateau Crustacés"},
+            "description": {"it": "1 gambero rosso, 1 scampo, 2 gamberi rosa, ½ granchio, ½ astice"},
+            "category": "plateau",
+            "price": {"value": 38, "currency": "EUR"},
+            "new": 0,
+            "photos": [{
+                "_id": "60100cd0c4574c45be4477c6",
+                "dimension": {"height": 1080, "width": 1366},
+                "mime_type": "image/jpeg",
+                "name": "photo menù",
+                "size": 295191,
+                "src": "https://dsign-cdn-test.s3.eu-central-1.amazonaws.com/931d5843-2fec-4e4b-80ba-0e1812c70b08",
+                "s3path": "931d5843-2fec-4e4b-80ba-0e1812c70b08",
+                "tags": [],
+                "organization_reference": null
+            }],
+            "status": "available",
+            "_id": "60100ca5d1f68efdbb3b4e7a"
+        }, {
+            "name": {"it": "Grand Plateau"},
+            "description": {"it": "3 tipi di ostriche, 1 vongola bretone, 1 clams, 1 mandorla di mare, 1 tartufo di mare, 5 boulots,1 gambero rossi, 1 scampo, 1 fasolaro, 2 gamberi grigi (la composizione potrebbe subire variazioni in base all’effettiva disponibilità delle materie prime)"},
+            "category": "plateau",
+            "price": {"value": 38, "currency": "EUR"},
+            "new": 0,
+            "photos": [{
+                "_id": "60100cf4c4574c45be4477c7",
+                "dimension": {"height": 1080, "width": 1366},
+                "mime_type": "image/jpeg",
+                "name": "photo menù",
+                "size": 295191,
+                "src": "https://dsign-cdn-test.s3.eu-central-1.amazonaws.com/12813dd5-677a-4afc-812a-f398c263159c",
+                "s3path": "12813dd5-677a-4afc-812a-f398c263159c",
+                "tags": [],
+                "organization_reference": null
+            }],
+            "status": "available",
+            "_id": "60100ce0d9488036f855a6ff"
+        }, {
+            "name": {"it": "Petit Plateau"},
+            "description": {"it": "3 tipi di ostriche, 2 vongole bretoni, 2 mandorle di mare, 5 bulots, 2 gamberi rossi, 2 gamberi grigi"},
+            "category": "plateau",
+            "price": {"value": 30, "currency": "EUR"},
+            "new": 0,
+            "photos": [{
+                "_id": "60100d9c01e2fa30162e78d2",
+                "dimension": {"height": 1080, "width": 1920},
+                "mime_type": "image/jpeg",
+                "name": "photo menù",
+                "size": 824845,
+                "src": "https://dsign-cdn-test.s3.eu-central-1.amazonaws.com/611fea6c-7979-4c03-9102-4c96f426890b",
+                "s3path": "611fea6c-7979-4c03-9102-4c96f426890b",
+                "tags": [],
+                "organization_reference": null
+            }],
+            "status": "available",
+            "_id": "60100d7ce3abfe229cc1aee4"
+        }, {
+            "name": {"it": "Carpaccio di Branzino"},
+            "description": {"it": "Carpaccio di branzino"},
+            "category": "raw-fish",
+            "price": {"value": 14, "currency": "EUR"},
+            "new": 0,
+            "photos": [{
+                "_id": "6009c384dcb47a077b1b323c",
+                "dimension": {"height": 1080, "width": 1920},
+                "mime_type": "image/jpeg",
+                "name": "photo menù",
+                "size": 158180,
+                "src": "https://dsign-cdn-test.s3.eu-central-1.amazonaws.com/49956ab1-3ec5-4206-93fb-3b7f99e4cd6b",
+                "s3path": "49956ab1-3ec5-4206-93fb-3b7f99e4cd6b",
+                "tags": [],
+                "organization_reference": null
+            }],
+            "status": "available",
+            "_id": "6009c36849f999f3af80e840"
+        }, {
+            "name": {"it": "Carpaccio di Salmone"},
+            "description": {"it": "Carpaccio di salmone"},
+            "category": "raw-fish",
+            "price": {"value": 14, "currency": "EUR"},
+            "new": 0,
+            "photos": [],
+            "status": "available",
+            "_id": "6009c39f7a958122f6cd4080"
+        }, {
+            "name": {"it": "Carpaccio di pescato del giorno"},
+            "description": {"it": "Carpaccio di pescato del giorno"},
+            "category": "raw-fish",
+            "price": {"value": 16, "currency": "EUR"},
+            "new": 0,
+            "photos": [{
+                "_id": "60100b0ad0a24f50580bead2",
+                "dimension": {"height": 1080, "width": 1920},
+                "mime_type": "image/jpeg",
+                "name": "photo menù",
+                "size": 366177,
+                "src": "https://dsign-cdn-test.s3.eu-central-1.amazonaws.com/7ba7dae9-47bd-4205-88c0-f1c42665225b",
+                "s3path": "7ba7dae9-47bd-4205-88c0-f1c42665225b",
+                "tags": [],
+                "organization_reference": null
+            }],
+            "status": "available",
+            "_id": "60100ae6ed28b0dbad473173"
+        }, {
+            "name": {"it": "Tartare di salmone"},
+            "description": {"it": "Tartare di salmone"},
+            "category": "raw-fish",
+            "price": {"value": 16, "currency": "EUR"},
+            "new": 0,
+            "photos": [{
+                "_id": "60100b2ed0a24f50580bead3",
+                "dimension": {"height": 1080, "width": 1920},
+                "mime_type": "image/jpeg",
+                "name": "photo menù",
+                "size": 268677,
+                "src": "https://dsign-cdn-test.s3.eu-central-1.amazonaws.com/9682a2b5-d435-404e-99f2-5a29eb2f6444",
+                "s3path": "9682a2b5-d435-404e-99f2-5a29eb2f6444",
+                "tags": [],
+                "organization_reference": null
+            }],
+            "status": "available",
+            "_id": "60100b17c1ace2f6d2ddcca0"
+        }, {
+            "name": {"it": "Tartare di pescato del giorno"},
+            "description": {"it": "Tartare di pescato del giorno"},
+            "category": "raw-fish",
+            "price": {"value": 16, "currency": "EUR"},
+            "new": 0,
+            "photos": [{
+                "_id": "60100b55d0a24f50580bead4",
+                "dimension": {"height": 1080, "width": 1920},
+                "mime_type": "image/jpeg",
+                "name": "photo menù",
+                "size": 141339,
+                "src": "https://dsign-cdn-test.s3.eu-central-1.amazonaws.com/6a5fa0b5-bd36-4782-8a4d-babf3374f4e1",
+                "s3path": "6a5fa0b5-bd36-4782-8a4d-babf3374f4e1",
+                "tags": [],
+                "organization_reference": null
+            }],
+            "status": "available",
+            "_id": "60100b3798e882c818c89986"
+        }, {
+            "name": {"it": "Tartare di Tonno"},
+            "description": {"it": "Tartare di Tonno"},
+            "category": "raw-fish",
+            "price": {"value": 16, "currency": "EUR"},
+            "new": 0,
+            "photos": [{
+                "_id": "60100b86d0a24f50580bead5",
+                "dimension": {"height": 1080, "width": 1920},
+                "mime_type": "image/jpeg",
+                "name": "photo menù",
+                "size": 141339,
+                "src": "https://dsign-cdn-test.s3.eu-central-1.amazonaws.com/0091539b-37a8-4414-8ba6-2913112b231a",
+                "s3path": "0091539b-37a8-4414-8ba6-2913112b231a",
+                "tags": [],
+                "organization_reference": null
+            }],
+            "status": "available",
+            "_id": "60100b73dbbdf5f6da7fb7bc"
+        }, {
+            "name": {"it": "Degustazione di crudi"},
+            "description": {"it": "Degustazione di crudi"},
+            "category": "raw-fish",
+            "price": {"value": 18, "currency": "EUR"},
+            "new": 0,
+            "photos": [{
+                "_id": "60100ba92548ce4bbc0ea392",
+                "dimension": {"height": 1080, "width": 1920},
+                "mime_type": "image/jpeg",
+                "name": "photo menù",
+                "size": 190284,
+                "src": "https://dsign-cdn-test.s3.eu-central-1.amazonaws.com/d1e43731-2f85-4cb5-aab3-4681b9bf1405",
+                "s3path": "d1e43731-2f85-4cb5-aab3-4681b9bf1405",
+                "tags": [],
+                "organization_reference": null
+            }],
+            "status": "available",
+            "_id": "60100b8f799ead54cf6e775c"
+        }]
+
     }
-};
+}
