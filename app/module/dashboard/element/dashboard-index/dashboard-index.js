@@ -806,7 +806,7 @@ class DashboardIndex extends LocalizeMixin(AclMixin(ServiceInjectorMixin(Polymer
                       <div class="">
                         <p class="name">Martina</p>
                         <p class="role">Creative</p>
-                        <p class="desc">Lorem Ipsum doloret sit amet, is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard</p>
+                        <p class="desc">Appassionata di comunicazione e grafica, martina una ne fa e mille ne pensa</p>
                         </div>
                     </div>
                   </div>
