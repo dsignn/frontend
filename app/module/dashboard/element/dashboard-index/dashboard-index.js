@@ -337,6 +337,10 @@ class DashboardIndex extends LocalizeMixin(AclMixin(ServiceInjectorMixin(Polymer
         margin: 50px auto 20px;
     }
     
+    footer {
+        padding-top: 30px;
+    }
+    
     .slideshow-container {
       width: 60%;
       min-height: 180px;
@@ -686,8 +690,8 @@ class DashboardIndex extends LocalizeMixin(AclMixin(ServiceInjectorMixin(Polymer
               </div>
               <div class="container box">
                 <div class="intro-description center start">
-                    <h2 class="margin-0">Hai mai pensato a un menu digitale per il tuo ristorante?</h2>
-                    <a class="button yellow" on-tap="openLogin">Scopri di piu</a>
+                    <h2 class="margin-0">{{localize('thinking')}}</h2>
+                    <a class="button yellow" on-tap="openLogin">{{localize('find-more')}}</a>
                 </div>
                 </div>
                 </div>
@@ -786,9 +790,9 @@ class DashboardIndex extends LocalizeMixin(AclMixin(ServiceInjectorMixin(Polymer
                   <div class="flex">
                     <div class="step">
                       <div class="">
-                        <p class="name">Antonino</p>
+                        <p class="name">Antonio</p>
                         <p class="role">CTO</p>
-                        <p class="desc">Lorem Ipsum doloret sit amet, is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard</p>
+                        <p class="desc">01110011 01100011 01100101 01101101 01101111 00100000 01100011 01101000 01101001 00100000 01101100 01100101 01100111 01100111 01100101</p>
                       </div>
                     </div>
                     <div class="step">
@@ -809,7 +813,7 @@ class DashboardIndex extends LocalizeMixin(AclMixin(ServiceInjectorMixin(Polymer
                 </div>        
             </div>     
           </div>
-          <footer style="line-height: 120px; background-color: #015b63; color: white; text-align:center;">© 2020 Digital Signage - Il tuo benessere a tavola | Partita IVA 01234567899</footer>
+          <footer style="line-height: 120px; background-color: #015b63; color: white; text-align:center;">© 2020 Dsign - Buon appetito </footer>
         </template>
         <template is="dom-if" if="{{isAllowed('dashboard', 'index-logged')}}">
             <active-menu></active-menu>

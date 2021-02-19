@@ -510,7 +510,7 @@ class DsignMenu extends LocalizeMixin(ServiceInjectorMixin(PolymerElement)) {
             interval: {
                 type: Number,
                 readOnly: true,
-                value: 400000
+                value: 30000
             }
         };
     }

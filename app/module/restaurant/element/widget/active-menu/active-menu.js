@@ -25,6 +25,23 @@ class ActiveMenu extends LocalizeMixin(ServiceInjectorMixin(PolymerElement)) {
                 .center {
                     text-align: center;
                 }
+                
+                h2 {
+                    padding: 0 10px;
+                }
+                
+                @media (max-width: 790px) {
+                    .center {
+                        display: flex;
+                        flex-direction: column;
+                        align-items: center;
+                    }
+                    
+                    paper-button {
+                        margin-bottom: 10px;
+                        width: fit-content;
+                    }
+                }
     
             </style>
             <template is="dom-if" if="{{!isEntityMenu('general')}}">

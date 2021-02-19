@@ -119,6 +119,14 @@ class DsignApp extends LocalizeMixin(AclMixin(ServiceInjectorMixin(PolymerElemen
             margin-bottom: 20px;
         }
         
+        #menuBtn {
+            : none;
+        }
+        
+        #menuDrawer {
+            --app-drawer-width: 64px;
+        }
+        
         .user-me-container {
              @apply --layout-horizontal;
              @apply --layout-justified;
@@ -147,19 +155,12 @@ class DsignApp extends LocalizeMixin(AclMixin(ServiceInjectorMixin(PolymerElemen
      
       <div id="menuStatic">
         <iron-selector id="menuStaticSelector" selected="[[page]]" attr-for-selected="name" class="drawer-list" role="navigation">
-           <!--
-          <div class="layout vertical center-center icon-wrapper">
-         
-             TODO remove
-            <paper-icon-button icon="arrow-right" on-tap="tapDrawer"></paper-icon-button>
-           
-          </div>
-           -->
         </iron-selector>
       </div>
       <app-header-layout fullbleed>
         <app-header slot="header" fixed effects="waterfall">
           <app-toolbar>
+            <paper-icon-button id="menuBtn" icon="menu" on-tap="tapMenuDrawer"></paper-icon-button>
             <div main-title>Dsing</div>
             <paper-icon-button icon="account" on-tap="tapAuthDrawer"></paper-icon-button>
           </app-toolbar>
@@ -172,6 +173,9 @@ class DsignApp extends LocalizeMixin(AclMixin(ServiceInjectorMixin(PolymerElemen
           </iron-pages>
         </div>
       </app-header-layout>
+      <app-drawer id="menuDrawer" align="left"  swipe-open open>
+      
+      </app-drawer>
       <app-drawer id="authDrawer" align="right"  swipe-open open>
         <div class="layout vertical start-aligned icon-wrapper height-100">
           <template is="dom-if" if="{{isAllowed('application', 'login')}}">
@@ -264,7 +268,8 @@ class DsignApp extends LocalizeMixin(AclMixin(ServiceInjectorMixin(PolymerElemen
     this.updateHeightMenu();
     document.body.onresize = (event) => {
       this.updateHeightMenu();
-    }
+      this.updateMenuVisibility();
+    };
   }
 
   /**
@@ -288,14 +293,9 @@ class DsignApp extends LocalizeMixin(AclMixin(ServiceInjectorMixin(PolymerElemen
       icon.module = application.modules[cont];
       this.$.menuStaticSelector.appendChild(icon);
 
-      /*
-      // TODO remove
-      drawerIcon = icon.cloneNode(true);
-      drawerIcon.module = application.modules[cont];
-      drawerIcon.viewText = true;
-
-      this.$.menuDrawer.appendChild(drawerIcon);
-      */
+      icon = icon.cloneNode(true);
+      icon.module = application.modules[cont];
+      this.$.menuDrawer.appendChild(icon);
     }
   }
 
@@ -324,7 +324,7 @@ class DsignApp extends LocalizeMixin(AclMixin(ServiceInjectorMixin(PolymerElemen
    *
    * @param Event event
    */
-  tapDrawer(event) {
+  tapMenuDrawer(event) {
     this.$.menuDrawer.open();
   }
 
@@ -342,16 +342,61 @@ class DsignApp extends LocalizeMixin(AclMixin(ServiceInjectorMixin(PolymerElemen
     this._authService.logout();
   }
 
+  /**
+   *
+   */
   hideMenu() {
+    this.hideSmallMenu();
+    this.hideBigMenu();
+  }
+
+  /**
+   *
+   */
+  showMenu() {
+    if (window.innerWidth > 700) {
+      this.showBigMenu();
+      this.hideSmallMenu();
+    } else {
+      this.showSmallMenu();
+      this.hideBigMenu();
+    }
+  }
+
+  /**
+   *
+   */
+  showBigMenu() {
+    this.$.menuStatic.style.display = 'block';
+    this.shadowRoot.querySelector('app-header-layout').style.marginLeft = '64px';
+    this.shadowRoot.querySelector('app-header').style.left = '64px';
+  }
+
+  hideBigMenu() {
     this.$.menuStatic.style.display = 'none';
     this.shadowRoot.querySelector('app-header-layout').style.marginLeft = '0';
     this.shadowRoot.querySelector('app-header').style.left = '0';
   }
 
-  showMenu() {
-    this.$.menuStatic.style.display = 'block';
-    this.shadowRoot.querySelector('app-header-layout').style.marginLeft = '64px';
-    this.shadowRoot.querySelector('app-header').style.left = '64px';
+  /**
+   *
+   */
+  showSmallMenu() {
+    this.$.menuBtn.style.display = 'block'
+  }
+
+  /**
+   *
+   */
+  hideSmallMenu() {
+    this.$.menuBtn.style.display = 'none'
+  }
+
+  /**
+   *
+   */
+  updateMenuVisibility() {
+      this.showMenu();
   }
 
   /**

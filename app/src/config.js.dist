@@ -12,7 +12,7 @@ export const config = {
     app: {
         basePath: 'http://127.0.0.1:8081/',
         moduleRelativePath: 'module',
-        rootPath: 'http://127.0.0.200'
+        menuPath: 'http://127.0.0.200'
     },
     modules:  [
         {
@@ -40,7 +40,8 @@ export const config = {
                         extension: 'js'
                     }
                 }
-            ]
+            ],
+            "widgets": []
         },
         {
             "title": "Restaurant",
@@ -64,6 +65,15 @@ export const config = {
                         nameFile: 'restaurant-icons',
                         extension: 'js'
                     }
+                }
+            ],
+            "widgets": [
+                {
+                    "src": "restaurant/element/widget/active-menu/active-menu.js",
+                    "description": "Widget to view tagged timeslot",
+                    "name": "Timeslot tags",
+                    "wc": "active-menu",
+
                 }
             ]
         },
@@ -114,6 +124,8 @@ export const config = {
                         extension: 'js'
                     }
                 }
+            ],
+            "widgets": [
             ]
         },
         {
@@ -139,7 +151,8 @@ export const config = {
                         extension: 'js'
                     }
                 }
-            ]
+            ],
+            "widgets": [ ]
         },
         /*
         {

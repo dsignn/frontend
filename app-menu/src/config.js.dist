@@ -9,7 +9,7 @@ export const config = {
     "menu": {
         "_id": "5ff983ead0e4fb4c0b2c1512",
         "organization": {
-            "_id": "5f9d962420ad2a55f40a8fa6",
+            "_id": "5f8dbe2601983b21c01c4224",
             "name": "rrr",
             "normalize_name": "rrr",
             "qr_code": {"id": "5fa1660520ad2a55f40a8fa8", "collection": "resource"},
@@ -32,7 +32,7 @@ export const config = {
         "background_header": "#0b112b",
         "color_header": "yellow",
         "enable": true,
-        "layout_type": "dsign-menu-item-image",
+        "layout_type": "dsign-menu-item-compress",
         "items": [
             {
             "name": {"it": "Catalana di gamberi"},
@@ -51,7 +51,7 @@ export const config = {
                 "tags": [],
                 "organization_reference": null
             }],
-            "status": "available",
+            "status": "over",
             "_id": "6009a602bddf2e9ec0c3de4b"
         }, {
             "name": {"it": "Pinzimonio con verdure e crostacei"},
@@ -70,7 +70,7 @@ export const config = {
                 "tags": [],
                 "organization_reference": null
             }],
-            "status": "available",
+            "status": "not-available",
             "_id": "6009a611c8588aa85d4e0eac"
         }, {
             "name": {"it": "Antipasto da condivisione (2 caldi e 2 freddi)"},
@@ -79,7 +79,7 @@ export const config = {
             "price": {"value": 18, "currency": "EUR"},
             "new": 0,
             "photos": [],
-            "status": "available",
+            "status": "over",
             "_id": "5ffc3b65d0e4fb4c0b2c1513"
         }, {
             "name": {"it": "Gratinato da tradizione"},
@@ -219,7 +219,7 @@ export const config = {
             "price": {"value": 55, "currency": "EUR"},
             "new": 0,
             "photos": [],
-            "status": "available",
+            "status": "over",
             "_id": "60100bbf17045288c7eb3b29"
         }, {
             "name": {"it": "Plateau Royale"},
