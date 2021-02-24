@@ -157,7 +157,7 @@ class MenuItemViewUpsert extends LocalizeMixin(ServiceInjectorMixin(PolymerEleme
                     </paper-listbox>
                  </dsign-paper-dropdown-menu>
                  <div class="price">
-                    <paper-input value="{{menuItem.price.value}}" type="number" name="price[value]" label="{{localize('price')}}" required>
+                    <paper-input value="{{menuItem.price.value}}" type="number" name="price[value]" label="{{localize('price')}}">
                         <iron-icon icon="restaurant:eur" slot="suffix"></iron-icon>
                     </paper-input>
                  </div>

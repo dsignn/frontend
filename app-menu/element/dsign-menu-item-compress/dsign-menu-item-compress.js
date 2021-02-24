@@ -170,9 +170,11 @@ class DsignMenuItemCompress extends ItemFavorite(LocalizeMixin(ServiceInjectorMi
         <div id="image" class="header">
             <div class="triangle"></div>
             <div class="status-dish">{{localize(statusLabel)}}</div>
-            <div class="price">
-                {{_computePrice(menuItem.price)}} €
-            </div>
+            <template is="dom-if" if="{{hasPrice}}">
+                <div class="price">
+                    {{_computePrice(menuItem.price)}} €
+                </div>
+            </template>
         </div>
         <div class="content">
              <div class="header-card-title">{{_capitalize(menuItem.name.it)}}</div>

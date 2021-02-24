@@ -33,6 +33,7 @@ import '../dsign-menu-wrap-item/dsing-menu-wrap-item';
 import '../dsign-menu-favorites/dsign-menu-favorites';
 import '../dsign-badge/dsing-badge';
 import '../dsign-logo/dsing-logo';
+import '../dsign-info/dsing-info';
 import {lang} from './language';
 
 // Gesture events like tap and track generated from touch will not be
@@ -381,7 +382,7 @@ class DsignMenu extends LocalizeMixin(ServiceInjectorMixin(PolymerElement)) {
     <app-header-layout fullbleed>
       <app-header slot="header" fixed effects="waterfall">
         <app-toolbar>
-            <template is="dom-if" if="{{hasLogo}}">
+            <template is="_menuStorage" if="{{hasLogo}}">
                 <dsign-logo organization="{{organization}}"></dsign-logo>
             </template>
             <div class="search flex-row">
@@ -910,6 +911,21 @@ class DsignMenu extends LocalizeMixin(ServiceInjectorMixin(PolymerElement)) {
 
         if (menu.layout_type) {
             this._setLayoutType(menu.layout_type);
+        }
+
+        if (menu.note) {
+            console.log('NOTE', menu.note);
+            let ele = document.querySelector('dsign-info');
+            if (!ele) {
+                ele = document.createElement('dsign-info');
+                document.body.appendChild(ele);
+            }
+            ele.text = menu.note;
+        } else {
+            let ele = document.querySelector('dsign-info');
+            if (ele) {
+                ele.remove();
+            }
         }
 
         this.appendStylesheetColor();

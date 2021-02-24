@@ -46,6 +46,10 @@ class DashboardIndex extends LocalizeMixin(AclMixin(ServiceInjectorMixin(Polymer
         .row {
             @apply --layout-horizontal;
         }
+        
+        .row-responsive {
+            @apply --layout-horizontal;
+        }
 
         .center {
           @apply --layout-center-center;           
@@ -338,7 +342,24 @@ class DashboardIndex extends LocalizeMixin(AclMixin(ServiceInjectorMixin(Polymer
     }
     
     footer {
-        padding-top: 30px;
+         padding-top: 70px;
+         background-color: #015b63;
+         color: white; 
+         display: flex;
+         align-items: center;
+         justify-content: center;
+    }
+    
+    footer div {
+        padding-bottom: 25px;
+    }
+    
+    footer div:nth-child(2) {
+        padding-left: 25px;
+    }
+    
+    footer div a {
+        padding-left: 25px;
     }
     
     .slideshow-container {
@@ -553,7 +574,12 @@ class DashboardIndex extends LocalizeMixin(AclMixin(ServiceInjectorMixin(Polymer
     background-size: 100%;
     background-image: url(https://dsign-asset.s3.eu-central-1.amazonaws.com/logo.png);
     transform: translate(-10px, -25px);
-}
+    }
+    
+    .facebook {
+        width: 40px;
+        height: 40px;
+    }
 
     .intro-description {
       text-align: left;
@@ -585,6 +611,21 @@ class DashboardIndex extends LocalizeMixin(AclMixin(ServiceInjectorMixin(Polymer
     .margin-0 {
         margin: 0;
     }
+    
+    
+    
+    .icon-footer {
+        color: white;
+        width: ;
+        --iron-icon-height: 50px;
+        --iron-icon-width: 50px;
+    }
+    
+    .icon-work {
+        color: var(--app-primary-color);
+        --iron-icon-height: 20px;
+        --iron-icon-width: 20px;
+    }
 
     @media only screen and (max-width: 1000px) {
       .team {
@@ -612,72 +653,91 @@ class DashboardIndex extends LocalizeMixin(AclMixin(ServiceInjectorMixin(Polymer
     }
     
     @media only screen and (max-width: 600px) {
+    
+      .row-responsive {
+            @apply --layout-vertical;
+        }
+        
       .logo {
         transform: translate(-7px, -20px);
         height: 270px;
         width: 270px;
-    }
-
-    .container-logo {
-      height: 256px;
-      width: 256px;
-    }
-
-    h2, .welcome h2 {
-        font-size: 2.3em;
-        text-align:center;
-    }
-      
-    .flex {
-      flex-flow: row wrap;
-      justify-content: center;
-    }
-
-    .flex div {
-        display: block;
-        width: 49.5%;
-    }
-
-    #how .text-block .flex .step {
-        width: 90%;
-    }
-
-    #how .text-block .flex .step p {
-      margin-top: 60px;
-      margin-bottom: 35px;
-    }
-
-    .intro-description {
-        max-width: 90%;
-        text-align: center;
-    }
+        }
+    
+        .container-logo {
+          height: 256px;
+          width: 256px;
+        }
+    
+        h2, .welcome h2 {
+            font-size: 2.3em;
+            text-align:center;
+        }
           
-      .welcome .container.box {
-        margin: 50px 5%;
-      }
-
-      .left, .right {
-        font-size: 80px;
-        width: 15%;
-     }
-
-    .slideshow-container {
-      min-height: 150px;
-     }  
-
-      #team .flex {
-        margin-top: 50px;
-      }
-
-      #team .text-block .flex .step div {
-        padding: 120px 10px 50px;
-        width: auto;
-      }
-
-      #team .text-block .flex .step {
-        width: 100%;
-        margin: 130px 0 0;
-     }
+        .flex {
+          flex-flow: row wrap;
+          justify-content: center;
+        }
+    
+        .flex div {
+            display: block;
+            width: 49.5%;
+        }
+    
+        #how .text-block .flex .step {
+            width: 90%;
+        }
+    
+        #how .text-block .flex .step p {
+          margin-top: 60px;
+          margin-bottom: 35px;
+        }
+    
+        .intro-description {
+            max-width: 90%;
+            text-align: center;
+        }
+              
+          .welcome .container.box {
+            margin: 50px 5%;
+          }
+    
+          .left, .right {
+            font-size: 80px;
+            width: 15%;
+         }
+    
+        .slideshow-container {
+          min-height: 150px;
+         }  
+    
+          #team .flex {
+            margin-top: 50px;
+          }
+    
+          #team .text-block .flex .step div {
+            padding: 120px 10px 50px;
+            width: auto;
+          }
+    
+          #team .text-block .flex .step {
+            width: 100%;
+            margin: 130px 0 0;
+         }
+         
+         footer {
+            flex-direction: column;
+            
+         }
+     
+         footer div:nth-child(2) {
+            padding-left:  0;
+         }
+    
+         footer div a {
+             padding-right: 25px;
+             padding-bottom: 25px;
+         }
     }
         
       </style>
@@ -791,7 +851,13 @@ class DashboardIndex extends LocalizeMixin(AclMixin(ServiceInjectorMixin(Polymer
                     <div class="step">
                       <div class="">
                         <p class="name">Antonio</p>
-                        <p class="role">CTO</p>
+                        <p class="role">
+                            CTO
+                            <a class="icon-work" href="https://www.linkedin.com/in/antonino-visalli-7996a4a2/" target="_blank" 
+                             !important;">
+                                <iron-icon icon="linkedin"></iron-icon>     
+                            </a>
+                        </p>
                         <p class="desc">01110011 01100011 01100101 01101101 01101111 00100000 01100011 01101000 01101001 00100000 01101100 01100101 01100111 01100111 01100101</p>
                       </div>
                     </div>
@@ -813,7 +879,17 @@ class DashboardIndex extends LocalizeMixin(AclMixin(ServiceInjectorMixin(Polymer
                 </div>        
             </div>     
           </div>
-          <footer style="line-height: 120px; background-color: #015b63; color: white; text-align:center;">© 2020 Dsign - Buon appetito </footer>
+          <footer>
+            <div>© 2020 Dsign - Buon appetito</div> 
+            <div class="row-responsive">
+                <a class="icon-footer" href="https://www.facebook.com/Ds-ign-106670881473065/" target="_blank">
+                    <iron-icon icon="facebook"></iron-icon>
+                </a>
+                <a class="icon-footer" href="https://www.instagram.com/ds_ign_/" target="_blank">
+                    <iron-icon icon="instagram"></iron-icon>     
+                </a>
+              </div>
+          </footer>
         </template>
         <template is="dom-if" if="{{isAllowed('dashboard', 'index-logged')}}">
             <active-menu></active-menu>

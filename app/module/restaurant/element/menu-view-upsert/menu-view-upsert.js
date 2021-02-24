@@ -6,6 +6,7 @@ import {StorageEntityMixin} from "@dsign/polymer-mixin/storage/entity-mixin";
 import {MongoIdGenerator} from "@dsign/library/src/storage/util/MongoIdGenerator";
 import {Auth} from "../../../../src/authentication/Auth";
 import '@polymer/paper-input/paper-input';
+import '@polymer/paper-input/paper-textarea';
 import '@fluidnext-polymer/paper-input-color/paper-input-color';
 import '@polymer/paper-card/paper-card';
 import '@polymer/iron-form/iron-form';
@@ -268,6 +269,7 @@ class MenuViewUpsert extends StorageEntityMixin(NotifyMixin(LocalizeMixin(Servic
                         </dsign-paper-dropdown-menu>
                         <paper-input-color name="backgroundHeader" label="{{localize('background-header')}}" value="{{entity.backgroundHeader}}" required></paper-input-color>
                         <paper-input-color name="colorHeader" label="{{localize('color-header')}}" value="{{entity.colorHeader}}" required></paper-input-color>
+                        <paper-textarea name="note" label="{{localize('note')}}" value="{{entity.note}}"></paper-textarea>
                         <div class="action padding-top-52">
                             <paper-button class="margin-0" on-tap="submitMenuButton">{{localize(labelAction)}}</paper-button>
                         </div>

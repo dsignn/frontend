@@ -164,9 +164,11 @@ class DsignMenuItemImage extends ItemFavorite(LocalizeMixin(ServiceInjectorMixin
         <div id="image" class="image">
             <div class="triangle"></div>
             <div class="status-dish">{{localize(statusLabel)}}</div>
-            <div class="price">
-                {{_computePrice(menuItem.price)}} €
-            </div>
+            <template is="dom-if" if="{{hasPrice}}">
+                <div class="price">
+                    {{_computePrice(menuItem.price)}} €
+                </div>
+            </template>
             <dsign-badge id="badgeMenu" for="btn-menu" label="{{dishCount}}" class="red" offset-x="-2"></dsign-badge>
             <paper-icon-button icon="add" id="btn-menu"  on-tap="addFavorite"></paper-icon-button>
         </div>

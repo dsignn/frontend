@@ -173,10 +173,10 @@ class DsignApp extends LocalizeMixin(AclMixin(ServiceInjectorMixin(PolymerElemen
           </iron-pages>
         </div>
       </app-header-layout>
-      <app-drawer id="menuDrawer" align="left"  swipe-open open>
+      <app-drawer id="menuDrawer" align="left" swipe-open open>
       
       </app-drawer>
-      <app-drawer id="authDrawer" align="right"  swipe-open open>
+      <app-drawer id="authDrawer" align="right" swipe-open open>
         <div class="layout vertical start-aligned icon-wrapper height-100">
           <template is="dom-if" if="{{isAllowed('application', 'login')}}">
             <div class="auth-container">
@@ -396,7 +396,9 @@ class DsignApp extends LocalizeMixin(AclMixin(ServiceInjectorMixin(PolymerElemen
    *
    */
   updateMenuVisibility() {
-      this.showMenu();
+      if (this._authService && this._authService.getIdentity()) {
+        this.showMenu();
+      }
   }
 
   /**
@@ -447,6 +449,8 @@ class DsignApp extends LocalizeMixin(AclMixin(ServiceInjectorMixin(PolymerElemen
 
     if (authService.getIdentity()) {
       this.showMenu();
+    } else {
+      this.hideMenu();
     }
   }
 

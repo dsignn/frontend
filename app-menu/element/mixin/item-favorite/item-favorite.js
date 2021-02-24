@@ -17,10 +17,19 @@ export const ItemFavorite = (superClass) => {
 
                 },
 
+                hasPrice: {
+                    type: Boolean,
+                    readOnly: true,
+                    notify: true,
+                    value: true
+                },
+
                 /**
                  * @type object
                  */
-                menuItem: { },
+                menuItem: {
+                    observer: '_menuItemChanged'
+                },
 
                 /**
                  * @type Number
@@ -38,7 +47,6 @@ export const ItemFavorite = (superClass) => {
             };
         }
 
-
         /**
          * @param menuItem
          */
@@ -55,6 +63,18 @@ export const ItemFavorite = (superClass) => {
 
                     this.dishCount = data.totalCount;
                 });
+        }
+
+        /**
+         * @param menuItem
+         * @private
+         */
+        _menuItemChanged(menuItem) {
+            if (!menuItem || !menuItem.price || !menuItem.price.value)  {
+                this._setHasPrice(false);
+            } else {
+                this._setHasPrice(true);
+            }
         }
 
         /**
