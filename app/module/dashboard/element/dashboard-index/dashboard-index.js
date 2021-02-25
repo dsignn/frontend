@@ -523,13 +523,13 @@ class DashboardIndex extends LocalizeMixin(AclMixin(ServiceInjectorMixin(Polymer
     
     #team .text-block .flex .step:first-child div:before {
       content: "";
-      background: url(https://previews.123rf.com/images/jemastock/jemastock1608/jemastock160801531/61219186-flat-design-face-of-man-icon-vector-illustration.jpg);
+      background: url(https://dsign-asset.s3.eu-central-1.amazonaws.com/av-avatar.jpeg);
       background-size: contain;
     }
     
     #team .text-block .flex .step:nth-child(2) div:before {
       content: "";
-      background: url(https://previews.123rf.com/images/jemastock/jemastock1608/jemastock160801531/61219186-flat-design-face-of-man-icon-vector-illustration.jpg);
+      background: url(https://dsign-asset.s3.eu-central-1.amazonaws.com/ps-avatar.jpeg);
       background-size: contain;
       }
         
@@ -853,8 +853,7 @@ class DashboardIndex extends LocalizeMixin(AclMixin(ServiceInjectorMixin(Polymer
                         <p class="name">Antonio</p>
                         <p class="role">
                             CTO
-                            <a class="icon-work" href="https://www.linkedin.com/in/antonino-visalli-7996a4a2/" target="_blank" 
-                             !important;">
+                            <a class="icon-work" href="https://www.linkedin.com/in/antonino-visalli-7996a4a2/" target="_blank" !important;">
                                 <iron-icon icon="linkedin"></iron-icon>     
                             </a>
                         </p>

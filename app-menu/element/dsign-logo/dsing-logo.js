@@ -34,7 +34,7 @@ class DsignLogo extends PolymerElement {
                 border-radius: 50%;
                 background-position: center center;
                 background-repeat: no-repeat;
-                background-size: contain;
+                background-size: cover;
             }
         </style>
         <div class="container">
