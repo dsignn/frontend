@@ -382,7 +382,7 @@ class DsignMenu extends LocalizeMixin(ServiceInjectorMixin(PolymerElement)) {
     <app-header-layout fullbleed>
       <app-header slot="header" fixed effects="waterfall">
         <app-toolbar>
-            <template is="_menuStorage" if="{{hasLogo}}">
+            <template is="dom-if" if="{{hasLogo}}">
                 <dsign-logo organization="{{organization}}"></dsign-logo>
             </template>
             <div class="search flex-row">
