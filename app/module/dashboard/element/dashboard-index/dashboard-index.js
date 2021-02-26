@@ -535,7 +535,7 @@ class DashboardIndex extends LocalizeMixin(AclMixin(ServiceInjectorMixin(Polymer
         
     #team .text-block .flex .step:nth-child(3) div:before {
       content: "";
-      background: url(https://previews.123rf.com/images/jemastock/jemastock1608/jemastock160801531/61219186-flat-design-face-of-man-icon-vector-illustration.jpg);
+      background: url(https://dsign-asset.s3.eu-central-1.amazonaws.com/mb-avatar.jpeg);
       background-size: contain;
       }
     
