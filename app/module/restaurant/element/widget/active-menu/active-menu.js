@@ -208,7 +208,6 @@ class ActiveMenu extends LocalizeMixin(ServiceInjectorMixin(PolymerElement)) {
         }
 
         this.updateOrganizzationEntity = new Listener((evt) => {
-            console.log('test')
             if (this.entityRestaurant  && evt.data.id ===  this.entityRestaurant.id) {
                 this.entityRestaurant = evt.data;
                 this.notifyPath('entityRestaurant');
@@ -230,6 +229,26 @@ class ActiveMenu extends LocalizeMixin(ServiceInjectorMixin(PolymerElement)) {
         if (!storage || !authService) {
             return;
         }
+
+        authService.eventManager.on(
+            'login',
+            (data) => {
+                setTimeout(
+                    () => {
+                        this.checkMenu();
+                    },
+                    100
+                );
+            }
+        );
+
+        authService.eventManager.on(
+            'logout',
+            (data) => {
+                this.entityMenu = null;
+            }
+        );
+
         this.checkMenu();
     }
 

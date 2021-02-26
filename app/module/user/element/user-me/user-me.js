@@ -134,7 +134,14 @@ class UserMe extends StorageCrudMixin(FormErrorMessage(ServiceInjectorMixin(Poly
         service.eventManager.on(
             Auth.IDENTITY,
             () =>  {
-                console.log('evento')
+                this._setUserData(service.getIdentity());
+            }
+        );
+
+        service.eventManager.on(
+            Auth.LOGOUT,
+            (evt) => {
+                this._setUserData(null);
             }
         );
 

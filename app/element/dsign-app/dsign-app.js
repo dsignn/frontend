@@ -451,6 +451,8 @@ class DsignApp extends LocalizeMixin(AclMixin(ServiceInjectorMixin(PolymerElemen
       this.showMenu();
     } else {
       this.hideMenu();
+      window.history.pushState("", "", "");
+      this.page = "dashboard";
     }
   }
 
