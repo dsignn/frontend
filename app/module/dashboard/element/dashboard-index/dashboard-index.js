@@ -626,6 +626,10 @@ class DashboardIndex extends LocalizeMixin(AclMixin(ServiceInjectorMixin(Polymer
         --iron-icon-height: 20px;
         --iron-icon-width: 20px;
     }
+    
+     .row-responsive.mail {
+            padding-left: 20px;
+         }
 
     @media only screen and (max-width: 1000px) {
       .team {
@@ -737,6 +741,10 @@ class DashboardIndex extends LocalizeMixin(AclMixin(ServiceInjectorMixin(Polymer
          footer div a {
              padding-right: 25px;
              padding-bottom: 25px;
+         }
+         
+         .row-responsive.mail {
+            padding-left: 0;
          }
     }
         
@@ -887,6 +895,12 @@ class DashboardIndex extends LocalizeMixin(AclMixin(ServiceInjectorMixin(Polymer
                 <a class="icon-footer" href="https://www.instagram.com/ds_ign_/" target="_blank">
                     <iron-icon icon="instagram"></iron-icon>     
                 </a>
+                <a class="icon-footer" href="mailto:info@ds-ign.it">
+                    <iron-icon icon="mail"></iron-icon>     
+                </a>
+              </div>
+              <div class="row-responsive mail">
+                   info@ds-ign.it
               </div>
           </footer>
         </template>
