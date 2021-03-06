@@ -257,6 +257,10 @@ class MenuItem extends LocalizeMixin(ServiceInjectorMixin(PolymerElement)) {
 
         if (Array.isArray(menuItem.photos) && menuItem.photos.length > 0) {
             this.loadResource(menuItem.photos[0].id);
+            this.$.leftSection.style.borderRight = `none`;
+        } else {
+            this.$.leftSection.style.backgroundImage = `url(https://dsign-asset.s3.eu-central-1.amazonaws.com/dish-not-found.png)`;
+            this.$.leftSection.style.borderRight = `1px solid #eeeeee`;
         }
     }
 
