@@ -5,6 +5,7 @@ import {lang} from './language';
 import {Listener} from "@dsign/library/src/event/Listener";
 import {Localize} from "@dsign/library/src/localize/Localize";
 import '@fluidnext-polymer/paper-input-file/paper-input-file';
+import {TranslateTransform} from "../../../../src/util/TranslateTransform";
 
 /**
  * @class MenuItem
@@ -56,6 +57,11 @@ class MenuItem extends LocalizeMixin(ServiceInjectorMixin(PolymerElement)) {
                    height: 27px;
                    font-size: 18px;
                }
+               
+               .name-header {
+                 @apply --layout-horizontal;
+                 @apply --layout-justified;
+               }
                 
                .middle-info {
                    @apply --layout-horizontal;
@@ -66,6 +72,10 @@ class MenuItem extends LocalizeMixin(ServiceInjectorMixin(PolymerElement)) {
                .category,
                .description {
                    color: #757575; 
+               }
+               
+               .category {
+                    font-style: italic;
                }
                 
                .description {
@@ -101,6 +111,15 @@ class MenuItem extends LocalizeMixin(ServiceInjectorMixin(PolymerElement)) {
                     overflow: hidden;
                 } 
                 
+                paper-menu-button {
+                    padding: 0;
+                    --paper-icon-button : {
+                         padding: 0 !important;
+                         width: 28px;
+                         height: 28px;
+                    }
+                }
+                
                 [capitalize] {
                     text-transform: capitalize;
                 }
@@ -115,23 +134,25 @@ class MenuItem extends LocalizeMixin(ServiceInjectorMixin(PolymerElement)) {
                 </div>             
                 <div id="rightSection">
                     <div id="content">
-                        <div class="name" capitalize>{{name}}</div>
+                        <div class="name-header">
+                            <div class="name" capitalize>{{name}}</div>
+                            <template is="dom-if" if="{{showCrud}}">
+                                <paper-menu-button ignore-select horizontal-align="right">
+                                    <paper-icon-button icon="v-menu" slot="dropdown-trigger" alt="multi menu"></paper-icon-button>
+                                    <paper-listbox slot="dropdown-content" multi>
+                                        <paper-item on-click="_update">{{localize('modify')}}</paper-item>
+                                        <paper-item  on-click="_delete">{{localize('delete')}}</paper-item>
+                                    </paper-listbox>
+                                </paper-menu-button>
+                            </template>
+                        </div>
                         <div class="middle-info">
-                          <div class="category" capitalize>{{menuItem.category}}</div>
-                          <div class="price">{{menuItem.price.value}} €</div>
+                          <div class="category" capitalize>{{localize(menuItem.category)}}</div>
+                          <template is="dom-if" if="{{showPrice}}">
+                                <div class="price">{{menuItem.price.value}} €</div>
+                          </template>
                         </div>
                         <div class="description">{{description}}</div>
-                    </div>
-                    <div id="crud">
-                        <template is="dom-if" if="{{showCrud}}">
-                            <paper-menu-button ignore-select horizontal-align="right">
-                                <paper-icon-button icon="v-menu" slot="dropdown-trigger" alt="multi menu"></paper-icon-button>
-                                <paper-listbox slot="dropdown-content" multi>
-                                    <paper-item on-click="_update">{{localize('modify')}}</paper-item>
-                                    <paper-item  on-click="_delete">{{localize('delete')}}</paper-item>
-                                </paper-listbox>
-                            </paper-menu-button>
-                        </template>
                     </div>
                 </div>
             </paper-card>`;
@@ -169,6 +190,7 @@ class MenuItem extends LocalizeMixin(ServiceInjectorMixin(PolymerElement)) {
                 value: false
             },
 
+
             show: {
                 reflectToAttribute: true,
                 observer: 'changedShow',
@@ -177,6 +199,12 @@ class MenuItem extends LocalizeMixin(ServiceInjectorMixin(PolymerElement)) {
 
             showCrud: {
                 type: Boolean,
+                value: false
+            },
+
+            showPrice: {
+                type: Boolean,
+                readOnly: true,
                 value: false
             },
 
@@ -216,7 +244,8 @@ class MenuItem extends LocalizeMixin(ServiceInjectorMixin(PolymerElement)) {
     static get observers() {
         return [
             '_activeMenuItem(menuItem, _localizeService)',
-            '_changedMenuItem(menuItem, _resourceStorage)'
+            '_changedMenuItem(menuItem, _resourceStorage)',
+            'changeApiCategory(apiCategory, _merge)'
         ]
     }
 
@@ -229,6 +258,21 @@ class MenuItem extends LocalizeMixin(ServiceInjectorMixin(PolymerElement)) {
         super.ready();
         this.$.formResource.addEventListener('iron-form-presubmit', this.submitResource.bind(this));
     }
+
+
+    /**
+     * @param value
+     */
+    changeApiCategory(value, merge) {
+        if (!value || !merge) {
+            return;
+        }
+
+        this.resources = this._merge.merge(this.resources, TranslateTransform.entityFormatToElementFormat(value));
+        this.categories = Object.keys(value);
+        this.notifyPath('menuItem.category')
+    }
+
 
     /**
      * @param service
@@ -261,6 +305,12 @@ class MenuItem extends LocalizeMixin(ServiceInjectorMixin(PolymerElement)) {
         } else {
             this.$.leftSection.style.backgroundImage = `url(https://dsign-asset.s3.eu-central-1.amazonaws.com/dish-not-found.png)`;
             this.$.leftSection.style.borderRight = `1px solid #eeeeee`;
+        }
+
+        if(menuItem.price && menuItem.price.value) {
+            this._setShowPrice(true);
+        } else {
+            this._setShowPrice(false);
         }
     }
 

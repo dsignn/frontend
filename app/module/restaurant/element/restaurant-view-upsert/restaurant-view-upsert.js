@@ -117,6 +117,17 @@ class RestaurantViewUpsert extends FormErrorMessage(StorageEntityMixin(NotifyMix
                    @apply --layout-flex-3;
                 }
             }
+                       
+            @media (max-width: 450px) {
+                .action {
+                     @apply  --layout-vertical;
+       
+                }
+                
+                paper-button {
+                    margin-top: 8px;;
+                }
+            }
         </style>
         <slot name="header"></slot>
         <div id="container">

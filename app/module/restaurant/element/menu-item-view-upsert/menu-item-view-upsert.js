@@ -147,7 +147,7 @@ class MenuItemViewUpsert extends LocalizeMixin(ServiceInjectorMixin(PolymerEleme
             <form method="post">
                  <paper-input value="{{menuItem.name.it}}" name="name[it]" label="{{localize('name-dish')}}" required></paper-input>
                  <!--<paper-input name="name[en]" label="{{localize('name-en')}}" required></paper-input>-->
-                 <paper-input value="{{menuItem.description.it}}" name="description[it]" label="{{localize('description')}}" required></paper-input>
+                 <paper-input value="{{menuItem.description.it}}" name="description[it]" label="{{localize('description')}}"></paper-input>
                  <!--<paper-input name="description[en]" label="{{localize('description-en')}}" required></paper-input>-->
                  <dsign-paper-dropdown-menu value="{{menuItem.category}}" id="category" name="category" label="{{localize('category')}}" required>
                     <paper-listbox slot="dropdown-content">
@@ -210,16 +210,12 @@ class MenuItemViewUpsert extends LocalizeMixin(ServiceInjectorMixin(PolymerEleme
             _flattenService: {
                 readOnly: true
             },
-        };
-    }
 
-    /**
-     * @inheritDoc
-     */
-    static get observers() {
-        return [
-            'loadMenuCategory(_menuCategoryStorage, _merge)'
-        ]
+
+            apiCategory: {
+                observer: 'changeApiCategory'
+            }
+        };
     }
 
     constructor() {
@@ -233,22 +229,16 @@ class MenuItemViewUpsert extends LocalizeMixin(ServiceInjectorMixin(PolymerEleme
     }
 
     /**
-     * @param loadMenuCategory
-     * @param merge
+     *
+     * @param value
      */
-    loadMenuCategory(loadMenuCategory, merge) {
-        if (!loadMenuCategory || !merge) {
+    changeApiCategory(value) {
+        if (!value) {
             return;
         }
 
-        this._menuCategoryStorage.getAll()
-            .then((categories) => {
-                this.resources = this._merge.merge(
-                    this.resources,
-                    TranslateTransform.entityFormatToElementFormat(categories)
-                );
-                this.categories = Object.keys(categories);
-            })
+        this.resources = this._merge.merge(this.resources, TranslateTransform.entityFormatToElementFormat(value));
+        this.categories = Object.keys(value);
     }
 
     /**

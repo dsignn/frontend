@@ -33,7 +33,8 @@ export const lang = {
     "dsign-menu-item-compress": "Layout senza immagine",
     "add-item-menu": "Aggiungi voce di menù",
     "update-item-menu": "Modifica voce di menù",
-    "note": "Dettagli menù (menù fisso con quantità ad esempio)"
+    "note": "Dettagli menù (menù fisso con quantità ad esempio)",
+    "preview": "Preview",
   },
   "en": {
     "name-menu": "Name menu",
@@ -68,6 +69,7 @@ export const lang = {
     "dsign-menu-item-compress": "Layout without image",
     "add-item-menu": "Add menu item",
     "update-item-menu": "Update menu item",
-    "note": "Dettagli menù (menù fisso con quantità ad esempio)"
+    "note": "Dettagli menù (menù fisso con quantità ad esempio)",
+    "preview": "Preview",
   }
 };

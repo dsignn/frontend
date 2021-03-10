@@ -19,6 +19,7 @@ import '../menu-item/menu-item';
 import '../../../../element/dsign-paper-dropdown/dsign-paper-dropdown';
 import '../menu-item-view-upsert/menu-item-view-upsert';
 import {lang} from './language';
+import {TranslateTransform} from "../../../../src/util/TranslateTransform";
 
 
 /**
@@ -143,6 +144,14 @@ class MenuViewUpsert extends StorageEntityMixin(NotifyMixin(LocalizeMixin(Servic
                 width: 100%;
                 padding: 10px;
             }
+            
+            #preview {
+                display: none;
+            }
+            
+            paper-button {
+                text-align: center;
+            }
                   
             @media only screen and (max-width: 2600px) and (min-width: 2201px) {
                 menu-item {
@@ -251,6 +260,18 @@ class MenuViewUpsert extends StorageEntityMixin(NotifyMixin(LocalizeMixin(Servic
                     @apply --layout-flex;
                 }
             }
+            
+             @media (max-width: 450px) {
+                .action.main {
+                     @apply  --layout-vertical;
+       
+                }
+                
+                .main paper-button {
+                    margin: 0;
+                    margin-top: 8px;
+                }
+            }
         </style>
         <slot name="header"></slot>
         <div id="container">
@@ -270,8 +291,9 @@ class MenuViewUpsert extends StorageEntityMixin(NotifyMixin(LocalizeMixin(Servic
                         <paper-input-color name="backgroundHeader" label="{{localize('background-header')}}" value="{{entity.backgroundHeader}}" required></paper-input-color>
                         <paper-input-color name="colorHeader" label="{{localize('color-header')}}" value="{{entity.colorHeader}}" required></paper-input-color>
                         <paper-textarea name="note" label="{{localize('note')}}" value="{{entity.note}}"></paper-textarea>
-                        <div class="action padding-top-52">
-                            <paper-button class="margin-0" on-tap="submitMenuButton">{{localize(labelAction)}}</paper-button>
+                        <div class="action main padding-top-52">
+                            <paper-button on-tap="submitMenuButton">{{localize(labelAction)}}</paper-button>
+                            <paper-button id="preview" on-tap="openPreview">{{localize('preview')}}</paper-button>
                         </div>
                     </form>
                 </iron-form>
@@ -279,7 +301,7 @@ class MenuViewUpsert extends StorageEntityMixin(NotifyMixin(LocalizeMixin(Servic
             <div id="content-right">
                 <paper-card>
                     <h2>{{localize(menuItemLabel)}}</h2>
-                    <menu-item-view-upsert id="menuItemViewUpsert" on-menu-item-save="appendMenuItem" on-menu-item-update="modifyMenuItem" menu-item="{{menuItem}}"></menu-item-view-upsert>
+                    <menu-item-view-upsert id="menuItemViewUpsert" on-menu-item-save="appendMenuItem" on-menu-item-update="modifyMenuItem" menu-item="{{menuItem}}" api-category="{{apiCategory}}"></menu-item-view-upsert>
                     <div class="action">
                         <paper-button on-tap="submitMenuItem">{{localize(labelActionMenuItem)}}</paper-button>
                     </div>
@@ -289,7 +311,7 @@ class MenuViewUpsert extends StorageEntityMixin(NotifyMixin(LocalizeMixin(Servic
         <h2>{{localize('menu-title')}}</h2>
         <div id="menuItemContainer">
              <template id="items" is="dom-repeat" items="[[entity.items]]" as="menuItem">
-                 <menu-item menu-item="{{menuItem}}" index$="{{index}}" on-delete="_deleteMenuItem" on-update="_updateMenuItem" on-upload-file="uploadFile" show="{{showUpdateMenuItem}}" show-crud></menu-item>
+                 <menu-item menu-item="{{menuItem}}" index$="{{index}}" on-delete="_deleteMenuItem" on-update="_updateMenuItem" on-upload-file="uploadFile" show="{{showUpdateMenuItem}}" api-category="{{apiCategory}}" show-crud></menu-item>
              </template>
         </div>`;
     }
@@ -354,6 +376,11 @@ class MenuViewUpsert extends StorageEntityMixin(NotifyMixin(LocalizeMixin(Servic
                 value: 'menu-item-title'
             },
 
+
+            apiCategory: {
+                notify: true,
+            },
+
             /**
              * @type object
              */
@@ -408,7 +435,8 @@ class MenuViewUpsert extends StorageEntityMixin(NotifyMixin(LocalizeMixin(Servic
     static get observers() {
         return [
             'changeOrganizationStorage(_organizationStorage, _authService)',
-            '_changeLayoutType(layoutType, _localizeService)'
+            '_changeLayoutType(layoutType, _localizeService)',
+            'loadMenuCategory(_menuCategoryStorage, _merge)'
         ]
     }
 
@@ -420,6 +448,22 @@ class MenuViewUpsert extends StorageEntityMixin(NotifyMixin(LocalizeMixin(Servic
     ready() {
         super.ready();
         this.$.formMenu.addEventListener('iron-form-presubmit', this.submitMenu.bind(this));
+    }
+
+    /**
+     * @param loadMenuCategory
+     * @param merge
+     */
+    loadMenuCategory(loadMenuCategory, merge) {
+        if (!loadMenuCategory || !merge) {
+            return;
+        }
+
+        this._menuCategoryStorage.getAll()
+            .then((categories) => {
+                this.apiCategory = categories;
+                this.notifyPath('apiCategory');
+            })
     }
 
     /**
@@ -456,13 +500,24 @@ class MenuViewUpsert extends StorageEntityMixin(NotifyMixin(LocalizeMixin(Servic
 
         this.labelAction = 'save';
         if (!newValue) {
+            this.$.preview.style.display = 'none';
             return;
         }
 
         if (newValue.id) {
             this.labelAction = 'update';
             this.showUpdateMenuItem = true;
+            this.$.preview.style.display = 'block';
         }
+    }
+
+    /**
+     * @param evt
+     */
+    openPreview(evt) {
+        console.log('open')
+        window.open(`${this._config.app.menuPath}/__previews?id=${this.entity.id}`,"_blank")
+
     }
 
     /**
