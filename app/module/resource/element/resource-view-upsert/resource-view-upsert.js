@@ -11,7 +11,6 @@ import '@polymer/iron-form/iron-form';
 import '@polymer/iron-icon/iron-icon';
 import '@polymer/paper-button/paper-button';
 import '@polymer/paper-card/paper-card';
-import '@fluidnext-polymer/paper-input-file/icons/paper-input-file-icons';
 import '@fluidnext-polymer/paper-input-file/paper-input-file';
 import '@polymer/paper-tooltip/paper-tooltip';
 import {lang} from './language';

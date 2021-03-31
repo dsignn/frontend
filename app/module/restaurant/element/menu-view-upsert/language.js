@@ -1,7 +1,6 @@
 export const lang = {
   "it": {
     "name-menu": "Nome menù",
-    "enable": "Menù attivo",
     "name-it": "Nome (italiano)",
     "description-it": "Descrizione (italiano)",
     "description": "Descrizione",
@@ -35,10 +34,15 @@ export const lang = {
     "update-item-menu": "Modifica voce di menù",
     "note": "Dettagli menù (menù fisso con quantità ad esempio)",
     "preview": "Preview",
+    "indoor": "Status nel locale",
+    "delivery": "Status delivery",
+    "date": "Status data",
+    "disable": "Status disattivo",
+    "enable-order": "Abilita gli ordini",
+    "date-activation": "Data di abilitazione del menù"
   },
   "en": {
     "name-menu": "Name menu",
-    "enable": "Menù enable",
     "name-it": "Name (italian)",
     "description-it": "Description (italian)",
     "name-en": "Name (english)",
@@ -71,5 +75,11 @@ export const lang = {
     "update-item-menu": "Update menu item",
     "note": "Dettagli menù (menù fisso con quantità ad esempio)",
     "preview": "Preview",
+    "indoor": "Status indoor",
+    "delivery": "Status delivery",
+    "date": "Status date",
+    "disable": "Status disable",
+    "enable-order": "Enable order",
+    "date-activation": "Menu date enable"
   }
 };

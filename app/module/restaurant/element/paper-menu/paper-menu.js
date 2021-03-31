@@ -2,6 +2,7 @@ import {html, PolymerElement} from '@polymer/polymer/polymer-element.js';
 import {ServiceInjectorMixin} from "@dsign/polymer-mixin/service/injector-mixin"
 import {LocalizeMixin} from "@dsign/polymer-mixin/localize/localize-mixin"
 import {StorageEntityMixin} from "@dsign/polymer-mixin/storage/entity-mixin"
+import {MenuEntity} from '../../src/entity/MenuEntity'
 import '@polymer/paper-card/paper-card';
 import '@polymer/paper-tooltip/paper-tooltip';
 import '@polymer/paper-item/paper-item';
@@ -37,6 +38,10 @@ class PaperMenu extends StorageEntityMixin(LocalizeMixin(ServiceInjectorMixin(Po
                 #fastAction {
                     border-right: 1px solid var(--divider-color);
                 }
+                .action {
+                    padding-top: 5px;
+                    padding-bottom: 5px;
+                }
                 
                 #fastAction .action {
                     @apply --layout;
@@ -66,8 +71,12 @@ class PaperMenu extends StorageEntityMixin(LocalizeMixin(ServiceInjectorMixin(Po
                 <div id="left-section"></div>
                 <div id="fastAction">
                     <div class="action">
-                        <paper-toggle-button id="paperToggleEnable" on-change="_publicMenu" checked="{{entity.enable}}"></paper-toggle-button>
-                        <paper-tooltip for="paperToggleEnable" position="bottom">{{localize('public-menu')}}</paper-tooltip>
+                        <paper-toggle-button id="paperToggleDefault" on-change="_publicMenu" checked="{{enableDefault}}"></paper-toggle-button>
+                        <paper-tooltip for="paperToggleDefault" position="bottom">{{localize('public-menu')}}</paper-tooltip>
+                    </div>
+                          <div class="action">
+                        <paper-toggle-button id="paperToggleDelivery" on-change="_enableDelivery" checked="{{enableDelivery}}"></paper-toggle-button>
+                        <paper-tooltip for="paperToggleDelivery" position="bottom">{{localize('public-delivery')}}</paper-tooltip>
                     </div>
                 </div>
                 <div id="right-section">
@@ -109,11 +118,32 @@ class PaperMenu extends StorageEntityMixin(LocalizeMixin(ServiceInjectorMixin(Po
             },
 
             /**
+             * @type object
+             */
+            entity: {
+                type: Object,
+                notify: true,
+                observer: '_changeEntity',
+            },
+
+            /**
              * @type StorageInterface
              */
             _storage: {
                 type: Object,
                 readOnly: true
+            },
+
+            enableDefault: {
+                type: Boolean,
+                readOnly: true,
+                value: false
+            },
+
+            enableDelivery: {
+                type: Boolean,
+                readOnly: true,
+                value: false
             },
 
             /**
@@ -125,11 +155,70 @@ class PaperMenu extends StorageEntityMixin(LocalizeMixin(ServiceInjectorMixin(Po
         }
     }
 
+    _changeEntity(entity) {
+
+        if (!entity) {
+            return;
+        }
+
+        if (entity.status === MenuEntity.STATUS_DEFAULT  && this.enableDefault === false) {
+            console.log('status', entity.status);
+            this._setEnableDefault(true);
+        }
+
+        if (entity.status !== MenuEntity.STATUS_DEFAULT  && this.enableDefault !== false) {
+            this._setEnableDefault(false);
+        }
+
+        if (entity.status === MenuEntity.STATUS_DELIVERY  && this.enableDelivery === false) {
+            this._setEnableDelivery(true);
+        }
+
+        if (entity.status !== MenuEntity.STATUS_DELIVERY  && this.enableDelivery !== false) {
+            this._setEnableDelivery(false);
+        }
+
+    }
+
+
+    /**
+     * @param evt
+     * @private
+     */
     _publicMenu(evt) {
+
+        this.disableToggle();
+        if (evt.target.checked) {
+            this.entity.status = MenuEntity.STATUS_DEFAULT
+        } else {
+            this.entity.status = MenuEntity.STATUS_DISABLE
+        }
+
         this._storage.update(this.entity)
             .then((data) => {
+                this.enableToggle();
                 this._notify.notify(this.localize('public-menu-ok'));
         })
+
+    }
+
+    /**
+     * @private
+     */
+    _enableDelivery(evt) {
+
+        this.disableToggle();
+        if (evt.target.checked) {
+            this.entity.status = MenuEntity.STATUS_DELIVERY
+        } else {
+            this.entity.status = MenuEntity.STATUS_DISABLE
+        }
+
+        this._storage.update(this.entity)
+            .then((data) => {
+                this.enableToggle();
+                this._notify.notify(this.localize('public-menu-ok'));
+            })
     }
 
     /**
@@ -146,6 +235,16 @@ class PaperMenu extends StorageEntityMixin(LocalizeMixin(ServiceInjectorMixin(Po
      */
     _delete(evt) {
         this.dispatchEvent(new CustomEvent('delete', {detail: this.entity}));
+    }
+
+    disableToggle() {
+        this.$.paperToggleDefault.disabled = true;
+        this.$.paperToggleDelivery.disabled = true;
+    }
+
+    enableToggle() {
+        this.$.paperToggleDefault.disabled = false;
+        this.$.paperToggleDelivery.disabled = false;
     }
 }
 

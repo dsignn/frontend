@@ -401,7 +401,7 @@ class DsignMenu extends LocalizeMixin(ServiceInjectorMixin(PolymerElement)) {
                 </paper-dropdown-menu>
                 <paper-icon-button icon="clear" on-tap="clearCategory" disable down></paper-icon-button>
             </div>
-            <div class="flex-row">
+            <div id="orderButtonContainer" class="flex-row">
                 <paper-icon-button id="btn-menu" icon="v-menu" on-tap="tapMenu"></paper-icon-button>
                 <dsign-badge id="badgeMenu" for="btn-menu" label="{{totalOrder}}" offset-y="6"></dsign-badge>
             </div>
@@ -410,7 +410,7 @@ class DsignMenu extends LocalizeMixin(ServiceInjectorMixin(PolymerElement)) {
       <div id="menuContainer">
           <dom-repeat id="list" items="[[items]]" as="menuItem">
               <template>
-                    <dsign-menu-wrap-item item="[[menuItem]]" type="[[layoutType]]" restaurant="[[organization]]"></dsign-menu-wrap-item>
+                    <dsign-menu-wrap-item item="[[menuItem]]" type="[[layoutType]]" restaurant="[[organization]]" show-order="[[menu.enable_order]]"></dsign-menu-wrap-item>
               </template>
           </dom-repeat>
       </div>
@@ -593,17 +593,6 @@ class DsignMenu extends LocalizeMixin(ServiceInjectorMixin(PolymerElement)) {
      * @param organization
      */
     changeOrganization(organization) {
-
-        if(!organization) {
-            this.$.order.style.visibility = 'hidden';
-            return;
-        }
-
-        if (organization['whatsapp_phone'] && organization.open === true) {
-            this.$.order.style.visibility = 'visibile';
-        } else {
-            this.$.order.style.visibility = 'hidden';
-        }
 
         if (organization && organization["logo"] && organization["logo"]["_id"]) {
             this.hasLogo = true;
@@ -909,12 +898,17 @@ class DsignMenu extends LocalizeMixin(ServiceInjectorMixin(PolymerElement)) {
             this._changeColorHeader(menu.color_header)
         }
 
+        if(menu.enable_order === true) {
+            this.$.orderButtonContainer.style.display = 'block';
+        } else {
+            this.$.orderButtonContainer.style.display = 'none';
+        }
+
         if (menu.layout_type) {
             this._setLayoutType(menu.layout_type);
         }
 
         if (menu.note) {
-            console.log('NOTE', menu.note);
             let ele = document.querySelector('dsign-info');
             if (!ele) {
                 ele = document.createElement('dsign-info');
@@ -1092,7 +1086,7 @@ class DsignMenu extends LocalizeMixin(ServiceInjectorMixin(PolymerElement)) {
 
                     this.menu = JSON.parse(request.response);
                 };
-                request.open("GET", `${this.menuUrl}${this.organization.normalize_name}`);
+                request.open("GET", window.location.href);
                 request.setRequestHeader('accept', 'application/json');
                 request.send();
             },

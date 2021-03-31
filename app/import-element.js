@@ -24,7 +24,6 @@ import '@fluidnext-polymer/paper-input-color/paper-input-color.js'
 import '@fluidnext-polymer/paper-input-color/icons/paper-input-color-icons.js'
 import '@fluidnext-polymer/paper-autocomplete/paper-autocomplete.js'
 import '@fluidnext-polymer/paper-input-file/paper-input-file.js'
-import '@fluidnext-polymer/paper-input-file/icons/paper-input-file-icons.js'
 import '@fluidnext-polymer/paper-chip/paper-chips.js'
 import '@fluidnext-polymer/paper-grid/paper-grid.js'
 import '@fluidnext-polymer/paper-pagination/paper-pagination.js'
@@ -41,3 +40,7 @@ import './element/layout/dsign-global-style.js';
 import './element/layout/dsing-layout';
 import './element/paper-input-points/paper-input-points.js';
 import './element/paper-select-language/paper-select-language.js';
+import './element/paper-input-datepicker/paper-datepicker.js'
+
+
+

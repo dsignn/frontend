@@ -169,8 +169,10 @@ class DsignMenuItemImage extends ItemFavorite(LocalizeMixin(ServiceInjectorMixin
                     {{_computePrice(menuItem.price)}} €
                 </div>
             </template>
-            <dsign-badge id="badgeMenu" for="btn-menu" label="{{dishCount}}" class="red" offset-x="-2"></dsign-badge>
-            <paper-icon-button icon="add" id="btn-menu"  on-tap="addFavorite"></paper-icon-button>
+            <div id="action">
+                <dsign-badge id="badgeMenu" for="btn-menu" label="{{dishCount}}" class="red" offset-x="-2"></dsign-badge>
+                <paper-icon-button icon="add" id="btn-menu"  on-tap="addFavorite"></paper-icon-button>
+            </div>
         </div>
         <div class="content">
             <div class="paragraph-card">{{menuItem.description.it}}</div>

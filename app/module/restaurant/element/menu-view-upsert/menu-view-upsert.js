@@ -5,6 +5,7 @@ import {NotifyMixin} from "@dsign/polymer-mixin/notify/notify-mixin";
 import {StorageEntityMixin} from "@dsign/polymer-mixin/storage/entity-mixin";
 import {MongoIdGenerator} from "@dsign/library/src/storage/util/MongoIdGenerator";
 import {Auth} from "../../../../src/authentication/Auth";
+import {MenuEntity} from "../../src/entity/MenuEntity";
 import '@polymer/paper-input/paper-input';
 import '@polymer/paper-input/paper-textarea';
 import '@fluidnext-polymer/paper-input-color/paper-input-color';
@@ -17,6 +18,8 @@ import '@polymer/paper-card/paper-card';
 import '@polymer/paper-tooltip/paper-tooltip';
 import '../menu-item/menu-item';
 import '../../../../element/dsign-paper-dropdown/dsign-paper-dropdown';
+import '../../../../element/paper-input-datepicker/paper-datepicker';
+import '../../../../element/paper-input-datepicker/icons/paper-input-datepicker-icons';
 import '../menu-item-view-upsert/menu-item-view-upsert';
 import {lang} from './language';
 import {TranslateTransform} from "../../../../src/util/TranslateTransform";
@@ -138,6 +141,10 @@ class MenuViewUpsert extends StorageEntityMixin(NotifyMixin(LocalizeMixin(Servic
             menu-item {
                 flex-basis: 10%;
                 
+            }
+            
+            #statusDate {
+                display: none;
             }
             
             paper-card {
@@ -278,13 +285,22 @@ class MenuViewUpsert extends StorageEntityMixin(NotifyMixin(LocalizeMixin(Servic
             <div id="content-left">
                 <iron-form id="formMenu">
                     <form method="post">
-                        <div class="top">
-                            <paper-input  name="name" label="{{localize('name-menu')}}" value="{{entity.name}}" required></paper-input>
-                            <paper-toggle-button checked="{{entity.enable}}">{{localize('enable')}}</paper-toggle-button>
-                        </div>
+                        <paper-input  name="name" label="{{localize('name-menu')}}" value="{{entity.name}}" required></paper-input>
                         <dsign-paper-dropdown-menu label="{{localize('restaurant')}}" value="{{entity.organization.id}}" required>
                             <paper-listbox id="listboxRestaurant" slot="dropdown-content"></paper-listbox>
                         </dsign-paper-dropdown-menu>
+                        <div  class="action">
+                            <dsign-paper-dropdown-menu label="{{localize('status')}}" value="{{entity.status}}" on-iron-select="changeStatus"  required>
+                                <paper-listbox id="listboxStatus" slot="dropdown-content">
+                                     <template is="dom-repeat" items="[[status]]" as="value">
+                                       <paper-item value="{{value}}">{{localize(value)}}</paper-item>
+                                    </template>
+                                </paper-listbox>
+                            </dsign-paper-dropdown-menu>
+                            <paper-toggle-button id="enableOrder" checked="{{entity.enableOrder}}"></paper-toggle-button>
+                            <paper-tooltip for="enableOrder" position="left">{{localize('enable-order')}}</paper-tooltip>
+                        </div>
+                        <paper-datepicker name="statusDate" id="statusDate" label="{{localize('date-activation')}}" value="{{entity.statusDate}}"></paper-datepicker>
                         <dsign-paper-dropdown-menu label="{{localize('layout-type')}}" value="{{entity.layoutType}}" required>
                             <paper-listbox id="listboxLayoutType" slot="dropdown-content"></paper-listbox>
                         </dsign-paper-dropdown-menu>
@@ -352,9 +368,10 @@ class MenuViewUpsert extends StorageEntityMixin(NotifyMixin(LocalizeMixin(Servic
             status: {
                 notify: true,
                 value: [
-                    'available',
-                    'over',
-                    'not-available'
+                    'indoor',
+                    'delivery',
+               //     'date',
+                    'disable'
                 ]
             },
 
@@ -508,6 +525,21 @@ class MenuViewUpsert extends StorageEntityMixin(NotifyMixin(LocalizeMixin(Servic
             this.labelAction = 'update';
             this.showUpdateMenuItem = true;
             this.$.preview.style.display = 'block';
+        }
+
+        if (newValue.status === MenuEntity.STATUS_DATE) {
+            this.$.statusDate.style.display = 'block';
+        } else {
+            this.$.statusDate.style.display = 'none';
+        }
+    }
+
+    changeStatus(evt) {
+
+        if (evt.detail.item.value === MenuEntity.STATUS_DATE) {
+            this.$.statusDate.style.display = 'block';
+        } else {
+            this.$.statusDate.style.display = 'none';
         }
     }
 

@@ -19,9 +19,19 @@ export class RestaurantEntity extends EntityIdentifier {
         this.normalizeName = null;
 
         /**
-         *
+         * @type {object}
          */
         this.qrCode = {};
+
+        /**
+         * @type {object}
+         */
+        this.qrCodeDelivery = {};
+
+        /**
+         * @type {object}
+         */
+        this.whatsappPhone = {};
     }
 
     /**
@@ -29,7 +39,18 @@ export class RestaurantEntity extends EntityIdentifier {
      */
     hasQrCode () {
         let has = false;
-        if (this.qrCode && this.qrCode.id && this.qrCode.id && typeof this.qrCode.id === 'string' && this.qrCode.id.length > 0) {
+        if (this.qrCode && this.qrCode.id && typeof this.qrCode.id === 'string' && this.qrCode.id.length > 0) {
+            has = true;
+        }
+        return has;
+    }
+
+    /**
+     * @returns {boolean}
+     */
+    hasQrCodeDelivery () {
+        let has = false;
+        if (this.qrCodeDelivery && this.qrCodeDelivery.id && typeof this.qrCodeDelivery.id === 'string' && this.qrCodeDelivery.id.length > 0) {
             has = true;
         }
         return has;

@@ -43,6 +43,13 @@ export const ItemFavorite = (superClass) => {
                  */
                 _menuStorage: {
                     readOnly: true
+                },
+
+                showOrder: {
+                    value:true,
+                    notify: true,
+                    observer: '_showOrderChanged'
+
                 }
             };
         }
@@ -162,6 +169,23 @@ export const ItemFavorite = (superClass) => {
                 .catch((error) => {
                     console.error(error)
                 });
+        }
+
+        /**
+         * @param value
+         * @private
+         */
+        _showOrderChanged(value) {
+
+            if (!this.$.action) {
+                return;
+            }
+
+            if (value) {
+                this.$.action.style.display = 'block';
+            } else {
+                this.$.action.style.display = 'none';
+            }
         }
     }
 };

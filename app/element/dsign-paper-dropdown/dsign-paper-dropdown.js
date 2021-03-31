@@ -354,11 +354,9 @@ class DsignPaperDropdownMenu extends LocalizeMixin(ServiceInjectorMixin(
             return;
         }
 
-        if (!this.valueToView) {
-            let element = this._getElementFromValue(value);
-            if (element) {
-                this.valueToView = element.innerText;
-            }
+        let element = this._getElementFromValue(value);
+        if (element) {
+            this.valueToView = element.innerText;
         }
     }
 

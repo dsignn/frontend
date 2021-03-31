@@ -56,13 +56,19 @@ class DsignMenuWrapItem extends LocalizeMixin(ServiceInjectorMixin(PolymerElemen
             hide: {
                 value: false,
                 observer: '_hideChanged',
+            },
+
+            showOrder: {
+                notify: true,
+                observer: '_showOrderChanged',
             }
         };
     }
 
     static get observers() {
         return [
-            'changeItem(type, item)'
+            'changeItem(type, item, showOrder)',
+            '_showOrderChanged(type, showOrder)'
         ]
     }
 
@@ -84,16 +90,28 @@ class DsignMenuWrapItem extends LocalizeMixin(ServiceInjectorMixin(PolymerElemen
         }
     }
 
-    changeItem(type, item) {
-        if (!type || !item) {
+    changeItem(type, item, showOrder) {
+        if (!type || !item || showOrder === null) {
             return;
         }
 
         let element = document.createElement(type);
         element.menuItem = item;
         element.restaurant = this.restaurant;
+        element.showOrder = showOrder;
         this.$.container.appendChild(element);
 
+    }
+
+    _showOrderChanged(type, showOrder) {
+
+        if (!type || !showOrder) {
+            return
+        }
+        let ele = this.shadowRoot.querySelector(type);
+        if (ele) {
+            ele.showOrder = showOrder;
+        }
     }
 }
 

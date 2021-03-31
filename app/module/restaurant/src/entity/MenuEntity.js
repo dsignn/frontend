@@ -5,6 +5,22 @@ import {EntityIdentifier} from "@dsign/library/src/storage/entity/EntityIdentifi
  */
 export class MenuEntity extends EntityIdentifier {
 
+    static get STATUS_DEFAULT() {
+        return 'indoor';
+    }
+
+    static get STATUS_DELIVERY() {
+        return 'delivery';
+    }
+
+    static get STATUS_DATE() {
+        return 'date';
+    }
+
+    static get STATUS_DISABLE() {
+        return 'disable';
+    }
+
 
     constructor() {
         super();
@@ -25,9 +41,9 @@ export class MenuEntity extends EntityIdentifier {
         this.colorHeader = '#ffffff';
 
         /**
-         * @type {boolean}
+         * @type {string}
          */
-        this.enable = false;
+        this.status = MenuEntity.STATUS_DISABLE;
 
         /**
          * @type {Array}

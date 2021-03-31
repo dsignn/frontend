@@ -179,7 +179,7 @@ class DsignMenuItemCompress extends ItemFavorite(LocalizeMixin(ServiceInjectorMi
         <div class="content">
              <div class="header-card-title">{{_capitalize(menuItem.name.it)}}</div>
              <div class="paragraph-card">{{menuItem.description.it}}</div>
-             <div class="action">
+             <div id="action" class="action">
                  <dsign-badge id="badgeMenu" for="btn-menu" label="{{dishCount}}" class="red" offset-x="-2"></dsign-badge>
                  <paper-icon-button icon="add" id="btn-menu" on-tap="addFavorite"></paper-icon-button>
              </div>

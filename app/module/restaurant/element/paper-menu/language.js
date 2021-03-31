@@ -3,7 +3,8 @@ export const lang = {
     "modify": "Modifica",
     "delete" : "Elimina",
     "enable-monitor" : "Abilita la configurazione sui monitor",
-    "public-menu": "Pubblica menu",
+    "public-menu": "Imposta come menù interno",
+    "public-delivery": "Imposta come menù delivery",
     "public-menu-ok": "Menu pubblicato correttamente"
   },
   "en": {
