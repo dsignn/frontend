@@ -594,6 +594,13 @@ class DsignMenu extends LocalizeMixin(ServiceInjectorMixin(PolymerElement)) {
      */
     changeOrganization(organization) {
 
+        console.log('fdsfsd', organization)
+        if (typeof organization.whatsapp_phone === 'object' && !!organization.whatsapp_phone.number && !!organization.whatsapp_phone.prefix) {
+            this.$.order.style.display = 'flex';
+        } else {
+            this.$.order.style.display = 'none';
+        }
+
         if (organization && organization["logo"] && organization["logo"]["_id"]) {
             this.hasLogo = true;
         }
@@ -814,7 +821,7 @@ class DsignMenu extends LocalizeMixin(ServiceInjectorMixin(PolymerElement)) {
     _sendOrder() {
 
         let ele = document.createElement('a');
-        ele.href = `https://api.whatsapp.com/send?phone=${this.organization.whatsapp_phone}&text=${encodeURIComponent(this._getOrder())}`;
+        ele.href = `https://api.whatsapp.com/send?phone=${this.organization.whatsapp_phone.prefix}${this.organization.whatsapp_phone.number}&text=${encodeURIComponent(this._getOrder())}`;
         ele.target="_blank";
         ele.click();
     }

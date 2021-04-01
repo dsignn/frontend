@@ -183,7 +183,7 @@ class RestaurantViewUpsert extends FormErrorMessage(StorageEntityMixin(NotifyMix
                     <form method="post">
                         <paper-input id="name" name="name" label="{{localize('name-restaurant')}}" value="{{entity.name}}" on-value-changed="changeNameRestaurant" required></paper-input>
                         <div class="action">
-                          <dsign-paper-dropdown-menu id="prefix" value="{{entity.whatsappPhone.prefix}}" id="category" name="category" label="{{localize('prefix')}}" required>
+                          <dsign-paper-dropdown-menu id="prefix" value="{{entity.whatsappPhone.prefix}}" id="category" name="category" label="{{localize('prefix')}}">
                             <paper-listbox slot="dropdown-content">
                                 <template is="dom-repeat" items="[[prefixes]]" as="prefix">
                                    <paper-item value="{{prefix}}">{{prefix}}</paper-item>
