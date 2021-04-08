@@ -144,6 +144,10 @@ const template = html`
                 cursor: help;
             }
             
+            --application-paper-card: {
+                background-color: white;
+            }
+            
             --application-paper-card-left-content: {
                 background-image: url("../../style/icon/placeholder.jpg");
             }

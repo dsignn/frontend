@@ -19,6 +19,7 @@ class MenuActive extends LocalizeMixin(AclMixin(ServiceInjectorMixin(PolymerElem
             :host {
                 padding: 6px;
                 display: block;
+                
             }
                     
             #menuItemContainer {
@@ -40,98 +41,9 @@ class MenuActive extends LocalizeMixin(AclMixin(ServiceInjectorMixin(PolymerElem
                 width: 6px;
             }
             
-            @media only screen and (max-width: 2600px) and (min-width: 2201px) {
-                menu-item {
-                    flex-basis: 12.5%;
-                }
-               
-                paper-menu:nth-child(8n) { 
-                    --paper-card : {
-                       margin-right: 0;
-                    }
-                }
+            menu-item {
+                @apply --menu-active-media;
             }
-    
-            @media only screen and (max-width: 2200px) and (min-width: 1981px) {
-                menu-item {
-                    flex-basis: 14.27%;
-                }
-                
-                menu-item:nth-child(7n) { 
-                    --paper-card : {
-                       margin-right: 0;
-                    }
-                }
-            }  
-           
-            @media only screen and (max-width: 1980px) and (min-width: 1701px) {
-                menu-item {
-                    flex-basis: 16.6%;
-                }
-                
-                menu-item:nth-child(6n) { 
-                    --paper-card : {
-                       margin-right: 0;
-                    }
-                }
-            }  
-                
-            @media only screen and (max-width: 1700px) and (min-width: 1201px) {
-                menu-item {
-                    flex-basis: 20%;
-                }
-                
-                menu-item:nth-child(5n) { 
-                    --paper-card : {
-                       margin-right: 0;
-                    }
-                }
-            }  
-    
-            @media only screen and (max-width: 1200px) and (min-width: 971px) {
-                menu-item {
-                    flex-basis: 25%;
-                }
-               
-                menu-item:nth-child(4n) { 
-                    --paper-card : {
-                       margin-right: 0;
-                    }
-                }
-            }        
-    
-            @media only screen and (max-width: 970px) and (min-width: 771px) {
-                menu-item {
-                    flex-basis: 33.3%;
-                }
-                
-                menu-item:nth-child(3n) { 
-                    --paper-card : {
-                       margin-right: 0;
-                    }
-                }
-            }
-                  
-            @media only screen and (max-width: 770px) and (min-width: 501px) {
-                menu-item {
-                    flex-basis: 50%;
-                }
-                
-                menu-item:nth-child(2n) { 
-                    --paper-card : {
-                       margin-right: 0;
-                    }
-                }
-            }
-           
-            @media only screen and (max-width: 500px)  {
-                 menu-item {
-                    flex-basis: 100%;
-                    --paper-card : {
-                       margin-right: 0;
-                    }
-                }
-            }  
              
             @media (max-width: 700px) {
                 #container {

@@ -30,12 +30,80 @@ class ActiveMenu extends LocalizeMixin(ServiceInjectorMixin(PolymerElement)) {
                     padding: 0 10px;
                 }
                 
+                .menu-container {
+                  @apply --layout-horizontal;
+                    
+                }
+                
+                 .menu-container div {
+                    flex-basis: 50%;
+                 }                
+                
+                @media only screen and (min-width: 2201px) {
+
+                    menu-active {
+                        --menu-active-media : {
+                            flex-basis: 20%;
+                            background-color: pink;
+                        }
+                    }
+                   
+                    menu-active {
+                   
+                        --menu-active-media:nth-child(4) {
+                              margin-right: 0;
+                        }
+                    }
+                }
+                
+                @media only screen and (max-width: 2200px) and (min-width: 1501px) {
+                   
+                    menu-active {
+                        --menu-active-media : {
+                            flex-basis: 33.33%;
+                        }
+                        
+                        --menu-item-paper-card:nth-child(3) {
+                            background-color: red;
+                        }
+                    }
+                }  
+                
+                @media only screen and (max-width: 1500px) and (min-width: 1001px) {
+                   
+                    menu-active {
+                        --menu-active-media : {
+                            flex-basis: 50%;
+                        }
+                    }
+                   
+                    menu-active {
+                   
+                        --menu-active-media:nth-child(2) {
+                              margin-right: 0;
+                        }
+                    }
+                }  
+                
+                                
+                @media only screen and (max-width: 1000px) {
+                   
+                    menu-active {
+                        --menu-active-media : {
+                            flex-basis: 100%;
+                            margin-right: 0;
+                        }
+                    }
+                }  
+    
                 @media (max-width: 790px) {
                     .center {
                         display: flex;
                         flex-direction: column;
                         align-items: center;
                     }
+                    
+            
                     
                     paper-button {
                         margin-bottom: 10px;
@@ -55,15 +123,29 @@ class ActiveMenu extends LocalizeMixin(ServiceInjectorMixin(PolymerElement)) {
                     <template is="dom-if" if="{{!isEntityMenu('hasQrcode')}}">
                         <paper-button on-tap="goToRestaurant">{{localize('load-qrcode-restaurant')}}</paper-button>
                     </template>
+                    <template is="dom-if" if="{{!isEntityMenu('hasQrcodeDelivery')}}">
+                        <paper-button on-tap="goToRestaurant">{{localize('load-qrcode-delivery')}}</paper-button>
+                    </template>
                     <template is="dom-if" if="{{!isEntityMenu('hasLogo')}}">
                         <paper-button on-tap="goToRestaurant">{{localize('load-logo-restaurant')}}</paper-button>
                     </template>
                 </div>
             </template>
-            <template is="dom-if" if="{{isEntityMenu('hasMenu')}}">
-                <div style="padding: 6px; font-size: 34px; text-align: center;">{{localize('active-menu')}}</div>
-                <menu-active entity="{{entityMenu}}"></menu-active>
-            </template>`
+            <div class="menu-container">
+                <template is="dom-if" if="{{isEntityMenu('hasMenu')}}">
+                    <div>
+                        <div style="padding: 6px; font-size: 34px; text-align: center;">{{localize('active-menu')}}</div>
+                        <menu-active entity="{{entityMenu}}"></menu-active>
+                    </div>
+                </template>
+               <template is="dom-if" if="{{isEntityMenu('hasMenuDelivery')}}">
+                    <div>
+                        <div style="padding: 6px; font-size: 34px; text-align: center;">{{localize('active-delivery-menu')}}</div>
+                        <menu-active entity="{{entityMenuDelivery}}"></menu-active>
+                    </div>
+                </template>
+            </div>
+        `
     }
 
     static get properties() {
@@ -74,6 +156,14 @@ class ActiveMenu extends LocalizeMixin(ServiceInjectorMixin(PolymerElement)) {
              * @type FileEntity
              */
             entityMenu: {
+                value: null,
+                notify: true
+            },
+
+            /**
+             * @type FileEntity
+             */
+            entityMenuDelivery: {
                 value: null,
                 notify: true
             },
@@ -117,7 +207,7 @@ class ActiveMenu extends LocalizeMixin(ServiceInjectorMixin(PolymerElement)) {
              */
             isEntityMenu : {
                 type: Function,
-                computed: '_computeEntity(_menuStorage, _organizationStorage, _authService, entityMenu, entityRestaurant)'
+                computed: '_computeEntity(_menuStorage, _organizationStorage, _authService, entityMenu, entityRestaurant, entityMenuDelivery)'
             }
         };
     }
@@ -147,7 +237,7 @@ class ActiveMenu extends LocalizeMixin(ServiceInjectorMixin(PolymerElement)) {
      * @param entity
      * @private
      */
-    _computeEntity(storageMenu, organizationStorage, authService, entityMenu, entityRestaurant) {
+    _computeEntity(storageMenu, organizationStorage, authService, entityMenu, entityRestaurant, entityMenuDelivery) {
         return (type) => {
             if (!storageMenu || !authService || !organizationStorage) {
                 return false;
@@ -158,8 +248,12 @@ class ActiveMenu extends LocalizeMixin(ServiceInjectorMixin(PolymerElement)) {
                     return !!entityMenu && this._isObject(entityRestaurant) && entityRestaurant.qrCode && !!entityRestaurant.qrCode.id &&  entityRestaurant.logo && !!entityRestaurant.logo.id;
                 case 'hasMenu':
                     return !!entityMenu;
+                case 'hasMenuDelivery':
+                    return !!entityMenuDelivery;
                 case 'hasQrcode':
                     return this._isObject(entityRestaurant) && entityRestaurant.qrCode && !!entityRestaurant.qrCode.id;
+                case 'hasQrcodeDelivery':
+                    return this._isObject(entityRestaurant) && entityRestaurant.qrCodeDelivery && !!entityRestaurant.qrCodeDelivery.id;
                 case 'hasLogo':
                     return this._isObject(entityRestaurant) && entityRestaurant.logo && !!entityRestaurant.logo.id;
                 default:
@@ -236,6 +330,7 @@ class ActiveMenu extends LocalizeMixin(ServiceInjectorMixin(PolymerElement)) {
                 setTimeout(
                     () => {
                         this.checkMenu();
+                        this.checkMenu('delivery');
                     },
                     100
                 );
@@ -250,6 +345,7 @@ class ActiveMenu extends LocalizeMixin(ServiceInjectorMixin(PolymerElement)) {
         );
 
         this.checkMenu();
+        this.checkMenu('delivery');
     }
 
     _changeOrganizationStorage(storage, authService) {
@@ -263,12 +359,24 @@ class ActiveMenu extends LocalizeMixin(ServiceInjectorMixin(PolymerElement)) {
     }
 
     /**
-     * @param evt
+     * @param type
      */
-    checkMenu(evt) {
-        this._menuStorage.getAll({enable:true}).then((data) => {
-            if (data.length > 0) {
+    checkMenu(type) {
+
+        var search =  {
+            status: 'indoor'
+        };
+        if (type && type === 'delivery') {
+            search.status = 'delivery'
+        }
+
+        this._menuStorage.getAll(search).then((data) => {
+            if (data.length > 0 && search.status === 'indoor') {
                 this.entityMenu = data[0];
+            }
+
+            if (data.length > 0 && search.status === 'delivery') {
+                this.entityMenuDelivery = data[0];
             }
         });
     }
