@@ -117,9 +117,6 @@ class ActiveMenu extends LocalizeMixin(ServiceInjectorMixin(PolymerElement)) {
                     <h2>{{localize('advice-message')}}</h2>
                 </div>
                 <div class="center">
-                    <template is="dom-if" if="{{!isEntityMenu('hasMenu')}}">
-                        <paper-button on-tap="goToMenu">{{localize('public-menu')}}</paper-button>
-                    </template>
                     <template is="dom-if" if="{{!isEntityMenu('hasQrcode')}}">
                         <paper-button on-tap="goToRestaurant">{{localize('load-qrcode-restaurant')}}</paper-button>
                     </template>
@@ -128,6 +125,9 @@ class ActiveMenu extends LocalizeMixin(ServiceInjectorMixin(PolymerElement)) {
                     </template>
                     <template is="dom-if" if="{{!isEntityMenu('hasLogo')}}">
                         <paper-button on-tap="goToRestaurant">{{localize('load-logo-restaurant')}}</paper-button>
+                    </template>
+                    <template is="dom-if" if="{{!isEntityMenu('hasMenu')}}">
+                        <paper-button on-tap="goToMenu">{{localize('public-menu')}}</paper-button>
                     </template>
                 </div>
             </template>
