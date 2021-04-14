@@ -1,7 +1,7 @@
 import {html, PolymerElement} from "@polymer/polymer/polymer-element";
 import {AclMixin} from "@dsign/polymer-mixin/acl/acl-mixin";
 import {ServiceInjectorMixin} from "@dsign/polymer-mixin/service/injector-mixin";
-import {LocalizeMixin} from "@dsign/polymer-mixin/localize/localize-mixin";
+import {FormErrorMessage} from "../../../../element/mixin/form-error-message/form-error-message";
 import "@polymer/paper-button/paper-button";
 import "@polymer/paper-input/paper-input";
 import "@polymer/iron-form/iron-form";
@@ -10,7 +10,7 @@ import {lang} from './language';
 /**
  * @ResetPassword
  */
-class ResetPassword extends LocalizeMixin(AclMixin(ServiceInjectorMixin(PolymerElement))) {
+class ResetPassword extends FormErrorMessage(AclMixin(ServiceInjectorMixin(PolymerElement))) {
 
     static get template() {
         return html`
@@ -100,9 +100,21 @@ class ResetPassword extends LocalizeMixin(AclMixin(ServiceInjectorMixin(PolymerE
     submitRecoverPassword(evt) {
         evt.preventDefault();
 
-        this.resetPasswordStorage.save(
-            this.$.resetPassword.serializeForm()
-        ).then((data) => {
+        let userData = this.$.resetPassword.serializeForm();
+
+        if (userData.password !== userData.confirmPassword) {
+            console.log('DATA USER ERROR', userData);
+            this.errorMessage(this.$.resetPassword, {
+                message: "Unprocessable Entity",
+                status: 422,
+                errors: {
+                    confirmPassword: this.localize('password-not-equal')
+                }
+            });
+            return;
+        }
+
+        this.resetPasswordStorage.save(userData).then((data) => {
             this._notify.notify(this.localize('reset-password-ok'));
             this.$.resetPassword.reset();
         }).catch((error) => {

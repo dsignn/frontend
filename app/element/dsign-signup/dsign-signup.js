@@ -8,7 +8,6 @@ import "@polymer/paper-input/paper-input";
 import "@polymer/iron-form/iron-form";
 import {layout} from "../layout/dsing-layout";
 import {lang} from './language';
-import {Flatten} from './../../src/transform/Flatten';
 
 /**
  * @DsignSignup
@@ -154,10 +153,8 @@ class DsignSignup extends FormErrorMessage(AclMixin(ServiceInjectorMixin(Polymer
         evt.preventDefault();
 
         let userData = this.$.signupUser.serializeForm();
-        console.log('DATA USER', userData);
 
         if (userData.password !== userData.confirmPassword) {
-            console.log('DATA USER ERROR', userData);
             this.errorMessage(this.$.signupUser, {
                 message: "Unprocessable Entity",
                 status: 422,
@@ -167,7 +164,6 @@ class DsignSignup extends FormErrorMessage(AclMixin(ServiceInjectorMixin(Polymer
             });
             return;
         }
-
 
         this.userStorage.save(userData).then((data) => {
             this._notify.notify(this.localize('signup-ok'));
