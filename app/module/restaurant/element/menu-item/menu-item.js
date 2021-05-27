@@ -61,6 +61,12 @@ class MenuItem extends LocalizeMixin(ServiceInjectorMixin(PolymerElement)) {
                    align-items: center;
                }
                
+               .name-container {
+                   overflow: hidden;
+                   height: 27px;
+                   font-size: 18px;
+               }
+               
                .name-header {
                  @apply --layout-horizontal;
                  @apply --layout-justified;
@@ -81,6 +87,7 @@ class MenuItem extends LocalizeMixin(ServiceInjectorMixin(PolymerElement)) {
                     border-radius: 50%;
                     background-color: red;
                     width: 20px;
+                    min-width: 20px;
                     height: 20px;
                     margin-right: 6px;
                }
@@ -146,7 +153,10 @@ class MenuItem extends LocalizeMixin(ServiceInjectorMixin(PolymerElement)) {
                 <div id="rightSection">
                     <div id="content">
                         <div class="name-header">
-                            <div class="name" capitalize><div id="status"></div>{{name}}</div>
+                            <div class="name" capitalize>
+                                <div id="status"></div>
+                                <div class="name-container">{{name}}</div>    
+                            </div>
                             <paper-tooltip id="tooltip" for="status" position="right"></paper-tooltip>
                             <template is="dom-if" if="{{showCrud}}">
                                 <paper-menu-button ignore-select horizontal-align="right">
