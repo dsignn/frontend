@@ -53,6 +53,11 @@ class DsignMenuWrapItem extends LocalizeMixin(ServiceInjectorMixin(PolymerElemen
                 notify: true
             },
 
+            categories: {
+                notify: true,
+                observer: '_categoriesChanged',
+            },
+
             hide: {
                 value: false,
                 observer: '_hideChanged',
@@ -100,7 +105,18 @@ class DsignMenuWrapItem extends LocalizeMixin(ServiceInjectorMixin(PolymerElemen
         element.restaurant = this.restaurant;
         element.showOrder = showOrder;
         this.$.container.appendChild(element);
+    }
 
+    _categoriesChanged(value) {
+
+        if (!value) {
+            return;
+        }
+
+        let ele = this.shadowRoot.querySelector(this.type);
+        if (ele) {
+            ele.categories = value;
+        }
     }
 
     _showOrderChanged(type, showOrder) {

@@ -14,6 +14,7 @@ import {LocalizeMixin} from "@dsign/polymer-mixin/localize/localize-mixin";
 import {ServiceInjectorMixin} from "@dsign/polymer-mixin/service/injector-mixin";
 import {Storage} from "@dsign/library/src/storage/Storage";
 import {Listener} from "@dsign/library/src/event/Listener";
+import {MergeCategory} from "../mixin/merge-category/merge-category";
 import {mergeDeep} from "@dsign/library/src/object/Utils";
 import '@polymer/app-layout/app-toolbar/app-toolbar';
 import '@polymer/app-layout/app-drawer/app-drawer';
@@ -43,7 +44,7 @@ setPassiveTouchGestures(true);
 /**
  * @class DsignMenu
  */
-class DsignMenu extends LocalizeMixin(ServiceInjectorMixin(PolymerElement)) {
+class DsignMenu extends MergeCategory(LocalizeMixin(ServiceInjectorMixin(PolymerElement))) {
     static get template() {
         return html`
     <style>    
@@ -410,7 +411,7 @@ class DsignMenu extends LocalizeMixin(ServiceInjectorMixin(PolymerElement)) {
       <div id="menuContainer">
           <dom-repeat id="list" items="[[items]]" as="menuItem">
               <template>
-                    <dsign-menu-wrap-item item="[[menuItem]]" type="[[layoutType]]" restaurant="[[organization]]" show-order="[[menu.enable_order]]"></dsign-menu-wrap-item>
+                    <dsign-menu-wrap-item item="[[menuItem]]" type="[[layoutType]]" restaurant="[[organization]]" show-order="[[menu.enable_order]]" categories="{{allCategory}}"></dsign-menu-wrap-item>
               </template>
           </dom-repeat>
       </div>
@@ -594,7 +595,6 @@ class DsignMenu extends LocalizeMixin(ServiceInjectorMixin(PolymerElement)) {
      */
     changeOrganization(organization) {
 
-        console.log('fdsfsd', organization)
         if (typeof organization.whatsapp_phone === 'object' && !!organization.whatsapp_phone.number && !!organization.whatsapp_phone.prefix) {
             this.$.order.style.display = 'flex';
         } else {
@@ -1045,23 +1045,15 @@ class DsignMenu extends LocalizeMixin(ServiceInjectorMixin(PolymerElement)) {
      */
     _attachCategory(categoryDocument) {
 
-        let categoryTranslation = {};
-        let categories = [];
-        let languages = this._localizeService.getLanguages();
-        for (let index = 0; languages.length > index; index++) {
-            categoryTranslation[languages[index]] = {};
-        }
+        this._mergeCategory(categoryDocument);
 
+        let categories = [];
         if (typeof categoryDocument === 'object' && categoryDocument !== null) {
             for (let property1 in categoryDocument) {
                 categories.push(property1);
-                for (let property2 in categoryDocument[property1]) {
-                    categoryTranslation[property2][property1] = categoryDocument[property1][property2];
-                }
             }
         }
 
-        this.resources = mergeDeep(this.resources, categoryTranslation);
         this.categories = categories;
     }
 

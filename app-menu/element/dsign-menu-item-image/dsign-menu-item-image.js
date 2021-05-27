@@ -12,6 +12,7 @@ import {PolymerElement, html} from '@polymer/polymer/polymer-element.js';
 import {LocalizeMixin} from "@dsign/polymer-mixin/localize/localize-mixin";
 import {ServiceInjectorMixin} from "@dsign/polymer-mixin/service/injector-mixin";
 import {ItemFavorite} from "../mixin/item-favorite/item-favorite";
+import {MergeCategory} from "../mixin/merge-category/merge-category";
 import {Storage} from "@dsign/library/src/storage/Storage";
 import '@polymer/paper-dropdown-menu/paper-dropdown-menu';
 import '@polymer/paper-item/paper-item';
@@ -26,7 +27,7 @@ import {lang} from './language';
 /**
  * @class DsignMenuItemImage
  */
-class DsignMenuItemImage extends ItemFavorite(LocalizeMixin(ServiceInjectorMixin(PolymerElement))) {
+class DsignMenuItemImage extends MergeCategory(ItemFavorite(LocalizeMixin(ServiceInjectorMixin(PolymerElement)))) {
     static get template() {
         return html`
     <style> 
@@ -100,6 +101,16 @@ class DsignMenuItemImage extends ItemFavorite(LocalizeMixin(ServiceInjectorMixin
             color: var(--munu-color);
        }  
        
+       .header-card-category {
+            position: absolute;
+            border-radius: 6px;
+            bottom: 4px;
+            left: 4px;
+            padding: 4px;
+            background-color: var(--munu-background-color);
+            color: var(--munu-color);
+       }
+       
         dsign-badge {
          z-index: 1;
          --paper-badge-background: var(--munu-color);
@@ -169,6 +180,7 @@ class DsignMenuItemImage extends ItemFavorite(LocalizeMixin(ServiceInjectorMixin
                     {{_computePrice(menuItem.price)}} €
                 </div>
             </template>
+            <div class="header-card-category">{{localize(category)}}</div>
             <div id="action">
                 <dsign-badge id="badgeMenu" for="btn-menu" label="{{dishCount}}" class="red" offset-x="-2"></dsign-badge>
                 <paper-icon-button icon="add" id="btn-menu"  on-tap="addFavorite"></paper-icon-button>
@@ -191,6 +203,10 @@ class DsignMenuItemImage extends ItemFavorite(LocalizeMixin(ServiceInjectorMixin
         return {
             menuItem: {
 
+            },
+
+            categories: {
+                observer: 'categoriesChange'
             },
 
             services: {
@@ -313,6 +329,18 @@ class DsignMenuItemImage extends ItemFavorite(LocalizeMixin(ServiceInjectorMixin
                 this.enableButton(true);
                 break;
         }
+    }
+
+    /**
+     * @param value
+     */
+    categoriesChange(value) {
+        if (!value) {
+            return;
+        }
+
+        this._mergeCategory(value);
+        this.category = this.menuItem ? this.menuItem.category : '';
     }
 
     /**

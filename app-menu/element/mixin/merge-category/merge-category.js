@@ -1,154 +1,35 @@
 import {mixinBehaviors} from '@polymer/polymer/lib/legacy/class.js';
-import {NotifyMixin} from "@dsign/polymer-mixin/notify/notify-mixin";
 import {LocalizeMixin} from "@dsign/polymer-mixin/localize/localize-mixin";
-import {Storage} from "@dsign/library/src/storage/Storage";
+import {mergeDeep} from "@dsign/library/src/object/Utils";
 
 /**
  * @type {Function}
  */
 export const MergeCategory = (superClass) => {
 
-    return class extends mixinBehaviors([NotifyMixin, LocalizeMixin], superClass) {
-
-        static get properties() {
-            return {
-
-
-            };
-        }
-
-        /**
-         * @param menuItem
-         */
-        initDishCount(menuItem) {
-            if(!this._menuStorage) {
-                return;
-            }
-
-            this._menuStorage.get(menuItem._id)
-                .then((data) => {
-                    if (!data) {
-                        return;
-                    }
-
-                    this.dishCount = data.totalCount;
-                });
-        }
-
-        /**
-         * @param menuItem
-         * @private
-         */
-        _menuItemChanged(menuItem) {
-            if (!menuItem || !menuItem.price || !menuItem.price.value)  {
-                this._setHasPrice(false);
-            } else {
-                this._setHasPrice(true);
-            }
-        }
-
-        /**
-         * @param evt
-         */
-        updateDishCount(evt) {
-
-            if (evt.data._id !== this.menuItem._id) {
-                return;
-            }
-
-            switch (evt.name) {
-                case Storage.POST_SAVE:
-                case Storage.POST_UPDATE:
-                    this.dishCount = evt.data.totalCount;
-                    break;
-                case Storage.POST_REMOVE:
-                    this.dishCount = 0;
-                    break;
-            }
-        }
-
-        /**
-         * @param evt
-         */
-        addFavorite(evt) {
-
-            if(!this._menuStorage || !this.menuItem || !this.restaurant) {
-                return;
-            }
-
-            this._menuStorage.get(this.menuItem._id)
-                .then((data) => {
-                    let method = 'update';
-                    if (!data) {
-                        data = JSON.parse(JSON.stringify(this.menuItem));
-                        data.totalCount = 1;
-                        data.restaurantId = this.restaurant._id;
-                        method = 'save';
-                    } else {
-                        data.totalCount = data.totalCount + 1;
-                    }
-
-                    this._menuStorage[method](data);
-                })
-                .catch((error) => {
-                    console.error(error)
-                });
-        }
-
-        /**
-         * @param evt
-         */
-        addOneFavorite(evt) {
-            if (!this._menuStorage || !this.menuItem) {
-                return;
-            }
-
-            this.menuItem.totalCount = this.menuItem.totalCount + 1;
-            this._menuStorage.update(this.menuItem);
-        }
-
-        /**
-         * @param evt
-         */
-        removeFavorite(evt) {
-            if(!this._menuStorage || !this.menuItem) {
-                return;
-            }
-
-            this._menuStorage.get(this.menuItem._id)
-                .then((data) => {
-                    if (!data) {
-                        return;
-                    }
-
-                    let method = 'delete';
-                    if(data.totalCount > 1) {
-                        data.totalCount = data.totalCount - 1;
-                        method = 'update';
-                    }
-
-                    this._menuStorage[method](data);
-                })
-                .catch((error) => {
-                    console.error(error)
-                });
-        }
+    return class extends mixinBehaviors([LocalizeMixin], superClass) {
 
         /**
          * @param value
          * @private
          */
-        _showOrderChanged(value) {
+        _mergeCategory(categories) {
 
-            if (!this.$.action) {
-                return;
+            let categoryTranslation = {};
+            let languages = this._localizeService.getLanguages();
+            for (let index = 0; languages.length > index; index++) {
+                categoryTranslation[languages[index]] = {};
             }
 
-            if (value) {
-                this.$.action.style.display = 'block';
-            } else {
-                this.$.action.style.display = 'none';
+            if (typeof categories === 'object' && categories !== null) {
+                for (let property1 in categories) {
+                    for (let property2 in categories[property1]) {
+                        categoryTranslation[property2][property1] = categories[property1][property2];
+                    }
+                }
             }
+
+            this.resources = mergeDeep(this.resources, categoryTranslation);
         }
     }
 };

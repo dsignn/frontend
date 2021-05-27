@@ -13,6 +13,7 @@ import {LocalizeMixin} from "@dsign/polymer-mixin/localize/localize-mixin";
 import {ServiceInjectorMixin} from "@dsign/polymer-mixin/service/injector-mixin";
 import {Storage} from "@dsign/library/src/storage/Storage";
 import {ItemFavorite} from "../mixin/item-favorite/item-favorite";
+import {MergeCategory} from "../mixin/merge-category/merge-category";
 import "../dsign-badge/dsing-badge";
 import '@polymer/paper-dropdown-menu/paper-dropdown-menu';
 import '@polymer/paper-item/paper-item';
@@ -29,7 +30,7 @@ import {lang} from './language';
 /**
  * @class DsignMenuItemCompress
  */
-class DsignMenuItemCompress extends ItemFavorite(LocalizeMixin(ServiceInjectorMixin(PolymerElement))) {
+class DsignMenuItemCompress extends MergeCategory(ItemFavorite(LocalizeMixin(ServiceInjectorMixin(PolymerElement)))) {
     static get template() {
         return html`
     <style> 
@@ -72,8 +73,8 @@ class DsignMenuItemCompress extends ItemFavorite(LocalizeMixin(ServiceInjectorMi
            text-rendering: optimizeLegibility;
            font-size: 18px;
            font-weight: 500;
-           height: 32px;
-           line-height: 32px;
+           height: 28px;
+           line-height: 28px;
            display: block;
            padding: 0 6px;
            white-space: nowrap;
@@ -81,16 +82,23 @@ class DsignMenuItemCompress extends ItemFavorite(LocalizeMixin(ServiceInjectorMi
            text-overflow: ellipsis;
        }
        
+      
+       .header-card-category {
+            font-style: italic ;
+            padding: 0 6px;
+            color: #757575;
+       }
+       
        .paragraph-card {
            @apply --layout;
            @apply --layout-start;
            @apply --layout-flex;
-           color: #757575;
            text-overflow: ellipsis;
            padding: 0 6px;
            overflow: hidden;
            -webkit-line-clamp: 2;
-           -webkit-box-orient: vertical;  
+           -webkit-box-orient: vertical;
+           overflow-y: auto;
        }  
        
        [padding-4] {
@@ -178,6 +186,7 @@ class DsignMenuItemCompress extends ItemFavorite(LocalizeMixin(ServiceInjectorMi
         </div>
         <div class="content">
              <div class="header-card-title">{{_capitalize(menuItem.name.it)}}</div>
+             <div class="header-card-category">{{localize(category)}}</div>
              <div class="paragraph-card">{{menuItem.description.it}}</div>
              <div id="action" class="action">
                  <dsign-badge id="badgeMenu" for="btn-menu" label="{{dishCount}}" class="red" offset-x="-2"></dsign-badge>
@@ -195,6 +204,14 @@ class DsignMenuItemCompress extends ItemFavorite(LocalizeMixin(ServiceInjectorMi
     static get properties() {
         return {
             menuItem: { },
+
+            categories: {
+                observer: 'categoriesChange'
+            },
+
+            category: {
+                notify: true
+            },
 
             services: {
                 value: {
@@ -219,6 +236,18 @@ class DsignMenuItemCompress extends ItemFavorite(LocalizeMixin(ServiceInjectorMi
         return [
             '_observeMenu(menuItem, _config, _menuStorage)'
         ];
+    }
+
+    /**
+     * @param value
+     */
+    categoriesChange(value) {
+        if (!value) {
+            return;
+        }
+
+        this._mergeCategory(value);
+        this.category = this.menuItem ? this.menuItem.category : '';
     }
 
     /**
