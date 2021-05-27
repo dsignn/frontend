@@ -56,6 +56,9 @@ class MenuItem extends LocalizeMixin(ServiceInjectorMixin(PolymerElement)) {
                    text-overflow: ellipsis;
                    height: 27px;
                    font-size: 18px;
+                   display: flex;
+                   flex-direction: row;
+                   align-items: center;
                }
                
                .name-header {
@@ -72,6 +75,14 @@ class MenuItem extends LocalizeMixin(ServiceInjectorMixin(PolymerElement)) {
                .category,
                .description {
                    color: #757575; 
+               }
+                
+               #status {
+                    border-radius: 50%;
+                    background-color: red;
+                    width: 20px;
+                    height: 20px;
+                    margin-right: 6px;
                }
                
                .category {
@@ -135,7 +146,8 @@ class MenuItem extends LocalizeMixin(ServiceInjectorMixin(PolymerElement)) {
                 <div id="rightSection">
                     <div id="content">
                         <div class="name-header">
-                            <div class="name" capitalize>{{name}}</div>
+                            <div class="name" capitalize><div id="status"></div>{{name}}</div>
+                            <paper-tooltip id="tooltip" for="status" position="right"></paper-tooltip>
                             <template is="dom-if" if="{{showCrud}}">
                                 <paper-menu-button ignore-select horizontal-align="right">
                                     <paper-icon-button icon="v-menu" slot="dropdown-trigger" alt="multi menu"></paper-icon-button>
@@ -307,6 +319,8 @@ class MenuItem extends LocalizeMixin(ServiceInjectorMixin(PolymerElement)) {
             this.$.leftSection.style.borderRight = `1px solid #eeeeee`;
         }
 
+        this._checkStatus();
+
         if(menuItem.price && menuItem.price.value) {
             this._setShowPrice(true);
         } else {
@@ -378,6 +392,31 @@ class MenuItem extends LocalizeMixin(ServiceInjectorMixin(PolymerElement)) {
         }
 
         this.$.formResource.submit();
+    }
+
+    /**
+     * @private
+     */
+    _checkStatus() {
+
+        if (!this.menuItem ) {
+            return
+        }
+
+        switch (this.menuItem.status) {
+            case 'available':
+                this.$.status.style.backgroundColor = '#015b63';
+                this.$.tooltip.innerText = this.localize('available-status');
+                break;
+            case 'over':
+                this.$.status.style.backgroundColor = '#f0b80e';
+                this.$.tooltip.innerText = this.localize('over-status');
+                break;
+            case 'not-available':
+                this.$.status.style.backgroundColor = '#ff0000';
+                this.$.tooltip.innerText = this.localize('not-available-status');
+                break;
+        }
     }
 
     /**

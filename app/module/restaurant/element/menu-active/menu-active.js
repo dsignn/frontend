@@ -117,6 +117,9 @@ class MenuActive extends LocalizeMixin(AclMixin(ServiceInjectorMixin(PolymerElem
                         _menuStorage :"MenuStorage",
                     }
                 }
+            },
+            _menuCategoryStorage: {
+                readOnly: true,
             }
         };
     }
@@ -135,6 +138,22 @@ class MenuActive extends LocalizeMixin(AclMixin(ServiceInjectorMixin(PolymerElem
             'changeOrganizationStorage(_organizationStorage, _authService)',
             '_changeLayoutType(layoutType, _localizeService)'
         ]
+    }
+
+    /**
+     * @param loadMenuCategory
+     * @param merge
+     */
+    loadMenuCategory(loadMenuCategory, merge) {
+        if (!loadMenuCategory || !merge) {
+            return;
+        }
+
+        this._menuCategoryStorage.getAll()
+            .then((categories) => {
+                this.apiCategory = categories;
+                this.notifyPath('apiCategory');
+            })
     }
 
     /**

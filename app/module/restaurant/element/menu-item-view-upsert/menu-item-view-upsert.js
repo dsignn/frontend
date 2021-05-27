@@ -273,7 +273,9 @@ class MenuItemViewUpsert extends LocalizeMixin(ServiceInjectorMixin(PolymerEleme
         evt.preventDefault();
 
         let data = this._flattenService.unFlatten(this.$.formMenuItem.serializeForm());
-        let menuItem = this._menuItemHydrator.hydrate(data);
+        let menuItemObj = JSON.parse(JSON.stringify(this.menuItem));
+        let menuItem = this._menuItemHydrator.hydrate(menuItemObj);
+        this._menuItemHydrator.hydrate(data, menuItem);
         let event = 'menu-item-save';
 
         // TODO best solution
