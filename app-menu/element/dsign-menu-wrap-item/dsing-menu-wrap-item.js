@@ -104,6 +104,11 @@ class DsignMenuWrapItem extends LocalizeMixin(ServiceInjectorMixin(PolymerElemen
         element.menuItem = item;
         element.restaurant = this.restaurant;
         element.showOrder = showOrder;
+        setTimeout(() => {
+                element.categories = this.categories;
+            },
+            300
+        );
         this.$.container.appendChild(element);
     }
 
