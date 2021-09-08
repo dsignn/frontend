@@ -7,6 +7,7 @@ app/npm-debug.log
 app-menu/npm-debug.log
 build-app
 build-app-menu
+.history
 
 # Node modules
 /node_modules

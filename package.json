@@ -12,8 +12,8 @@
   },
   "scripts": {
     "postinstall": "cd app && npm install && cd ../app-menu/ && npm install",
-    "start-app": "polymer serve --root build-app/production",
-    "start-app-menu": "polymer serve --root build-app-menu/production-es5-bundle",
+    "start-app": "polymer serve --root build-app/production --hostname 127.0.0.156",
+    "start-app-menu": "polymer serve --root build-app-menu/production-es5-bundle --hostname 127.0.0.160",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "repository": {

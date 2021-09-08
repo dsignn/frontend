@@ -878,14 +878,19 @@ class DsignMenu extends MergeCategory(LocalizeMixin(ServiceInjectorMixin(Polymer
         this.items = [];
         this.notifyPath('items');
         this.$.list.render();
+        
+        let tmpMenu = [];
 
         for (let index = 0;  menu.items.length > index; index++) {
             if (menu.items[index].status === 'not-available') {
-                this.splice('menu.items', index, 1);
-                //menu.items.splice(index, 1);
+                continue;
             }
+
+            tmpMenu.push(menu.items[index]);
+
         }
 
+        menu.items = tmpMenu;
         this.items = menu.items;
         //delete this.menu.items;
         setTimeout(

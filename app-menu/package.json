@@ -6,7 +6,7 @@
   "license": "BSD-3-Clause",
   "repository": "Polymer/polymer-starter-kit",
   "scripts": {
-    "start": "polymer serve --root .",
+    "start": "polymer serve --root . --hostname 127.0.0.160",
     "build": "polymer build && rsync -zavhr --delete --update build/* ../build-app-menu && rm -rf build",
     "lint": "polymer lint",
     "test": "polymer test",
