@@ -13,6 +13,9 @@ export const config = {
             menuCategory : {
                 name: "menu-category"
             },
+            menuAllergen : {
+                name: "menu-allergen"
+            },
             rpcQrcode: {
                 name: "generate-qrcode"
             },

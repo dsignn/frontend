@@ -3,6 +3,7 @@ import {ServiceInjectorMixin} from "@dsign/polymer-mixin/service/injector-mixin"
 import {LocalizeMixin} from "@dsign/polymer-mixin/localize/localize-mixin";
 import '@polymer/paper-input/paper-input';
 import '@fluidnext-polymer/paper-autocomplete/paper-autocomplete';
+import '@fluidnext-polymer/paper-chip/paper-chip';
 import '@polymer/iron-form/iron-form';
 import '@polymer/iron-icon/iron-icon';
 import '@polymer/paper-button/paper-button';
@@ -145,29 +146,44 @@ class MenuItemViewUpsert extends LocalizeMixin(ServiceInjectorMixin(PolymerEleme
         </style>
         <iron-form id="formMenuItem">
             <form method="post">
-                 <paper-input value="{{menuItem.name.it}}" name="name[it]" label="{{localize('name-dish')}}" required></paper-input>
-                 <!--<paper-input name="name[en]" label="{{localize('name-en')}}" required></paper-input>-->
-                 <paper-input value="{{menuItem.description.it}}" name="description[it]" label="{{localize('description')}}"></paper-input>
-                 <!--<paper-input name="description[en]" label="{{localize('description-en')}}" required></paper-input>-->
+                 <paper-input value="{{menuItem.name.it}}" name="name[it]" label="{{localize('name-it')}}" required></paper-input>
+                 <paper-input value="{{menuItem.name.en}}"  name="name[en]" label="{{localize('name-en')}}"></paper-input>
+                 <paper-input value="{{menuItem.description.it}}" name="description[it]" label="{{localize('description-it')}}"></paper-input>
+                 <paper-input  value="{{menuItem.description.en}}" name="description[en]" label="{{localize('description-en')}}"></paper-input>
                  <dsign-paper-dropdown-menu value="{{menuItem.category}}" id="category" name="category" label="{{localize('category')}}" required>
                     <paper-listbox slot="dropdown-content">
                         <template is="dom-repeat" items="[[categories]]" as="category">
                            <paper-item value="{{category}}">{{localize(category)}}</paper-item>
                         </template>
                     </paper-listbox>
-                 </dsign-paper-dropdown-menu>
-                 <div class="price">
+                </dsign-paper-dropdown-menu>
+                <div class="price">
                     <paper-input value="{{menuItem.price.value}}" name="price[value]" label="{{localize('price')}}">
                         <iron-icon icon="restaurant:eur" slot="suffix"></iron-icon>
                     </paper-input>
-                 </div>
-                 <dsign-paper-dropdown-menu value="{{menuItem.status}}" id="status" name="status" label="{{localize('status')}}" required>
+                </div>
+                <dsign-paper-dropdown-menu value="{{menuItem.status}}" id="status" name="status" label="{{localize('status')}}" required>
                     <paper-listbox slot="dropdown-content">
                         <template is="dom-repeat" items="[[status]]" as="state">
                            <paper-item value="{{state}}">{{localize(state)}}</paper-item>
                         </template>
                     </paper-listbox>
-                 </dsign-paper-dropdown-menu>
+                </dsign-paper-dropdown-menu>
+                <dsign-paper-dropdown-menu label="{{localize('type-dish')}}" id="typeDish" value="{{menuItem.typeDish}}" on-iron-select="changeStatus"  required>
+                    <paper-listbox id="listboxStatus" slot="dropdown-content">
+                        <template is="dom-repeat" items="[[typeDish]]" as="value">
+                            <paper-item value="{{value}}">{{localize(value)}}</paper-item>
+                        </template>
+                    </paper-listbox>
+                </dsign-paper-dropdown-menu>
+                <dsign-paper-dropdown-menu id="allergen" name="category" label="{{localize('allergens')}}" on-iron-select="selectAllergen">
+                    <paper-listbox slot="dropdown-content">
+                        <template is="dom-repeat" items="[[allergens]]" as="allergen">
+                        <paper-item value="{{allergen}}">{{localize(allergen)}}</paper-item>
+                        </template>
+                    </paper-listbox>
+                </dsign-paper-dropdown-menu>
+                <paper-chips id="tagChips" items="{{menuItem.allergens}}" compute-data-fn="{{translateAllergen}}"></paper-chips>    
             </form>
         </iron-form>`;
     }
@@ -189,6 +205,16 @@ class MenuItemViewUpsert extends LocalizeMixin(ServiceInjectorMixin(PolymerEleme
                     'available',
                     'over',
                     'not-available'
+                ]
+            },
+
+            typeDish: {
+                notify: true,
+                value: [
+                    'generic',
+                    'vegetarian',
+               //     'date',
+                    'vegan'
                 ]
             },
 
@@ -214,6 +240,10 @@ class MenuItemViewUpsert extends LocalizeMixin(ServiceInjectorMixin(PolymerEleme
 
             apiCategory: {
                 observer: 'changeApiCategory'
+            },
+
+            apiAllergen: {
+                observer: 'changeApiAllergen'
             }
         };
     }
@@ -241,6 +271,27 @@ class MenuItemViewUpsert extends LocalizeMixin(ServiceInjectorMixin(PolymerEleme
         this.categories = Object.keys(value);
     }
 
+    translateAllergen(data) {
+        console.log('translate', data);
+        this._localizeService.loca
+        return data;
+    }
+
+        /**
+     *
+     * @param value
+     */
+    changeApiAllergen(value) {
+        if (!value) {
+            return;
+        }
+
+        this.resources = this._merge.merge(this.resources, TranslateTransform.entityFormatToElementFormat(value));
+        this.allergens = Object.keys(value);
+    }
+
+
+
     /**
      *
      */
@@ -258,6 +309,20 @@ class MenuItemViewUpsert extends LocalizeMixin(ServiceInjectorMixin(PolymerEleme
                 }
             })
     };
+
+    /**
+     * @param evt 
+     */
+    selectAllergen(evt) {
+
+        console.log('select', evt);
+        if(!this.menuItem.allergens) {
+            this.menuItem.allergens = [];
+        }
+
+        this.menuItem.allergens.push(evt.detail.item.value);
+        this.notifyPath('menuItem.allergens');
+    }
 
     /**
      *
@@ -288,6 +353,7 @@ class MenuItemViewUpsert extends LocalizeMixin(ServiceInjectorMixin(PolymerEleme
         this.$.formMenuItem.reset();
         this.$.status.reset();
         this.$.category.reset();
+        this.$.typeDish.reset();
         this.menuItem = {};
     }
 }

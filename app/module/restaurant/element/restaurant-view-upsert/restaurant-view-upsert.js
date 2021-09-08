@@ -193,6 +193,7 @@ class RestaurantViewUpsert extends FormErrorMessage(StorageEntityMixin(NotifyMix
                           <!--<paper-input id="prefix" name="prefix" label="{{localize('prefix')}}" value="{{entity.whatsappPhone.prefix}}"></paper-input>-->
                           <paper-input id="whatsappPhone" type="number" name="whatsappPhone" label="{{localize('whatsapp-phone')}}" value="{{entity.whatsappPhone.number}}"></paper-input>
                         </div>
+                        <paper-input id="tableNumber" name="tableNumber" label="{{localize('table-number')}}" type="number" value="{{entity.tableNumber}}"></paper-input>
                         <paper-input id="siteUrl" name="siteUrl" label="{{localize('site-url')}}" value="{{entity.siteUrl}}"></paper-input>
                         <paper-input 
                             id="url"

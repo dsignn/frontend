@@ -304,8 +304,10 @@ class MenuViewUpsert extends StorageEntityMixin(NotifyMixin(LocalizeMixin(Servic
                         <dsign-paper-dropdown-menu label="{{localize('layout-type')}}" value="{{entity.layoutType}}" required>
                             <paper-listbox id="listboxLayoutType" slot="dropdown-content"></paper-listbox>
                         </dsign-paper-dropdown-menu>
-                        <paper-input-color name="backgroundHeader" label="{{localize('background-header')}}" value="{{entity.backgroundHeader}}" required></paper-input-color>
-                        <paper-input-color name="colorHeader" label="{{localize('color-header')}}" value="{{entity.colorHeader}}" required></paper-input-color>
+                        <div  class="action">
+                            <paper-input-color name="backgroundHeader" label="{{localize('background-header')}}" value="{{entity.backgroundHeader}}" required></paper-input-color>
+                            <paper-input-color name="colorHeader" label="{{localize('color-header')}}" value="{{entity.colorHeader}}" required></paper-input-color>
+                        </div>
                         <paper-textarea name="note" label="{{localize('note')}}" value="{{entity.note}}"></paper-textarea>
                         <div class="action main padding-top-52">
                             <paper-button on-tap="submitMenuButton">{{localize(labelAction)}}</paper-button>
@@ -317,7 +319,7 @@ class MenuViewUpsert extends StorageEntityMixin(NotifyMixin(LocalizeMixin(Servic
             <div id="content-right">
                 <paper-card>
                     <h2>{{localize(menuItemLabel)}}</h2>
-                    <menu-item-view-upsert id="menuItemViewUpsert" on-menu-item-save="appendMenuItem" on-menu-item-update="modifyMenuItem" menu-item="{{menuItem}}" api-category="{{apiCategory}}"></menu-item-view-upsert>
+                    <menu-item-view-upsert id="menuItemViewUpsert" on-menu-item-save="appendMenuItem" on-menu-item-update="modifyMenuItem" menu-item="{{menuItem}}" api-category="{{apiCategory}}" api-allergen="{{apiAllergen}}"></menu-item-view-upsert>
                     <div class="action">
                         <paper-button on-tap="submitMenuItem">{{localize(labelActionMenuItem)}}</paper-button>
                     </div>
@@ -327,7 +329,7 @@ class MenuViewUpsert extends StorageEntityMixin(NotifyMixin(LocalizeMixin(Servic
         <h2>{{localize('menu-title')}}</h2>
         <div id="menuItemContainer">
              <template id="items" is="dom-repeat" items="[[entity.items]]" as="menuItem">
-                 <menu-item menu-item="{{menuItem}}" index$="{{index}}" on-delete="_deleteMenuItem" on-update="_updateMenuItem" on-upload-file="uploadFile" show="{{showUpdateMenuItem}}" api-category="{{apiCategory}}" show-crud></menu-item>
+                 <menu-item menu-item="{{menuItem}}" index$="{{index}}" on-delete="_deleteMenuItem" on-update="_updateMenuItem" on-upload-file="uploadFile" show="{{showUpdateMenuItem}}" api-category="{{apiCategory}}" api-allergen="{{apiAllergen}}" show-crud></menu-item>
              </template>
         </div>`;
     }
@@ -398,6 +400,10 @@ class MenuViewUpsert extends StorageEntityMixin(NotifyMixin(LocalizeMixin(Servic
                 notify: true,
             },
 
+            apiAllergen: {
+                notify: true,
+            },
+
             /**
              * @type object
              */
@@ -414,6 +420,7 @@ class MenuViewUpsert extends StorageEntityMixin(NotifyMixin(LocalizeMixin(Servic
                         _resourceStorage :"ResourceStorage",
                         _organizationStorage :"OrganizationStorage",
                         _menuCategoryStorage :"MenuCategoryStorage",
+                        _menuAllergenStorage :"MenuAllergenStorage",
                         _qrCodeGeneratorStorage: "QrCodeGeneratorStorage",
                         _uploadMenuResourceStorage: "UploadMenuResourceStorage"
                     }
@@ -442,6 +449,10 @@ class MenuViewUpsert extends StorageEntityMixin(NotifyMixin(LocalizeMixin(Servic
 
             _menuCategoryStorage: {
                 readOnly: true,
+            },
+
+            _menuAllergenStorage: {
+                readOnly: true,
             }
         };
     }
@@ -453,7 +464,8 @@ class MenuViewUpsert extends StorageEntityMixin(NotifyMixin(LocalizeMixin(Servic
         return [
             'changeOrganizationStorage(_organizationStorage, _authService)',
             '_changeLayoutType(layoutType, _localizeService)',
-            'loadMenuCategory(_menuCategoryStorage, _merge)'
+            'loadMenuCategory(_menuCategoryStorage, _merge)',
+            'loadMenuAllergen(_menuAllergenStorage, _merge)'
         ]
     }
 
@@ -480,6 +492,22 @@ class MenuViewUpsert extends StorageEntityMixin(NotifyMixin(LocalizeMixin(Servic
             .then((categories) => {
                 this.apiCategory = categories;
                 this.notifyPath('apiCategory');
+            })
+    }
+
+    /**
+     * @param loadMenuaAllergen 
+     * @param merge 
+     */
+    loadMenuAllergen(loadMenuaAllergen, merge) {
+        if (!loadMenuaAllergen || !merge) {
+            return;
+        }
+
+        this._menuAllergenStorage.getAll()
+            .then((allergens) => {
+                this.apiAllergen = allergens;
+                this.notifyPath('apiAllergen');
             })
     }
 

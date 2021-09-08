@@ -162,7 +162,6 @@ class PaperMenu extends StorageEntityMixin(LocalizeMixin(ServiceInjectorMixin(Po
         }
 
         if (entity.status === MenuEntity.STATUS_DEFAULT  && this.enableDefault === false) {
-            console.log('status', entity.status);
             this._setEnableDefault(true);
         }
 

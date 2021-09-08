@@ -70,6 +70,12 @@ export class Repository extends AbstractRepository {
      * @return {string}
      * @constructor
      */
+    static get STORAGE_MENU_ALLERGEN_SERVICE() { return 'MenuAllergenStorage'; };
+
+    /**
+     * @return {string}
+     * @constructor
+     */
     static get QR_CODE_STORAGE_SERVICE() { return 'QrCodeGeneratorStorage'; };
 
     /**
@@ -113,6 +119,7 @@ export class Repository extends AbstractRepository {
         this.initStorage();
         this.initMenuStorage();
         this.initMenuCategoryStorage();
+        this.initMenuAllergenStorage();
         this.initUploadMenuResourceStorage();
         this.initUploadRestaurantResourceStorage();
         this.initQrCodeStorage();
@@ -206,6 +213,26 @@ export class Repository extends AbstractRepository {
 
         this.getContainer().set(Repository.STORAGE_MENU_CATEGORY_SERVICE, adapterStorage);
     }
+
+
+    /**
+     * Storage
+     */
+    initMenuAllergenStorage() {
+        let adapterStorage = new XmlhAdapter(
+            container.get('config')['rest']['path'],
+            container.get('config')['rest']['resources']['menuAllergen']['name'],
+            new JsonEncode(),
+            new JsonDecode(),
+            new ListBuilder()
+        );
+
+        adapterStorage.addHeader('Content-Type', 'application/json')
+            .addHeader('Accept', 'application/json');
+
+        this.getContainer().set(Repository.STORAGE_MENU_ALLERGEN_SERVICE, adapterStorage);
+    }
+    
 
     /**
      * Storage

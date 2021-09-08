@@ -26,7 +26,12 @@ export const lang = {
     "logo": "Logo",
     "notify-save": "Menù salvato",
     "notify-update": "Menù modificato",
-    "menu-title": "Lista elementi del menu (piatti, bevande)"
+    "generic": "Generico",
+    "vegetarian": "Vegetariano",
+    "vegan": "Vegano",
+    "type-dish": "Tipo di piatto",
+    "menu-title": "Lista elementi del menu (piatti, bevande)",
+    "allergens": "Allergeni"
   },
   "en": {
     "name-dish": "Name dish",
@@ -54,6 +59,11 @@ export const lang = {
     "logo": "Logo",
     "notify-save": "Menù saved",
     "notify-update": "Menù updated",
-    "menu-title": "Lista elementi del menu (piatti, bevande)"
+    "generic": "Generic",
+    "vegetarian": "Vegetarian",
+    "vegan": "Vegan",
+    "type-dish": "Dish type",
+    "menu-title": "Lista elementi del menu (piatti, bevande)",
+    "allergens": "Allergens"
   }
 };
