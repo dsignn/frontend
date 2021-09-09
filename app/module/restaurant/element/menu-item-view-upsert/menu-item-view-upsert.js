@@ -176,7 +176,7 @@ class MenuItemViewUpsert extends LocalizeMixin(ServiceInjectorMixin(PolymerEleme
                         </template>
                     </paper-listbox>
                 </dsign-paper-dropdown-menu>
-                <dsign-paper-dropdown-menu id="allergen" name="category" label="{{localize('allergens')}}" on-iron-select="selectAllergen">
+                <dsign-paper-dropdown-menu id="allergen" name="allergens" label="{{localize('allergens')}}" on-iron-select="selectAllergen">
                     <paper-listbox slot="dropdown-content">
                         <template is="dom-repeat" items="[[allergens]]" as="allergen">
                         <paper-item value="{{allergen}}">{{localize(allergen)}}</paper-item>
@@ -272,6 +272,7 @@ class MenuItemViewUpsert extends LocalizeMixin(ServiceInjectorMixin(PolymerEleme
     }
 
     translateAllergen(data) {
+        // TODO check
         console.log('translate', data);
         this._localizeService.loca
         return data;
@@ -289,8 +290,6 @@ class MenuItemViewUpsert extends LocalizeMixin(ServiceInjectorMixin(PolymerEleme
         this.resources = this._merge.merge(this.resources, TranslateTransform.entityFormatToElementFormat(value));
         this.allergens = Object.keys(value);
     }
-
-
 
     /**
      *
@@ -350,7 +349,7 @@ class MenuItemViewUpsert extends LocalizeMixin(ServiceInjectorMixin(PolymerEleme
         }
 
         this.dispatchEvent(new CustomEvent(event, {'detail': menuItem}));
-        this.$.formMenuItem.reset();
+
         this.$.status.reset();
         this.$.category.reset();
         this.$.typeDish.reset();
