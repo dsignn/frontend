@@ -294,13 +294,9 @@ class DsignMenuItemCompress extends MergeCategory(ItemFavorite(LocalizeMixin(Ser
             return;
         }
 
-        if (menu.photos && Array.isArray(menu.photos) && menu.photos.length > 0) {
-            this.$.image.style.backgroundImage = `url(${menu.photos[0].src})`;
-        } else {
-            this.$.image.style.backgroundImage = `url(${config.bucket}/${menu.category}.png)`;
-            this.$.image.style.backgroundSize = `contain`;
-            this.$.image.style.backgroundColor = `#eeeeee`;
-        }
+        this.$.image.style.backgroundImage = `url(${config.bucket}/${menu.category}.png)`;
+        this.$.image.style.backgroundSize = `contain`;
+        this.$.image.style.backgroundColor = `#eeeeee`;
 
         menuStorage.getEventManager().on(Storage.POST_REMOVE, this.updateDishCount.bind(this));
         menuStorage.getEventManager().on(Storage.POST_UPDATE, this.updateDishCount.bind(this));
