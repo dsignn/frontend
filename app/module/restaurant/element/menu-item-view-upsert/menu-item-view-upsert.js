@@ -176,14 +176,14 @@ class MenuItemViewUpsert extends LocalizeMixin(ServiceInjectorMixin(PolymerEleme
                         </template>
                     </paper-listbox>
                 </dsign-paper-dropdown-menu>
-                <dsign-paper-dropdown-menu id="allergen" name="allergens" label="{{localize('allergens')}}" on-iron-select="selectAllergen">
-                    <paper-listbox slot="dropdown-content">
+                <dsign-paper-dropdown-menu id="allergen" label="{{localize('allergens')}}" on-iron-select="selectAllergen">
+                    <paper-listbox id="listAllergens" slot="dropdown-content">
                         <template is="dom-repeat" items="[[allergens]]" as="allergen">
                         <paper-item value="{{allergen}}">{{localize(allergen)}}</paper-item>
                         </template>
                     </paper-listbox>
                 </dsign-paper-dropdown-menu>
-                <paper-chips id="tagChips" items="{{menuItem.allergens}}" compute-data-fn="{{translateAllergen}}"></paper-chips>    
+                <paper-chips id="tagChips" items="{{menuItem.allergens}}"></paper-chips>    
             </form>
         </iron-form>`;
     }
@@ -195,7 +195,7 @@ class MenuItemViewUpsert extends LocalizeMixin(ServiceInjectorMixin(PolymerEleme
              * @type FileEntity
              */
             menuItem: {
-              //  observer: '_changeEntity',
+                observer: '_changeEntity',
                 value: {}
             },
 
@@ -256,6 +256,22 @@ class MenuItemViewUpsert extends LocalizeMixin(ServiceInjectorMixin(PolymerEleme
     ready() {
         super.ready();
         this.$.formMenuItem.addEventListener('iron-form-presubmit', this.submitMenu.bind(this));
+        this.$.tagChips.computeDataFn = this.translateAllergens.bind(this);
+        this.$.tagChips.addEventListener('delete-item', this._controllAllergens.bind(this));
+    }
+
+    _changeEntity(entity) {
+        console.log('CHANGE', entity);
+        this._controllAllergens();
+    }
+
+    /**
+     * 
+     * @param {*} data 
+     * @returns 
+     */
+    translateAllergens(data) {
+        return this.localize(data);
     }
 
     /**
@@ -273,9 +289,14 @@ class MenuItemViewUpsert extends LocalizeMixin(ServiceInjectorMixin(PolymerEleme
 
     translateAllergen(data) {
         // TODO check
-        console.log('translate', data);
-        this._localizeService.loca
-        return data;
+
+        var translate = function(data) {
+            console.log('translate', data);
+            this._localizeService.loca
+            return data;
+        }.bind(this);
+   
+        return translate(data);
     }
 
         /**
@@ -319,8 +340,54 @@ class MenuItemViewUpsert extends LocalizeMixin(ServiceInjectorMixin(PolymerEleme
             this.menuItem.allergens = [];
         }
 
+        let search = this.menuItem.allergens.find((value) => {
+            return evt.detail.item.value === value
+        });
+
+        if (search) {
+            console.warn('Allergen already set in menu');
+            return;
+        }
+
         this.menuItem.allergens.push(evt.detail.item.value);
         this.notifyPath('menuItem.allergens');
+        this.$.tagChips.shadowRoot.querySelector('dom-repeat').render();
+        this.$.allergen.reset();
+        this._controllAllergens();
+    }
+
+    /**
+     * 
+     */
+    _controllAllergens() {
+       
+        if (!Array.isArray(this.menuItem.allergens)) {
+            console.warn('menuitem.allergens must be a array');
+            return;
+        }
+
+        let nodes = this.$.listAllergens.querySelectorAll('paper-item');
+
+        for(let index = 0; nodes.length > index; index++) {
+            nodes[index].removeAttribute("disabled");
+            for(let cont = 0; this.menuItem.allergens.length > cont; cont++) {
+                if (nodes[index].value === this.menuItem.allergens[cont]) {
+                    console.log('disable', nodes[index].value);
+                    nodes[index].setAttribute('disabled', '');
+                    break;
+                }
+            }
+        }
+    }
+
+    /**
+     *
+     */
+    _enbleAllergens()  {
+        let nodes = this.$.listAllergens.querySelectorAll('paper-item');
+        for(let index = 0; nodes.length > index; index++) { 
+            nodes[index].removeAttribute("disabled");
+        }
     }
 
     /**
@@ -353,7 +420,10 @@ class MenuItemViewUpsert extends LocalizeMixin(ServiceInjectorMixin(PolymerEleme
         this.$.status.reset();
         this.$.category.reset();
         this.$.typeDish.reset();
-        this.menuItem = {};
+        this.menuItem = {
+            allergens: []
+        };
+        this._enbleAllergens();
     }
 }
 

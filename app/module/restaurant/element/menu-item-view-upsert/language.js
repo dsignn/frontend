@@ -47,7 +47,7 @@ export const lang = {
     'available': 'Available',
     'over': 'Over',
     'not-available': 'Out of menu',
-    "price": "Prezzo",
+    "price": "Price",
     "add" : "Add",
     "save" : "Save",
     "clear": "Clear",

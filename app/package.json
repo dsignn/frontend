@@ -53,8 +53,9 @@
     "@polymer/paper-toggle-button": "^3.0.1",
     "@polymer/paper-tooltip": "^3.0.1",
     "@polymer/polymer": "^3.4.1",
-    "@webcomponents/webcomponentsjs": "^2.5.0",
-    "js-acl": "^1.0.0"
+    "@webcomponents/webcomponentsjs": "^2.6.0",
+    "js-acl": "^1.0.0",
+    "moment": "2.29.1"
   },
   "devDependencies": {
     "polymer-cli": "^1.9.11",

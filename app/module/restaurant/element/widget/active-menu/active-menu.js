@@ -44,7 +44,6 @@ class ActiveMenu extends LocalizeMixin(ServiceInjectorMixin(PolymerElement)) {
                     menu-active {
                         --menu-active-media : {
                             flex-basis: 20%;
-                            background-color: pink;
                         }
                     }
                    
