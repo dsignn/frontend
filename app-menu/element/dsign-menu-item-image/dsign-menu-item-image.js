@@ -12,7 +12,7 @@ import {PolymerElement, html} from '@polymer/polymer/polymer-element.js';
 import {LocalizeMixin} from "@dsign/polymer-mixin/localize/localize-mixin";
 import {ServiceInjectorMixin} from "@dsign/polymer-mixin/service/injector-mixin";
 import {ItemFavorite} from "../mixin/item-favorite/item-favorite";
-import {MergeCategory} from "../mixin/merge-category/merge-category";
+import {MergeTraslation} from "../mixin/merge-traslation/merge-traslation";
 import {Storage} from "@dsign/library/src/storage/Storage";
 import '@polymer/paper-dropdown-menu/paper-dropdown-menu';
 import '@polymer/paper-item/paper-item';
@@ -27,7 +27,7 @@ import {lang} from './language';
 /**
  * @class DsignMenuItemImage
  */
-class DsignMenuItemImage extends MergeCategory(ItemFavorite(LocalizeMixin(ServiceInjectorMixin(PolymerElement)))) {
+class DsignMenuItemImage extends MergeTraslation(ItemFavorite(LocalizeMixin(ServiceInjectorMixin(PolymerElement)))) {
     static get template() {
         return html`
     <style> 
@@ -339,7 +339,7 @@ class DsignMenuItemImage extends MergeCategory(ItemFavorite(LocalizeMixin(Servic
             return;
         }
 
-        this._mergeCategory(value);
+        this._mergeTraslation(value);
         this.category = this.menuItem ? this.menuItem.category : '';
     }
 

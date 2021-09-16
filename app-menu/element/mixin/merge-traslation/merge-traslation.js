@@ -5,7 +5,7 @@ import {mergeDeep} from "@dsign/library/src/object/Utils";
 /**
  * @type {Function}
  */
-export const MergeCategory = (superClass) => {
+export const MergeTraslation = (superClass) => {
 
     return class extends mixinBehaviors([LocalizeMixin], superClass) {
 
@@ -13,7 +13,7 @@ export const MergeCategory = (superClass) => {
          * @param value
          * @private
          */
-        _mergeCategory(categories) {
+        _mergeTraslation(categories) {
 
             let categoryTranslation = {};
             let languages = this._localizeService.getLanguages();

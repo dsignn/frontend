@@ -13,7 +13,7 @@ import {LocalizeMixin} from "@dsign/polymer-mixin/localize/localize-mixin";
 import {ServiceInjectorMixin} from "@dsign/polymer-mixin/service/injector-mixin";
 import {Storage} from "@dsign/library/src/storage/Storage";
 import {ItemFavorite} from "../mixin/item-favorite/item-favorite";
-import {MergeCategory} from "../mixin/merge-category/merge-category";
+import {MergeTraslation} from "../mixin/merge-traslation/merge-traslation";
 import "../dsign-badge/dsing-badge";
 import '@polymer/paper-dropdown-menu/paper-dropdown-menu';
 import '@polymer/paper-item/paper-item';
@@ -30,7 +30,7 @@ import {lang} from './language';
 /**
  * @class DsignMenuItemCompress
  */
-class DsignMenuItemCompress extends MergeCategory(ItemFavorite(LocalizeMixin(ServiceInjectorMixin(PolymerElement)))) {
+class DsignMenuItemCompress extends MergeTraslation(ItemFavorite(LocalizeMixin(ServiceInjectorMixin(PolymerElement)))) {
     static get template() {
         return html`
     <style> 
@@ -246,7 +246,7 @@ class DsignMenuItemCompress extends MergeCategory(ItemFavorite(LocalizeMixin(Ser
             return;
         }
 
-        this._mergeCategory(value);
+        this._mergeTraslation(value);
         this.category = this.menuItem ? this.menuItem.category : '';
     }
 
@@ -294,7 +294,7 @@ class DsignMenuItemCompress extends MergeCategory(ItemFavorite(LocalizeMixin(Ser
             return;
         }
 
-        this.$.image.style.backgroundImage = `url(${config.bucket}/${menu.category}.png)`;
+        this.$.image.style.backgroundImage = `url(${config.bucket}/categories/${menu.category}.png)`;
         this.$.image.style.backgroundSize = `contain`;
         this.$.image.style.backgroundColor = `#eeeeee`;
 
