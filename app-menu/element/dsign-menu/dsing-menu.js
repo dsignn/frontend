@@ -478,7 +478,7 @@ class DsignMenu extends MergeTraslation(LocalizeMixin(ServiceInjectorMixin(Polym
           </dom-repeat>
       </div>
     </app-header-layout>
-    <app-drawer id="drawer" align="right"  opened>
+    <app-drawer id="drawer" align="right">
         <div class="drawerContainer">
             <div class="restaurant-title">{{organization.name}}</div>
             <div id="order" style="display: flex">
