@@ -23,11 +23,12 @@ import '@polymer/neon-animation/neon-animation';
 import '@polymer/paper-input/paper-input';
 import '@polymer/paper-button/paper-button';
 import {lang} from './language';
+import { LocalizeEntityPropriety } from '../mixin/localize/localize-entity-proprierty';
 
 /**
  * @class DsignMenuItemImage
  */
-class DsignMenuItemImage extends MergeTraslation(ItemFavorite(LocalizeMixin(ServiceInjectorMixin(PolymerElement)))) {
+class DsignMenuItemImage extends MergeTraslation(ItemFavorite(LocalizeEntityPropriety(LocalizeMixin(ServiceInjectorMixin(PolymerElement))))) {
     static get template() {
         return html`
     <style> 
@@ -77,6 +78,7 @@ class DsignMenuItemImage extends MergeTraslation(ItemFavorite(LocalizeMixin(Serv
            white-space: nowrap;
            overflow: hidden;
            text-overflow: ellipsis;
+           text-transform: capitalize; 
        }
        
        .paragraph-card {
@@ -170,7 +172,7 @@ class DsignMenuItemImage extends MergeTraslation(ItemFavorite(LocalizeMixin(Serv
     </style>
     <paper-card>
         <div class="header">
-            <div class="header-card-title">{{_capitalize(menuItem.name.it )}}</div>
+            <div class="header-card-title">{{localizeEntityPropriety(menuItem.name)}}</div>
         </div>
         <div id="image" class="image">
             <div class="triangle"></div>
@@ -187,7 +189,7 @@ class DsignMenuItemImage extends MergeTraslation(ItemFavorite(LocalizeMixin(Serv
             </div>
         </div>
         <div class="content">
-            <div class="paragraph-card">{{menuItem.description.it}}</div>
+            <div class="paragraph-card">{{localizeEntityPropriety(menuItem.description)}}</div>
         </div>
     </paper-card>
     `;
@@ -348,6 +350,11 @@ class DsignMenuItemImage extends MergeTraslation(ItemFavorite(LocalizeMixin(Serv
      */
     enableButton(enable) {
         this.$['btn-menu'].disabled = enable;
+    }
+
+    changeLanguage(evt) {
+        super.changeLanguage(evt);
+        console.log('cambio')
     }
 }
 

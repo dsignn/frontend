@@ -88,6 +88,11 @@ class DsignMenu extends MergeTraslation(LocalizeMixin(ServiceInjectorMixin(Polym
             font-weight: 700;
          }
        }
+
+       paper-tooltip {
+            --paper-tooltip-background: var(--munu-background-color);
+            --paper-tooltip-text-color: var(--munu-color);
+       }
        
        .restaurant-title {
            font-family: var(--paper-font-common-base_-_font-family);
@@ -243,7 +248,7 @@ class DsignMenu extends MergeTraslation(LocalizeMixin(ServiceInjectorMixin(Polym
        }
        
        #whatsappIcon {
-        margin-right: 6px;
+            margin-right: 6px;
        }
        
        #category {
@@ -356,6 +361,10 @@ class DsignMenu extends MergeTraslation(LocalizeMixin(ServiceInjectorMixin(Polym
                    margin-right: 0;
                }
             }
+
+            #btnWhattapp {
+                font-size: 13px;
+            }
        }
        
        @media only screen and (max-width: 500px)  {
@@ -379,6 +388,10 @@ class DsignMenu extends MergeTraslation(LocalizeMixin(ServiceInjectorMixin(Polym
             .item {
                 flex-basis: 100%;
                -webkit-flex-basis:  100%;
+            }
+
+            #btnWhattapp {
+                font-size: 13px;
             }
        }     
        
@@ -410,7 +423,7 @@ class DsignMenu extends MergeTraslation(LocalizeMixin(ServiceInjectorMixin(Polym
         }
 
         .sect-allergen{
-            margin-top: 42px;
+            margin-top: 60px;
             display:flex;
             flex-wrap: wrap;
             align-items: center;
@@ -426,7 +439,7 @@ class DsignMenu extends MergeTraslation(LocalizeMixin(ServiceInjectorMixin(Polym
         }
 
         .select-btn {
-            filter: invert(70%) sepia(64%) saturate(3207%) hue-rotate(130deg) brightness(95%) contrast(100%);
+            filter: invert(70%) sepia(64%) saturate(3207%) hue-rotate(180deg) brightness(95%) contrast(100%);
         }
     </style>
     <app-header-layout fullbleed>
@@ -440,7 +453,7 @@ class DsignMenu extends MergeTraslation(LocalizeMixin(ServiceInjectorMixin(Polym
             </div>
             <div class="divider"></div>
             <div class="flex-row" down>
-                <paper-dropdown-menu id="category" label="{{localize('category')}}" on-iron-select="searchByCategory">
+                <paper-dropdown-menu id="category" label="{{localize('category')}}" on-iron-select="searchByCategory" style="padding-top:2px;">
                     <paper-listbox id="categories" slot="dropdown-content">
                         <dom-repeat id="menu" items="{{categories}}" as="category">
                           <template>
@@ -476,12 +489,14 @@ class DsignMenu extends MergeTraslation(LocalizeMixin(ServiceInjectorMixin(Polym
                     </paper-button>
                 </a>
                 <div style="width:4px"></div>
-                <paper-button class="btn-order paper-btn" on-tap="_sendOrder">
+                <paper-button id="btnWhattapp" class="btn-order paper-btn" on-tap="_sendWhattapp">
                     <iron-icon id="whatsappIcon" icon="whatsapp"></iron-icon>
                     {{localize('write-whatsapp')}}
                 </paper-button>
             </div>
-            <div class="restaurant-title">{{localize('filter')}}</div>
+            <div id="language">
+                <paper-select-language><paper-select-language>
+            </div>
             <div class="sect-type">
                 <div id="btnVegetarian" style="background-image:url({{_config.bucket}}/vegetarian.png)" class="type-btn" type="vegetarian" on-tap="searchByType"></div>
                 <paper-tooltip for="btnVegetarian" position="bottom">{{localize('vegetarian-dish')}}</paper-tooltip>
@@ -491,7 +506,8 @@ class DsignMenu extends MergeTraslation(LocalizeMixin(ServiceInjectorMixin(Polym
             <div class="sect-allergen">
                 <dom-repeat id="allergens" items="[[allergens]]" as="allergen">
                     <template>
-                        <div style="background-image:url({{_config.bucket}}/allergens/{{allergen}}.png)" class="allergen-btn"></div>                 
+                        <div id="btn-{{allergen}}" style="background-image:url({{_config.bucket}}/allergens/{{allergen}}.png)" class="allergen-btn" type="{{allergen}}" on-tap="searchByAllergen" allergen></div>  
+                        <paper-tooltip for="btn-{{allergen}}" position="top">{{localize(allergen)}}</paper-tooltip>               
                     </template>
                 </dom-repeat>
             <div/>
@@ -582,6 +598,10 @@ class DsignMenu extends MergeTraslation(LocalizeMixin(ServiceInjectorMixin(Polym
 
             searchType: {
                 value: ''
+            },
+
+            searchAllergen: {
+                value: []
             },
 
             /**
@@ -771,6 +791,20 @@ class DsignMenu extends MergeTraslation(LocalizeMixin(ServiceInjectorMixin(Polym
     }
 
     /**
+     * @returns 
+     */
+    hasEnglish() {
+        let has = false;
+        if(!this.menu && !Array.isArray(this.menu.items)) {
+            return;
+        } else {
+            has = !!this.menu.items[0].name['en'];
+        }
+
+        return has;
+    }
+
+    /**
      * @param evt
      */
     updateFavoriteEvt(evt) {
@@ -925,11 +959,23 @@ class DsignMenu extends MergeTraslation(LocalizeMixin(ServiceInjectorMixin(Polym
 
     /**
      * @private
+     * @deprecated
      */
     _sendOrder() {
 
         let ele = document.createElement('a');
         ele.href = `https://api.whatsapp.com/send?phone=${this.organization.whatsapp_phone.prefix}${this.organization.whatsapp_phone.number}&text=${encodeURIComponent(this._getOrder())}`;
+        ele.target="_blank";
+        ele.click();
+    }
+
+    /**
+     * 
+     */
+    _sendWhattapp() {
+
+        let ele = document.createElement('a');
+        ele.href = `https://api.whatsapp.com/send?phone=${this.organization.whatsapp_phone.prefix}${this.organization.whatsapp_phone.number}`;
         ele.target="_blank";
         ele.click();
     }
@@ -962,7 +1008,6 @@ class DsignMenu extends MergeTraslation(LocalizeMixin(ServiceInjectorMixin(Polym
 
         if(!this.allergens) {
             this.getAllergen().then((allergens) => {
-                console.log('allergens')
                 this._mergeTraslation(allergens);
                 this.allergens = Object.keys(allergens);
             });
@@ -1020,11 +1065,18 @@ class DsignMenu extends MergeTraslation(LocalizeMixin(ServiceInjectorMixin(Polym
                 this.search(
                     this.$.search.value, 
                     this.$.category.selectedItem ? this.$.category.selectedItem.value : null,
-                    this.searchType
+                    this.searchType,
+                    this.searchAllergen
                 );
             },
             50
         );
+
+        if (this.hasEnglish()) {
+            this.$.language.style.display = "block";
+        } else {
+            this.$.language.style.display = "none";
+        }
 
         this.organization = menu.organization;
 
@@ -1125,7 +1177,8 @@ class DsignMenu extends MergeTraslation(LocalizeMixin(ServiceInjectorMixin(Polym
         this.search(
             evt.target.value, 
             this.$.category.selectedItem ? this.$.category.selectedItem.value : null,
-            this.searchType
+            this.searchType,
+            this.searchAllergen
         );
     }
 
@@ -1136,7 +1189,8 @@ class DsignMenu extends MergeTraslation(LocalizeMixin(ServiceInjectorMixin(Polym
         this.search(
             this.$.search.value ? this.$.search.value : null,
             evt.detail.item.value,
-            this.searchType
+            this.searchType,
+            this.searchAllergen
         );
     }
 
@@ -1159,9 +1213,41 @@ class DsignMenu extends MergeTraslation(LocalizeMixin(ServiceInjectorMixin(Polym
         }
 
         this.search(
-            this.searchType, 
+            this.$.search.value ? this.$.search.value : null,
             this.$.category.selectedItem ? this.$.category.selectedItem.value : null,
-            this.searchType
+            this.searchType,
+            this.searchAllergen
+        );
+    }
+
+    /**
+     * @param {Event} evt 
+     */
+    searchByAllergen(evt) {
+        
+        let isSelect = evt.target.getAttribute('selected') !== '' ? true : false;
+        let allergen = evt.target.type;
+  
+        if(isSelect) {
+            evt.target.setAttribute('selected', '');
+            evt.target.classList.add('select-btn');
+            this.searchAllergen.push(allergen)
+
+        } else {
+     
+            let index =  this.searchAllergen.indexOf(allergen);
+            if (index > -1) {
+                this.searchAllergen.splice(index, 1);
+                evt.target.removeAttribute('selected');
+                evt.target.classList.remove("select-btn");
+            }
+        }
+
+        this.search(
+            this.$.search.value ? this.$.search.value : null,
+            this.$.category.selectedItem ? this.$.category.selectedItem.value : null,
+            this.searchType,
+            this.searchAllergen
         );
     }
 
@@ -1170,24 +1256,54 @@ class DsignMenu extends MergeTraslation(LocalizeMixin(ServiceInjectorMixin(Polym
      * @param category
      * @param type
      */
-    search(name, category, type) {
+    search(name, category, type, allergen) {
+
         let nodes = this.shadowRoot.querySelectorAll('dsign-menu-wrap-item ');
         let lang = this._localizeService.getDefaultLang();
         let hide = false;
         for (let index = 0; nodes.length > index; index++) {
 
-            switch (true) {
-                case !name === false && nodes[index].item.name[lang].toLowerCase().includes(name.toLowerCase()) === false:
-                    console.log( !name === false && nodes[index].item.name[lang].toLowerCase().includes(name.toLowerCase()) === false, nodes[index].item.type_dish, type);
-                    hide = true;
-                case !category === false && nodes[index].item.category !== category:
-                    console.log(!category === false && nodes[index].item.category !== category, nodes[index].item.type_dish, type);
-                    hide = true;
-                case !type === true && nodes[index].item.type_dish !== type:
-                    console.log(!!type === true && nodes[index].item.type_dish !== type, nodes[index].item.type_dish, type);
-                    hide = true;
-                    break;
+            if (!name === false && nodes[index].item.name[lang].toLowerCase().includes(name.toLowerCase()) === false) {
+                console.log('NAME SEARCH', (nodes[index].item.name[lang].toLowerCase().includes(name.toLowerCase()) === false), name);
+                hide = true;
             }
+
+            if (!category === false && nodes[index].item.category !== category ) {
+                console.log('CATEGORY SEARCH',  nodes[index].item.category !== category, category);
+                hide = true;
+            }
+
+            if (!!type === true && nodes[index].item.type_dish !== type) {
+                console.log('TYPE SEARCH',  nodes[index].item.type_dish !== type, type, nodes[index].item.type_dish);
+                hide = true;
+            }
+
+            if (Array.isArray(allergen) && allergen.length > 0 && Array.isArray(nodes[index].item.allergens) && nodes[index].item.allergens.length > 0 ) {
+                for (let cont = 0; allergen.length > cont; cont++) {
+                    if(nodes[index].item.allergens.indexOf(allergen[cont]) > -1) {
+                        console.log('ALLERGEN SEARCH', allergen);
+                        hide = true;
+                        break;
+                    }
+                }
+            }
+
+/*
+            switch (true) {
+                case !name === false:
+                    
+                    hide = (nodes[index].item.name[lang].toLowerCase().includes(name.toLowerCase()) === false);
+                case !category === false:
+                    console.log('CATEGORY SEARCH',  nodes[index].item.category !== category, category);
+                    hide = nodes[index].item.category !== category ? true : false;
+                case !!type === true:
+                    console.log('TYPE SEARCH',  nodes[index].item.type_dish !== type, type);
+                    hide = nodes[index].item.type_dish !== type;
+                case !!allergen.length > 0:
+                    console.log('ALLERGEN SEARCH', allergen);
+                    //hide = nodes[index].item.type_dish !== type;
+            }
+            */
             nodes[index].hide = hide;
             hide = false;
         }
@@ -1200,7 +1316,12 @@ class DsignMenu extends MergeTraslation(LocalizeMixin(ServiceInjectorMixin(Polym
         this.$.category.value = null;
         this.$.category.selectedItem = null;
         this.$.categories.selected = null;
-        this.search(this.$.search.value ? this.$.search.value : null, null);
+        this.search(
+            this.$.search.value ? this.$.search.value : null,
+            null,
+            this.searchType,
+            this.searchAllergen
+        );
     }
     
 

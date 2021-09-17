@@ -1,11 +1,11 @@
 export const lang = {
   "it": {
-    "language": "Lingua",
+    "language": "Seleziona lingua",
     "it": "Italiano",
     "en": "Inglese"
   },
   "en": {
-    "language": "Language",
+    "language": "Select language",
     "en": "English",
     "it": "Italian"
   }

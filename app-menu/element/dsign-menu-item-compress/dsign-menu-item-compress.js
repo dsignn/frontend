@@ -24,13 +24,14 @@ import '@polymer/neon-animation/neon-animation';
 import '@polymer/paper-input/paper-input';
 import '@polymer/paper-button/paper-button';
 import {lang} from './language';
+import { LocalizeEntityPropriety } from '../mixin/localize/localize-entity-proprierty';
 
 
 
 /**
  * @class DsignMenuItemCompress
  */
-class DsignMenuItemCompress extends MergeTraslation(ItemFavorite(LocalizeMixin(ServiceInjectorMixin(PolymerElement)))) {
+class DsignMenuItemCompress extends MergeTraslation(ItemFavorite(LocalizeEntityPropriety(LocalizeMixin(ServiceInjectorMixin(PolymerElement))))) {
     static get template() {
         return html`
     <style> 
@@ -73,13 +74,15 @@ class DsignMenuItemCompress extends MergeTraslation(ItemFavorite(LocalizeMixin(S
            text-rendering: optimizeLegibility;
            font-size: 18px;
            font-weight: 500;
-           height: 28px;
+           height: 22px;
            line-height: 28px;
            display: block;
            padding: 0 6px;
            white-space: nowrap;
            overflow: hidden;
            text-overflow: ellipsis;
+           text-overflow: ellipsis;
+           text-transform: capitalize; 
        }
        
       
@@ -185,9 +188,9 @@ class DsignMenuItemCompress extends MergeTraslation(ItemFavorite(LocalizeMixin(S
             </template>
         </div>
         <div class="content">
-             <div class="header-card-title">{{_capitalize(menuItem.name.it)}}</div>
+             <div class="header-card-title">{{localizeEntityPropriety(menuItem.name)}}</div>
              <div class="header-card-category">{{localize(category)}}</div>
-             <div class="paragraph-card">{{menuItem.description.it}}</div>
+             <div class="paragraph-card">{{localizeEntityPropriety(menuItem.description)}}</div>
              <div id="action" class="action">
                  <dsign-badge id="badgeMenu" for="btn-menu" label="{{dishCount}}" class="red" offset-x="-2"></dsign-badge>
                  <paper-icon-button icon="add" id="btn-menu" on-tap="addFavorite"></paper-icon-button>
@@ -262,15 +265,6 @@ class DsignMenuItemCompress extends MergeTraslation(ItemFavorite(LocalizeMixin(S
     }
 
     /**
-     * @param value
-     * @returns {string}
-     * @private
-     */
-    _capitalize(value) {
-        return typeof value === 'string' ? value.charAt(0).toUpperCase() + value.slice(1) : '';
-    }
-
-    /**
      * @param price
      * @returns {*}
      * @private
@@ -337,6 +331,11 @@ class DsignMenuItemCompress extends MergeTraslation(ItemFavorite(LocalizeMixin(S
      */
     enableButton(enable) {
         this.$['btn-menu'].disabled = enable;
+    }
+
+    changeLanguage(evt) {
+        super.changeLanguage(evt);
+        console.log('cambio lingua', evt);
     }
 }
 
