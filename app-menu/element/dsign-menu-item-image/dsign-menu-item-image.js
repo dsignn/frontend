@@ -60,7 +60,7 @@ class DsignMenuItemImage extends MergeTraslation(ItemFavorite(LocalizeEntityProp
         }
         
         .content {
-            height: 60px;
+            height: 50px;
             padding: 6px;
         }
         
@@ -70,15 +70,11 @@ class DsignMenuItemImage extends MergeTraslation(ItemFavorite(LocalizeEntityProp
            text-rendering: optimizeLegibility;
            font-size: 18px;
            font-weight: 500;
-           height: 32px;
-           line-height: 32px;
+           height: auto;
+           line-height: 22px;
            display: block;
            padding: 0 6px;
            width: 1vw;
-           white-space: nowrap;
-           overflow: hidden;
-           text-overflow: ellipsis;
-           text-transform: capitalize; 
        }
        
        .paragraph-card {
@@ -125,7 +121,7 @@ class DsignMenuItemImage extends MergeTraslation(ItemFavorite(LocalizeEntityProp
          }
        }
        
-       paper-icon-button {
+       paper-icon-button #btn-menu {
            position: absolute;
            bottom: 4px;
            right: 4px;
@@ -139,10 +135,26 @@ class DsignMenuItemImage extends MergeTraslation(ItemFavorite(LocalizeEntityProp
            color: var(--munu-color);
        }
        
-       paper-icon-button[disabled] {
+       paper-icon-button[disabled] #btn-menu {
             background-color:#757575;
        }
        
+       iron-icon.allergen {
+        
+            width: 31px;
+            height: 31px;
+            border-radius: 50%;
+            margin:1px;
+            --paper-icon-button : {
+                padding: 0px; 
+            }    
+            background-color: var(--munu-background-color);
+            color: var(--munu-color);
+        }
+
+
+
+
        .triangle {
            position: absolute;
            width: 0;
@@ -150,6 +162,17 @@ class DsignMenuItemImage extends MergeTraslation(ItemFavorite(LocalizeEntityProp
            font-size: 8px;
            border-top: 86px solid #fc0303;
            border-right: 86px solid transparent;
+       }
+
+       #allergens {
+            display:flex;
+            flex-wrap: wrap-reverse;
+            justify-content: end;
+            position: absolute;
+            right: 4px;
+            bottom: 4px;
+            width: 100px;
+            height: auto;
        }
        
        .status-dish {
@@ -186,6 +209,13 @@ class DsignMenuItemImage extends MergeTraslation(ItemFavorite(LocalizeEntityProp
             <div id="action">
                 <dsign-badge id="badgeMenu" for="btn-menu" label="{{dishCount}}" class="red" offset-x="-2"></dsign-badge>
                 <paper-icon-button icon="add" id="btn-menu"  on-tap="addFavorite"></paper-icon-button>
+            </div>
+            <div id="allergens">
+                <dom-repeat id="allergens" items="[[menuItem.allergens]]" as="allergen">
+                    <template>
+                        <iron-icon icon="allergen:{{allergen}}" class="allergen"></iron-icon>
+                    </template>
+                </dom-repeat>
             </div>
         </div>
         <div class="content">
@@ -269,6 +299,14 @@ class DsignMenuItemImage extends MergeTraslation(ItemFavorite(LocalizeEntityProp
     _observeMenu(menu, config, menuStorage) {
         if (!menu || !config || !menuStorage) {
             return;
+        }
+
+        if (menu && menu.name && menu.name.it) {
+            menu.name.it = menu.name.it.charAt(0).toUpperCase() + menu.name.it.slice(1);
+        }
+
+        if (menu && menu.name && menu.name.en) {
+            menu.name.en = menu.name.en.charAt(0).toUpperCase() + menu.name.en.slice(1);
         }
 
         if (menu.photos && Array.isArray(menu.photos) && menu.photos.length > 0) {

@@ -410,7 +410,7 @@ class DsignMenu extends MergeTraslation(LocalizeMixin(ServiceInjectorMixin(Polym
 
         .sect-type {
             display:flex;
-            margin-top: 14px;
+            margin-top: 60px;
             justify-content: space-around; 
         }
 
@@ -438,8 +438,37 @@ class DsignMenu extends MergeTraslation(LocalizeMixin(ServiceInjectorMixin(Polym
             margin-bottom: 6px;
         }
 
-        .select-btn {
-            filter: invert(70%) sepia(64%) saturate(3207%) hue-rotate(180deg) brightness(95%) contrast(100%);
+        paper-icon-button.type {
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            --paper-icon-button : {
+                 padding: 3px;
+            }
+            
+            background-color: var(--munu-color);
+            color: var(--munu-background-color) !important;
+            border: 2px solid var(--munu-background-color);
+        }
+
+        paper-icon-button.allergen { 
+            margin: 1px;
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            --paper-icon-button : {
+                 padding: 1px;
+            }
+            
+            background-color: var(--munu-color);
+            color: var(--munu-background-color) !important;
+            border: 2px solid var(--munu-background-color);
+        }
+
+        paper-icon-button[selected] { 
+            background-color: var(--munu-background-color);
+            color: var(--munu-color) !important;
+            border: none !important;
         }
     </style>
     <app-header-layout fullbleed>
@@ -498,15 +527,15 @@ class DsignMenu extends MergeTraslation(LocalizeMixin(ServiceInjectorMixin(Polym
                 <paper-select-language><paper-select-language>
             </div>
             <div class="sect-type">
-                <div id="btnVegetarian" style="background-image:url({{_config.bucket}}/vegetarian.png)" class="type-btn" type="vegetarian" on-tap="searchByType"></div>
-                <paper-tooltip for="btnVegetarian" position="bottom">{{localize('vegetarian-dish')}}</paper-tooltip>
-                <div id="btnVegan" style="background-image:url({{_config.bucket}}/vegan.png)" class="type-btn" type="vegan" on-tap="searchByType"></div>
-                <paper-tooltip for="btnVegan" position="bottom">{{localize('vegetarian-dish')}}</paper-tooltip>
+                <paper-icon-button id="btnVegetarian" icon="vegetarian" id="btn-menu" type="vegetarian" on-tap="searchByType" class="type"></paper-icon-button>
+                <paper-tooltip for="btnVegetarian" position="top">{{localize('vegetarian-dish')}}</paper-tooltip>
+                <paper-icon-button id="btnVegan" icon="vegan" id="btn-menu" type="vegan" on-tap="searchByType" class="type"></paper-icon-button>
+                <paper-tooltip for="btnVegan" position="top">{{localize('vegetarian-dish')}}</paper-tooltip>
             </div>
             <div class="sect-allergen">
                 <dom-repeat id="allergens" items="[[allergens]]" as="allergen">
                     <template>
-                        <div id="btn-{{allergen}}" style="background-image:url({{_config.bucket}}/allergens/{{allergen}}.png)" class="allergen-btn" type="{{allergen}}" on-tap="searchByAllergen" allergen></div>  
+                        <paper-icon-button id="btn-{{allergen}}" icon="allergen:{{allergen}}" type="{{allergen}}" on-tap="searchByAllergen" allergen class="allergen-btn allergen"></paper-icon-button>
                         <paper-tooltip for="btn-{{allergen}}" position="top">{{localize(allergen)}}</paper-tooltip>               
                     </template>
                 </dom-repeat>
@@ -1200,16 +1229,18 @@ class DsignMenu extends MergeTraslation(LocalizeMixin(ServiceInjectorMixin(Polym
     searchByType(evt) { 
         
         this.searchType = '';
-        this.$.btnVegetarian.classList.remove("select-btn");
-        this.$.btnVegan.classList.remove("select-btn");
-        let isSelect = evt.target.getAttribute('selected') !== '' ? true : false;
+        let isSelect = evt.target.getAttribute('selected') !== null ? true : false;
+        console.log(isSelect);
   
         if(isSelect) {
-            evt.target.setAttribute('selected', '');
-            evt.target.classList.add('select-btn');
-            this.searchType = evt.target.getAttribute('type');
-        } else {
             evt.target.removeAttribute('selected');
+            this
+
+        } else {
+            evt.target.setAttribute('selected', '');
+            this.searchType = evt.target.getAttribute('type');
+            let id = this.searchType === 'vegetarian' ? 'btnVegan' : 'btnVegetarian';
+            this.$[id].removeAttribute('selected');
         }
 
         this.search(
@@ -1230,7 +1261,6 @@ class DsignMenu extends MergeTraslation(LocalizeMixin(ServiceInjectorMixin(Polym
   
         if(isSelect) {
             evt.target.setAttribute('selected', '');
-            evt.target.classList.add('select-btn');
             this.searchAllergen.push(allergen)
 
         } else {
@@ -1239,7 +1269,6 @@ class DsignMenu extends MergeTraslation(LocalizeMixin(ServiceInjectorMixin(Polym
             if (index > -1) {
                 this.searchAllergen.splice(index, 1);
                 evt.target.removeAttribute('selected');
-                evt.target.classList.remove("select-btn");
             }
         }
 

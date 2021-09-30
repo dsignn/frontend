@@ -71,25 +71,21 @@ class DsignMenuItemCompress extends MergeTraslation(ItemFavorite(LocalizeEntityP
        }
        
        .header-card-title {
-           text-rendering: optimizeLegibility;
            font-size: 18px;
            font-weight: 500;
-           height: 22px;
-           line-height: 28px;
+           height: auto;
+           text-rendering: optimizeLegibility;
+           line-height: 20px;
            display: block;
            padding: 0 6px;
-           white-space: nowrap;
-           overflow: hidden;
-           text-overflow: ellipsis;
-           text-overflow: ellipsis;
-           text-transform: capitalize; 
        }
        
       
        .header-card-category {
             font-style: italic ;
-            padding: 0 6px;
+            padding: 2px 6px;
             color: #757575;
+            font-size: 14px;
        }
        
        .paragraph-card {
@@ -119,6 +115,19 @@ class DsignMenuItemCompress extends MergeTraslation(ItemFavorite(LocalizeEntityP
            background-color: var(--munu-background-color);
            color: var(--munu-color);
        }
+
+       iron-icon.allergen {
+        
+            width: 31px;
+            height: 31px;
+            border-radius: 50%;
+            margin:1px;
+            --paper-icon-button : {
+                padding: 0px; 
+            }    
+            background-color: var(--munu-background-color);
+            color: var(--munu-color);
+        }
        
        dsign-badge {
          z-index: 1;
@@ -153,6 +162,18 @@ class DsignMenuItemCompress extends MergeTraslation(ItemFavorite(LocalizeEntityP
            border-top: 86px solid #fc0303;
            border-right: 86px solid transparent;
        }
+
+
+       #allergens {
+        display:flex;
+        flex-wrap: wrap-reverse;
+        justify-content: end;
+        position: absolute;
+        right: 0px;
+        bottom: 2px;
+        width: 100px;
+        height: auto;
+   }
        
        .status-dish {
           top: 24px;
@@ -180,6 +201,13 @@ class DsignMenuItemCompress extends MergeTraslation(ItemFavorite(LocalizeEntityP
     <paper-card>
         <div id="image" class="header">
             <div class="triangle"></div>
+            <div id="allergens">
+                <dom-repeat id="allergens" items="[[menuItem.allergens]]" as="allergen">
+                    <template>
+                        <iron-icon icon="allergen:{{allergen}}" class="allergen"></iron-icon>
+                    </template>
+                </dom-repeat>
+            </div>
             <div class="status-dish">{{localize(statusLabel)}}</div>
             <template is="dom-if" if="{{hasPrice}}">
                 <div class="price">
@@ -292,6 +320,14 @@ class DsignMenuItemCompress extends MergeTraslation(ItemFavorite(LocalizeEntityP
         this.$.image.style.backgroundSize = `contain`;
         this.$.image.style.backgroundColor = `#eeeeee`;
 
+        if (menu && menu.name && menu.name.it) {
+            menu.name.it = menu.name.it.charAt(0).toUpperCase() + menu.name.it.slice(1);
+        }
+
+        if (menu && menu.name && menu.name.en) {
+            menu.name.en = menu.name.en.charAt(0).toUpperCase() + menu.name.en.slice(1);
+        }
+
         menuStorage.getEventManager().on(Storage.POST_REMOVE, this.updateDishCount.bind(this));
         menuStorage.getEventManager().on(Storage.POST_UPDATE, this.updateDishCount.bind(this));
         menuStorage.getEventManager().on(Storage.POST_SAVE,  this.updateDishCount.bind(this));
@@ -299,6 +335,7 @@ class DsignMenuItemCompress extends MergeTraslation(ItemFavorite(LocalizeEntityP
         if (menu) {
             this.initDishCount(menu);
             this._changeStatus(menu.status);
+            
         }
     }
 
