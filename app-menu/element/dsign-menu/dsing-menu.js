@@ -451,6 +451,12 @@ class DsignMenu extends MergeTraslation(LocalizeMixin(ServiceInjectorMixin(Polym
             border: 2px solid var(--munu-background-color);
         }
 
+        paper-tooltip {
+            --paper-tooltip: {
+                font-size: 15px;
+            }
+        }
+
         paper-icon-button.allergen { 
             margin: 1px;
             width: 50px;
@@ -712,6 +718,7 @@ class DsignMenu extends MergeTraslation(LocalizeMixin(ServiceInjectorMixin(Polym
 
                     return reject(response)
                 }
+                
                 resolve(JSON.parse(request.response));
             });
             request.open("GET", `${this.apiUrl}menu-allergen`);

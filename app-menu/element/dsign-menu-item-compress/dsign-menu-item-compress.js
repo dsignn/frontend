@@ -173,7 +173,7 @@ class DsignMenuItemCompress extends MergeTraslation(ItemFavorite(LocalizeEntityP
         bottom: 2px;
         width: 100px;
         height: auto;
-   }
+       }
        
        .status-dish {
           top: 24px;
