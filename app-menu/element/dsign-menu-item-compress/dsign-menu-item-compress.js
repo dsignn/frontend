@@ -316,7 +316,7 @@ class DsignMenuItemCompress extends MergeTraslation(ItemFavorite(LocalizeEntityP
             return;
         }
 
-        this.$.image.style.backgroundImage = `url(${config.bucket}/categories/${menu.category}.png)`;
+      //  this.$.image.style.backgroundImage = `url(${config.bucket}/categories/${menu.category}.png)`;
         this.$.image.style.backgroundSize = `contain`;
         this.$.image.style.backgroundColor = `#eeeeee`;
 

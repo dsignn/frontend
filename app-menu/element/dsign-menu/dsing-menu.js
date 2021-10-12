@@ -503,20 +503,7 @@ class DsignMenu extends MergeTraslation(LocalizeMixin(ServiceInjectorMixin(Polym
             </template>
             <div class="search flex-row">
                 <paper-input id="search" label="{{localize('search-dish')}}" on-input="searchByName"></paper-input>
-            </div>
-            <div class="divider"></div>
-            <div class="flex-row" down style="display:none;">
-                <paper-dropdown-menu id="category" label="{{localize('category')}}">
-                    <paper-listbox id="categories" slot="dropdown-content">
-                        <dom-repeat id="menu" items="{{categories}}" as="category">
-                          <template>
-                             <paper-item value="{{category}}">{{localize(category)}}</paper-item>
-                          </template>
-                        </dom-repeat>
-                    </paper-listbox>
-                </paper-dropdown-menu>
-                <paper-icon-button icon="clear" on-tap="clearCategory" disable down></paper-icon-button>
-            </div>
+            </div>          
             <div id="orderButtonContainer" class="flex-row">
                 <paper-icon-button id="btn-menu" icon="v-menu" on-tap="tapMenu"></paper-icon-button>
                 <dsign-badge id="badgeMenu" for="btn-menu" label="{{totalOrder}}" offset-y="6"></dsign-badge>
@@ -1144,7 +1131,7 @@ class DsignMenu extends MergeTraslation(LocalizeMixin(ServiceInjectorMixin(Polym
             () => {
                 this.search(
                     this.$.search.value, 
-                    this.$.category.selectedItem ? this.$.category.selectedItem.value : null,
+                    this._getCategorySelect(),
                     this.searchType,
                     this.searchAllergen
                 );
@@ -1244,10 +1231,6 @@ class DsignMenu extends MergeTraslation(LocalizeMixin(ServiceInjectorMixin(Polym
         this.$.search.shadowRoot.querySelector('label').style.color = color;
         this.$.search.shadowRoot.querySelector('input').style.color = color;
         this.$.search.shadowRoot.querySelector('paper-input-container').shadowRoot.querySelector('div.unfocused-line').style.borderColor = color;
-
-        this.$.category.shadowRoot.querySelector('paper-input').shadowRoot.querySelector('label').style.color = color;
-        this.$.category.shadowRoot.querySelector('paper-input').shadowRoot.querySelector('input').style.color = color;
-        this.$.category.shadowRoot.querySelector('paper-input').shadowRoot.querySelector('paper-input-container').shadowRoot.querySelector('div.unfocused-line').style.borderColor = color;
     }
 
     /**
@@ -1297,7 +1280,6 @@ class DsignMenu extends MergeTraslation(LocalizeMixin(ServiceInjectorMixin(Polym
         
         this.searchType = '';
         let isSelect = evt.target.getAttribute('selected') !== null ? true : false;
-        console.log(isSelect);
   
         if(isSelect) {
             evt.target.removeAttribute('selected');
@@ -1360,50 +1342,30 @@ class DsignMenu extends MergeTraslation(LocalizeMixin(ServiceInjectorMixin(Polym
         for (let index = 0; nodes.length > index; index++) {
 
             if (!name === false && nodes[index].item.name[lang].toLowerCase().includes(name.toLowerCase()) === false) {
-                console.log('NAME SEARCH', (nodes[index].item.name[lang].toLowerCase().includes(name.toLowerCase()) === false), name);
                 hide = true;
             }
 
             if (!category === false && nodes[index].item.category !== category ) {
-                console.log('CATEGORY SEARCH',  nodes[index].item.category !== category, category);
                 hide = true;
             }
 
             if (!!type === true && nodes[index].item.type_dish !== type) {
-                console.log('TYPE SEARCH',  nodes[index].item.type_dish !== type, type, nodes[index].item.type_dish);
                 hide = true;
             }
 
             if (Array.isArray(allergen) && allergen.length > 0 && Array.isArray(nodes[index].item.allergens) && nodes[index].item.allergens.length > 0 ) {
                 for (let cont = 0; allergen.length > cont; cont++) {
                     if(nodes[index].item.allergens.indexOf(allergen[cont]) > -1) {
-                        console.log('ALLERGEN SEARCH', allergen);
                         hide = true;
                         break;
                     }
                 }
             }
-
+            
             nodes[index].hide = hide;
             hide = false;
         }
-    }
-
-    /**
-     * @param evt
-     */
-    clearCategory(evt) {
-        this.$.category.value = null;
-        this.$.category.selectedItem = null;
-        this.$.categories.selected = null;
-        this.search(
-            this.$.search.value ? this.$.search.value : null,
-            null,
-            this.searchType,
-            this.searchAllergen
-        );
-    }
-    
+    }    
 
     /**
      * @param categoryDocument
