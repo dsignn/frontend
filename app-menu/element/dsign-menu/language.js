@@ -1,6 +1,6 @@
 export const lang = {
     "it": {
-        "search": "Cerca",
+        "search-dish": "Cerca piatto",
         "category": "Categoria",
         'all': "Tutti",
         "reset-dishes-arrived": "Resetta piatti arrivati",
@@ -12,7 +12,7 @@ export const lang = {
         "vengan-dish": "Piatti vegani"
     },
     "en": {
-        "search": "Search",
+        "search": "Search dish",
         "category": "Category",
         'all': "All",
         'first': "First",

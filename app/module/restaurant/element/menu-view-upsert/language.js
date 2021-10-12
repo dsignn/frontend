@@ -39,7 +39,8 @@ export const lang = {
     "date": "Status data",
     "disable": "Status disattivo",
     "enable-order": "Abilita gli ordini",
-    "date-activation": "Data di abilitazione del menù"
+    "date-activation": "Data di abilitazione del menù",
+    "print-menu": "Stampa menu"
   },
   "en": {
     "name-menu": "Name menu",
@@ -80,6 +81,7 @@ export const lang = {
     "date": "Status date",
     "disable": "Status disable",
     "enable-order": "Enable order",
-    "date-activation": "Menu date enable"
+    "date-activation": "Menu date enable",
+    "print-menu": "Print menu"
   }
 };

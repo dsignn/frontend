@@ -27,6 +27,8 @@ import '@polymer/paper-icon-button/paper-icon-button';
 import '@polymer/paper-listbox/paper-listbox';
 import '@polymer/paper-input/paper-input';
 import '@polymer/paper-button/paper-button';
+import '@polymer/paper-tabs/paper-tabs'; 
+import '@polymer/paper-tabs/paper-tab'; 
 import '@polymer/paper-tooltip/paper-tooltip'; 
 import '@dsign/polymer-mixin/localize/localize-mixin';
 import '../paper-select-language/paper-select-language';
@@ -93,6 +95,23 @@ class DsignMenu extends MergeTraslation(LocalizeMixin(ServiceInjectorMixin(Polym
             --paper-tooltip-background: var(--munu-background-color);
             --paper-tooltip-text-color: var(--munu-color);
        }
+
+       paper-tabs {
+            --paper-tabs: {
+                color: var(--munu-color);
+                background-color: var(--munu-background-color);
+            }
+
+            --paper-tabs-selection-bar-color: var(--munu-color);
+            font-size: 14px;
+            text-transform: uppercase;
+        }
+
+        paper-input#search {
+            --paper-input-container-label: {
+                font-size: 20px;
+              };
+        }
        
        .restaurant-title {
            font-family: var(--paper-font-common-base_-_font-family);
@@ -380,17 +399,14 @@ class DsignMenu extends MergeTraslation(LocalizeMixin(ServiceInjectorMixin(Polym
                    margin-right: 0;
                 }
             }
-            
-              #language, #category {
-                width: 96px;
-            }
                        
             .item {
                 flex-basis: 100%;
                -webkit-flex-basis:  100%;
             }
 
-            #btnWhattapp {
+            #btnWhattapp,
+            #btnCall {
                 font-size: 13px;
             }
        }     
@@ -476,6 +492,8 @@ class DsignMenu extends MergeTraslation(LocalizeMixin(ServiceInjectorMixin(Polym
             color: var(--munu-color) !important;
             border: none !important;
         }
+
+       
     </style>
     <app-header-layout fullbleed>
       <app-header slot="header" fixed effects="waterfall">
@@ -484,11 +502,11 @@ class DsignMenu extends MergeTraslation(LocalizeMixin(ServiceInjectorMixin(Polym
                 <dsign-logo organization="{{organization}}"></dsign-logo>
             </template>
             <div class="search flex-row">
-                <paper-input id="search" label="{{localize('search')}}" on-input="searchByName"></paper-input>
+                <paper-input id="search" label="{{localize('search-dish')}}" on-input="searchByName"></paper-input>
             </div>
             <div class="divider"></div>
-            <div class="flex-row" down>
-                <paper-dropdown-menu id="category" label="{{localize('category')}}" on-iron-select="searchByCategory" style="padding-top:2px;">
+            <div class="flex-row" down style="display:none;">
+                <paper-dropdown-menu id="category" label="{{localize('category')}}">
                     <paper-listbox id="categories" slot="dropdown-content">
                         <dom-repeat id="menu" items="{{categories}}" as="category">
                           <template>
@@ -504,6 +522,13 @@ class DsignMenu extends MergeTraslation(LocalizeMixin(ServiceInjectorMixin(Polym
                 <dsign-badge id="badgeMenu" for="btn-menu" label="{{totalOrder}}" offset-y="6"></dsign-badge>
             </div>
         </app-toolbar>
+        <paper-tabs scrollable>
+            <dom-repeat id="menu" items="{{categories}}" as="category">
+                <template>
+                    <paper-tab value={{category}} index="{{index}}" on-tap="searchByCategory">{{localize(category)}}</paper-tab>
+                </template>
+            </dom-repeat>
+        </paper-tabs>
       </app-header>
       <div id="menuContainer">
           <dom-repeat id="list" items="[[items]]" as="menuItem">
@@ -518,7 +543,7 @@ class DsignMenu extends MergeTraslation(LocalizeMixin(ServiceInjectorMixin(Polym
             <div class="restaurant-title">{{organization.name}}</div>
             <div id="order" style="display: flex">
                 <a class="a-btn"  href="[[callMe]]">
-                    <paper-button class="btn-order paper-btn" style="width:100%">
+                    <paper-button id="btnCall" class="btn-order paper-btn" style="width:100%">
                         <iron-icon id="whatsappIcon" icon="phone"></iron-icon>
                         {{localize('call')}}
                     </paper-button>
@@ -1037,6 +1062,11 @@ class DsignMenu extends MergeTraslation(LocalizeMixin(ServiceInjectorMixin(Polym
         }
     }
 
+    /**
+     * 
+     * @param {array} items 
+     * @param {string} apiUrl 
+     */
     _observeAllergen(items, apiUrl) {
         if (!items || !apiUrl) {
             return;
@@ -1048,6 +1078,20 @@ class DsignMenu extends MergeTraslation(LocalizeMixin(ServiceInjectorMixin(Polym
                 this.allergens = Object.keys(allergens);
             });
         }
+    }
+
+    /**
+     * @returns string|undefined
+     * @private
+     */
+    _getCategorySelect() {
+        let category = null;
+        if (this.shadowRoot.querySelector('paper-tabs').selected !== undefined ) {
+            let nodes = this.shadowRoot.querySelector('paper-tabs').querySelectorAll('paper-tab');
+            category = nodes[this.shadowRoot.querySelector('paper-tabs').selected].value
+        }
+
+        return category
     }
 
     /**
@@ -1212,7 +1256,7 @@ class DsignMenu extends MergeTraslation(LocalizeMixin(ServiceInjectorMixin(Polym
     searchByName(evt) {
         this.search(
             evt.target.value, 
-            this.$.category.selectedItem ? this.$.category.selectedItem.value : null,
+            this._getCategorySelect(),
             this.searchType,
             this.searchAllergen
         );
@@ -1222,9 +1266,25 @@ class DsignMenu extends MergeTraslation(LocalizeMixin(ServiceInjectorMixin(Polym
      * @param {Event} evt
      */
     searchByCategory(evt) {
+        if (this.shadowRoot.querySelector('paper-tabs').selected === evt.target.index) {
+            setTimeout(() => {
+                    this.shadowRoot.querySelector('paper-tabs').selected = undefined;
+                    this.search(
+                        this.$.search.value ? this.$.search.value : null,
+                         evt.target.value,
+                        this.searchType,
+                        this.searchAllergen
+                    );
+                },
+                200
+            );
+            return;
+        }
+
+       
         this.search(
             this.$.search.value ? this.$.search.value : null,
-            evt.detail.item.value,
+             evt.target.value,
             this.searchType,
             this.searchAllergen
         );
@@ -1252,7 +1312,7 @@ class DsignMenu extends MergeTraslation(LocalizeMixin(ServiceInjectorMixin(Polym
 
         this.search(
             this.$.search.value ? this.$.search.value : null,
-            this.$.category.selectedItem ? this.$.category.selectedItem.value : null,
+            this._getCategorySelect(),
             this.searchType,
             this.searchAllergen
         );
@@ -1281,7 +1341,7 @@ class DsignMenu extends MergeTraslation(LocalizeMixin(ServiceInjectorMixin(Polym
 
         this.search(
             this.$.search.value ? this.$.search.value : null,
-            this.$.category.selectedItem ? this.$.category.selectedItem.value : null,
+            this._getCategorySelect(),
             this.searchType,
             this.searchAllergen
         );
@@ -1324,22 +1384,6 @@ class DsignMenu extends MergeTraslation(LocalizeMixin(ServiceInjectorMixin(Polym
                 }
             }
 
-/*
-            switch (true) {
-                case !name === false:
-                    
-                    hide = (nodes[index].item.name[lang].toLowerCase().includes(name.toLowerCase()) === false);
-                case !category === false:
-                    console.log('CATEGORY SEARCH',  nodes[index].item.category !== category, category);
-                    hide = nodes[index].item.category !== category ? true : false;
-                case !!type === true:
-                    console.log('TYPE SEARCH',  nodes[index].item.type_dish !== type, type);
-                    hide = nodes[index].item.type_dish !== type;
-                case !!allergen.length > 0:
-                    console.log('ALLERGEN SEARCH', allergen);
-                    //hide = nodes[index].item.type_dish !== type;
-            }
-            */
             nodes[index].hide = hide;
             hide = false;
         }

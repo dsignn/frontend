@@ -131,11 +131,11 @@ class MenuViewUpsert extends StorageEntityMixin(NotifyMixin(LocalizeMixin(Servic
             }
             
             #content-left {
-                  @apply --layout-flex-7;
+                  @apply --layout-flex-6;
             }
             
             #content-right {
-                  @apply --layout-flex-5;
+                  @apply --layout-flex-6;
             }
             
             menu-item {
@@ -152,7 +152,8 @@ class MenuViewUpsert extends StorageEntityMixin(NotifyMixin(LocalizeMixin(Servic
                 padding: 10px;
             }
             
-            #preview {
+            #preview,
+            #printMenu {
                 display: none;
             }
             
@@ -312,6 +313,7 @@ class MenuViewUpsert extends StorageEntityMixin(NotifyMixin(LocalizeMixin(Servic
                         <div class="action main padding-top-52">
                             <paper-button on-tap="submitMenuButton">{{localize(labelAction)}}</paper-button>
                             <paper-button id="preview" on-tap="openPreview">{{localize('preview')}}</paper-button>
+                            <paper-button id="printMenu" on-tap="openPrintMenu">{{localize('print-menu')}}</paper-button>
                         </div>
                     </form>
                 </iron-form>
@@ -546,6 +548,7 @@ class MenuViewUpsert extends StorageEntityMixin(NotifyMixin(LocalizeMixin(Servic
         this.labelAction = 'save';
         if (!newValue) {
             this.$.preview.style.display = 'none';
+            this.$.printMenu.style.display = 'none';
             return;
         }
 
@@ -553,6 +556,7 @@ class MenuViewUpsert extends StorageEntityMixin(NotifyMixin(LocalizeMixin(Servic
             this.labelAction = 'update';
             this.showUpdateMenuItem = true;
             this.$.preview.style.display = 'block';
+            this.$.printMenu.style.display = 'block';
         }
 
         if (newValue.status === MenuEntity.STATUS_DATE) {
@@ -575,9 +579,14 @@ class MenuViewUpsert extends StorageEntityMixin(NotifyMixin(LocalizeMixin(Servic
      * @param evt
      */
     openPreview(evt) {
-        console.log('open')
-        window.open(`${this._config.app.menuPath}/__previews?id=${this.entity.id}`,"_blank")
+        window.open(`${this._config.app.menuPath}/__previews?id=${this.entity.id}`,"_blank");
+    }
 
+    /**
+     * @param evt
+     */
+     openPrintMenu(evt) {
+        window.open(`${this._config.app.menuPath}/print-menu/${this.entity.id}?auth=${this._authService.token.access_token}`,"_blank");
     }
 
     /**
