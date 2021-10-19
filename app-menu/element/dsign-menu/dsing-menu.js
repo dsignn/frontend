@@ -50,6 +50,9 @@ class DsignMenu extends MergeTraslation(LocalizeMixin(ServiceInjectorMixin(Polym
     static get template() {
         return html`
     <style>    
+
+       :host {  --paper-input-container-focus-color: var(--munu-background-color);  }
+
        app-toolbar {
          background-color:  #015b63;
          padding-left: 6px;
@@ -509,7 +512,7 @@ class DsignMenu extends MergeTraslation(LocalizeMixin(ServiceInjectorMixin(Polym
                 <dsign-badge id="badgeMenu" for="btn-menu" label="{{totalOrder}}" offset-y="6"></dsign-badge>
             </div>
         </app-toolbar>
-        <paper-tabs scrollable>
+        <paper-tabs scrollable align-bottom>
             <dom-repeat id="menu" items="{{categories}}" as="category">
                 <template>
                     <paper-tab value={{category}} index="{{index}}" on-tap="searchByCategory">{{localize(category)}}</paper-tab>
@@ -1403,7 +1406,7 @@ class DsignMenu extends MergeTraslation(LocalizeMixin(ServiceInjectorMixin(Polym
         setInterval(
             () => {
 
-                let request = new XMLHttpRequest();
+                let request = new ();
                 request.onload = (event) => {
 
                     if (request.status >= 300) {

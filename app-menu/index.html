@@ -60,10 +60,23 @@
 
         window.container = container;
 
-        window.addEventListener('load', function() {
-            let ele = document.createElement('dsign-menu');
+        var loadMenuApp = function() {
+            var menu = document.querySelector('dsign-menu');
+            if (!menu) {
+            var ele = document.createElement('dsign-menu');
             document.body.appendChild(ele);
+            }
+        };
+
+        window.addEventListener('load', function() {
+           loadMenuApp();
         });
+
+        // When page dont trigge load event
+        setTimeout(
+            function() { loadMenuApp(); },
+            3000
+        );
 
         container.set('Notify', {
             notify:  (text) => {

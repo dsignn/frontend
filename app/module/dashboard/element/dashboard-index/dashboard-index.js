@@ -104,6 +104,13 @@ class DashboardIndex extends LocalizeMixin(AclMixin(ServiceInjectorMixin(Polymer
     font-weight: normal;
     text-transform: uppercase;
     }
+
+    h3 {
+      font-size: 1.8em;
+      text-align:center;
+      text-transform: uppercase;
+      font-weight: normal;
+    }
     
     .welcome h2 {
       max-width: 600px;
@@ -222,10 +229,14 @@ class DashboardIndex extends LocalizeMixin(AclMixin(ServiceInjectorMixin(Polymer
       transform: rotate(45deg);
       margin: 0 auto -80px;
     }
+
+    .c-green {
+      color:#015b63 !important;
+    }
     
     .boxed{
       border-radius:25px;
-      border:5px solid white;
+      border:5px solid #f0b906;
       text-align:center;
       padding:50px;
       display:inline-block;
@@ -238,22 +249,23 @@ class DashboardIndex extends LocalizeMixin(AclMixin(ServiceInjectorMixin(Polymer
     }
     
     .boxed ul li {
-      color: white;
+      color: #015b63;
       list-style-type: none;
+      font-weight: 500;
       margin: 20px 0;
       font-size: 22px;
       max-width: 300px;
     }
     
     .boxed ul li span{
-      font-size:42px;
+      font-size:40px;
       font-weight:bold;
     }
     
     .boxed hr {
       border-color: black;
-      max-width: 60%;
-      margin: 50px auto;
+      max-width: 80%;
+      margin: 10px auto;
     }
     
     .white {
@@ -261,6 +273,10 @@ class DashboardIndex extends LocalizeMixin(AclMixin(ServiceInjectorMixin(Polymer
       text-align: center;
       padding-bottom: 80px;
       z-index:10;
+    }
+
+    .blue {
+      text-align: center;
     }
     
     .white:after {
@@ -278,9 +294,9 @@ class DashboardIndex extends LocalizeMixin(AclMixin(ServiceInjectorMixin(Polymer
       display: inline-block;
       width: 60px;
       height: 60px;
-      background: #015b63;
+      background: white;
       transform: rotate(45deg);
-      margin: 0 auto -120px;
+      margin: 0 auto -77px;
     }
     
     .white h2{
@@ -384,6 +400,7 @@ class DashboardIndex extends LocalizeMixin(AclMixin(ServiceInjectorMixin(Polymer
     
     #how{
       display:block;
+      color:white;
     }
     
     #how .text-block{
@@ -391,7 +408,7 @@ class DashboardIndex extends LocalizeMixin(AclMixin(ServiceInjectorMixin(Polymer
     }
     
     #how .text-block .flex .step{
-      width: 30%;
+      width: 24%;
     }
     
     #how .text-block .flex .step div {
@@ -406,14 +423,17 @@ class DashboardIndex extends LocalizeMixin(AclMixin(ServiceInjectorMixin(Polymer
     }
     
     #how .text-block .flex .step:first-child div {
+      color: #015b63;
       background-position:top left;
     }
     
     #how .text-block .flex .step:nth-child(2) div {
+      color: #015b63;
       background-position:center center;
     }
     
     #how .text-block .flex .step:nth-child(3) div {
+      color: #015b63;
       background-position:bottom right;
     }
     
@@ -446,6 +466,11 @@ class DashboardIndex extends LocalizeMixin(AclMixin(ServiceInjectorMixin(Polymer
         content:"3";
       }
       
+      #how .text-block .flex .step:nth-child(4) div:after {
+        content:"4";
+        color:#015b63;
+      }
+      
     
     #how .text-block .flex .step img{
       width: 100%;
@@ -457,14 +482,81 @@ class DashboardIndex extends LocalizeMixin(AclMixin(ServiceInjectorMixin(Polymer
       font-size: 22px;
     }
     
-    
-    
     #team{
       display:block;
     }
+
+    #partner {
+      display:flex;
+      flex-direction: column;
+    }
     
-    #team .text-block{
+    #team .text-block,
+    #partner .text-block {
       max-width:1200px;
+    }
+
+    .partner-container {
+      display:flex;
+      flex-direction: row;
+      flex-wrap: wrap;
+      justify-content: space-between;
+    }
+
+    .partner-card {
+      flex-basis:24%;
+      margin-bottom:10px;
+      border: 4px solid #f0b906;
+      border-radius: 6px;
+      background-color: white;
+    }
+
+
+    .partner-card .card-container {
+      height: 120px;
+      display:flex;
+      flex-direction: row;
+    }
+
+    .logo-restaurant {
+      height: 120px;
+      width: 70px !important;
+      background-size: cover;
+      background-repeat: no-repeat;
+      background-position: center center;
+      background-color: #F0F0F0;
+    }
+
+    .partner-card .header {
+      display:flex;
+      flex-direction: column;
+      height: 120px;
+      flex:1;
+    }
+
+    .partner-card .title {
+      font-size: 22px;
+      line-height: 26px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 4px;
+      flex:1;
+    }
+
+    .partner-card .card-menu {
+      font-size: 16px;
+      display: flex;
+      flex-direction: row;
+      justify-content: space-between;
+      padding: 6px 8px;
+      background-color: #f0b906;
+      color: white;
+    }
+
+    .partner-card .card-menu :nth-child(1),
+    .partner-card .card-menu :nth-child(2) {
+      cursor:pointer;
     }
     
     #team .flex {
@@ -612,8 +704,6 @@ class DashboardIndex extends LocalizeMixin(AclMixin(ServiceInjectorMixin(Polymer
         margin: 0;
     }
     
-    
-    
     .icon-footer {
         color: white;
         width: ;
@@ -642,6 +732,24 @@ class DashboardIndex extends LocalizeMixin(AclMixin(ServiceInjectorMixin(Polymer
       }
     }
     
+    @media only screen and (max-width: 1250px) {
+      .partner-card {
+           flex-basis:32%;
+       }
+   }
+
+   @media only screen and (max-width: 1000px) {
+    .partner-card {
+         flex-basis:48%;
+     }
+   }
+
+   @media only screen and (max-width: 700px) {
+    .partner-card {
+         flex-basis:100%;
+     }
+   }
+
     @media only screen and (max-width: 883px) {
        paper-card[strengths] {
             min-width: 300px;
@@ -655,7 +763,30 @@ class DashboardIndex extends LocalizeMixin(AclMixin(ServiceInjectorMixin(Polymer
         align-items: center;
       }
     }
-    
+
+    @media only screen and (max-width: 900px) {
+      #how .flex,
+      #team .flex {
+        margin-top: 50px;
+        flex-direction: column;
+      }
+
+      #team .text-block .flex .step div {
+        padding: 120px 10px 50px;
+        width: auto;
+      }
+
+      #how .text-block .flex .step {
+        width: 100%;
+      }
+
+      #team .text-block .flex .step {
+        width: 100%;
+        margin: 130px 0 0;
+     }
+     
+    }
+
     @media only screen and (max-width: 600px) {
     
       .row-responsive {
@@ -769,7 +900,7 @@ class DashboardIndex extends LocalizeMixin(AclMixin(ServiceInjectorMixin(Polymer
           <div class="inside">
                   <h2>Dsign Menù</h2>
               <div class="text-block">
-                    <p class="">Di addio alle continue ristampe dei menù cartacei, all'usura e alla loro poca igienicità.<br/>Da oggi c'è Dsign Menu, il primo <b>menu interamente digitale</b>, l'ieale per i tuoi clienti!<br/>FACILE, VELOCE E PERSONALIZZABILE.</p>
+                    <p class="">Di addio alle continue ristampe dei menù cartacei, all'usura e alla loro poca igienicità.<br/>Da oggi c'è Dsign Menu, il primo <b>menu interamente digitale</b>, l'ideale per i tuoi clienti!<br/>FACILE, VELOCE E PERSONALIZZABILE.</p>
                     <div class="flex">
                     <div class="">
                     <a class="icon"><img src="https://dsign-asset.s3.eu-central-1.amazonaws.com/ico1.png" /></a><p>Innovativo</p>
@@ -791,9 +922,22 @@ class DashboardIndex extends LocalizeMixin(AclMixin(ServiceInjectorMixin(Polymer
                     </div>
                 </div>
                 </div>
-                </div>
-              </div>     
-          <div class="section column white">
+            </div>
+          </div>  
+          <div class="section column white team">
+              <div class="container box">
+                  <div class="people center start">
+                      <h2 class="margin-0">PERCHE’ SCEGLIERCI?</h2>
+                      <div class="text-block">
+                          <p>
+                          I menù cartacei ormai sono obsoleti. Necessitano di continue attenzioni igieniche e aggiornamenti.
+                          Con Design menù l’ordine si fa più velocemente, il cliente viene fornito di un menù digitale e personalizzato sul quale cercare i vostri piatti con filtri avanzati per soddisfare ogni richiesta e si sa.... cliente felice, cliente fidelizzato!
+                          </p>
+                        </div>
+                  </div>
+              </div>
+          </div>  
+          <div class="section column blue">
             <div id="how" class="row center">
                 <h2>Come Funziona?</h2>
                 <div class="text-block">
@@ -803,28 +947,37 @@ class DashboardIndex extends LocalizeMixin(AclMixin(ServiceInjectorMixin(Polymer
                       <div class=""></div><p>Registrati gratuitamente cliccando l'icona in alto a destra</p>
                     </div>
                     <div class="step">
-                      <div class=""></div><p>Scegli tra i template predefiniti e crea il tuo menù</p>
+                      <div class=""></div><p>Genera il QrCode che hai intenzione di utilizzare, sala e/o delivery</p>
                     </div>
                     <div class="step">
-                      <div class=""></div><p>Scarica e stampa il QR code per i tuoi tavoli</p>
+                      <div class=""></div><p>Inserisci i dati del tuo ristorante e crea il menù</p>
+                    </div>
+                    <div class="step">
+                      <div class=""></div><p>Metti il tuo QrCode sui tavoli o invalo ai tuoi contanti</p>
                     </div>
                   </div>
                 </div>         
-                <a class="button" on-tap="openLogin">Provalo subito</a>
+                <a class="button yellow" on-tap="openLogin" style="margin-bottom: 20px;">Provalo subito</a>
             </div>     
           </div>
-          <div class="section column blue">
+          <div class="section column second white">
              <div class="row center">
-                <h2>Quanto mi costa?</h2>
+                <h2 class="c-green">Quanto mi costa?</h2>
              </div>
              <div class="text-block">
                 <div class="boxed">
-                  <ul>
-                  <li>Inserimento piatti ILLIMITATO</li>
-                  <li>Due template predefiniti</li>
-                  <li>Generazione e stampa QR CODE immediata</li>
-                  <hr/>
-                  <li><span>GRATIS</span></li>
+                  <ul>z
+                    <li>Inserimento  di menu ILLIMITATO</li>
+                    <li>Attivazione singola oppure di due diversi menù (delivery o in loco)</li>
+                    <li>Due diversi template per il tuo menu</li>
+                    <li>Generatore del menù cartaceo</li>
+                    <li>Generatore QR CODE</li>
+                    <li>Filtri di ricerca avanzati</li>
+                    <hr/>
+                    <li>
+                      <span>1 ANNO GRATIS</span>
+                      <div>poi 19,90€/Mese</div>
+                    </li>
                   </ul>
                 </div>
              </div>
@@ -849,6 +1002,29 @@ class DashboardIndex extends LocalizeMixin(AclMixin(ServiceInjectorMixin(Polymer
                     </div>
                 </div>
               </div>      
+          </div>
+          <div class="section column blue">
+              <div id="partner" class="row center">
+                <h2>I nostri ristoranti</h2>
+                <div class="text-block partner-container">
+                  <dom-repeat id="menu" items="{{restaurants}}" as="restaurant">
+                    <template>
+                      <div class="partner-card">
+                        <div class="card-container">
+                          <div class="logo-restaurant" style="background-image:url({{getBackgroundCard(restaurant)}})"></div>
+                          <div class="header">
+                            <div class="title">{{restaurant.name}}</div>
+                            <div class="card-menu" restaurant={{restaurant}}>
+                              <div style="display:{{enableMenuCard(restaurant, 'indoor')}}" on-tap="openIndoor">Menu in sala</div>
+                              <div style="display:{{enableMenuCard(restaurant, 'delivery')}}" on-tap="openDelivery">Menu delivery</div>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </template>
+                  </dom-repeat>
+                </div>
+              </div>
           </div>
           <div class="section column white team">
             <div id="team" class="row center">
@@ -928,12 +1104,21 @@ class DashboardIndex extends LocalizeMixin(AclMixin(ServiceInjectorMixin(Polymer
                     _notify: "Notify",
                     _localizeService: 'Localize',
                     _aclService: "Acl",
-                    _authService: "Auth"
+                    _authService: "Auth",
+                    _config: "config"
                 }
             },
 
             _authService: {
                 observer: 'changeAuthService'
+            },
+
+            _config: {
+              observer: 'changeConfig'
+            },
+
+            restaurants: {
+              value: [],
             }
         };
     }
@@ -1019,6 +1204,16 @@ class DashboardIndex extends LocalizeMixin(AclMixin(ServiceInjectorMixin(Polymer
         }
     }
 
+    /**
+     * @param {*} config 
+     */
+    changeConfig(config) {
+      this.getRestaurantWithMenu()
+        .then((data) => {
+          this.restaurants = data;
+        });
+    }
+
     nextReview() {
         let elements = this.shadowRoot.querySelectorAll('.review');
         let current = this._getCurrentActiveReviewIndex(elements);
@@ -1050,6 +1245,59 @@ class DashboardIndex extends LocalizeMixin(AclMixin(ServiceInjectorMixin(Polymer
             },
             100
         );
+    }
+
+    /**
+     * @param {object} restaurant 
+     */
+    getBackgroundCard(restaurant) {
+      console.log('back', restaurant);
+      if (restaurant && restaurant.logo && restaurant.logo.src) {
+          return  restaurant.logo.src;
+      }
+      return '';
+    }
+
+    /**
+     * @param {object} restaurant
+     * @param {string} type 
+     */
+    enableMenuCard(restaurant, type) {
+   
+      if (restaurant.menus.length > 1) {
+        return 'block';  
+      } 
+
+      if (restaurant.menus[0].status === type) {
+        return 'block';  
+      }
+   
+      return 'none';
+    }
+
+    /**
+     * Load restaurant
+     */
+    getRestaurantWithMenu() {
+      return new Promise( (resolve, reject) => {
+        let request = new XMLHttpRequest();
+
+        request.addEventListener("load", (data) => {
+
+            if (request.status >= 300) {
+                let response = {
+                    status: request.status,
+                    message: request.responseText
+                };
+
+                return reject(response)
+            }
+            resolve(JSON.parse(request.response));
+        });
+        request.open("GET", `${this._config.rest.path}/organization/enable-menu`);
+        request.setRequestHeader('Accept','application/json');
+        request.send();
+    });
     }
 
     /**
@@ -1087,6 +1335,20 @@ class DashboardIndex extends LocalizeMixin(AclMixin(ServiceInjectorMixin(Polymer
         let drawer = document.querySelector('dsign-app').shadowRoot.querySelector('#authDrawer');
         drawer.querySelector('paper-tabs').selected = 1;
         drawer.open();
+    }
+
+    /**
+     * @param {CustomEvent} evt 
+     */
+    openIndoor(evt) {
+      window.open(`${this._config.app.menuPath}/${evt.target.parentElement.restaurant.normalize_name}`,"_blank")
+    }
+
+    /**
+     * @param {CustomEvent} evt 
+     */
+    openDelivery(evt) {
+      window.open(`${this._config.app.menuPath}/${evt.target.parentElement.restaurant.normalize_name}?delivery`,"_blank")
     }
 
 }

@@ -48,8 +48,8 @@ class DsignApp extends LocalizeMixin(AclMixin(ServiceInjectorMixin(PolymerElemen
   static get template() {
     return html`
       ${layout}
-      <style>
-      
+      <style> 
+ 
        paper-select-language {
             max-width: 150px;
        }

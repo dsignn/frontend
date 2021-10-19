@@ -12,7 +12,7 @@ export const lang = {
         "vengan-dish": "Piatti vegani"
     },
     "en": {
-        "search": "Search dish",
+        "search-dish": "Search dish",
         "category": "Category",
         'all': "All",
         'first': "First",
