@@ -13,6 +13,7 @@
     "test:integration": "polymer build # test that psk builds without error with the CLI"
   },
   "dependencies": {
+    "@belomx/paper-input-place": "git+https://github.com/belomx/paper-input-place.git ",
     "@dsign/library": "github:dsignn/library#master",
     "@dsign/polymer-mixin": "github:dsignn/polymer-mixin#master",
     "@fluidnext-polymer/paper-autocomplete": "github:fluidnext/paper-autocomplete#master",

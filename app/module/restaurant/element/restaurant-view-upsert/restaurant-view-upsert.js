@@ -11,6 +11,7 @@ import '@polymer/iron-icon/iron-icon';
 import '@polymer/paper-button/paper-button';
 import '@polymer/paper-card/paper-card';
 import '@polymer/paper-tooltip/paper-tooltip';
+import '@belomx/paper-input-place/paper-input-place';
 import {lang} from './language';
 import {FormErrorMessage} from "../../../../element/mixin/form-error-message/form-error-message";
 
@@ -69,8 +70,20 @@ class RestaurantViewUpsert extends FormErrorMessage(StorageEntityMixin(NotifyMix
                 margin-right: 6px;
             }
             
-            #whatsappPhone {
+            #whatsappPhone,
+            #tableNumber,
+            #address {
                 flex: 1;
+            }
+
+            #tableNumber {
+              margin-right: 4px;   
+            }
+
+            paper-input-place {
+                --paper-input-container: {
+                    padding: 7px 0;
+                }
             }
             
             paper-input-file {
@@ -190,10 +203,12 @@ class RestaurantViewUpsert extends FormErrorMessage(StorageEntityMixin(NotifyMix
                                 </template>
                             </paper-listbox>
                           </dsign-paper-dropdown-menu>
-                          <!--<paper-input id="prefix" name="prefix" label="{{localize('prefix')}}" value="{{entity.whatsappPhone.prefix}}"></paper-input>-->
                           <paper-input id="whatsappPhone" type="number" name="whatsappPhone" label="{{localize('whatsapp-phone')}}" value="{{entity.whatsappPhone.number}}"></paper-input>
                         </div>
-                        <paper-input id="tableNumber" name="tableNumber" label="{{localize('table-number')}}" type="number" value="{{entity.tableNumber}}"></paper-input>
+                        <div class="action">
+                            <paper-input id="tableNumber" name="tableNumber" label="{{localize('table-number')}}" type="number" value="{{entity.tableNumber}}"></paper-input>
+                            <paper-input-place id="address" label="Indirizzo" api-key="AIzaSyAX3T_YUwnIRqZQsuNwiFPiZVLW1Ss0lG0" value="{{entity.address}}"></paper-input-place>
+                        </div>
                         <paper-input id="siteUrl" name="siteUrl" label="{{localize('site-url')}}" value="{{entity.siteUrl}}"></paper-input>
                         <paper-input 
                             id="url"
