@@ -207,7 +207,7 @@ class RestaurantViewUpsert extends FormErrorMessage(StorageEntityMixin(NotifyMix
                         </div>
                         <div class="action">
                             <paper-input id="tableNumber" name="tableNumber" label="{{localize('table-number')}}" type="number" value="{{entity.tableNumber}}"></paper-input>
-                            <paper-input-place id="address" label="Indirizzo" api-key="AIzaSyAX3T_YUwnIRqZQsuNwiFPiZVLW1Ss0lG0" value="{{entity.address}}"></paper-input-place>
+                            <paper-input-place id="address" label="{{localize('address')}}" api-key="{{_config.google.maps.key}}" place="{{googlePlace}}"></paper-input-place>
                         </div>
                         <paper-input id="siteUrl" name="siteUrl" label="{{localize('site-url')}}" value="{{entity.siteUrl}}"></paper-input>
                         <paper-input 
@@ -497,6 +497,10 @@ class RestaurantViewUpsert extends FormErrorMessage(StorageEntityMixin(NotifyMix
 
             _uploadOrganizationResourceStorage: {
                 readOnly: true
+            },
+
+            googlePlace: {
+                observer: 'changedGooglePlace'
             }
         };
     }
@@ -545,6 +549,29 @@ class RestaurantViewUpsert extends FormErrorMessage(StorageEntityMixin(NotifyMix
         }
 
         this.url = evt.detail.value ? this._slugify.slugify(evt.detail.value) : '';
+    }
+
+    /**
+     * @param {CustomEvent} evt 
+     */
+     changedGooglePlace(place) {
+
+        if (typeof place !== 'object' ||  place === null || Object.keys(place).length === 0) {
+            return;
+        }
+       
+        let address = {};
+        address.lat = (place.latLng && place.latLng.lat) ? place.latLng.lat : null;
+        address.lng = (place.latLng && place.latLng.lng) ? place.latLng.lng : null;
+        address.country = (place.basic && place.basic.country) ? place.basic.country : null;
+        address.state = (place.basic && place.basic.state) ? place.basic.state : null;
+        address.city = (place.basic && place.basic.city) ? place.basic.city : null;
+        address.postalCode = (place.basic && place.basic.postalCode) ? place.basic.postalCode : null;
+        address.streetNumber = (place.basic && place.basic.streetNumber) ? place.basic.streetNumber : null;
+        address.address = (place.basic && place.basic.address) ? place.basic.address : null;
+        address.route = (place.basic && place.basic.route) ? place.basic.route : null;
+
+        this.entity.address = address;
     }
 
     /**
@@ -601,6 +628,10 @@ class RestaurantViewUpsert extends FormErrorMessage(StorageEntityMixin(NotifyMix
             this._updateLogo();
         }
 
+        if (newValue.address && newValue.address.address) {
+            this.$.address.value = 'Via S. Gabriele del Carso, 8, 21047 Saronno VA, Italy';
+        }
+
         if (newValue.hasQrCode()) {
             this.$.stampButton.style.visibility = 'visible';
         } else {
@@ -645,6 +676,10 @@ class RestaurantViewUpsert extends FormErrorMessage(StorageEntityMixin(NotifyMix
 
                 })
         }
+    }
+
+    _getAddressString(address) {
+
     }
 
     /**

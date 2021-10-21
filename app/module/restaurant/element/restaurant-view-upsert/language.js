@@ -16,7 +16,8 @@ export const lang = {
     "notify-update": "Ristorante modificato",
     "page-stamp": "Pagina di stampa",
     "Name organization already exist'": "Nome ristante già presente",
-    "prefix": "Prefisso"
+    "prefix": "Prefisso",
+    "address": "Indirizzo"
   },
   "en": {
     "name": "Name",
@@ -34,6 +35,7 @@ export const lang = {
     "notify-save": "Restaurant saved",
     "notify-update": "Restaurant updated",
     "page-stamp": "Stamp page",
-    "prefix": "Prefix"
+    "prefix": "Prefix",
+    "address": "Address"
   }
 };

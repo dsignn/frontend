@@ -1251,7 +1251,6 @@ class DashboardIndex extends LocalizeMixin(AclMixin(ServiceInjectorMixin(Polymer
      * @param {object} restaurant 
      */
     getBackgroundCard(restaurant) {
-      console.log('back', restaurant);
       if (restaurant && restaurant.logo && restaurant.logo.src) {
           return  restaurant.logo.src;
       }
