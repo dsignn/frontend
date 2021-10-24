@@ -79,13 +79,22 @@ class DsignMenu extends MergeTraslation(LocalizeMixin(ServiceInjectorMixin(Polym
        .paper-btn {
             background-color: var(--munu-background-color);
             color: var(--munu-color);
+            flex: 1;
+            text-align: center;
        }
+
+       .paper-btn:nth-child(2) {
+         margin-left: 4px;
+       }
+       .paper-btn:nth-child(3) {
+        margin-left: 4px;
+      }
        
        .btn-order {
            @apply --layout-flex;
            margin: 0;
        }
-       
+
        dsign-badge {
          --paper-badge-background: var(--munu-color);
          --paper-badge-text-color: var(--munu-background-color);
@@ -384,8 +393,9 @@ class DsignMenu extends MergeTraslation(LocalizeMixin(ServiceInjectorMixin(Polym
                }
             }
 
-            #btnWhattapp {
-                font-size: 13px;
+            .btn-order {
+                font-size: 0px;
+                height: 42px;
             }
        }
        
@@ -408,9 +418,9 @@ class DsignMenu extends MergeTraslation(LocalizeMixin(ServiceInjectorMixin(Polym
                -webkit-flex-basis:  100%;
             }
 
-            #btnWhattapp,
-            #btnCall {
-                font-size: 13px;
+            .btn-order {
+                font-size: 0px;
+                height: 42px;
             }
        }     
        
@@ -424,7 +434,7 @@ class DsignMenu extends MergeTraslation(LocalizeMixin(ServiceInjectorMixin(Polym
             border-top-left-radius: 3px;
             border-top-right-radius: 3px;
             text-decoration: unset;
-            width:50%;
+            flex:1;
         }
 
         .sect-type {
@@ -532,16 +542,19 @@ class DsignMenu extends MergeTraslation(LocalizeMixin(ServiceInjectorMixin(Polym
         <div class="drawerContainer">
             <div class="restaurant-title">{{organization.name}}</div>
             <div id="order" style="display: flex">
-                <a class="a-btn"  href="[[callMe]]">
+                <a id="aBtnPhone" class="a-btn"  href="[[callMe]]">
                     <paper-button id="btnCall" class="btn-order paper-btn" style="width:100%">
                         <iron-icon id="whatsappIcon" icon="phone"></iron-icon>
                         {{localize('call')}}
                     </paper-button>
                 </a>
-                <div style="width:4px"></div>
                 <paper-button id="btnWhattapp" class="btn-order paper-btn" on-tap="_sendWhattapp">
                     <iron-icon id="whatsappIcon" icon="whatsapp"></iron-icon>
                     {{localize('write-whatsapp')}}
+                </paper-button>
+                <paper-button id="btnMaps" class="btn-order paper-btn" on-tap="_goToMaps">
+                    <iron-icon id="mapsIcon" icon="maps"></iron-icon>
+                    {{localize('direction')}}
                 </paper-button>
             </div>
             <div id="language">
@@ -774,10 +787,18 @@ class DsignMenu extends MergeTraslation(LocalizeMixin(ServiceInjectorMixin(Polym
     changeOrganization(organization) {
 
         if (typeof organization.whatsapp_phone === 'object' && !!organization.whatsapp_phone.number && !!organization.whatsapp_phone.prefix) {
-            this.$.order.style.display = 'flex';
+            this.$.aBtnPhone.style.display = 'flex';
+            this.$.btnWhattapp.style.display = 'flex';
             this.callMe = `tel:${organization.whatsapp_phone.prefix}${organization.whatsapp_phone.number}`;
         } else {
-            this.$.order.style.display = 'none';
+            this.$.aBtnPhone.remove();
+            this.$.btnWhattapp.remove();
+        }
+
+        if (typeof organization.address === 'object' && organization.address.lat && organization.address.lng ) {
+            this.$.btnMaps.style.display = 'flex';
+        } else {
+            this.$.btnMaps.remove();
         }
 
         if (organization && organization["logo"] && organization["logo"]["_id"]) {
@@ -981,7 +1002,7 @@ class DsignMenu extends MergeTraslation(LocalizeMixin(ServiceInjectorMixin(Polym
     }
 
     /**
-     * @param evt
+     * @param {CustomEvent} evt
      */
     updateAmountEvt(evt) {
         this._updateAmount();
@@ -1011,8 +1032,9 @@ class DsignMenu extends MergeTraslation(LocalizeMixin(ServiceInjectorMixin(Polym
     /**
      * @private
      * @deprecated
+     * @param {CustomEvent} evt
      */
-    _sendOrder() {
+    _sendOrder(evt) {
 
         let ele = document.createElement('a');
         ele.href = `https://api.whatsapp.com/send?phone=${this.organization.whatsapp_phone.prefix}${this.organization.whatsapp_phone.number}&text=${encodeURIComponent(this._getOrder())}`;
@@ -1021,14 +1043,21 @@ class DsignMenu extends MergeTraslation(LocalizeMixin(ServiceInjectorMixin(Polym
     }
 
     /**
-     * 
+     * @param {CustomEvent} evt 
      */
-    _sendWhattapp() {
+    _sendWhattapp(evt) {
 
         let ele = document.createElement('a');
         ele.href = `https://api.whatsapp.com/send?phone=${this.organization.whatsapp_phone.prefix}${this.organization.whatsapp_phone.number}`;
         ele.target="_blank";
         ele.click();
+    }
+
+    /**
+     * @param {CustomEvent} evt
+     */
+    _goToMaps(evt) {
+        window.open(`https://maps.google.com/maps?daddr=${this.organization.address.lat},${this.organization.address.lng}&amp;ll=`);
     }
 
     /**
@@ -1406,7 +1435,7 @@ class DsignMenu extends MergeTraslation(LocalizeMixin(ServiceInjectorMixin(Polym
         setInterval(
             () => {
 
-                let request = new ();
+                let request = new XMLHttpRequest();
                 request.onload = (event) => {
 
                     if (request.status >= 300) {

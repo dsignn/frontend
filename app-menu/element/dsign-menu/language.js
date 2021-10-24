@@ -9,7 +9,8 @@ export const lang = {
         "call": "Chiama",
         "filter": "Cerca",
         "vegetarian-dish": "Piatti vegetariani",
-        "vengan-dish": "Piatti vegani"
+        "vengan-dish": "Piatti vegani",
+        "direction": "Maps"
     },
     "en": {
         "search-dish": "Search dish",
@@ -23,6 +24,7 @@ export const lang = {
         "call": "Call",
         "filter": "Search",
         "vegetarian-dish": "Vegetarian dish",
-        "vengan-dish": "Vengan dish"
+        "vengan-dish": "Vengan dish",
+        "direction": "Maps"
     }
 };
