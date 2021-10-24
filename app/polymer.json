@@ -20,6 +20,7 @@
     "node_modules/@webcomponents/webcomponentsjs/bundles/*.js",
     "node_modules/@dsign/**/*",
     "node_modules/@belomx/**/*",
+    "node_modules/@polymer/iron-jsonp-library/**/*",
     "!node_modules/@dsign/**/*.ts",
     "node_modules/@polymer/paper-toast/paper-toast.js",
     "!node_modules/@dsign/polymer-mixin/module.js",
