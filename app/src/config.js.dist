@@ -238,6 +238,11 @@ export const config = {
                 }
             }
         }
+    }.
+    "google": {
+        "maps": {
+            "key": "AIzaSyAX3T_YUwnIRqZQsuNwiFPiZVLW1Ss0lG0"
+        }
     }
 };
 
