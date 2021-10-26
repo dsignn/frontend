@@ -526,7 +526,7 @@ class DashboardIndex extends LocalizeMixin(AclMixin(ServiceInjectorMixin(Polymer
 
     .logo-restaurant {
       height: 120px;
-      width: 70px !important;
+      width: 100px !important;
       background-size: cover;
       background-repeat: no-repeat;
       background-position: center center;
