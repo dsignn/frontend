@@ -577,11 +577,13 @@ class DsignMenu extends MergeTraslation(LocalizeMixin(ServiceInjectorMixin(Polym
             <div class="subtitle" style="display:none;">
                 <div class="amount">{{amount}}</div>
             </div>
+            <!--
             <dom-repeat id="favorites" items="[[favorites]]" as="favorite" sort="sortArrayFavorites">
               <template>
                 <dsign-menu-favorites menu-item="{{favorite}}"></dsign-menu-favorites>
               </template>
             </dom-repeat>
+            -->
         </div>
     </app-drawer>`;
     }

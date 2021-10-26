@@ -407,16 +407,17 @@ class DashboardIndex extends LocalizeMixin(AclMixin(ServiceInjectorMixin(Polymer
       max-width:1200px;
     }
     
-    #how .text-block .flex .step{
+    #how .text-block .flex .step {
       width: 24%;
     }
     
     #how .text-block .flex .step div {
       display: block;
-      background: url(https://dsign-asset.s3.eu-central-1.amazonaws.com/table-background.jpg);
       border-radius: 15px;
       position: relative;
-      background-size: cover;
+      background-size: cover !important;
+      background-repeat: no-repeat !important;
+      background-position: center center !important;
       padding-bottom: 50px;
       width: 100%;
       min-height: 500px;
@@ -424,17 +425,22 @@ class DashboardIndex extends LocalizeMixin(AclMixin(ServiceInjectorMixin(Polymer
     
     #how .text-block .flex .step:first-child div {
       color: #015b63;
-      background-position:top left;
+      background: url(https://dsign-asset.s3.eu-central-1.amazonaws.com/info-registration.gif);
     }
-    
+
     #how .text-block .flex .step:nth-child(2) div {
       color: #015b63;
-      background-position:center center;
+      background: url(https://dsign-asset.s3.eu-central-1.amazonaws.com/info-create-qrcode.gif);
     }
     
     #how .text-block .flex .step:nth-child(3) div {
       color: #015b63;
-      background-position:bottom right;
+      background: url(https://dsign-asset.s3.eu-central-1.amazonaws.com/info-create-menu.gif);
+    }
+    
+    #how .text-block .flex .step:nth-child(4) div {
+      color: #015b63;
+      background: url(https://dsign-asset.s3.eu-central-1.amazonaws.com/info-table.jpg);
     }
     
     #how .text-block .flex .step div:after {
@@ -820,7 +826,7 @@ class DashboardIndex extends LocalizeMixin(AclMixin(ServiceInjectorMixin(Polymer
         }
     
         #how .text-block .flex .step {
-            width: 90%;
+            width: 100%;
         }
     
         #how .text-block .flex .step p {
