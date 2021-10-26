@@ -947,7 +947,7 @@ class DashboardIndex extends LocalizeMixin(AclMixin(ServiceInjectorMixin(Polymer
             <div id="how" class="row center">
                 <h2>Come Funziona?</h2>
                 <div class="text-block">
-                  <p class="">Ti basteranno tre semplici passaggi per avere il tuo menù digitale pronto all'uso!</p>
+                  <p class="">Ti basteranno quattro semplici passaggi per avere il tuo menù digitale pronto all'uso!</p>
                   <div class="flex">
                     <div class="step">
                       <div class=""></div><p>Registrati gratuitamente cliccando l'icona in alto a destra</p>
@@ -959,7 +959,7 @@ class DashboardIndex extends LocalizeMixin(AclMixin(ServiceInjectorMixin(Polymer
                       <div class=""></div><p>Inserisci i dati del tuo ristorante e crea il menù</p>
                     </div>
                     <div class="step">
-                      <div class=""></div><p>Metti il tuo QrCode sui tavoli o invalo ai tuoi contanti</p>
+                      <div class=""></div><p>Metti il tuo QrCode sui tavoli o invalo ai tuoi contatti</p>
                     </div>
                   </div>
                 </div>         
@@ -972,8 +972,8 @@ class DashboardIndex extends LocalizeMixin(AclMixin(ServiceInjectorMixin(Polymer
              </div>
              <div class="text-block">
                 <div class="boxed">
-                  <ul>z
-                    <li>Inserimento  di menu ILLIMITATO</li>
+                  <ul>
+                    <li>Inserimento di menu ILLIMITATO</li>
                     <li>Attivazione singola oppure di due diversi menù (delivery o in loco)</li>
                     <li>Due diversi template per il tuo menu</li>
                     <li>Generatore del menù cartaceo</li>

@@ -32,6 +32,11 @@ export class RestaurantEntity extends EntityIdentifier {
          * @type {object}
          */
         this.whatsappPhone = {};
+
+        /**
+         * @type {object}
+         */
+        this.address = {};
     }
 
     /**

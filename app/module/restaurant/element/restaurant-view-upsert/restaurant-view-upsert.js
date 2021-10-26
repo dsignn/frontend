@@ -557,6 +557,9 @@ class RestaurantViewUpsert extends FormErrorMessage(StorageEntityMixin(NotifyMix
      changedGooglePlace(place) {
 
         if (typeof place !== 'object' ||  place === null || Object.keys(place).length === 0) {
+            if (typeof this.entity === 'object' &&  this.entity !== null) {
+                this.entity.address = {};
+            }
             return;
         }
        
@@ -629,7 +632,10 @@ class RestaurantViewUpsert extends FormErrorMessage(StorageEntityMixin(NotifyMix
         }
 
         if (newValue.address && newValue.address.address) {
-            this.$.address.value = 'Via S. Gabriele del Carso, 8, 21047 Saronno VA, Italy';
+            this.$.address._value = this._getAddress(newValue.address);
+            this.$.address._setInvalid(false);
+        } else {
+            
         }
 
         if (newValue.hasQrCode()) {
@@ -696,6 +702,21 @@ class RestaurantViewUpsert extends FormErrorMessage(StorageEntityMixin(NotifyMix
 
                 })
         }
+    }
+
+    /**
+     * @param {Object} address 
+     * @returns string
+     */
+    _getAddress(address) {
+        let addressString = address.route ? address.route : '';
+        addressString += addressString && address.street_number ? ', ' + address.street_number : (address.street_number ? address.street_number : '');
+        addressString += addressString && address.city ? ', ' + address.city : (address.city ? address.city : '');
+        addressString += addressString && address.postalCode ? ', ' + address.postalCode : (address.postalCode ? address.postalCode : '');
+        addressString += addressString && address.state ? ', ' + address.state : (address.state ? address.state : '');
+        addressString += addressString && address.country ? ', ' + address.country : (address.country ? address.country : '');
+        
+        return addressString;
     }
 
     /**
