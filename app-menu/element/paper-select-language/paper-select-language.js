@@ -19,6 +19,14 @@ export class PaperSelectLanguage extends LocalizeMixin(ServiceInjectorMixin(Poly
             <style>
                paper-dropdown-menu {
                 width: 100%;
+               }
+               
+               :host {
+                  --paper-input-container: {
+                    --paper-input-container-color: var(--munu-color);
+                    --paper-input-container-focus-color: var(--munu-color);
+                    --paper-input-container-input-color: var(--munu-color);
+                  }
                 }
             </style>
             <paper-dropdown-menu id="category" label="{{localize('language')}}" on-iron-select="_selectLanguage">

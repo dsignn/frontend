@@ -6,7 +6,7 @@ import {Storage} from "@dsign/library/src/storage/Storage";
 /**
  * @type {Function}
  */
-export const ItemFavorite = (superClass) => {
+export const OrderBehaviour = (superClass) => {
 
     return class extends mixinBehaviors([NotifyMixin, LocalizeMixin], superClass) {
 
@@ -41,7 +41,7 @@ export const ItemFavorite = (superClass) => {
                 /**
                  * @type Storage
                  */
-                _menuStorage: {
+                _orderStorage: {
                     readOnly: true
                 },
 
@@ -107,7 +107,7 @@ export const ItemFavorite = (superClass) => {
         /**
          * @param evt
          */
-        addFavorite(evt) {
+        addItemOrder(evt) {
 
             if(!this._menuStorage || !this.menuItem || !this.restaurant) {
                 return;

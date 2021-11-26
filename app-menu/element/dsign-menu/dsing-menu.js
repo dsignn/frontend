@@ -21,6 +21,7 @@ import '@polymer/app-layout/app-header/app-header';
 import '@polymer/app-layout/app-header-layout/app-header-layout';
 import '@polymer/app-layout/app-scroll-effects/effects/waterfall';
 import '@polymer/iron-icon/iron-icon';
+import '@polymer/iron-pages/iron-pages';
 import '@polymer/paper-dropdown-menu/paper-dropdown-menu';
 import '@polymer/paper-item/paper-item';
 import '@polymer/paper-icon-button/paper-icon-button';
@@ -37,6 +38,7 @@ import '../dsign-menu-favorites/dsign-menu-favorites';
 import '../dsign-badge/dsing-badge';
 import '../dsign-logo/dsing-logo';
 import '../dsign-info/dsing-info';
+import '../dsign-order/dsign-order';
 import {lang} from './language';
 
 // Gesture events like tap and track generated from touch will not be
@@ -124,6 +126,10 @@ class DsignMenu extends MergeTraslation(LocalizeMixin(ServiceInjectorMixin(Polym
                 font-size: 20px;
               };
         }
+
+        paper-button {
+            --paper-button-disabled_-_background-color: var(--munu-background-color);
+        }
        
        .restaurant-title {
            font-family: var(--paper-font-common-base_-_font-family);
@@ -200,7 +206,6 @@ class DsignMenu extends MergeTraslation(LocalizeMixin(ServiceInjectorMixin(Polym
        
        paper-select-language {
             font-size: 18px;
-            font-family: "Roboto", "Noto", sans-serif;
             color:rgb(33, 33, 33);
        }
        
@@ -505,7 +510,6 @@ class DsignMenu extends MergeTraslation(LocalizeMixin(ServiceInjectorMixin(Polym
             color: var(--munu-color) !important;
             border: none !important;
         }
-
        
     </style>
     <app-header-layout fullbleed>
@@ -560,20 +564,33 @@ class DsignMenu extends MergeTraslation(LocalizeMixin(ServiceInjectorMixin(Polym
             <div id="language">
                 <paper-select-language><paper-select-language>
             </div>
-            <div class="sect-type">
-                <paper-icon-button id="btnVegetarian" icon="vegetarian" id="btn-menu" type="vegetarian" on-tap="searchByType" class="type"></paper-icon-button>
-                <paper-tooltip for="btnVegetarian" position="top">{{localize('vegetarian-dish')}}</paper-tooltip>
-                <paper-icon-button id="btnVegan" icon="vegan" id="btn-menu" type="vegan" on-tap="searchByType" class="type"></paper-icon-button>
-                <paper-tooltip for="btnVegan" position="top">{{localize('vegetarian-dish')}}</paper-tooltip>
-            </div>
-            <div class="sect-allergen">
-                <dom-repeat id="allergens" items="[[allergens]]" as="allergen">
-                    <template>
-                        <paper-icon-button id="btn-{{allergen}}" icon="allergen:{{allergen}}" type="{{allergen}}" on-tap="searchByAllergen" allergen class="allergen-btn allergen"></paper-icon-button>
-                        <paper-tooltip for="btn-{{allergen}}" position="top">{{localize(allergen)}}</paper-tooltip>               
-                    </template>
-                </dom-repeat>
-            <div/>
+
+            <paper-tabs selected="{{tabMenu}}" class="full">
+                <paper-tab>{{localize('filter')}}</paper-tab>
+                <paper-tab>{{localize('order')}}</paper-tab>
+            </paper-tabs>
+            <iron-pages selected="{{tabMenu}}">
+                <div>
+                    <div class="sect-type">
+                        <paper-icon-button id="btnVegetarian" icon="vegetarian" id="btn-menu" type="vegetarian" on-tap="searchByType" class="type"></paper-icon-button>
+                        <paper-tooltip for="btnVegetarian" position="top">{{localize('vegetarian-dish')}}</paper-tooltip>
+                        <paper-icon-button id="btnVegan" icon="vegan" id="btn-menu" type="vegan" on-tap="searchByType" class="type"></paper-icon-button>
+                        <paper-tooltip for="btnVegan" position="top">{{localize('vegetarian-dish')}}</paper-tooltip>
+                    </div>
+                    <div class="sect-allergen">
+                        <dom-repeat id="allergens" items="[[allergens]]" as="allergen">
+                            <template>
+                                <paper-icon-button id="btn-{{allergen}}" icon="allergen:{{allergen}}" type="{{allergen}}" on-tap="searchByAllergen" allergen class="allergen-btn allergen"></paper-icon-button>
+                                <paper-tooltip for="btn-{{allergen}}" position="top">{{localize(allergen)}}</paper-tooltip>               
+                            </template>
+                        </dom-repeat>
+                    </div>
+                </div>
+                <div>
+                    <dsign-order organization="[[organization]]"></dsign-order>
+                </div>
+            </iron-pages>
+
             <div class="subtitle" style="display:none;">
                 <div class="amount">{{amount}}</div>
             </div>
@@ -608,12 +625,17 @@ class DsignMenu extends MergeTraslation(LocalizeMixin(ServiceInjectorMixin(Polym
                     _localizeService: 'Localize',
                     _config: 'config',
                     _menuStorage: 'MenuStorage',
+                    _orderService: 'OrderService',
                     _notifyService: 'Notify',
                 }
             },
 
             allergens: {
                 notify: true,
+            },
+
+            tabMenu: {
+                value: 0
             },
 
             totalOrder: {
@@ -644,6 +666,11 @@ class DsignMenu extends MergeTraslation(LocalizeMixin(ServiceInjectorMixin(Polym
             _menuStorage: {
                 readOnly: true,
                 observer: 'changeMenuStorage'
+            },
+
+            _orderService: {
+                readOnly: true,
+                observer: 'changeOrderService'
             },
 
             _config: {
@@ -847,6 +874,10 @@ class DsignMenu extends MergeTraslation(LocalizeMixin(ServiceInjectorMixin(Polym
         menuStorage.getEventManager().on(Storage.POST_REMOVE, new Listener(this.deleteFavoriteEvt.bind(this)));
         menuStorage.getEventManager().on(Storage.POST_UPDATE, new Listener(this.updateFavoriteEvt.bind(this)));
         menuStorage.getEventManager().on(Storage.POST_SAVE, new Listener(this.saveFavoriteEvt.bind(this)));
+    }
+
+    changeOrderService() {
+
     }
 
     /**
@@ -1445,7 +1476,12 @@ class DsignMenu extends MergeTraslation(LocalizeMixin(ServiceInjectorMixin(Polym
                         return;
                     }
 
-                    this.menu = JSON.parse(request.response);
+                    try {
+                        this.menu = JSON.parse(request.response);
+                    } catch (error) {
+                        console.warn('Unable to parse response');
+                    }
+                   
                 };
                 request.open("GET", window.location.href);
                 request.setRequestHeader('accept', 'application/json');

@@ -11,7 +11,7 @@
 import {PolymerElement, html} from '@polymer/polymer/polymer-element.js';
 import {LocalizeMixin} from "@dsign/polymer-mixin/localize/localize-mixin";
 import {ServiceInjectorMixin} from "@dsign/polymer-mixin/service/injector-mixin";
-import {ItemFavorite} from "../mixin/item-favorite/item-favorite";
+import {OrderBehaviour} from "../mixin/order-behaviour/order-behaviour";
 import {MergeTraslation} from "../mixin/merge-traslation/merge-traslation";
 import {Storage} from "@dsign/library/src/storage/Storage";
 import '@polymer/paper-dropdown-menu/paper-dropdown-menu';
@@ -28,7 +28,7 @@ import { LocalizeEntityPropriety } from '../mixin/localize/localize-entity-propr
 /**
  * @class DsignMenuItemImage
  */
-class DsignMenuItemImage extends MergeTraslation(ItemFavorite(LocalizeEntityPropriety(LocalizeMixin(ServiceInjectorMixin(PolymerElement))))) {
+class DsignMenuItemImage extends MergeTraslation(OrderBehaviour(LocalizeEntityPropriety(LocalizeMixin(ServiceInjectorMixin(PolymerElement))))) {
     static get template() {
         return html`
     <style> 
@@ -208,7 +208,7 @@ class DsignMenuItemImage extends MergeTraslation(ItemFavorite(LocalizeEntityProp
             <div class="header-card-category">{{localize(category)}}</div>
             <div id="action">
                 <dsign-badge id="badgeMenu" for="btn-menu" label="{{dishCount}}" class="red" offset-x="-2"></dsign-badge>
-                <paper-icon-button icon="add" id="btn-menu"  on-tap="addFavorite"></paper-icon-button>
+                <paper-icon-button icon="add" id="btn-menu"  on-tap="addItemOrder"></paper-icon-button>
             </div>
             <div id="allergens">
                 <dom-repeat id="allergens" items="[[menuItem.allergens]]" as="allergen">

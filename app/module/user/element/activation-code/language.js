@@ -2,7 +2,7 @@ export const lang = {
   "it": {
     "activation-code" : "Attivazione account",
     "activation-code-ok": "Il tuo account è stato attivato correttamente",
-    "activation-code-text": "Accendi alla piattaforma e crea il tuo menù personalizzato",
+    "activation-code-text": "Accedi alla piattaforma e crea il tuo menù personalizzato",
     "error" : "Errore",
     "not-found": "Token non trovato oppure sbagliato"
   },

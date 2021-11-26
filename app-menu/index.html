@@ -17,93 +17,23 @@
     <script type="module" src="node_modules/@webcomponents/webcomponentsjs/webcomponents-loader.js"></script>
     <script src="node_modules/web-animations-js/web-animations-next-lite.min.js"></script>
     <script type="module">
-        import {Container} from '@dsign/library/src/container/Container';
-        import {Localize} from '@dsign/library/src/localize/Localize';
-        import {Storage} from '@dsign/library/src/storage/Storage';
-        import {LocalStorageAdapter} from '@dsign/library/src/storage/adapter/local-storage/LocalStorageAdapter';
+        import './app.js'
 
-        const container = new Container();
-
-        /**
-         * Config
-         */
-        container.set('config', configApp);
-
-        /**
-         * @type {Localize}
-         */
-        container.set('Localize', new Localize(
-            "it",
-            [
-                "it",
-                "en"
-            ]
-        ));
-
-        let adapter = new LocalStorageAdapter('dsign', 'favorite');
-        adapter.setFilterCallback(function(filter) {
-            if (filter.restaurantId) {
-                return this.data.filter((element) => {
-                    return element.restaurantId === filter.restaurantId;
-                })
-            }
-
-            return this.data;;
-        }.bind(adapter));
-
-        /**
-         * @type {Storage}
-         */
-        const menuStorage = new Storage(adapter);
-
-        container.set('MenuStorage', menuStorage);
-
-        window.container = container;
-
-        var loadMenuApp = function() {
-            var menu = document.querySelector('dsign-menu');
-            if (!menu) {
-            var ele = document.createElement('dsign-menu');
-            document.body.appendChild(ele);
-            }
-        };
-
-        window.addEventListener('load', function() {
-           loadMenuApp();
-        });
-
-        // When page dont trigge load event
-        setTimeout(
-            function() { loadMenuApp(); },
-            3000
-        );
-
-        container.set('Notify', {
-            notify:  (text) => {
-
-                let id = 'notification';
-                let paperToast = document.getElementById(id);
-                if (!paperToast) {
-                    console.warn('Element by id ' + id + ' not found');
-                    return;
-                }
-
-                paperToast.text = text;
-                paperToast.open();
-            }
-        });
-
+      
     </script>
     <style is="custom-style" id="colorCustomStyle">
 
-        /** TODO setting to the php application **/
-        :root {
-            --munu-background-color: #0b112b;
-            --munu-color: yellow;
+        :host {
+            --paper-input-container: {
+            --paper-input-container-color: var(--munu-color);
+            --paper-input-container-focus-color: var(--munu-color);
+            --paper-input-container-input-color: var(--munu-color);
+            }
         }
 
         body {
             overflow-x: hidden;
+            font-family: Roboto;
         }
 
         * {
@@ -111,9 +41,23 @@
             margin: 0;
         }
 
+        paper-button {
+            background-color:  var(--munu-background-color);
+            color:  var(--munu-color);
+            padding: 10px;
+        }
+
+        paper-button[disabled] {
+            opacity: 0.4;
+        }
+
         paper-toast {
             padding: 16px 24px !important;
             margin: 12px !important;
+        }
+
+        paper-dialog {
+            padding: 30px;
         }
     </style>
     <script type="module">

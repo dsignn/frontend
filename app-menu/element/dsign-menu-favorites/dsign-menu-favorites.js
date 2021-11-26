@@ -3,14 +3,14 @@ import {ServiceInjectorMixin} from "@dsign/polymer-mixin/service/injector-mixin"
 import {LocalizeMixin} from "@dsign/polymer-mixin/localize/localize-mixin";
 import {Storage} from "@dsign/library/src/storage/Storage";
 import {Listener} from "@dsign/library/src/event/Listener";
-import {ItemFavorite} from "../mixin/item-favorite/item-favorite";
+import {OrderBehaviour} from "../mixin/order-behaviour/order-behaviour";
 import '@polymer/paper-icon-button/paper-icon-button';
 import {lang} from './language';
 
 /**
  * @class DsignMenuFavorites
  */
-class DsignMenuFavorites extends ItemFavorite(LocalizeMixin(ServiceInjectorMixin(PolymerElement))) {
+class DsignMenuFavorites extends OrderBehaviour(LocalizeMixin(ServiceInjectorMixin(PolymerElement))) {
 
     static get template() {
         return html`
@@ -169,7 +169,7 @@ class DsignMenuFavorites extends ItemFavorite(LocalizeMixin(ServiceInjectorMixin
                 value: {
                     _config: 'config',
                     _localizeService: 'Localize',
-                    _menuStorage: 'MenuStorage',
+                    _orderService: 'OrderService'
                 }
             },
 
