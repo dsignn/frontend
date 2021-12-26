@@ -207,8 +207,8 @@ class DsignMenuItemImage extends MergeTraslation(OrderBehaviour(LocalizeEntityPr
             </template>
             <div class="header-card-category">{{localize(category)}}</div>
             <div id="action">
-                <dsign-badge id="badgeMenu" for="btn-menu" label="{{dishCount}}" class="red" offset-x="-2"></dsign-badge>
-                <paper-icon-button icon="add" id="btn-menu"  on-tap="addItemOrder"></paper-icon-button>
+                <dsign-badge id="badgeMenu" for="btn-menu" label="{{getTotaleItemOrder(menuItem)}}" class="red" offset-x="-2"></dsign-badge>
+                <paper-icon-button icon="add" id="btn-menu" on-tap="addItemOrder" disabled="{{disableOrder}}"></paper-icon-button>
             </div>
             <div id="allergens">
                 <dom-repeat id="allergens" items="[[menuItem.allergens]]" as="allergen">
@@ -254,20 +254,7 @@ class DsignMenuItemImage extends MergeTraslation(OrderBehaviour(LocalizeEntityPr
                 notify: true
             },
 
-            /**
-             * @type Number
-             */
-            dishCount: {
-                value: 0,
-                observer: 'changeDishCount'
-            },
         };
-    }
-
-    static get observers() {
-        return [
-            '_observeMenu(menuItem, _config, _menuStorage)'
-        ];
     }
 
     /**
@@ -277,54 +264,6 @@ class DsignMenuItemImage extends MergeTraslation(OrderBehaviour(LocalizeEntityPr
         super.ready();
         this.$.image.style.backgroundImage = 'url(https://dsign-asset.s3.eu-central-1.amazonaws.com/dish-not-found.png)';
     }
-
-    /**
-     * @param dishCount
-     */
-    changeDishCount(dishCount) {
-        if (!dishCount) {
-            this.$.badgeMenu.style.visibility = 'hidden';
-            return;
-        }
-        this.$.badgeMenu.style.visibility = 'visible';
-    }
-
-    /**
-     *
-     * @param menu
-     * @param config
-     * @param {Storage} menuStorage
-     * @private
-     */
-    _observeMenu(menu, config, menuStorage) {
-        if (!menu || !config || !menuStorage) {
-            return;
-        }
-
-        if (menu && menu.name && menu.name.it) {
-            menu.name.it = menu.name.it.charAt(0).toUpperCase() + menu.name.it.slice(1);
-        }
-
-        if (menu && menu.name && menu.name.en) {
-            menu.name.en = menu.name.en.charAt(0).toUpperCase() + menu.name.en.slice(1);
-        }
-
-        if (menu.photos && Array.isArray(menu.photos) && menu.photos.length > 0) {
-            this.$.image.style.backgroundImage = `url(${menu.photos[0].src})`;
-        } else {
-            this.$.image.style.backgroundSize = `cover`;
-        }
-
-        menuStorage.getEventManager().on(Storage.POST_REMOVE, this.updateDishCount.bind(this));
-        menuStorage.getEventManager().on(Storage.POST_UPDATE, this.updateDishCount.bind(this));
-        menuStorage.getEventManager().on(Storage.POST_SAVE,  this.updateDishCount.bind(this));
-
-        if (menu) {
-            this.initDishCount(menu);
-            this._changeStatus(menu.status);
-        }
-    }
-
 
     /**
      * @param value

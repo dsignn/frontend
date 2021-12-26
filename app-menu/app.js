@@ -3,9 +3,14 @@ import {Localize} from '@dsign/library/src/localize/Localize';
 import {Storage} from '@dsign/library/src/storage/Storage';
 import {LocalStorageAdapter} from '@dsign/library/src/storage/adapter/local-storage/LocalStorageAdapter';
 import {PropertyHydrator} from '@dsign/library/src/hydrator';
-import {OrderEntity} from './src/order/entity/OrderEntity';
-import {OrderService} from './src/order/service/OrderService';
+import {OrderEntity} from './src/module/order/entity/OrderEntity';
+import {OrderService} from './src/module/order/service/OrderService';
 import {DateStrategy} from './src/hydrator/strategy/value/DateStrategy'
+import { XmlhLocalStorageAdapter } from './src/storage/XmlhLocalStorageAdapter';
+import { XmlhAdapter } from '@dsign/library/src/storage/adapter/xmlh/XmlhAdapter';
+import { JsonDecode } from '@dsign/library/src/data-transform/JsonDecode';
+import { JsonEncode } from '@dsign/library/src/data-transform/JsonEncode';
+import { DefaultBuilder } from '@dsign/library/src/storage/adapter/xmlh/url/DefaultBuilder';
 
 const container = new Container();
 
@@ -24,25 +29,6 @@ container.set('Localize', new Localize(
         "en"
     ]
 ));
-
-let adapter = new LocalStorageAdapter('dsign', 'favorite');
-
-adapter.setFilterCallback(function(filter) {
-    if (filter.restaurantId) {
-        return this.data.filter((element) => {
-            return element.restaurantId === filter.restaurantId;
-        })
-    }
-
-    return this.data;;
-}.bind(adapter));
-
-/**
- * @type {Storage}
- */
-const menuStorage = new Storage(adapter);
-
-container.set('MenuStorage', menuStorage);
 
 /**
  * ORDER STORAGE
@@ -83,10 +69,26 @@ orderLocalStorageAdapter.setFilterCallback(function(filter) {
     return dataToReturn;
 }.bind(orderLocalStorageAdapter));
 
+let orderXmlhStorageAdapter = new XmlhAdapter(
+    container.get('config').apiUrl,
+   'order',
+    new JsonEncode(),
+    new JsonDecode(),
+    new DefaultBuilder()
+);
+
+orderXmlhStorageAdapter.addHeader('Content-Type', 'application/json')
+    .addHeader('Accept', 'application/json');
+
+let orderXmlhLocalStorageAdapter = new XmlhLocalStorageAdapter(
+    orderXmlhStorageAdapter,
+    orderLocalStorageAdapter
+);
+
 /**
  * @type {Storage}
  */
-const orderStorage = new Storage(orderLocalStorageAdapter);
+const orderStorage = new Storage(orderXmlhLocalStorageAdapter);
 
 let hydrator = new PropertyHydrator();
 hydrator.setTemplateObjectHydration(new OrderEntity);

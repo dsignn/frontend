@@ -5,7 +5,14 @@ export const lang = {
     "order": "Ordine",
     "enable-order": "Ordine abilitato",
     "name-order": "Nome ordine",
-    "name": "Nome"
+    "name": "Nome",
+    "total": "Totale",
+    "status-message-can-order": "Puoi aggiungere piatti",
+    "status-message-waiting-order": "Piatti in preparazione",
+    "status-message-cant-order": "Non puoi più aggiungere piatti",
+    "table-number": "Numero tavolo",
+    "email": "Email",
+    "phone-number": "Numero di telefono",
   },
   "en": {
     "insert-order": "New order",
@@ -13,6 +20,13 @@ export const lang = {
     "order": "Order",
     "enable-order": "Enable order",
     "name-order": "Name order",
-    "name": "Name"
+    "name": "Name",
+    "total": "Total",
+    "status-message-can-order": "You can add dish",
+    "status-message-waiting-order": "Preparign dishes",
+    "status-message-cant-order": "You cant add dish",
+    "table-number": "Table number",
+    "email": "Email",
+    "phone-number": "Phone number",
   }
 };

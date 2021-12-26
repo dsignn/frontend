@@ -83,10 +83,10 @@ export class OrderService extends EventManagerAware {
 
         let order = null;
         if (orders.length > 0) {
-            order = orders[0];
-            this.getEventManager().emit(OrderService.LOAD_DEFAUL_ORDER, order);
+            this.currentOrder = orders[0];
+            this.getEventManager().emit(OrderService.LOAD_DEFAUL_ORDER, this.currentOrder);
         } 
 
-        return  order;
+        return  this.currentOrder;
     }
 }

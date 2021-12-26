@@ -2,6 +2,8 @@ import {mixinBehaviors} from '@polymer/polymer/lib/legacy/class.js';
 import {NotifyMixin} from "@dsign/polymer-mixin/notify/notify-mixin";
 import {LocalizeMixin} from "@dsign/polymer-mixin/localize/localize-mixin";
 import {Storage} from "@dsign/library/src/storage/Storage";
+import {OrderService} from "../../../src/module/order/service/OrderService";
+import { OrderEntity } from '../../../src/module/order/entity/OrderEntity';
 
 /**
  * @type {Function}
@@ -13,8 +15,17 @@ export const OrderBehaviour = (superClass) => {
         static get properties() {
             return {
 
-                restaurant: {
+                currentOrder: {
+                    observer: '_currentOrderChanged'
+                },
 
+                updateView: {
+                    value: (new Date).getTime()
+                },
+
+                disableOrder: {
+                    notify: true,
+                    value: false
                 },
 
                 hasPrice: {
@@ -25,24 +36,11 @@ export const OrderBehaviour = (superClass) => {
                 },
 
                 /**
-                 * @type object
-                 */
-                menuItem: {
-                    observer: '_menuItemChanged'
-                },
-
-                /**
-                 * @type Number
-                 */
-                dishCount: {
-                    value: 0
-                },
-
-                /**
                  * @type Storage
                  */
-                _orderStorage: {
-                    readOnly: true
+                _orderService: {
+                    readOnly: true,
+                    observer: '_orderServiceChanged'
                 },
 
                 showOrder: {
@@ -50,126 +48,207 @@ export const OrderBehaviour = (superClass) => {
                     notify: true,
                     observer: '_showOrderChanged'
 
+                },
+
+                getNameItemOrder: {
+                    type: Function,
+                    computed: '__computedItemOrderName(language)'
+                },
+
+                getTotaleItemOrder: {
+                    type: Function,
+                    computed: '__computedItemOrderCount(updateView, currentOrder)'
+                },
+
+                getOrderItemPrice: {
+                    type: Function,
+                    computed: '__computedOrderItemPrice(updateView, currentOrder)'
+                },
+
+                getTotalOrderItemPrice: {
+                    type: Function,
+                    computed: '__computedTotalOrderItemPrice(updateView, currentOrder)'
                 }
             };
         }
 
-        /**
-         * @param menuItem
-         */
-        initDishCount(menuItem) {
-            if(!this._menuStorage) {
-                return;
-            }
 
-            this._menuStorage.get(menuItem._id)
-                .then((data) => {
-                    if (!data) {
-                        return;
+        /**
+         * @param {string} language 
+         * @returns 
+         */
+         __computedItemOrderName(language) {
+
+            return function() {
+                var itemOrder = arguments[0];
+                return itemOrder.name[this._localizeService.getDefaultLang()];
+            }
+        }
+
+        /**
+         * @param {strijng}} updateView
+         
+         * @returns 
+         */
+        __computedItemOrderCount(updateView, currentOrder) {
+
+            return function() {
+                var itemOrder = arguments[0];
+                if (!this.currentOrder) {
+                    return;
+                }
+
+                let total = this.currentOrder.getTotalItemOrder(itemOrder._id, arguments.length > 1 ? arguments[1] : undefined);
+                if (this.$.badgeMenu) {
+                    if (total) {
+                        this.$.badgeMenu.style.visibility = 'visible';
+                    } else {
+                        this.$.badgeMenu.style.visibility = 'hidden';
                     }
+                }
 
-                    this.dishCount = data.totalCount;
-                });
-        }
-
-        /**
-         * @param menuItem
-         * @private
-         */
-        _menuItemChanged(menuItem) {
-            if (!menuItem || !menuItem.price || !menuItem.price.value)  {
-                this._setHasPrice(false);
-            } else {
-                this._setHasPrice(true);
+                return total;
             }
         }
 
         /**
-         * @param evt
+         * 
+         * @param {string} updateView 
+         * @param {object} currentOrder 
          */
-        updateDishCount(evt) {
+        __computedOrderItemPrice(updateView, currentOrder) {
+            return function() {
+                var itemOrder = arguments[0];
+                if (!this.currentOrder) {
+                    return;
+                }
 
-            if (evt.data._id !== this.menuItem._id) {
+                let price = this.currentOrder.getItemOrderPrice(itemOrder._id);
+                try {
+                   // TODO cofigurable
+                  let formatter =  Intl.NumberFormat('it-IT', {style: 'currency', currency: 'EUR'});
+                  return formatter.format(price.value);
+                } catch(e) {
+                  return price.value + ' €';
+                }
+            }
+        }
+
+        __computedTotalOrderItemPrice(updateView, currentOrder) {
+            return function() {
+           
+                if (!this.currentOrder) {
+                    return;
+                }
+
+                let price = this.currentOrder.getTotalItemOrderPrice();               
+
+                try {
+                    // TODO cofigurable
+                   let formatter =  Intl.NumberFormat('it-IT', {style: 'currency', currency: 'EUR'});
+                   return formatter.format(price.value);
+                 } catch(e) {
+                   return price.value + ' €';
+                 }
+            }
+        }
+
+        /**
+         * @param {OrderService} service 
+         */
+        _orderServiceChanged(service) {
+
+            service.getEventManager().on(OrderService.LOAD_DEFAUL_ORDER, (evt) => {
+                this.currentOrder = evt.data;
+            });
+
+            service.getEventManager().on(OrderService.CHANGE_DEFAUL_ORDER, (evt) => {
+                this.currentOrder = evt.data;
+            });
+
+            this.currentOrder = service.getCurrentOrder();
+        }
+
+        /**
+         * @param {OrderEntity} order 
+         */
+        _currentOrderChanged(order) {
+            if (!order) {
                 return;
             }
 
-            switch (evt.name) {
-                case Storage.POST_SAVE:
-                case Storage.POST_UPDATE:
-                    this.dishCount = evt.data.totalCount;
+            switch (order.status) {
+                case OrderEntity.STATUS_CHECK:
+                case OrderEntity.STATUS_QUEUE:
+                case OrderEntity.STATUS_PREPARATION:
+                    this.disableOrder = false;
                     break;
-                case Storage.POST_REMOVE:
-                    this.dishCount = 0;
+            
+                default:
+                    this.disableOrder = true;
                     break;
             }
         }
 
         /**
-         * @param evt
+         * @param {CustomEvent} evt 
+         * @returns 
          */
         addItemOrder(evt) {
 
-            if(!this._menuStorage || !this.menuItem || !this.restaurant) {
+            let itemOrderTarget = evt.target.itemOrder;
+           
+            if (!itemOrderTarget) {
+                console.error('Attach event on element without item order setted');
                 return;
             }
 
-            this._menuStorage.get(this.menuItem._id)
+            this.currentOrder.addItemOrder(itemOrderTarget);
+            
+            this._orderService.getStorage()
+                .update(this.currentOrder)
                 .then((data) => {
-                    let method = 'update';
-                    if (!data) {
-                        data = JSON.parse(JSON.stringify(this.menuItem));
-                        data.totalCount = 1;
-                        data.restaurantId = this.restaurant._id;
-                        method = 'save';
-                    } else {
-                        data.totalCount = data.totalCount + 1;
-                    }
-
-                    this._menuStorage[method](data);
-                })
-                .catch((error) => {
+                    this.updateView =  (new Date).getTime();
+                }).catch((error) => {
                     console.error(error)
                 });
         }
 
         /**
-         * @param evt
+         * @param {CustomEvent} evt 
+         * @returns 
          */
-        addOneFavorite(evt) {
-            if (!this._menuStorage || !this.menuItem) {
+        removeItemOrder(evt) {
+            let itemOrderTarget = evt.target.itemOrder;
+           
+            if (!itemOrderTarget) {
+                console.error('Attach event on element without item order setted');
                 return;
             }
 
-            this.menuItem.totalCount = this.menuItem.totalCount + 1;
-            this._menuStorage.update(this.menuItem);
+            this.currentOrder.removeItemOrder(itemOrderTarget);
+
+            this._orderService.getStorage()
+                .update(this.currentOrder)
+                .then((data) => {
+                    this.updateView =  (new Date).getTime();
+                }).catch((error) => {
+                    console.error(error)
+                });
+            
         }
 
         /**
-         * @param evt
+         * @param {CustomEvent} evt 
+         * @returns 
          */
-        removeFavorite(evt) {
-            if(!this._menuStorage || !this.menuItem) {
+        _updateListItemOrder(evt) {
+            if (!this.currentOrder) {
                 return;
             }
-
-            this._menuStorage.get(this.menuItem._id)
-                .then((data) => {
-                    if (!data) {
-                        return;
-                    }
-
-                    let method = 'delete';
-                    if(data.totalCount > 1) {
-                        data.totalCount = data.totalCount - 1;
-                        method = 'update';
-                    }
-
-                    this._menuStorage[method](data);
-                })
-                .catch((error) => {
-                    console.error(error)
-                });
-        }
+            
+            this.updateView =  (new Date).getTime();
+        }      
 
         /**
          * @param value

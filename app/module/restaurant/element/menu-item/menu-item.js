@@ -372,6 +372,7 @@ class MenuItem extends LocalizeMixin(ServiceInjectorMixin(PolymerElement)) {
      */
     _update(evt) {
         this.dispatchEvent(new CustomEvent('update', {detail: this.menuItem}));
+        evt.target.parentElement.parentElement.close();
     }
 
     /**
@@ -380,6 +381,7 @@ class MenuItem extends LocalizeMixin(ServiceInjectorMixin(PolymerElement)) {
      */
     _delete(evt) {
         this.dispatchEvent(new CustomEvent('delete', {detail: this.menuItem}));
+        evt.target.parentElement.parentElement.close();
     }
 
     /**

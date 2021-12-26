@@ -982,7 +982,7 @@ class DashboardIndex extends LocalizeMixin(AclMixin(ServiceInjectorMixin(Polymer
                     <hr/>
                     <li>
                       <span>1 ANNO GRATIS</span>
-                      <div>poi 19,90€/Mese</div>
+                      <div>poi 14,90€/Mese</div>
                     </li>
                   </ul>
                 </div>

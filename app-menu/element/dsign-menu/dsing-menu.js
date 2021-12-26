@@ -13,6 +13,7 @@ import {setPassiveTouchGestures, setRootPath} from '@polymer/polymer/lib/utils/s
 import {LocalizeMixin} from "@dsign/polymer-mixin/localize/localize-mixin";
 import {ServiceInjectorMixin} from "@dsign/polymer-mixin/service/injector-mixin";
 import {Storage} from "@dsign/library/src/storage/Storage";
+import { OrderService } from '../../src/module/order/service/OrderService';
 import {Listener} from "@dsign/library/src/event/Listener";
 import {MergeTraslation} from "../mixin/merge-traslation/merge-traslation";
 import '@polymer/app-layout/app-toolbar/app-toolbar';
@@ -34,12 +35,13 @@ import '@polymer/paper-tooltip/paper-tooltip';
 import '@dsign/polymer-mixin/localize/localize-mixin';
 import '../paper-select-language/paper-select-language';
 import '../dsign-menu-wrap-item/dsing-menu-wrap-item';
-import '../dsign-menu-favorites/dsign-menu-favorites';
 import '../dsign-badge/dsing-badge';
 import '../dsign-logo/dsing-logo';
 import '../dsign-info/dsing-info';
 import '../dsign-order/dsign-order';
+import '../dsign-order/dsign-order-detail';
 import {lang} from './language';
+import { OrderBehaviour } from '../mixin/order-behaviour/order-behaviour';
 
 // Gesture events like tap and track generated from touch will not be
 // preventable, allowing for better scrolling performance.
@@ -48,7 +50,7 @@ setPassiveTouchGestures(true);
 /**
  * @class DsignMenu
  */
-class DsignMenu extends MergeTraslation(LocalizeMixin(ServiceInjectorMixin(PolymerElement))) {
+class DsignMenu extends OrderBehaviour(MergeTraslation(LocalizeMixin(ServiceInjectorMixin(PolymerElement)))) {
     static get template() {
         return html`
     <style>    
@@ -72,10 +74,6 @@ class DsignMenu extends MergeTraslation(LocalizeMixin(ServiceInjectorMixin(Polym
        
        app-toolbar paper-dropdown-menu paper-item {
             color: #757575;; ;
-       }
-       
-       dsign-menu-favorites {
-            margin-bottom: 4px;
        }
 
        .paper-btn {
@@ -154,17 +152,6 @@ class DsignMenu extends MergeTraslation(LocalizeMixin(ServiceInjectorMixin(Polym
             @apply --layout-center;
             padding-bottom: 10px;
             padding-top: 10px;
-       }
-       
-       .amount {
-            @apply --layout;
-            @apply --layout-flex;
-            @apply --layout-center;
-            @apply --layout-end-justified;
-            padding-right: 4px;
-            font-size: 20px;
-            font-weight: 600;
-            font-family: var(--paper-font-common-base_-_font-family);
        }
        
        [no-padding] {
@@ -383,7 +370,7 @@ class DsignMenu extends MergeTraslation(LocalizeMixin(ServiceInjectorMixin(Polym
        @media only screen and (max-width: 770px) and (min-width: 501px) {
        
             app-drawer {           
-                --app-drawer-width: 250px;
+                --app-drawer-width: 290px;
             }
        
             dsign-menu-wrap-item {
@@ -406,7 +393,7 @@ class DsignMenu extends MergeTraslation(LocalizeMixin(ServiceInjectorMixin(Polym
        
        @media only screen and (max-width: 500px)  {
             app-drawer {           
-                --app-drawer-width: 250px;
+                --app-drawer-width: 290px;
             }
        
             dsign-menu-wrap-item {
@@ -542,7 +529,7 @@ class DsignMenu extends MergeTraslation(LocalizeMixin(ServiceInjectorMixin(Polym
           </dom-repeat>
       </div>
     </app-header-layout>
-    <app-drawer id="drawer" align="right">
+    <app-drawer id="drawer" align="right" opened>
         <div class="drawerContainer">
             <div class="restaurant-title">{{organization.name}}</div>
             <div id="order" style="display: flex">
@@ -564,11 +551,12 @@ class DsignMenu extends MergeTraslation(LocalizeMixin(ServiceInjectorMixin(Polym
             <div id="language">
                 <paper-select-language><paper-select-language>
             </div>
-
-            <paper-tabs selected="{{tabMenu}}" class="full">
-                <paper-tab>{{localize('filter')}}</paper-tab>
-                <paper-tab>{{localize('order')}}</paper-tab>
-            </paper-tabs>
+            <template is="dom-if" if="{{menu.enable_order}}">
+                <paper-tabs selected="{{tabMenu}}" class="full">
+                    <paper-tab>{{localize('filter')}}</paper-tab>
+                    <paper-tab>{{localize('order')}}</paper-tab>
+                </paper-tabs>
+            </template>
             <iron-pages selected="{{tabMenu}}">
                 <div>
                     <div class="sect-type">
@@ -587,20 +575,10 @@ class DsignMenu extends MergeTraslation(LocalizeMixin(ServiceInjectorMixin(Polym
                     </div>
                 </div>
                 <div>
-                    <dsign-order organization="[[organization]]"></dsign-order>
+                    <dsign-order organization="[[organization]]" menu="[[menu]]"></dsign-order>
+                    <dsign-order-detail></dsign-order-detail>
                 </div>
-            </iron-pages>
-
-            <div class="subtitle" style="display:none;">
-                <div class="amount">{{amount}}</div>
-            </div>
-            <!--
-            <dom-repeat id="favorites" items="[[favorites]]" as="favorite" sort="sortArrayFavorites">
-              <template>
-                <dsign-menu-favorites menu-item="{{favorite}}"></dsign-menu-favorites>
-              </template>
-            </dom-repeat>
-            -->
+            </iron-pages>           
         </div>
     </app-drawer>`;
     }
@@ -624,7 +602,6 @@ class DsignMenu extends MergeTraslation(LocalizeMixin(ServiceInjectorMixin(Polym
                 value: {
                     _localizeService: 'Localize',
                     _config: 'config',
-                    _menuStorage: 'MenuStorage',
                     _orderService: 'OrderService',
                     _notifyService: 'Notify',
                 }
@@ -635,16 +612,12 @@ class DsignMenu extends MergeTraslation(LocalizeMixin(ServiceInjectorMixin(Polym
             },
 
             tabMenu: {
-                value: 0
+                value: 1
             },
 
             totalOrder: {
                 value: 0,
                 observer: 'changeTotalOrder'
-            },
-
-            amount: {
-                notify: true
             },
 
             layoutType: {
@@ -663,15 +636,10 @@ class DsignMenu extends MergeTraslation(LocalizeMixin(ServiceInjectorMixin(Polym
                 value: []
             },
 
-            _menuStorage: {
-                readOnly: true,
-                observer: 'changeMenuStorage'
-            },
-
             _orderService: {
                 readOnly: true,
                 observer: 'changeOrderService'
-            },
+              },
 
             _config: {
                 readOnly: true,
@@ -711,8 +679,7 @@ class DsignMenu extends MergeTraslation(LocalizeMixin(ServiceInjectorMixin(Polym
     static get observers() {
         return [
             '_observeCategory(items, apiUrl)',
-            '_observeAllergen(items, apiUrl)',
-            '_observeMenuStorage(_menuStorage, organization, allCategory)'
+            '_observeAllergen(items, apiUrl)'
         ];
     }
 
@@ -726,6 +693,29 @@ class DsignMenu extends MergeTraslation(LocalizeMixin(ServiceInjectorMixin(Polym
         if (param && param['menu'] &&  param['menu'] === 'compress') {
             this._setLayoutType('dsign-menu-item-compress');
         }
+    }
+
+
+  /**
+   * 
+   * @param {OrderService} service 
+   * @returns 
+   */
+   changeOrderService(service) {
+        if (!service) {
+        return;
+        }
+
+        service.getStorage().getEventManager().on(Storage.POST_UPDATE, new Listener(this._currentOrder.bind(this)));
+        service.getEventManager().on(OrderService.CHANGE_DEFAUL_ORDER, new Listener(this._currentOrder.bind(this)));
+        service.getEventManager().on(OrderService.LOAD_DEFAUL_ORDER, new Listener(this._currentOrder.bind(this)));
+    }
+
+    _currentOrder(evt) {
+        if (this.menu && this.menu.enable_order && this.currentOrder) {
+            this.totalOrder = this.currentOrder.getTotalItemOrder();
+        }
+        
     }
 
     /**
@@ -749,7 +739,7 @@ class DsignMenu extends MergeTraslation(LocalizeMixin(ServiceInjectorMixin(Polym
                 }
                 resolve(JSON.parse(request.response));
             });
-            request.open("GET", `${this.apiUrl}menu-category`);
+            request.open("GET", `${this.apiUrl}/menu-category`);
             request.setRequestHeader('Accept','application/json');
             request.send();
         });
@@ -778,7 +768,7 @@ class DsignMenu extends MergeTraslation(LocalizeMixin(ServiceInjectorMixin(Polym
                 
                 resolve(JSON.parse(request.response));
             });
-            request.open("GET", `${this.apiUrl}menu-allergen`);
+            request.open("GET", `${this.apiUrl}/menu-allergen`);
             request.setRequestHeader('Accept','application/json');
             request.send();
         });
@@ -836,66 +826,6 @@ class DsignMenu extends MergeTraslation(LocalizeMixin(ServiceInjectorMixin(Polym
     }
 
     /**
-     *
-     * @param menuStorage
-     * @param organization
-     * @param allCategory
-     * @private
-     */
-    _observeMenuStorage(menuStorage, organization, allCategory) {
-
-        if (!menuStorage || !organization || !allCategory) {
-            return;
-        }
-
-        this._getFavorites()
-    }
-
-    /**
-     * @private
-     */
-    _getFavorites() {
-        this._menuStorage.getAll({restaurantId: this.organization._id})
-            .then((data) => {
-                this.favorites = this.sortFavorites(this.checkStatusFavorite(data));
-                this._updateAmount();
-                this._updateTotalCount();
-            });
-    }
-
-    /**
-     * @param {Storage} menuStorage
-     */
-    changeMenuStorage(menuStorage) {
-        if (!menuStorage) {
-            return;
-        }
-
-        menuStorage.getEventManager().on(Storage.POST_REMOVE, new Listener(this.deleteFavoriteEvt.bind(this)));
-        menuStorage.getEventManager().on(Storage.POST_UPDATE, new Listener(this.updateFavoriteEvt.bind(this)));
-        menuStorage.getEventManager().on(Storage.POST_SAVE, new Listener(this.saveFavoriteEvt.bind(this)));
-    }
-
-    changeOrderService() {
-
-    }
-
-    /**
-     * @param evt
-     */
-    deleteFavoriteEvt(evt) {
-
-        for (let index = 0; this.favorites.length > index; index++) {
-            if (this.favorites[index]._id === evt.data._id) {
-                this.splice('favorites', index, 1);
-                break;
-            }
-        }
-        this._updateAmount();
-        this._updateTotalCount();
-    }
-
-    /**
      * @returns 
      */
     hasEnglish() {
@@ -907,172 +837,6 @@ class DsignMenu extends MergeTraslation(LocalizeMixin(ServiceInjectorMixin(Polym
         }
 
         return has;
-    }
-
-    /**
-     * @param evt
-     */
-    updateFavoriteEvt(evt) {
-        this._updateAmount();
-        this._updateTotalCount();
-    }
-
-    /**
-     * @param evt
-     */
-    saveFavoriteEvt(evt) {
-        this.push('favorites', evt.data);
-        this._updateAmount();
-        this._updateTotalCount();
-    }
-
-    /**
-     *
-     * @param favorites
-     * @returns {*}
-     */
-    checkStatusFavorite(favorites) {
-        for (let index = 0; favorites.length > index; index++) {
-
-
-            let dish = this.items.find((element) => {
-                return element._id ===  favorites[index]._id;
-            });
-
-            switch (true) {
-                case dish === undefined && favorites[index].status !== 'not-available':
-                    favorites[index].status = 'not-available';
-                    this._menuStorage.update(favorites[index]);
-                    break;
-                case dish !== undefined && favorites[index].status !== dish.status:
-                    favorites[index].status = dish.status;
-                    this._menuStorage.update(favorites[index]);
-                    break
-            }
-        }
-
-        return favorites;
-    }
-
-    /**
-     * @param favorites
-     * @returns {[]}
-     */
-    sortFavorites(favorites) {
-        let tmpFavorites = [];
-        for (let property in this.allCategory) {
-            for (let index = 0; favorites.length > index; index++) {
-                if (favorites[index].category === property) {
-                    tmpFavorites.push(favorites[index]);
-                }
-            }
-
-        }
-        return tmpFavorites;
-    }
-
-    /**
-     * @param a
-     * @param b
-     */
-    sortArrayFavorites(a, b) {
-        if(!this.allCategory || !a || !b) {
-            return -1;
-        }
-
-        for (let property in this.allCategory) {
-            if (a.category === property) {
-                return -1
-            }
-
-            if (b.category === property) {
-                return 1
-            }
-        }
-        return 0;
-    }
-
-    /**
-     * @private
-     */
-    _updateAmount() {
-
-        setTimeout(
-            () => {
-                let amount = 0;
-                for (let index = 0; this.favorites.length > index; index++) {
-                    if (this.favorites[index].status !== 'available') {
-                        continue;
-                    }
-                    amount = amount + (this.favorites[index].price.value * this.favorites[index].totalCount);
-                }
-
-                this.amount = new Intl.NumberFormat('it-IT', { style: 'currency', currency: 'EUR' }).format(amount);
-            },
-            100
-        );
-    }
-
-    /**
-     * @private
-     */
-    _updateTotalCount() {
-
-        setTimeout(
-            () => {
-                let total = 0;
-                for (let index = 0; this.favorites.length > index; index++) {
-                    if (this.favorites[index].status !== 'available') {
-                        continue;
-                    }
-                    total = total + this.favorites[index].totalCount;
-                }
-
-                this.totalOrder = total;
-            },
-            100
-        );
-    }
-
-    /**
-     * @param {CustomEvent} evt
-     */
-    updateAmountEvt(evt) {
-        this._updateAmount();
-        this._updateTotalCount();
-    }
-
-    /**
-     * @returns {string}
-     * @private
-     */
-    _getOrder() {
-        let order = '';
-
-        order = order + this.amount + '\n'
-
-        for (let index = 0; this.favorites.length > index; index++) {
-            if (this.favorites[index].status !== 'available') {
-                continue;
-            }
-
-            order += `${this.favorites[index].totalCount} - ${this.favorites[index].name.it}\n`
-        }
-
-        return order;
-    }
-
-    /**
-     * @private
-     * @deprecated
-     * @param {CustomEvent} evt
-     */
-    _sendOrder(evt) {
-
-        let ele = document.createElement('a');
-        ele.href = `https://api.whatsapp.com/send?phone=${this.organization.whatsapp_phone.prefix}${this.organization.whatsapp_phone.number}&text=${encodeURIComponent(this._getOrder())}`;
-        ele.target="_blank";
-        ele.click();
     }
 
     /**

@@ -12,6 +12,7 @@ import {PolymerElement, html} from '@polymer/polymer/polymer-element.js';
 import {LocalizeMixin} from "@dsign/polymer-mixin/localize/localize-mixin";
 import {ServiceInjectorMixin} from "@dsign/polymer-mixin/service/injector-mixin";
 import {Storage} from "@dsign/library/src/storage/Storage";
+import {Listener} from "@dsign/library/src/event/Listener";
 import {OrderBehaviour} from "../mixin/order-behaviour/order-behaviour";
 import {MergeTraslation} from "../mixin/merge-traslation/merge-traslation";
 import "../dsign-badge/dsing-badge";
@@ -25,8 +26,7 @@ import '@polymer/paper-input/paper-input';
 import '@polymer/paper-button/paper-button';
 import {lang} from './language';
 import { LocalizeEntityPropriety } from '../mixin/localize/localize-entity-proprierty';
-
-
+import { OrderService } from '../../src/module/order/service/OrderService';
 
 /**
  * @class DsignMenuItemCompress
@@ -64,10 +64,10 @@ class DsignMenuItemCompress extends MergeTraslation(OrderBehaviour(LocalizeEntit
        
        .action {
            height: 32px;
-           display: flex !important;
            padding: 0 6px;
-           @apply --layout-center;
-           @apply --layout-end-justified;
+           position: absolute;
+           right: 0;
+           bottom: 0;
        }
        
        .header-card-title {
@@ -78,6 +78,10 @@ class DsignMenuItemCompress extends MergeTraslation(OrderBehaviour(LocalizeEntit
            line-height: 20px;
            display: block;
            padding: 0 6px;
+       }
+
+       #image {
+           background-color:#eeeeee;
        }
        
       
@@ -200,7 +204,7 @@ class DsignMenuItemCompress extends MergeTraslation(OrderBehaviour(LocalizeEntit
     </style>
     <paper-card>
         <div id="image" class="header">
-            <div class="triangle"></div>
+            <div class="triangle" hidden></div>
             <div id="allergens">
                 <dom-repeat id="allergens" items="[[menuItem.allergens]]" as="allergen">
                     <template>
@@ -220,8 +224,8 @@ class DsignMenuItemCompress extends MergeTraslation(OrderBehaviour(LocalizeEntit
              <div class="header-card-category">{{localize(category)}}</div>
              <div class="paragraph-card">{{localizeEntityPropriety(menuItem.description)}}</div>
              <div id="action" class="action">
-                 <dsign-badge id="badgeMenu" for="btn-menu" label="{{dishCount}}" class="red" offset-x="-2"></dsign-badge>
-                 <paper-icon-button icon="add" id="btn-menu" on-tap="addItemOrder"></paper-icon-button>
+                 <dsign-badge id="badgeMenu" for="btn-menu" label="{{getTotaleItemOrder(menuItem)}}" class="red" offset-x="-2"></dsign-badge>
+                 <paper-icon-button icon="add" id="btn-menu" item-order="{{menuItem}}" on-tap="addItemOrder" disabled="{{disableOrder}}"></paper-icon-button>
              </div>
         </div>
     </paper-card>`;
@@ -248,25 +252,27 @@ class DsignMenuItemCompress extends MergeTraslation(OrderBehaviour(LocalizeEntit
                 value: {
                     _config: 'config',
                     _localizeService: 'Localize',
-                    _menuStorage: 'MenuStorage',
+                    _orderService: 'OrderService',
                     _notifyService: 'Notify'
                 }
             },
 
-            /**
-             * @type Number
-             */
-            dishCount: {
-                value: 0,
-                observer: 'changeDishCount'
-            },
+            _orderService: {
+                readOnly: true,
+                observer: 'changeOrderService'
+            }    
         };
     }
 
-    static get observers() {
-        return [
-            '_observeMenu(menuItem, _config, _menuStorage)'
-        ];
+    changeOrderService(service) {
+        if (!service) {
+          return;
+        }
+    
+        service.getStorage().getEventManager().on(Storage.POST_UPDATE, new Listener(this._updateListItemOrder.bind(this)));
+        service.getStorage().getEventManager().on(Storage.POST_SAVE, new Listener(this._updateListItemOrder.bind(this)));
+        service.getEventManager().on(OrderService.CHANGE_DEFAUL_ORDER, new Listener(this._updateListItemOrder.bind(this)));
+        service.getEventManager().on(OrderService.LOAD_DEFAUL_ORDER, new Listener(this._updateListItemOrder.bind(this)));
     }
 
     /**
@@ -282,17 +288,6 @@ class DsignMenuItemCompress extends MergeTraslation(OrderBehaviour(LocalizeEntit
     }
 
     /**
-     * @param dishCount
-     */
-    changeDishCount(dishCount) {
-        if (!dishCount) {
-            this.$.badgeMenu.style.visibility = 'hidden';
-            return;
-        }
-        this.$.badgeMenu.style.visibility = 'visible';
-    }
-
-    /**
      * @param price
      * @returns {*}
      * @private
@@ -302,41 +297,6 @@ class DsignMenuItemCompress extends MergeTraslation(OrderBehaviour(LocalizeEntit
             return ;
         }
         return price.value;
-    }
-
-    /**
-     *
-     * @param menu
-     * @param config
-     * @param {Storage} menuStorage
-     * @private
-     */
-    _observeMenu(menu, config, menuStorage) {
-        if (!menu || !config || !menuStorage) {
-            return;
-        }
-
-      //  this.$.image.style.backgroundImage = `url(${config.bucket}/categories/${menu.category}.png)`;
-        this.$.image.style.backgroundSize = `contain`;
-        this.$.image.style.backgroundColor = `#eeeeee`;
-
-        if (menu && menu.name && menu.name.it) {
-            menu.name.it = menu.name.it.charAt(0).toUpperCase() + menu.name.it.slice(1);
-        }
-
-        if (menu && menu.name && menu.name.en) {
-            menu.name.en = menu.name.en.charAt(0).toUpperCase() + menu.name.en.slice(1);
-        }
-
-        menuStorage.getEventManager().on(Storage.POST_REMOVE, this.updateDishCount.bind(this));
-        menuStorage.getEventManager().on(Storage.POST_UPDATE, this.updateDishCount.bind(this));
-        menuStorage.getEventManager().on(Storage.POST_SAVE,  this.updateDishCount.bind(this));
-
-        if (menu) {
-            this.initDishCount(menu);
-            this._changeStatus(menu.status);
-            
-        }
     }
 
     _changeStatus(status) {

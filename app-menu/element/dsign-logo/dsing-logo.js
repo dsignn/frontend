@@ -8,11 +8,12 @@
  * subject to an additional IP rights grant found at http://polymer.github.io/PATENTS.txt
  */
 
+import { ServiceInjectorMixin } from '@dsign/polymer-mixin/service/injector-mixin';
 import {PolymerElement, html} from '@polymer/polymer/polymer-element.js';
 /**
  * @class DsignLogo
  */
-class DsignLogo extends PolymerElement {
+class DsignLogo extends ServiceInjectorMixin(PolymerElement) {
     static get template() {
         return html`
         <style>
@@ -45,27 +46,40 @@ class DsignLogo extends PolymerElement {
     static get properties() {
         return {
 
-            logoSrc: {
-                value: [
-                    'all',
-                    'first',
-                    'second'
-                ]
+            services: {
+                value: {
+                    _config: 'config'
+                }
             },
 
             organization: {
-                observer: 'changeOrganization'
-            }
+                notify: true
+            },
+
+            _config: {
+                readOnly: true
+            },
         };
     }
 
-    changeOrganization(organization) {
-        if (!organization) {
+    static get observers() {
+        return [
+            '_observeOrganizationConfig(organization, _config)'
+        ];
+    }
+
+    _observeOrganizationConfig(organization, _config) {
+        if (!organization || !_config) {
             return;
         }
 
+       
+
         if (organization.logo && organization.logo.src) {
             this.shadowRoot.querySelector('.logo').style.backgroundImage = `url("${organization.logo.src}")`;
+            document.head.querySelector('#favicon').href = organization.logo.src;
+        } else {
+            document.head.querySelector('#favicon').href = `${_config.bucket}/logo.png`;
         }
 
         if (!!organization["site_url"]) {
