@@ -24,7 +24,7 @@ export class DateStrategy {
     /**
      *
      * @param data
-     * @returns {{}|*}
+     * @returns {any}
      */
     extractValue(data) {
         let extract = data;
