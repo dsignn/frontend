@@ -298,8 +298,8 @@ class MenuViewUpsert extends StorageEntityMixin(NotifyMixin(LocalizeMixin(Servic
                                     </template>
                                 </paper-listbox>
                             </dsign-paper-dropdown-menu>
-                            <!--<paper-toggle-button id="enableOrder" checked="{{entity.enableOrder}}"></paper-toggle-button>
-                            <paper-tooltip for="enableOrder" position="left">{{localize('enable-order')}}</paper-tooltip>-->
+                            <paper-toggle-button id="enableOrder" checked="{{entity.enableOrder}}"></paper-toggle-button>
+                            <paper-tooltip for="enableOrder" position="left">{{localize('enable-order')}}</paper-tooltip>
                         </div>
                         <paper-datepicker name="statusDate" id="statusDate" label="{{localize('date-activation')}}" value="{{entity.statusDate}}"></paper-datepicker>
                         <dsign-paper-dropdown-menu label="{{localize('layout-type')}}" value="{{entity.layoutType}}" required>
