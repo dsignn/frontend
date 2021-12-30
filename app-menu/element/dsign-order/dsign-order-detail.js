@@ -251,19 +251,19 @@ class DsignOrderDetail extends OrderBehaviour(LocalizeMixin(ServiceInjectorMixin
       return;
     }
 
-    service.getStorage().getEventManager().on(Storage.POST_UPDATE, new Listener(this._updateListItemOrder.bind(this)));
-    service.getStorage().getEventManager().on(Storage.POST_SAVE, new Listener(this._updateListItemOrder.bind(this)));
-    service.getEventManager().on(OrderService.CHANGE_DEFAUL_ORDER, new Listener(this._updateListItemOrder.bind(this)));
-    service.getEventManager().on(OrderService.LOAD_DEFAUL_ORDER, new Listener(this._updateListItemOrder.bind(this)));
+    service.getStorage().getEventManager().on(Storage.POST_UPDATE, new Listener(this._updateViewOrder.bind(this)));
+    service.getStorage().getEventManager().on(Storage.POST_SAVE, new Listener(this._updateViewOrder.bind(this)));
+    service.getEventManager().on(OrderService.CHANGE_DEFAUL_ORDER, new Listener(this._updateViewOrder.bind(this)));
+    service.getEventManager().on(OrderService.LOAD_DEFAUL_ORDER, new Listener(this._updateViewOrder.bind(this)));
   }
   
 
   /**
    * 
    */
-  _updateListItemOrder() {
+   _updateViewOrder() {
 
-    super._updateListItemOrder();
+    super._updateViewOrder();
     if (!this.currentOrder) {
       return;
     }

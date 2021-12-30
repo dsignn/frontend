@@ -28,13 +28,6 @@ export const OrderBehaviour = (superClass) => {
                     value: false
                 },
 
-                hasPrice: {
-                    type: Boolean,
-                    readOnly: true,
-                    notify: true,
-                    value: true
-                },
-
                 /**
                  * @type Storage
                  */
@@ -242,7 +235,7 @@ export const OrderBehaviour = (superClass) => {
          * @param {CustomEvent} evt 
          * @returns 
          */
-        _updateListItemOrder(evt) {
+        _updateViewOrder(evt) {
             if (!this.currentOrder) {
                 return;
             }

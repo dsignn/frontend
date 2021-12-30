@@ -27,11 +27,12 @@ import '@polymer/paper-button/paper-button';
 import {lang} from './language';
 import { LocalizeEntityPropriety } from '../mixin/localize/localize-entity-proprierty';
 import { OrderService } from '../../src/module/order/service/OrderService';
+import { MenuItemBehaviour } from '../mixin/menu-item-behaviour/menu-item-behaviour';
 
 /**
  * @class DsignMenuItemCompress
  */
-class DsignMenuItemCompress extends MergeTraslation(OrderBehaviour(LocalizeEntityPropriety(LocalizeMixin(ServiceInjectorMixin(PolymerElement))))) {
+class DsignMenuItemCompress extends MergeTraslation(OrderBehaviour(MenuItemBehaviour(LocalizeEntityPropriety(LocalizeMixin(ServiceInjectorMixin(PolymerElement)))))) {
     static get template() {
         return html`
     <style> 
@@ -238,7 +239,6 @@ class DsignMenuItemCompress extends MergeTraslation(OrderBehaviour(LocalizeEntit
 
     static get properties() {
         return {
-            menuItem: { },
 
             categories: {
                 observer: 'categoriesChange'
@@ -269,10 +269,8 @@ class DsignMenuItemCompress extends MergeTraslation(OrderBehaviour(LocalizeEntit
           return;
         }
     
-        service.getStorage().getEventManager().on(Storage.POST_UPDATE, new Listener(this._updateListItemOrder.bind(this)));
-        service.getStorage().getEventManager().on(Storage.POST_SAVE, new Listener(this._updateListItemOrder.bind(this)));
-        service.getEventManager().on(OrderService.CHANGE_DEFAUL_ORDER, new Listener(this._updateListItemOrder.bind(this)));
-        service.getEventManager().on(OrderService.LOAD_DEFAUL_ORDER, new Listener(this._updateListItemOrder.bind(this)));
+        service.getEventManager().on(OrderService.CHANGE_DEFAUL_ORDER, new Listener(this._updateViewOrder.bind(this)));
+        service.getEventManager().on(OrderService.LOAD_DEFAUL_ORDER, new Listener(this._updateViewOrder.bind(this)));
     }
 
     /**
@@ -285,42 +283,6 @@ class DsignMenuItemCompress extends MergeTraslation(OrderBehaviour(LocalizeEntit
 
         this._mergeTraslation(value);
         this.category = this.menuItem ? this.menuItem.category : '';
-    }
-
-    /**
-     * @param price
-     * @returns {*}
-     * @private
-     */
-    _computePrice(price) {
-        if (!price) {
-            return ;
-        }
-        return price.value;
-    }
-
-    _changeStatus(status) {
-
-        switch (status) {
-            case 'available':
-                this.statusLabel = '';
-                this.shadowRoot.querySelector('.triangle').setAttribute('hidden', '');
-                this.shadowRoot.querySelector('.status-dish').setAttribute('hidden', '');
-                this.enableButton(false);
-                break;
-            case 'over':
-                this.statusLabel = 'finished';
-                this.shadowRoot.querySelector('.triangle').removeAttribute('hidden');
-                this.shadowRoot.querySelector('.status-dish').removeAttribute('hidden');
-                this.enableButton(true);
-                break;
-            case 'not-available':
-                this.statusLabel = 'off-the-menu';
-                this.shadowRoot.querySelector('.triangle').removeAttribute('hidden');
-                this.shadowRoot.querySelector('.status-dish').removeAttribute('hidden');
-                this.enableButton(true);
-                break;
-        }
     }
 
     /**

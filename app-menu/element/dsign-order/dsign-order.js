@@ -540,10 +540,10 @@ class DsignOrder extends OrderBehaviour(LocalizeMixin(ServiceInjectorMixin(Polym
         return;
       }
   
-      service.getStorage().getEventManager().on(Storage.POST_UPDATE, new Listener(this._updateListItemOrder.bind(this)));
-      service.getStorage().getEventManager().on(Storage.POST_SAVE, new Listener(this._updateListItemOrder.bind(this)));
-      service.getEventManager().on(OrderService.CHANGE_DEFAUL_ORDER, new Listener(this._updateListItemOrder.bind(this)));
-      service.getEventManager().on(OrderService.LOAD_DEFAUL_ORDER, new Listener(this._updateListItemOrder.bind(this)));
+      service.getStorage().getEventManager().on(Storage.POST_UPDATE, new Listener(this._updateViewOrder.bind(this)));
+      service.getStorage().getEventManager().on(Storage.POST_SAVE, new Listener(this._updateViewOrder.bind(this)));
+      service.getEventManager().on(OrderService.CHANGE_DEFAUL_ORDER, new Listener(this._updateViewOrder.bind(this)));
+      service.getEventManager().on(OrderService.LOAD_DEFAUL_ORDER, new Listener(this._updateViewOrder.bind(this)));
       service.getEventManager().on(OrderService.CHANGE_DEFAUL_ORDER, new Listener(this._updateCurrentOrder.bind(this)));
       service.getEventManager().on(OrderService.LOAD_DEFAUL_ORDER, new Listener(this._updateCurrentOrder.bind(this)));
   }
@@ -570,8 +570,8 @@ class DsignOrder extends OrderBehaviour(LocalizeMixin(ServiceInjectorMixin(Polym
   /**
    * @param {CustomEvent} evt 
    */
-  _updateListItemOrder(evt) {
-    super._updateListItemOrder();
+   _updateViewOrder(evt) {
+    super._updateViewOrder();
     this._getOrders();
   }
   

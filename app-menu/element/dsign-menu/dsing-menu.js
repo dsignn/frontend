@@ -612,7 +612,7 @@ class DsignMenu extends OrderBehaviour(MergeTraslation(LocalizeMixin(ServiceInje
             },
 
             tabMenu: {
-                value: 1
+                value: 0
             },
 
             totalOrder: {
@@ -691,7 +691,7 @@ class DsignMenu extends OrderBehaviour(MergeTraslation(LocalizeMixin(ServiceInje
         this.resources = lang;
         let param = this.parseUrlParam();
         if (param && param['menu'] &&  param['menu'] === 'compress') {
-            this._setLayoutType('dsign-menu-item-compress');
+            this._setLayoutType('dsign-menu-i2tem-compress');
         }
     }
 

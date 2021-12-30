@@ -152,9 +152,6 @@ class DsignMenuItemImage extends MergeTraslation(OrderBehaviour(LocalizeEntityPr
             color: var(--munu-color);
         }
 
-
-
-
        .triangle {
            position: absolute;
            width: 0;
@@ -198,7 +195,7 @@ class DsignMenuItemImage extends MergeTraslation(OrderBehaviour(LocalizeEntityPr
             <div class="header-card-title">{{localizeEntityPropriety(menuItem.name)}}</div>
         </div>
         <div id="image" class="image">
-            <div class="triangle"></div>
+            <div class="triangle" hidden></div>
             <div class="status-dish">{{localize(statusLabel)}}</div>
             <template is="dom-if" if="{{hasPrice}}">
                 <div class="price">
@@ -257,6 +254,15 @@ class DsignMenuItemImage extends MergeTraslation(OrderBehaviour(LocalizeEntityPr
         };
     }
 
+    changeOrderService(service) {
+        if (!service) {
+          return;
+        }
+    
+        service.getEventManager().on(OrderService.CHANGE_DEFAUL_ORDER, new Listener(this._updateViewOrder.bind(this)));
+        service.getEventManager().on(OrderService.LOAD_DEFAUL_ORDER, new Listener(this._updateViewOrder.bind(this)));
+    }
+
     /**
      *
      */
@@ -272,42 +278,6 @@ class DsignMenuItemImage extends MergeTraslation(OrderBehaviour(LocalizeEntityPr
      */
     _capitalize(value) {
         return typeof value === 'string' ? value.charAt(0).toUpperCase() + value.slice(1) : '';
-    }
-
-    /**
-     * @param price
-     * @returns {*}
-     * @private
-     */
-    _computePrice(price) {
-        if (!price || !price.value) {
-            return;
-        }
-        return price.value;
-    }
-
-    _changeStatus(status) {
-
-        switch (status) {
-            case 'available':
-                this.statusLabel = '';
-                this.shadowRoot.querySelector('.triangle').setAttribute('hidden', '');
-                this.shadowRoot.querySelector('.status-dish').setAttribute('hidden', '');
-                this.enableButton(false);
-                break;
-            case 'over':
-                this.statusLabel = 'finished';
-                this.shadowRoot.querySelector('.triangle').removeAttribute('hidden');
-                this.shadowRoot.querySelector('.status-dish').removeAttribute('hidden');
-                this.enableButton(true);
-                break;
-            case 'not-available':
-                this.statusLabel = 'off-the-menu';
-                this.shadowRoot.querySelector('.triangle').removeAttribute('hidden');
-                this.shadowRoot.querySelector('.status-dish').removeAttribute('hidden');
-                this.enableButton(true);
-                break;
-        }
     }
 
     /**
