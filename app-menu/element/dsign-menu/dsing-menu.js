@@ -109,6 +109,7 @@ class DsignMenu extends OrderBehaviour(MergeTraslation(LocalizeMixin(ServiceInje
        }
 
        paper-tabs {
+
             --paper-tabs: {
                 color: var(--munu-color);
                 background-color: var(--munu-background-color);
@@ -117,6 +118,11 @@ class DsignMenu extends OrderBehaviour(MergeTraslation(LocalizeMixin(ServiceInje
             --paper-tabs-selection-bar-color: var(--munu-color);
             font-size: 14px;
             text-transform: uppercase;
+        }
+
+        paper-tabs.drawer {
+            margin-top: 4px;
+            border-radius: 3px;
         }
 
         paper-input#search {
@@ -552,7 +558,7 @@ class DsignMenu extends OrderBehaviour(MergeTraslation(LocalizeMixin(ServiceInje
                 <paper-select-language><paper-select-language>
             </div>
             <template is="dom-if" if="{{menu.enable_order}}">
-                <paper-tabs selected="{{tabMenu}}" class="full">
+                <paper-tabs selected="{{tabMenu}}" class="full actio">
                     <paper-tab>{{localize('filter')}}</paper-tab>
                     <paper-tab>{{localize('order')}}</paper-tab>
                 </paper-tabs>

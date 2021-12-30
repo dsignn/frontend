@@ -138,7 +138,27 @@ class DsignMenuItemImage extends MergeTraslation(OrderBehaviour(LocalizeEntityPr
        paper-icon-button[disabled] #btn-menu {
             background-color:#757575;
        }
-       
+
+       paper-icon-button {
+            width: 26px;
+            height: 26px;
+            border-radius: 50%;
+            --paper-icon-button : {
+                padding: 1px;
+            }
+        
+            background-color: var(--munu-background-color);
+            color: var(--munu-color);
+       }
+
+       .action {
+            height: 32px;
+            padding: 0 6px;
+            position: absolute;
+            right: 0;
+            bottom: 0;
+        }
+        
        iron-icon.allergen {
         
             width: 31px;
@@ -203,7 +223,7 @@ class DsignMenuItemImage extends MergeTraslation(OrderBehaviour(LocalizeEntityPr
                 </div>
             </template>
             <div class="header-card-category">{{localize(category)}}</div>
-            <div id="action">
+            <div id="action" class="action">
                 <dsign-badge id="badgeMenu" for="btn-menu" label="{{getTotaleItemOrder(menuItem)}}" class="red" offset-x="-2"></dsign-badge>
                 <paper-icon-button icon="add" id="btn-menu" on-tap="addItemOrder" disabled="{{disableOrder}}"></paper-icon-button>
             </div>
