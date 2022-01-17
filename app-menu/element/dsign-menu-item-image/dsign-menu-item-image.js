@@ -14,6 +14,7 @@ import {ServiceInjectorMixin} from "@dsign/polymer-mixin/service/injector-mixin"
 import {OrderBehaviour} from "../mixin/order-behaviour/order-behaviour";
 import {MergeTraslation} from "../mixin/merge-traslation/merge-traslation";
 import {Storage} from "@dsign/library/src/storage/Storage";
+import {Listener} from "@dsign/library/src/event/Listener";
 import '@polymer/paper-dropdown-menu/paper-dropdown-menu';
 import '@polymer/paper-item/paper-item';
 import '@polymer/paper-icon-button/paper-icon-button';
@@ -24,6 +25,7 @@ import '@polymer/paper-input/paper-input';
 import '@polymer/paper-button/paper-button';
 import {lang} from './language';
 import { LocalizeEntityPropriety } from '../mixin/localize/localize-entity-proprierty';
+import { OrderService } from '../../src/module/order/service/OrderService';
 
 /**
  * @class DsignMenuItemImage
@@ -191,6 +193,10 @@ class DsignMenuItemImage extends MergeTraslation(OrderBehaviour(LocalizeEntityPr
             width: 100px;
             height: auto;
        }
+
+       #badgeMenu {
+           visibility: hidden;
+       }
        
        .status-dish {
           top: 24px;
@@ -225,7 +231,7 @@ class DsignMenuItemImage extends MergeTraslation(OrderBehaviour(LocalizeEntityPr
             <div class="header-card-category">{{localize(category)}}</div>
             <div id="action" class="action">
                 <dsign-badge id="badgeMenu" for="btn-menu" label="{{getTotaleItemOrder(menuItem)}}" class="red" offset-x="-2"></dsign-badge>
-                <paper-icon-button icon="add" id="btn-menu" on-tap="addItemOrder" disabled="{{disableOrder}}"></paper-icon-button>
+                <paper-icon-button icon="add" id="btn-menu" item-order="{{menuItem}}" on-tap="addItemOrder" disabled="{{disableOrder}}"></paper-icon-button>
             </div>
             <div id="allergens">
                 <dom-repeat id="allergens" items="[[menuItem.allergens]]" as="allergen">
@@ -262,14 +268,20 @@ class DsignMenuItemImage extends MergeTraslation(OrderBehaviour(LocalizeEntityPr
                 value: {
                     _config: 'config',
                     _localizeService: 'Localize',
-                    _menuStorage: 'MenuStorage',
                     _notifyService: 'Notify',
+                    _orderService: 'OrderService',
                 }
             },
 
             statusLabel: {
                 notify: true
             },
+
+
+            _orderService: {
+                readOnly: true,
+                observer: 'changeOrderService'
+            }    
 
         };
     }

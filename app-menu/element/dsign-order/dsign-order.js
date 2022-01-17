@@ -229,7 +229,7 @@ class DsignOrder extends OrderBehaviour(LocalizeMixin(ServiceInjectorMixin(Polym
             <paper-tooltip for="status" position="right">{{statusMessage}}</paper-tooltip>
             <paper-autocomplete 
             id="autocomplete"
-            label="{{localize('enable-order')}}"
+            label="{{localize('select-order')}}"
             text-property="name"
             remote-source
             on-autocomplete-change="_autocompleteChanged"
@@ -270,7 +270,7 @@ class DsignOrder extends OrderBehaviour(LocalizeMixin(ServiceInjectorMixin(Polym
                 </paper-item>
               </template>
             </paper-autocomplete>
-            <div class="price"> 
+            <div id="price" class="price"> 
               <label>{{localize('total')}}</label>
               [[getTotalOrderItemPrice()]] 
             </div>
@@ -283,6 +283,10 @@ class DsignOrder extends OrderBehaviour(LocalizeMixin(ServiceInjectorMixin(Polym
 
         organization: {
           notify: true,
+        },
+
+        currentOrder: {
+          observer: 'changeCurrentOrder'
         },
 
         menu: {
@@ -361,6 +365,16 @@ class DsignOrder extends OrderBehaviour(LocalizeMixin(ServiceInjectorMixin(Polym
     }
    
     this._createDialogCreateOrder();
+  }
+
+  changeCurrentOrder(value) {
+    if (!value) {
+      this.$.status.style.visibility = 'hidden';
+      this.$.price.style.visibility = 'hidden';
+    } else {
+      this.$.status.style.visibility = 'visible';
+      this.$.price.style.visibility = 'visible';
+    }
   }
 
   _changeLanguage(evt) {
@@ -476,7 +490,8 @@ class DsignOrder extends OrderBehaviour(LocalizeMixin(ServiceInjectorMixin(Polym
     */
     entity.name = evt.target.parentElement.querySelector('#nameOrder').value;
 
-    entity.pushAdditionInfo('menuStatus', this.menu.status);
+    // in the menu the variable controll also the status of the menu "disable" in the order "rename" the value
+    entity.pushAdditionInfo('orderType', this.menu.status);
     if (evt.target.parentElement.querySelector('#tableNumber')) {
       entity.pushAdditionInfo('tableNumber', evt.target.parentElement.querySelector('#tableNumber').value);
     }

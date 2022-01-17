@@ -180,6 +180,11 @@ class DsignMenuItemCompress extends MergeTraslation(OrderBehaviour(MenuItemBehav
         height: auto;
        }
        
+       #badgeMenu {
+        visibility: hidden;
+       }
+    
+
        .status-dish {
           top: 24px;
           left: 2px;

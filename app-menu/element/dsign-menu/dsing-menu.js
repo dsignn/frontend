@@ -558,7 +558,7 @@ class DsignMenu extends OrderBehaviour(MergeTraslation(LocalizeMixin(ServiceInje
                 <paper-select-language><paper-select-language>
             </div>
             <template is="dom-if" if="{{menu.enable_order}}">
-                <paper-tabs selected="{{tabMenu}}" class="full actio">
+                <paper-tabs selected="{{tabMenu}}" class="full drawer">
                     <paper-tab>{{localize('filter')}}</paper-tab>
                     <paper-tab>{{localize('order')}}</paper-tab>
                 </paper-tabs>

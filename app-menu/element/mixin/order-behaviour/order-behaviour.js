@@ -87,14 +87,17 @@ export const OrderBehaviour = (superClass) => {
 
             return function() {
                 var itemOrder = arguments[0];
+
                 if (!this.currentOrder) {
                     return;
                 }
 
                 let total = this.currentOrder.getTotalItemOrder(itemOrder._id, arguments.length > 1 ? arguments[1] : undefined);
+           
                 if (this.$.badgeMenu) {
                     if (total) {
                         this.$.badgeMenu.style.visibility = 'visible';
+                       
                     } else {
                         this.$.badgeMenu.style.visibility = 'hidden';
                     }
@@ -236,11 +239,12 @@ export const OrderBehaviour = (superClass) => {
          * @returns 
          */
         _updateViewOrder(evt) {
+            console.log('PORCO DIO');
             if (!this.currentOrder) {
                 return;
             }
             
-            this.updateView =  (new Date).getTime();
+            this.updateView = (new Date).getTime();
         }      
 
         /**
