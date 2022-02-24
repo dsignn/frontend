@@ -5,6 +5,30 @@ import {EntityIdentifier} from "@dsign/library/src/storage/entity/EntityIdentifi
  */
 export class OrderEntity extends EntityIdentifier { 
 
+    static get STATUS_CHECK() {
+        return 'check';
+    }
+
+    static get STATUS_QUEUE() {
+        return 'queue';
+    }
+
+    static get STATUS_PREPARATION() {
+        return 'preparation';
+    }
+
+    static get  STATUS_DELIVERING() {
+        return 'delivering';
+    }
+
+    static get STATUS_CLOSE() {
+        return 'close';
+    }
+
+    static get STATUS_INVALID() {
+        return 'invalid';
+    }
+
     constructor() {
         super();
         /**
@@ -19,5 +43,7 @@ export class OrderEntity extends EntityIdentifier {
         this.lastUpdateAt;
 
         this.organization = {};
+
+        this.additionalInfo = {};
     }
 }

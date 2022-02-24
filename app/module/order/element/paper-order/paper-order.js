@@ -32,6 +32,15 @@ class PaperOrder extends StorageEntityMixin(LocalizeMixin(ServiceInjectorMixin(P
                     padding-top: 5px;
                     padding-bottom: 5px;
                 }
+
+                #left-section {
+                    width: 80px;
+                    min-height: 120px;
+                    background-size: cover;
+                    background-position: center;
+                    background-repeat: no-repeat;
+                    background-image: url("./../../module/order/element/paper-order/img/cover.jpg");
+                }
                 
                 #fastAction .action {
                     @apply --layout;
@@ -56,10 +65,6 @@ class PaperOrder extends StorageEntityMixin(LocalizeMixin(ServiceInjectorMixin(P
             <paper-card>
                 <div id="left-section"></div>
                 <div id="fastAction">
-                    <div class="action">
-                        <paper-toggle-button id="paperToggleDefault" on-change="_publicMenu" checked="{{enableDefault}}"></paper-toggle-button>
-                        <paper-tooltip for="paperToggleDefault" position="bottom">{{localize('public-menu')}}</paper-tooltip>
-                    </div>
                 </div>
                 <div id="right-section">
                     <div id="content">
@@ -115,6 +120,14 @@ class PaperOrder extends StorageEntityMixin(LocalizeMixin(ServiceInjectorMixin(P
             }
         }
     } 
+
+        /**
+     * @param evt
+     * @private
+     */
+    _update(evt) {
+        this.dispatchEvent(new CustomEvent('update', {detail: this.entity}));
+    }
 }
 
 window.customElements.define('paper-order', PaperOrder);

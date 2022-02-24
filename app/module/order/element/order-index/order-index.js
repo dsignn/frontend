@@ -2,8 +2,10 @@ import {html, PolymerElement} from '@polymer/polymer/polymer-element.js';
 import {ServiceInjectorMixin} from "@dsign/polymer-mixin/service/injector-mixin";
 import {LocalizeMixin} from "@dsign/polymer-mixin/localize/localize-mixin";
 import '@polymer/paper-icon-button/paper-icon-button';
+import '@polymer/paper-tabs/paper-tabs';
 import '@polymer/iron-pages/iron-pages';
 import '../order-view-list/order-view-list';
+import '../order-view-upsert/order-view-upsert';
 import {lang} from './language';
 
 /**
@@ -16,14 +18,27 @@ class OrderIndex extends LocalizeMixin(ServiceInjectorMixin(PolymerElement)) {
         return html`
          
             <style>
-                   
-               .header {
-                  @apply --layout-horizontal;
-                  @apply --layout-center;
-                  padding: 10px 20px;
-               }
+                
+               :host {
+                   display: block;
+                    padding: 6px;
+                }  
+
+                .header {
+                    @apply --layout-horizontal;
+                    @apply --layout-center;
+                 }
                
-              .text-content {
+                paper-tabs {
+                    width: 340px;
+                }  
+                
+                .title-tab {
+                    text-transform: uppercase;
+                    font-size: 18px;
+                }
+               
+                .text-content {
                   font-size: 20px;
                   flex: 1;
                }
@@ -33,33 +48,44 @@ class OrderIndex extends LocalizeMixin(ServiceInjectorMixin(PolymerElement)) {
                     @apply --paper-icon-button-action;
                 }
             </style>
-            <iron-pages id="index" selected="{{selected}}">
+            <paper-tabs selected="{{selectedTab}}" tabindex="0">
+                <paper-tab class="title-tab">{{localize('list')}}</paper-tab>
+                <paper-tab class="title-tab">{{localize('details')}}</paper-tab>
+            </paper-tabs>
+            <iron-pages id="resorderaurant" selected="{{selectedTab}}">
                 <div id="list"> 
-                    <order-view-list selected="{{selected}}" entity-selected="{{entitySelected}}">
-                         <div slot="header" class="header">
-                            <div class="text-content">{{localize('list-order')}}</div>
-                         </div>
-                    </order-view-list>
-                </div>
-                <!--
-                <div id="insert"> 
-                    <order-view-upsert>
-                        <div slot="header" class="header">
-                            <div class="text-content">{{localize('insert-order')}}</div>
-                            <paper-icon-button id="iconBackInsert" icon="arrow-back" class="circle" on-click="displayListView"></paper-icon-button>
-                            <paper-tooltip for="iconBackInsert" position="left">{{localize('back')}}</paper-tooltip>
+                    <iron-pages id="index" selected="{{selected}}" entity-selected="{{entitySelected}}">
+                        <div id="list"> 
+                            <order-view-list selected="{{selected}}" entity-selected="{{entitySelected}}">
+                                <div slot="header" class="header">
+                                    <div class="text-content">{{localize('list-order')}}</div>
+                                </div>
+                            </order-view-list>
                         </div>
-                    </order-view-upsert>
-                </div>
-                -->
-                <div id="update"> 
-                    <order-view-upsert entity="{{entitySelected}}">
-                        <div slot="header" class="header">
-                            <div class="text-content">{{localize('update-resource')}}</div>
-                            <paper-icon-button id="iconBackUpdate" icon="arrow-back" class="circle" on-click="displayListView"></paper-icon-button>
-                            <paper-tooltip for="iconBackUpdate" position="left">{{localize('back')}}</paper-tooltip>
+                        <div id="insert"> 
+                            <!-- TODO learn if add this section
+                            <order-view-upsert>
+                                <div slot="header" class="header">
+                                    <div class="text-content">{{localize('insert-order')}}</div>
+                                    <paper-icon-button id="iconBackInsert" icon="arrow-back" class="circle" on-click="displayListView"></paper-icon-button>
+                                    <paper-tooltip for="iconBackInsert" position="left">{{localize('back')}}</paper-tooltip>
+                                </div>
+                            </order-view-upsert>
+                            -->
                         </div>
-                    </order-view-upsert>
+                        <div id="update"> 
+                            <order-view-upsert entity="{{entitySelected}}">
+                                <div slot="header" class="header">
+                                    <div class="text-content">{{localize('update-order')}}</div>
+                                    <paper-icon-button id="iconBackUpdate" icon="arrow-back" class="circle" on-click="displayListView"></paper-icon-button>
+                                    <paper-tooltip for="iconBackUpdate" position="left">{{localize('back')}}</paper-tooltip>
+                                </div>
+                            </order-view-upsert>
+                        </div>
+                    </iron-pages>
+                </div>
+                <div id="details"> 
+                    dettaglio
                 </div>
             </iron-pages>
     `;
@@ -74,6 +100,10 @@ class OrderIndex extends LocalizeMixin(ServiceInjectorMixin(PolymerElement)) {
         return {
             selected: {
                 type: Number,
+                value: 0
+            },
+
+            selectedTab: {
                 value: 0
             },
 

@@ -15,7 +15,17 @@ export const lang = {
     "search-file" : "Cerca file",
     "tag" : 'Tag',
     "notify-save" : "Risorsa salvata",
-    "notify-update" : "Risorsa modificata"
+    "notify-update" : "Risorsa modificata",
+    "status": "Stato",
+    "check": "Da verificare",
+    "queue": "In coda",
+    "preparation": "In preparazione",
+    "delivering": "In consegna",
+    "close": "Chiuso",
+    "invalid": "Invalido",
+    "type": "Tipologia",
+    "indoor": "In sala",
+    "delivery": "Asporto"
   },
   "en": {
     "header": "List monitor",
@@ -33,6 +43,16 @@ export const lang = {
     "search-file" : "Search file",
     "tag" : 'Tag',
     "notify-save" : "Resource saved",
-    "notify-update" : "Resource updated"
+    "notify-update" : "Resource updated",
+    "status": "Status",
+    "check": "To check",
+    "queue": "On queue",
+    "preparation": "In preparation",
+    "delivering": "delivering",
+    "close": "Close",
+    "invalid": "Invalid",
+    "type": "Type",
+    "indoor": "Indoor",
+    "delivery": "Delivery"
   }
 };
