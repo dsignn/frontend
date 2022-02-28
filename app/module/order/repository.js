@@ -76,12 +76,13 @@ export class Repository extends AbstractRepository {
         let adapterStorage = new XmlhAdapter(
             container.get('config')['rest']['path'],
             container.get('config')['rest']['resources']['order']['name'],
-            new FormDataEncode(),
+            new JsonEncode(),
             new JsonDecode(),
             new DefaultBuilder()
         );
 
-        adapterStorage.addHeader('Accept', 'application/json');
+        adapterStorage.addHeader('Content-Type', 'application/json')
+            .addHeader('Accept', 'application/json');
 
         this.injectAuthHeader(adapterStorage);
 

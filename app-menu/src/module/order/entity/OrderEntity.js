@@ -100,7 +100,7 @@ export class OrderEntity extends EntityIdentifier {
 
         this.organization = {};
 
-        this.currenteSelected = false;
+       //this.currenteSelected = false;
     }
 
     /**

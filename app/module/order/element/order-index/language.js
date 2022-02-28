@@ -1,18 +1,18 @@
 export const lang = {
   "it": {
     "list": "Lista",
-    "details": "Dettaglio",
+    "in-the-kitchen": "in cucina",
     "list-order": "Lista ordine",
     "insert-order" : "Inserisci ordine",
     "update-order" : "Modifica ordine",
-    "back" : "Indietro",
+    "back" : "Indietro"
   },
   "en": {
     "list": "List",
-    "details": "Details",
+    "in-the-kitchen": "In the kitchen",
     "list-order": "List orders",
-    "insert-order" : "Insert order",
+    "insert-order" : "Insert order",  
     "update-order" : "Update order",
-    "back" : "Back",
+    "back" : "Back"
   }
 };

@@ -163,8 +163,8 @@ export class Repository extends AbstractRepository {
             new DefaultBuilder()
         );
 
-        adapterStorage.addHeader(    'Content-Type', 'application/json')
-            .addHeader(    'Accept', 'application/json');
+        adapterStorage.addHeader('Content-Type', 'application/json')
+            .addHeader('Accept', 'application/json');
 
         this.injectAuthHeader(adapterStorage);
 

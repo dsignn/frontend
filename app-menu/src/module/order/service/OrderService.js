@@ -5,14 +5,21 @@ import {EventManagerAware} from "@dsign/library/src/event/EventManagerAware";
 export class OrderService extends EventManagerAware { 
 
     /**
-     * Name of the "message" send from sender when play timeslot
+     * Change default order
      *
      * @return {string}
      */
      static get CHANGE_DEFAUL_ORDER()  { return 'change-default-order'; }
+
+    /**
+     * Update default order
+     *
+     * @return {string}
+     */
+    static get UPDATE_DEFAUL_ORDER()  { return 'update-default-order'; }
     
     /**
-     * Name of the "message" send from sender when play timeslot
+     * Load default order
      *
      * @return {string}
      */
@@ -52,6 +59,7 @@ export class OrderService extends EventManagerAware {
             {'restaurantId': order.organization.id}
         ); 
 
+        /*
         for (let cont = 0; allOrder.length > cont; cont++) {
             
             allOrder[cont].currenteSelected = false;
@@ -59,21 +67,38 @@ export class OrderService extends EventManagerAware {
         }
 
         order.currenteSelected = true;
+        */
+    //    await this.getStorage().update(order);
+
         this.currentOrder = order;
-        await this.getStorage().update(order);
         this.getEventManager().emit(OrderService.CHANGE_DEFAUL_ORDER, order);
 
         return this;
     }
 
     /**
+
+     * @returns
+     */
+    pollingCurrentOrder() {
+        if (this.currentOrder) {
+            console.log('CE TANTO UN CAZZO');
+            this.storage.get(this.currentOrder.id)
+                .then((data) => {
+            
+                    this.currentOrder = data;
+                    this.getEventManager().emit(OrderService.UPDATE_DEFAUL_ORDER, this.currentOrder);
+                });
+        }
+    }
+
+    /**
      * @param {string} restaurantId 
      * @returns 
-     */
+  
     async loadCurreOrder(restaurantId) {
         let orders = await this.getStorage().getAll({
-            'restaurantId': restaurantId,
-            'currenteSelected': true
+            'restaurantId': restaurantId
         });
 
         if (orders > 1) {
@@ -89,4 +114,6 @@ export class OrderService extends EventManagerAware {
 
         return  this.currentOrder;
     }
+
+    */
 }

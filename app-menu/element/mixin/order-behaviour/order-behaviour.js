@@ -170,6 +170,7 @@ export const OrderBehaviour = (superClass) => {
          */
         _currentOrderChanged(order) {
             if (!order) {
+                this.disableOrder = true;
                 return;
             }
 
@@ -239,7 +240,6 @@ export const OrderBehaviour = (superClass) => {
          * @returns 
          */
         _updateViewOrder(evt) {
-            console.log('PORCO DIO');
             if (!this.currentOrder) {
                 return;
             }

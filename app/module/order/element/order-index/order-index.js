@@ -27,7 +27,8 @@ class OrderIndex extends LocalizeMixin(ServiceInjectorMixin(PolymerElement)) {
                 .header {
                     @apply --layout-horizontal;
                     @apply --layout-center;
-                 }
+                    padding: var(--padding-top-view-list) 0;
+                }
                
                 paper-tabs {
                     width: 340px;
@@ -39,18 +40,17 @@ class OrderIndex extends LocalizeMixin(ServiceInjectorMixin(PolymerElement)) {
                 }
                
                 .text-content {
-                  font-size: 20px;
-                  flex: 1;
-               }
+                    font-size: 20px;
+                    flex: 1;
+                }
                
-            
                 paper-icon-button.circle {
                     @apply --paper-icon-button-action;
                 }
             </style>
             <paper-tabs selected="{{selectedTab}}" tabindex="0">
                 <paper-tab class="title-tab">{{localize('list')}}</paper-tab>
-                <paper-tab class="title-tab">{{localize('details')}}</paper-tab>
+                <paper-tab class="title-tab">{{localize('in-the-kitchen')}}</paper-tab>
             </paper-tabs>
             <iron-pages id="resorderaurant" selected="{{selectedTab}}">
                 <div id="list"> 

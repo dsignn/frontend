@@ -618,7 +618,7 @@ class DsignMenu extends OrderBehaviour(MergeTraslation(LocalizeMixin(ServiceInje
             },
 
             tabMenu: {
-                value: 0
+                value: 1
             },
 
             totalOrder: {

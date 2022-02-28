@@ -16,12 +16,13 @@ import '@polymer/paper-tooltip/paper-tooltip';
 import {lang} from './language';
 import {OrderEntity} from './../../src/entity/OrderEntity';
 import {MenuEntity} from './../../../restaurant/src/entity/MenuEntity';
+import {FormErrorMessage} from "../../../../element/mixin/form-error-message/form-error-message";
 
 /**
  * @customElement
  * @polymer
  */
-class OrderViewUpsert extends StorageEntityMixin(NotifyMixin(LocalizeMixin(ServiceInjectorMixin(PolymerElement)))) {
+class OrderViewUpsert extends FormErrorMessage(StorageEntityMixin(NotifyMixin(ServiceInjectorMixin(PolymerElement)))) {
 
     static get template() {
         return html`
@@ -53,7 +54,7 @@ class OrderViewUpsert extends StorageEntityMixin(NotifyMixin(LocalizeMixin(Servi
                 </style>
                 <slot name="header"></slot>
                 <div id="container">
-                   <iron-form id="formResource">
+                   <iron-form id="formOrder">
                         <form method="post">
                             <div>
                                 <paper-input id="name" name="name" label="{{localize('name')}}" value="{{entity.name}}" required></paper-input>
@@ -80,7 +81,7 @@ class OrderViewUpsert extends StorageEntityMixin(NotifyMixin(LocalizeMixin(Servi
                             </div
                             <div>
                                 <div class="flex flex-horizontal-end" style="margin-top: 20px;">
-                                    <paper-button on-tap="submitResourceButton">{{localize(labelAction)}}</paper-button>
+                                    <paper-button on-tap="submitOrderButton">{{localize(labelAction)}}</paper-button>
                                 </div>
                             </div>
                         </form>
@@ -139,7 +140,7 @@ class OrderViewUpsert extends StorageEntityMixin(NotifyMixin(LocalizeMixin(Servi
                         _resourceHydrator : "ResourceEntityHydrator"
                     },
                     StorageContainerAggregate : {
-                        _storage :"ResourceStorage"
+                        _storage :"OrderStorage"
                     }
                 }
             }
@@ -153,7 +154,7 @@ class OrderViewUpsert extends StorageEntityMixin(NotifyMixin(LocalizeMixin(Servi
 
     ready() {
         super.ready();
-//        this.$.formResource.addEventListener('iron-form-presubmit', this.submitResource.bind(this));
+        this.$.formOrder.addEventListener('iron-form-presubmit', this.submitOrder.bind(this));
     }
 
     _toArray(obj) {
@@ -213,8 +214,39 @@ class OrderViewUpsert extends StorageEntityMixin(NotifyMixin(LocalizeMixin(Servi
                 break;
 
         }
-        console.log( item, 'ITEM')
     }
+
+    /**
+     * @param {Event} evt 
+     */
+    submitOrder(evt) {
+        evt.preventDefault();
+
+        console.log(evt);
+    }
+
+        /**
+     * @param {CustomEvent} evt
+     */
+    submitOrderButton(evt) {
+        this.$.formOrder.submit();
+
+    
+        let method = this.getStorageUpsertMethod();
+        this._storage[method](this.entity)
+            .then((data) => {
+console.log(method, 'salvato');
+                if (method === 'save') {
+                    this.entity = this._storage.getHydrator().hydrate({});
+                    this.$.formOrder.reset();
+                }
+
+                this.notify(this.localize(method === 'save' ? 'notify-save' : 'notify-update'));
+            }).catch((error) => {
+            this.errorMessage(this.$.formOrder, error);
+        });
+    }
+    
 }
 
 window.customElements.define('order-view-upsert', OrderViewUpsert);

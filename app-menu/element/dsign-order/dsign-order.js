@@ -36,9 +36,7 @@ class DsignOrder extends OrderBehaviour(LocalizeMixin(ServiceInjectorMixin(Polym
           <style>
             :host {
               --paper-input-container: {
-                --paper-input-container-color: var(--munu-color);
-                --paper-input-container-focus-color: var(--munu-color);
-                --paper-input-container-input-color: var(--munu-color);
+                --paper-input-container-focus-color: var(--munu-background-color);
               }
             }
 
@@ -82,6 +80,8 @@ class DsignOrder extends OrderBehaviour(LocalizeMixin(ServiceInjectorMixin(Polym
               margin: 1px;
               padding: 6px 2px;
               align-items: center;
+              color: var(--munu-color);;
+              background-color: var(--munu-background-color);
             }
 
             .item-order .name {
@@ -105,19 +105,18 @@ class DsignOrder extends OrderBehaviour(LocalizeMixin(ServiceInjectorMixin(Polym
               height:20px;
               width: 20px;
               border-radius:50%;
-              background: #E2DB44;
               margin-right: 4px;
               margin-bottom: 8px;
               border: 1px solid var(--munu-background-color);
+              background: var(--status-can-order) ;
             }
 
             #status[delivered] {
-              background-color: #E2DB44;
+              background: var(--status-in-order) ;
             }
 
-
             #status[close] {
-              background-color: #E81055;
+              background-color: var(--status-close-order);
             }
 
             .select {
@@ -223,7 +222,7 @@ class DsignOrder extends OrderBehaviour(LocalizeMixin(ServiceInjectorMixin(Polym
             previous-icon="paper-pagination:previous-arrow"
             hide-page-element
             hide-number-element>
-            </paper-pagination>
+          </paper-pagination>
           <div class="select">
             <div id="status" close></div>
             <paper-tooltip for="status" position="right">{{statusMessage}}</paper-tooltip>
@@ -252,7 +251,6 @@ class DsignOrder extends OrderBehaviour(LocalizeMixin(ServiceInjectorMixin(Polym
                  
                     .order {
                         margin-top: 4px;
-                        color: var(--munu-color);
                     }
 
                     .date {
@@ -574,12 +572,13 @@ class DsignOrder extends OrderBehaviour(LocalizeMixin(ServiceInjectorMixin(Polym
     if (!orderService || !organization) {
       return;
     }
-
+/*
     orderService.loadCurreOrder(organization._id)
       .then((data) => {
         this.$.autocomplete.value = data;
         this._setStatusMessage();
       });
+      */
   }
 
   /**

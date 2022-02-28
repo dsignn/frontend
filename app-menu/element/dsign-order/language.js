@@ -13,6 +13,7 @@ export const lang = {
     "table-number": "Numero tavolo",
     "email": "Email",
     "phone-number": "Numero di telefono",
+    "button-order": "Invia ordine"
   },
   "en": {
     "insert-order": "New order",
@@ -28,5 +29,6 @@ export const lang = {
     "table-number": "Table number",
     "email": "Email",
     "phone-number": "Phone number",
+    "button-order": "Send order"
   }
 };

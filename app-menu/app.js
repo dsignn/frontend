@@ -6,11 +6,12 @@ import {PropertyHydrator} from '@dsign/library/src/hydrator';
 import {OrderEntity} from './src/module/order/entity/OrderEntity';
 import {OrderService} from './src/module/order/service/OrderService';
 import {DateStrategy} from './src/hydrator/strategy/value/DateStrategy'
-import { XmlhLocalStorageAdapter } from './src/storage/XmlhLocalStorageAdapter';
+import { XmlhLocalStorageAdapter } from './src/storage/adapter/XmlhLocalStorageAdapter';
 import { XmlhAdapter } from '@dsign/library/src/storage/adapter/xmlh/XmlhAdapter';
 import { JsonDecode } from '@dsign/library/src/data-transform/JsonDecode';
 import { JsonEncode } from '@dsign/library/src/data-transform/JsonEncode';
 import { DefaultBuilder } from '@dsign/library/src/storage/adapter/xmlh/url/DefaultBuilder';
+import { set } from '@polymer/polymer/lib/utils/path';
 
 const container = new Container();
 
@@ -102,7 +103,15 @@ container.set('OrderStorage', orderStorage);
  * Order service
  */
 
- container.set('OrderService', new OrderService(orderStorage))
+let service = new OrderService(orderStorage);
+
+
+setInterval(
+    service.pollingCurrentOrder.bind(service), 
+    3000
+);
+
+container.set('OrderService', service);
 
 
 window.container = container;

@@ -19,7 +19,15 @@ export class XmlhLocalStorageAdapter {
      * @return {Promise<any>}
      */
     get(id) {
-        return this.localStorageAdapter.get(id);
+        return new Promise((resolve, reject) => {
+        
+            this.xmlhAdapter.get(id).then((respXml) => {
+                resolve(respXml);
+             }).catch((error) => {
+                console.error('errore respXml', error);
+                reject(error);
+            });;
+        });
     }
 
     /**
@@ -52,7 +60,24 @@ export class XmlhLocalStorageAdapter {
      * @return {Promise<any>}
      */
     update(data) {
-        return this.localStorageAdapter.update(data);
+        return new Promise((resolve, reject) => {
+
+            this.xmlhAdapter.update(data).then((respXml) => {
+                console.log('salva respXml', respXml);
+
+                this.localStorageAdapter.update(respXml).then((respLocalStorage) => {
+                    console.log('salva respLocalStorage', respLocalStorage);
+                    resolve(respLocalStorage);
+                }).catch((error) => {
+                    console.error('errore respLocalStorage', error);
+                    reject(error);
+                });
+
+            }).catch((error) => {
+                console.error('errore respXml', error);
+                reject(error);
+            });
+        });
     }
     /**
      * @param {object} data

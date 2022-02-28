@@ -22,6 +22,7 @@ class OrderViewList extends RefreshCollectionData(StorageCrudMixin(LocalizeMixin
                 #container {
                     @apply --layout-horizontal;
                     @apply --layout-wrap;
+                    padding: var(--padding-top-view-list) 0;
                 }
 
                 paper-order {
