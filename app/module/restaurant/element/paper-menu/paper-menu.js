@@ -65,6 +65,15 @@ class PaperMenu extends StorageEntityMixin(LocalizeMixin(ServiceInjectorMixin(Po
                 paper-menu-button {
                     padding: 0;
                 }
+
+                paper-menu-button {
+                    padding: 4px;
+                    --paper-icon-button : {
+                         padding: 0 !important;
+                         width: 28px;
+                         height: 28px;
+                    }
+                }
     
             </style>
             <paper-card>

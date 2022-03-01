@@ -14,7 +14,7 @@ import {lang} from './language';
  * @customElement
  * @polymer
  */
-class PaperOrder extends StorageEntityMixin(LocalizeMixin(ServiceInjectorMixin(PolymerElement))) {
+class PaperOrderItem extends StorageEntityMixin(LocalizeMixin(ServiceInjectorMixin(PolymerElement))) {
 
     static get template() {
         return html`
@@ -59,25 +59,50 @@ class PaperOrder extends StorageEntityMixin(LocalizeMixin(ServiceInjectorMixin(P
                     padding: 4px;
                     word-break: break-all;
                     overflow: hidden;
-                }  
+                } 
 
-                paper-menu-button {
+                .name {
+                    overflow: hidden;
+                    text-overflow: ellipsis;
+                    height: 27px;
+                    font-size: 18px;
+                    display: flex;
+                    flex-direction: row;
+                    align-items: center;
+                }
+                
+                #status {
+                    border-radius: 50%;
+                    background-color: red;
+                    width: 20px;
+                    min-width: 20px;
+                    height: 20px;
+                    margin-right: 6px;
+               }
+
+               paper-menu-button {
                     padding: 4px;
                     --paper-icon-button : {
-                         padding: 0 !important;
-                         width: 28px;
-                         height: 28px;
+                        padding: 0 !important;
+                        width: 28px;
+                        height: 28px;
                     }
+                }
+                
+                [capitalize] {
+                    text-transform: capitalize;
                 }
     
             </style>
             <paper-card>
                 <div id="left-section"></div>
-                <div id="fastAction">
-                </div>
+               
                 <div id="right-section">
-                    <div id="content">
-                        {{entity.name}}
+                    <div id="content">                  
+                        <div class="name" capitalize>
+                            <div id="status"></div>
+                            <div class="name-container">NOME</div>    
+                        </div>
                     </div>
                     <div id="crud">
                         <paper-menu-button ignore-select horizontal-align="right">
@@ -115,9 +140,10 @@ class PaperOrder extends StorageEntityMixin(LocalizeMixin(ServiceInjectorMixin(P
             /**
              * @type object
              */
-            entity: {
+            item: {
                 type: Object,
                 notify: true,
+                observer: 'changeItem'
             },
 
             /**
@@ -135,8 +161,12 @@ class PaperOrder extends StorageEntityMixin(LocalizeMixin(ServiceInjectorMixin(P
      * @private
      */
     _update(evt) {
-        this.dispatchEvent(new CustomEvent('update', {detail: this.entity}));
+        this.dispatchEvent(new CustomEvent('update', {detail: this.item}));
+    }
+
+    changeItem(newItem) {
+        console.log('suca forte');
     }
 }
 
-window.customElements.define('paper-order', PaperOrder);
+window.customElements.define('paper-order-item', PaperOrderItem);

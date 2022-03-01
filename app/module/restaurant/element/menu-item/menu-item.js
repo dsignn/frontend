@@ -130,7 +130,7 @@ class MenuItem extends LocalizeMixin(ServiceInjectorMixin(PolymerElement)) {
                 } 
                 
                 paper-menu-button {
-                    padding: 0;
+                    padding: 4px;
                     --paper-icon-button : {
                          padding: 0 !important;
                          width: 28px;

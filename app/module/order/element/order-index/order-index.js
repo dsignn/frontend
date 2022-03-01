@@ -19,9 +19,10 @@ class OrderIndex extends LocalizeMixin(ServiceInjectorMixin(PolymerElement)) {
          
             <style>
                 
-               :host {
-                   display: block;
+                :host {
+                    display: block;
                     padding: 6px;
+                    --paper-tabs-selection-bar-color: var(--default-primary-color);
                 }  
 
                 .header {
@@ -47,6 +48,7 @@ class OrderIndex extends LocalizeMixin(ServiceInjectorMixin(PolymerElement)) {
                 paper-icon-button.circle {
                     @apply --paper-icon-button-action;
                 }
+
             </style>
             <paper-tabs selected="{{selectedTab}}" tabindex="0">
                 <paper-tab class="title-tab">{{localize('list')}}</paper-tab>

@@ -3,6 +3,9 @@ import {ServiceInjectorMixin} from "@dsign/polymer-mixin/service/injector-mixin"
 import {LocalizeMixin} from "@dsign/polymer-mixin/localize/localize-mixin";
 import {NotifyMixin} from "@dsign/polymer-mixin/notify/notify-mixin";
 import {StorageEntityMixin} from "@dsign/polymer-mixin/storage/entity-mixin";
+import {OrderEntity} from './../../src/entity/OrderEntity';
+import {MenuEntity} from './../../../restaurant/src/entity/MenuEntity';
+import {FormErrorMessage} from "../../../../element/mixin/form-error-message/form-error-message";
 import '@polymer/paper-input/paper-input';
 import '@fluidnext-polymer/paper-autocomplete/paper-autocomplete';
 import '@fluidnext-polymer/paper-chip/paper-chips';
@@ -13,10 +16,9 @@ import '@polymer/paper-button/paper-button';
 import '@polymer/paper-card/paper-card';
 import '@fluidnext-polymer/paper-input-file/paper-input-file';
 import '@polymer/paper-tooltip/paper-tooltip';
+import '../paper-order-item/paper-order-item';
 import {lang} from './language';
-import {OrderEntity} from './../../src/entity/OrderEntity';
-import {MenuEntity} from './../../../restaurant/src/entity/MenuEntity';
-import {FormErrorMessage} from "../../../../element/mixin/form-error-message/form-error-message";
+
 
 /**
  * @customElement
@@ -51,12 +53,43 @@ class OrderViewUpsert extends FormErrorMessage(StorageEntityMixin(NotifyMixin(Se
                         @apply --layout-horizontal;
                         @apply --layout-wrap;
                     }
+
+                    .container {
+                        display: flex;
+                        justify-content: space-between;
+                    }
+
+                    .container paper-input {
+                        width: 49.8%;
+                    }
+
+                    .container dsign-paper-dropdown-menu {
+                        width: 24.8%;
+                    }
+
+                    .container #additionalInfo {
+                        width: 24.8%;
+                    }
+
+                    #additionalInfo dsign-paper-dropdown-menu {
+                        width: 100%;
+                    }
+
+                    .container-item {
+                        margin-top: 6px;
+                        display: flex;
+                    }
+
+                    paper-order-item {
+                        width: 14%;
+                        margin-right: 6px;
+                    }
                 </style>
                 <slot name="header"></slot>
                 <div id="container">
                    <iron-form id="formOrder">
                         <form method="post">
-                            <div>
+                            <div class="container">
                                 <paper-input id="name" name="name" label="{{localize('name')}}" value="{{entity.name}}" required></paper-input>
                                 <dsign-paper-dropdown-menu value="{{entity.status}}" id="status" name="status" label="{{localize('status')}}" required>
                                     <paper-listbox slot="dropdown-content">
@@ -65,25 +98,23 @@ class OrderViewUpsert extends FormErrorMessage(StorageEntityMixin(NotifyMixin(Se
                                         </template>
                                     </paper-listbox>
                                 </dsign-paper-dropdown-menu>
-                                <!--
-                                <dsign-paper-dropdown-menu value="{{entity.type}}" id="type" name="type" label="{{localize('type')}}" d>
-                                    <paper-listbox slot="dropdown-content">
-                                        <template is="dom-repeat" items="[[types]]" as="type">
-                                            <paper-item value="{{type}}">{{localize(type)}}</paper-item>
-                                        </template>
-                                    </paper-listbox>
-                                </dsign-paper-dropdown-menu>-->
+             
                                 <div id="additionalInfo">
                                     <template  is="dom-repeat" items="[[_toArray(entity.additionalInfo)]]" as="item">
                                         {{renderAdditionalInfo(item)}}
                                     </template>
                                 </div>
-                            </div
+                            </div>
                             <div>
                                 <div class="flex flex-horizontal-end" style="margin-top: 20px;">
                                     <paper-button on-tap="submitOrderButton">{{localize(labelAction)}}</paper-button>
                                 </div>
                             </div>
+                            <div class="container-item">
+                                <template is="dom-repeat" items="[[entity.items]]" as="ordered">
+                                    <paper-order-item item="{{ordered}}"></paper-order-item>
+                                </template>
+                            </div>        
                         </form>
                     </iron-form>
                 </div>

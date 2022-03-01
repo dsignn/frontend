@@ -24,6 +24,7 @@ class RestaurantIndex extends LocalizeMixin(AclMixin(ServiceInjectorMixin(Polyme
                 :host {
                     display: block;
                     padding: 6px;
+                    --paper-tabs-selection-bar-color: var(--default-primary-color);
                 }  
                    
                paper-tabs {
