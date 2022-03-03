@@ -76,13 +76,57 @@ class OrderViewUpsert extends FormErrorMessage(StorageEntityMixin(NotifyMixin(Se
                     }
 
                     .container-item {
-                        margin-top: 6px;
+                        margin-top: 4px;
                         display: flex;
+                        flex-wrap: wrap;
                     }
 
                     paper-order-item {
-                        width: 14%;
-                        margin-right: 6px;
+                        flex-basis: 12.2%;
+                        margin-bottom: 4px;
+                        margin-right: 4px;
+                    }
+
+                    @media (min-width: 2100px) and (max-width: 2300px) {
+                        paper-order-item {
+                            flex-basis: 14%;
+                        }
+                    }
+
+                    @media (min-width: 1900px) and (max-width: 2099px) {
+                        paper-order-item {
+                            flex-basis: 16.4%;
+                        }
+                    }
+
+                    @media (min-width: 1600px) and (max-width: 1899px) {
+                        paper-order-item {
+                            flex-basis: 19.7%;
+                        }
+                    }
+
+                    @media (min-width: 1300px) and (max-width: 1599px) {
+                        paper-order-item {
+                            flex-basis: 24.6%;
+                        }
+                    }
+
+                    @media (min-width: 1000px) and (max-width: 1299px) {
+                        paper-order-item {
+                            flex-basis: 32.8%;
+                        }
+                    }
+
+                    @media (min-width: 600px) and (max-width: 999px) {
+                        paper-order-item {
+                            flex-basis: 48.7%;
+                        }
+                    }
+
+                    @media (max-width: 599px)  {
+                        paper-order-item {
+                            flex-basis: 100%;
+                        }
                     }
                 </style>
                 <slot name="header"></slot>

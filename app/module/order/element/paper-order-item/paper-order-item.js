@@ -33,6 +33,27 @@ class PaperOrderItem extends StorageEntityMixin(LocalizeMixin(ServiceInjectorMix
                     padding-bottom: 5px;
                 }
 
+                #content {
+                    @apply --layout-flex;
+                    padding: 4px;
+                    word-break: break-all;
+                    overflow: hidden;
+                }  
+
+                .title-container {
+                    display: flex;
+                    flex-direction: row;
+                    align-items: start;
+                    height: 46px;
+                    font-size: 14px;
+                }
+
+                .title-container .name {
+                    height: 46px;
+                    overflow: hidden;
+                    text-overflow: ellipsis;
+                }
+
                 #left-section {
                     width: 80px;
                     min-height: 120px;
@@ -54,33 +75,25 @@ class PaperOrderItem extends StorageEntityMixin(LocalizeMixin(ServiceInjectorMix
                     @apply --layout-flex;
                 }
                 
-                #content {
-                    @apply --layout-flex;
-                    padding: 4px;
-                    word-break: break-all;
-                    overflow: hidden;
-                } 
-
-                .name {
-                    overflow: hidden;
-                    text-overflow: ellipsis;
-                    height: 27px;
-                    font-size: 18px;
-                    display: flex;
-                    flex-direction: row;
-                    align-items: center;
-                }
-                
                 #status {
                     border-radius: 50%;
-                    background-color: red;
+                    background-color: var(--status-in-order);
                     width: 20px;
                     min-width: 20px;
                     height: 20px;
                     margin-right: 6px;
-               }
+                }
 
-               paper-menu-button {
+                #status[terminate] {
+                    background-color: var(--status-close-order);
+                }
+
+                #status[ready] {
+                    background-color: var(--status-close-order);
+                }
+
+
+                paper-menu-button {
                     padding: 4px;
                     --paper-icon-button : {
                         padding: 0 !important;
@@ -99,9 +112,9 @@ class PaperOrderItem extends StorageEntityMixin(LocalizeMixin(ServiceInjectorMix
                
                 <div id="right-section">
                     <div id="content">                  
-                        <div class="name" capitalize>
+                        <div class="title-container" capitalize>
                             <div id="status"></div>
-                            <div class="name-container">NOME</div>    
+                            <div class="name">{{name}}</div>    
                         </div>
                     </div>
                     <div id="crud">
@@ -143,7 +156,6 @@ class PaperOrderItem extends StorageEntityMixin(LocalizeMixin(ServiceInjectorMix
             item: {
                 type: Object,
                 notify: true,
-                observer: 'changeItem'
             },
 
             /**
@@ -156,6 +168,13 @@ class PaperOrderItem extends StorageEntityMixin(LocalizeMixin(ServiceInjectorMix
         }
     } 
 
+    static get observers() {
+        return [
+          // Observer method name, followed by a list of dependencies, in parenthesis
+          'changeItem(item, _localizeService)'
+        ]
+      }
+
         /**
      * @param evt
      * @private
@@ -164,8 +183,20 @@ class PaperOrderItem extends StorageEntityMixin(LocalizeMixin(ServiceInjectorMix
         this.dispatchEvent(new CustomEvent('update', {detail: this.item}));
     }
 
-    changeItem(newItem) {
+    /**
+     * @param {object} item 
+     * @param {Localize} _localizeService 
+     */
+    changeItem(item, _localizeService) {
+
+        if (!item || ! _localizeService) {
+            return;
+        }
+
         console.log('suca forte');
+        if (item.ordered && item.ordered.name && item.ordered.name[this._localizeService.getDefaultLang()]) {
+            this.name = item.ordered.name[this._localizeService.getDefaultLang()];
+        }
     }
 }
 

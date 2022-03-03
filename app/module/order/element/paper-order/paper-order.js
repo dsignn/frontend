@@ -28,10 +28,21 @@ class PaperOrder extends StorageEntityMixin(LocalizeMixin(ServiceInjectorMixin(P
                 #fastAction {
                     border-right: 1px solid var(--divider-color);
                 }
+
                 .action {
                     padding-top: 5px;
                     padding-bottom: 5px;
                 }
+
+                            
+                #status {
+                    border-radius: 50%;
+                    background-color: var(--status-in-order);
+                    width: 20px;
+                    min-width: 20px;
+                    height: 20px;
+                    margin-right: 6px;
+               }
 
                 #left-section {
                     width: 80px;
@@ -52,6 +63,20 @@ class PaperOrder extends StorageEntityMixin(LocalizeMixin(ServiceInjectorMixin(P
                 #right-section {
                     @apply --layout-horizontal;
                     @apply --layout-flex;
+                }
+
+                .title-container {
+                    display: flex;
+                    flex-direction: row;
+                    align-items: start;
+                    height: 46px;
+                    font-size: 14px;
+                }
+
+                .title-container .name {
+                    height: 46px;
+                    overflow: hidden;
+                    text-overflow: ellipsis;
                 }
                 
                 #content {
@@ -77,7 +102,10 @@ class PaperOrder extends StorageEntityMixin(LocalizeMixin(ServiceInjectorMixin(P
                 </div>
                 <div id="right-section">
                     <div id="content">
-                        {{entity.name}}
+                        <div class="title-container" capitalize>
+                            <div id="status"></div>
+                            <div class="name">{{entity.name}}</div> 
+                        </div>    
                     </div>
                     <div id="crud">
                         <paper-menu-button ignore-select horizontal-align="right">

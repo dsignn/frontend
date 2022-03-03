@@ -21,6 +21,10 @@ const template = html`
 
             --app-primary-color:  #015b63;
 
+            --status-can-order: #2da82d;
+            --status-in-order: #f0e500;
+            --status-close-order: #db0202;
+
             /* Components */
 
             /* paper-drawer-panel */

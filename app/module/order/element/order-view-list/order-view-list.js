@@ -26,46 +26,53 @@ class OrderViewList extends RefreshCollectionData(StorageCrudMixin(LocalizeMixin
                 }
 
                 paper-order {
-                    flex-basis: 10%;
+                    flex-basis: 12.2%;
                     --paper-card : {
                        margin-right: 4px;
                        margin-bottom: 4px;
                     }
                 }
-                
-                @media (max-width: 500px) {
+
+
+                @media (min-width: 2100px) and (max-width: 2300px) {
+                    paper-order {
+                        flex-basis: 14%;
+                    }
+                }
+
+                @media (min-width: 1900px) and (max-width: 2099px) {
+                    paper-order {
+                        flex-basis: 16.4%;
+                    }
+                }
+
+                @media (min-width: 1600px) and (max-width: 1899px) {
+                    paper-order {
+                        flex-basis: 19.7%;
+                    }
+                }
+
+                @media (min-width: 1300px) and (max-width: 1599px) {
+                    paper-order {
+                        flex-basis: 24.6%;
+                    }
+                }
+
+                @media (min-width: 1000px) and (max-width: 1299px) {
+                    paper-order {
+                        flex-basis: 32.8%;
+                    }
+                }
+
+                @media (min-width: 600px) and (max-width: 999px) {
+                    paper-order {
+                        flex-basis: 48.7%;
+                    }
+                }
+
+                @media (max-width: 599px)  {
                     paper-order {
                         flex-basis: 100%;
-                    }
-                }
-    
-                @media (min-width: 501px) and (max-width: 900px) {
-                    paper-order {
-                        flex-basis: 50%;
-                    }
-                }
-    
-                @media (min-width: 901px) and (max-width: 1200px) {
-                    paper-order {
-                        flex-basis: 33.3%;
-                    }
-                }
-    
-                @media (min-width: 1201px) and (max-width: 1500px) {
-                    paper-order {
-                        flex-basis: 25%;
-                    }
-                }
-    
-                @media (min-width: 1501px) and (max-width: 1919px) {
-                    paper-order {
-                        flex-basis: 20%;
-                    }
-                }
-    
-                @media (min-width: 1920px) {
-                    paper-order {
-                        flex-basis: 16.6%;
                     }
                 }
             </style>
