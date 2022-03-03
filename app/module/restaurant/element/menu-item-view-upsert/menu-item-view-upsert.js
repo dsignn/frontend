@@ -100,6 +100,10 @@ class MenuItemViewUpsert extends LocalizeMixin(ServiceInjectorMixin(PolymerEleme
             .action {
                 @apply  --layout-horizontal;
             }
+
+            .row {
+                @apply  --layout-horizontal;
+            }
             
             #menuItemContainer {
                 padding: 16px 0;
@@ -114,6 +118,26 @@ class MenuItemViewUpsert extends LocalizeMixin(ServiceInjectorMixin(PolymerEleme
             paper-card {
                 width: 100%;
                 padding: 10px;
+            }
+
+            [w50] {
+                flex-basis: 49.6%;
+            }
+
+            [w33] {
+                flex-basis: 33.1%;
+            }
+
+            [w30] {
+                flex-basis: 29.8%;
+            }
+
+            [w70] {
+                flex-basis: 69.8%;
+            }
+
+            .space-b {
+                justify-content: space-between;
             }
         
             @media (max-width: 900px) {
@@ -146,44 +170,52 @@ class MenuItemViewUpsert extends LocalizeMixin(ServiceInjectorMixin(PolymerEleme
         </style>
         <iron-form id="formMenuItem">
             <form method="post">
-                 <paper-input value="{{menuItem.name.it}}" name="name[it]" label="{{localize('name-it')}}" required></paper-input>
-                 <paper-input value="{{menuItem.name.en}}"  name="name[en]" label="{{localize('name-en')}}"></paper-input>
-                 <paper-input value="{{menuItem.description.it}}" name="description[it]" label="{{localize('description-it')}}"></paper-input>
-                 <paper-input  value="{{menuItem.description.en}}" name="description[en]" label="{{localize('description-en')}}"></paper-input>
-                 <dsign-paper-dropdown-menu value="{{menuItem.category}}" id="category" name="category" label="{{localize('category')}}" required>
-                    <paper-listbox slot="dropdown-content">
-                        <template is="dom-repeat" items="[[categories]]" as="category">
-                           <paper-item value="{{category}}">{{localize(category)}}</paper-item>
-                        </template>
-                    </paper-listbox>
-                </dsign-paper-dropdown-menu>
-                <div class="price">
-                    <paper-input value="{{menuItem.price.value}}" name="price[value]" label="{{localize('price')}}">
-                        <iron-icon icon="restaurant:eur" slot="suffix"></iron-icon>
-                    </paper-input>
+                <div class="row space-b">
+                    <paper-input value="{{menuItem.name.it}}" name="name[it]" label="{{localize('name-it')}}" required w50></paper-input>
+                    <paper-input value="{{menuItem.name.en}}"  name="name[en]" label="{{localize('name-en')}}" w50></paper-input>
                 </div>
-                <dsign-paper-dropdown-menu value="{{menuItem.status}}" id="status" name="status" label="{{localize('status')}}" required>
-                    <paper-listbox slot="dropdown-content">
-                        <template is="dom-repeat" items="[[status]]" as="state">
-                           <paper-item value="{{state}}">{{localize(state)}}</paper-item>
-                        </template>
-                    </paper-listbox>
-                </dsign-paper-dropdown-menu>
-                <dsign-paper-dropdown-menu label="{{localize('type-dish')}}" id="typeDish" value="{{menuItem.typeDish}}" on-iron-select="changeStatus"  required>
-                    <paper-listbox id="listboxStatus" slot="dropdown-content">
-                        <template is="dom-repeat" items="[[typeDish]]" as="value">
-                            <paper-item value="{{value}}">{{localize(value)}}</paper-item>
-                        </template>
-                    </paper-listbox>
-                </dsign-paper-dropdown-menu>
-                <dsign-paper-dropdown-menu id="allergen" label="{{localize('allergens')}}" on-iron-select="selectAllergen">
-                    <paper-listbox id="listAllergens" slot="dropdown-content">
-                        <template is="dom-repeat" items="[[allergens]]" as="allergen">
-                        <paper-item value="{{allergen}}">{{localize(allergen)}}</paper-item>
-                        </template>
-                    </paper-listbox>
-                </dsign-paper-dropdown-menu>
-                <paper-chips id="tagChips" items="{{menuItem.allergens}}"></paper-chips>    
+                <paper-input value="{{menuItem.description.it}}" name="description[it]" label="{{localize('description-it')}}"></paper-input>
+                <paper-input  value="{{menuItem.description.en}}" name="description[en]" label="{{localize('description-en')}}"></paper-input>
+                <div class="row space-b">
+                    <dsign-paper-dropdown-menu value="{{menuItem.category}}" id="category" name="category" label="{{localize('category')}}" required w33>
+                        <paper-listbox slot="dropdown-content">
+                            <template is="dom-repeat" items="[[categories]]" as="category">
+                            <paper-item value="{{category}}">{{localize(category)}}</paper-item>
+                            </template>
+                        </paper-listbox>
+                    </dsign-paper-dropdown-menu>
+                    <div class="price" w33>
+                        <paper-input value="{{menuItem.price.value}}" name="price[value]" label="{{localize('price')}}">
+                            <iron-icon icon="restaurant:eur" slot="suffix"></iron-icon>
+                        </paper-input>
+                    </div>
+                    <dsign-paper-dropdown-menu value="{{menuItem.status}}" id="status" name="status" label="{{localize('status')}}" required w33>
+                        <paper-listbox slot="dropdown-content">
+                            <template is="dom-repeat" items="[[status]]" as="state">
+                            <paper-item value="{{state}}">{{localize(state)}}</paper-item>
+                            </template>
+                        </paper-listbox>
+                    </dsign-paper-dropdown-menu>
+                </div>
+                <div class="row space-b">
+                    <dsign-paper-dropdown-menu label="{{localize('type-dish')}}" id="typeDish" value="{{menuItem.typeDish}}" on-iron-select="changeStatus"  required w30>
+                        <paper-listbox id="listboxStatus" slot="dropdown-content">
+                            <template is="dom-repeat" items="[[typeDish]]" as="value">
+                                <paper-item value="{{value}}">{{localize(value)}}</paper-item>
+                            </template>
+                        </paper-listbox>
+                    </dsign-paper-dropdown-menu>
+                    <div w70>
+                        <dsign-paper-dropdown-menu id="allergen" label="{{localize('allergens')}}" on-iron-select="selectAllergen">
+                            <paper-listbox id="listAllergens" slot="dropdown-content">
+                                <template is="dom-repeat" items="[[allergens]]" as="allergen">
+                                <paper-item value="{{allergen}}">{{localize(allergen)}}</paper-item>
+                                </template>
+                            </paper-listbox>
+                        </dsign-paper-dropdown-menu>
+                        <paper-chips id="tagChips" items="{{menuItem.allergens}}"></paper-chips>
+                    </div>
+                </div>
             </form>
         </iron-form>`;
     }

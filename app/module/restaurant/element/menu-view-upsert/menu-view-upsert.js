@@ -55,10 +55,6 @@ class MenuViewUpsert extends StorageEntityMixin(NotifyMixin(LocalizeMixin(Servic
             paper-input-color {
                 outline: none;
             }
-            
-            dsign-paper-dropdown-menu {
-                width: 100%;
-            }
         
             #container {
                 @apply --layout-horizontal;
@@ -105,7 +101,7 @@ class MenuViewUpsert extends StorageEntityMixin(NotifyMixin(LocalizeMixin(Servic
                 width: 300px;
             }
             
-            .action {
+            .row {
                 padding-top: 10px;
                 @apply  --layout-horizontal;
             }
@@ -131,11 +127,11 @@ class MenuViewUpsert extends StorageEntityMixin(NotifyMixin(LocalizeMixin(Servic
             }
             
             #content-left {
-                  @apply --layout-flex-6;
+                  @apply --layout-flex-3;
             }
             
             #content-right {
-                  @apply --layout-flex-6;
+                  @apply --layout-flex-9;
             }
             
             menu-item {
@@ -160,6 +156,26 @@ class MenuViewUpsert extends StorageEntityMixin(NotifyMixin(LocalizeMixin(Servic
             paper-button {
                 text-align: center;
             }
+
+            paper-input[name="name"] {
+                width:100%;
+            }
+
+            [w50] {
+                flex-basis: 49.6%;
+            }
+
+            [w33] {
+                flex-basis: 33.1%;
+            }
+      
+            [w25] {
+                flex-basis: 24.8%;
+            }
+
+            .space-b {
+                justify-content: space-between;
+            }
                   
             @media only screen and (max-width: 2600px) and (min-width: 2201px) {
                 menu-item {
@@ -183,6 +199,14 @@ class MenuViewUpsert extends StorageEntityMixin(NotifyMixin(LocalizeMixin(Servic
                        margin-right: 0;
                     }
                 }
+
+                #content-left {
+                    @apply --layout-flex-4;
+                }
+              
+                #content-right {
+                    @apply --layout-flex-8;
+                }
             }  
            
             @media only screen and (max-width: 1980px) and (min-width: 1701px) {
@@ -194,6 +218,14 @@ class MenuViewUpsert extends StorageEntityMixin(NotifyMixin(LocalizeMixin(Servic
                     --paper-card : {
                        margin-right: 0;
                     }
+                }
+
+                #content-left {
+                    @apply --layout-flex-5;
+                }
+              
+                #content-right {
+                    @apply --layout-flex-7;
                 }
             }  
                 
@@ -207,6 +239,14 @@ class MenuViewUpsert extends StorageEntityMixin(NotifyMixin(LocalizeMixin(Servic
                        margin-right: 0;
                     }
                 }
+
+                #content-left {
+                    @apply --layout-flex-6;
+                }
+              
+                #content-right {
+                    @apply --layout-flex-6;
+                }
             }  
     
             @media only screen and (max-width: 1200px) and (min-width: 971px) {
@@ -218,6 +258,14 @@ class MenuViewUpsert extends StorageEntityMixin(NotifyMixin(LocalizeMixin(Servic
                     --paper-card : {
                        margin-right: 0;
                     }
+                }
+
+                #content-left {
+                    @apply --layout-flex-6;
+                }
+              
+                #content-right {
+                    @apply --layout-flex-6;
                 }
             }        
     
@@ -231,6 +279,10 @@ class MenuViewUpsert extends StorageEntityMixin(NotifyMixin(LocalizeMixin(Servic
                        margin-right: 0;
                     }
                 }
+
+                #container {
+                    flex-direction: column-reverse;;
+                }
             }
                   
             @media only screen and (max-width: 770px) and (min-width: 501px) {
@@ -243,6 +295,10 @@ class MenuViewUpsert extends StorageEntityMixin(NotifyMixin(LocalizeMixin(Servic
                        margin-right: 0;
                     }
                 }
+
+                #container {
+                    flex-direction: column-reverse;;
+                }
             }
            
             @media only screen and (max-width: 500px)  {
@@ -251,6 +307,10 @@ class MenuViewUpsert extends StorageEntityMixin(NotifyMixin(LocalizeMixin(Servic
                     --paper-card : {
                        margin-right: 0;
                     }
+                }
+
+                #container {
+                    flex-direction: column;
                 }
             }  
              
@@ -270,7 +330,7 @@ class MenuViewUpsert extends StorageEntityMixin(NotifyMixin(LocalizeMixin(Servic
             }
             
              @media (max-width: 450px) {
-                .action.main {
+                .row.main {
                      @apply  --layout-vertical;
        
                 }
@@ -286,31 +346,33 @@ class MenuViewUpsert extends StorageEntityMixin(NotifyMixin(LocalizeMixin(Servic
             <div id="content-left">
                 <iron-form id="formMenu">
                     <form method="post">
-                        <paper-input  name="name" label="{{localize('name-menu')}}" value="{{entity.name}}" required></paper-input>
-                        <dsign-paper-dropdown-menu label="{{localize('restaurant')}}" value="{{entity.organization.id}}" required>
-                            <paper-listbox id="listboxRestaurant" slot="dropdown-content"></paper-listbox>
-                        </dsign-paper-dropdown-menu>
-                        <div  class="action">
-                            <dsign-paper-dropdown-menu label="{{localize('status')}}" value="{{entity.status}}" on-iron-select="changeStatus"  required>
+                        <div class="row">
+                            <paper-input name="name" label="{{localize('name-menu')}}" value="{{entity.name}}" required></paper-input>
+                            <paper-toggle-button id="enableOrder" checked="{{entity.enableOrder}}"></paper-toggle-button>
+                            <paper-tooltip for="enableOrder" position="left">{{localize('enable-order')}}</paper-tooltip>
+                        </div>
+                        <div class="row space-b">
+                            <dsign-paper-dropdown-menu label="{{localize('restaurant')}}" value="{{entity.organization.id}}" required w50>
+                                <paper-listbox id="listboxRestaurant" slot="dropdown-content"></paper-listbox>
+                            </dsign-paper-dropdown-menu>
+                            <dsign-paper-dropdown-menu label="{{localize('status')}}" value="{{entity.status}}" on-iron-select="changeStatus" required w50>
                                 <paper-listbox id="listboxStatus" slot="dropdown-content">
                                      <template is="dom-repeat" items="[[status]]" as="value">
                                        <paper-item value="{{value}}">{{localize(value)}}</paper-item>
                                     </template>
                                 </paper-listbox>
                             </dsign-paper-dropdown-menu>
-                            <paper-toggle-button id="enableOrder" checked="{{entity.enableOrder}}"></paper-toggle-button>
-                            <paper-tooltip for="enableOrder" position="left">{{localize('enable-order')}}</paper-tooltip>
                         </div>
-                        <paper-datepicker name="statusDate" id="statusDate" label="{{localize('date-activation')}}" value="{{entity.statusDate}}"></paper-datepicker>
-                        <dsign-paper-dropdown-menu label="{{localize('layout-type')}}" value="{{entity.layoutType}}" required>
-                            <paper-listbox id="listboxLayoutType" slot="dropdown-content"></paper-listbox>
-                        </dsign-paper-dropdown-menu>
-                        <div  class="action">
-                            <paper-input-color name="backgroundHeader" label="{{localize('background-header')}}" value="{{entity.backgroundHeader}}" required></paper-input-color>
-                            <paper-input-color name="colorHeader" label="{{localize('color-header')}}" value="{{entity.colorHeader}}" required></paper-input-color>
-                        </div>
+                        <div class="row space-b">
+                            <paper-datepicker name="statusDate" id="statusDate" label="{{localize('date-activation')}}" value="{{entity.statusDate}}" w33></paper-datepicker>
+                            <dsign-paper-dropdown-menu label="{{localize('layout-type')}}" value="{{entity.layoutType}}" required w33>
+                                <paper-listbox id="listboxLayoutType" slot="dropdown-content"></paper-listbox>
+                            </dsign-paper-dropdown-menu>
+                            <paper-input-color name="backgroundHeader" label="{{localize('background-header')}}" value="{{entity.backgroundHeader}}" required w33></paper-input-color>
+                            <paper-input-color name="colorHeader" label="{{localize('color-header')}}" value="{{entity.colorHeader}}" required w33></paper-input-color>
+                        </div>    
                         <paper-textarea name="note" label="{{localize('note')}}" value="{{entity.note}}"></paper-textarea>
-                        <div class="action main padding-top-52">
+                        <div class="row main padding-top-52">
                             <paper-button on-tap="submitMenuButton">{{localize(labelAction)}}</paper-button>
                             <paper-button id="preview" on-tap="openPreview">{{localize('preview')}}</paper-button>
                             <paper-button id="printMenu" on-tap="openPrintMenu">{{localize('print-menu')}}</paper-button>
@@ -322,7 +384,7 @@ class MenuViewUpsert extends StorageEntityMixin(NotifyMixin(LocalizeMixin(Servic
                 <paper-card>
                     <h2>{{localize(menuItemLabel)}}</h2>
                     <menu-item-view-upsert id="menuItemViewUpsert" on-menu-item-save="appendMenuItem" on-menu-item-update="modifyMenuItem" menu-item="{{menuItem}}" api-category="{{apiCategory}}" api-allergen="{{apiAllergen}}"></menu-item-view-upsert>
-                    <div class="action">
+                    <div class="row">
                         <paper-button on-tap="submitMenuItem">{{localize(labelActionMenuItem)}}</paper-button>
                     </div>
                 </paper-card>
