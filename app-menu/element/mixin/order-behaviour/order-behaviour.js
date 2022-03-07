@@ -162,6 +162,10 @@ export const OrderBehaviour = (superClass) => {
                 this.currentOrder = evt.data;
             });
 
+            service.getEventManager().on(OrderService.UPDATE_DEFAUL_ORDER, (evt) => {
+                this.currentOrder = evt.data;
+            })
+
             this.currentOrder = service.getCurrentOrder();
         }
 
@@ -177,11 +181,10 @@ export const OrderBehaviour = (superClass) => {
             switch (order.status) {
                 case OrderEntity.STATUS_CHECK:
                 case OrderEntity.STATUS_QUEUE:
-                case OrderEntity.STATUS_PREPARATION:
                     this.disableOrder = false;
                     break;
-            
-                default:
+     
+                default:      
                     this.disableOrder = true;
                     break;
             }

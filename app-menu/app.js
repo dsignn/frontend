@@ -108,7 +108,7 @@ let service = new OrderService(orderStorage);
 
 setInterval(
     service.pollingCurrentOrder.bind(service), 
-    3000
+    8000
 );
 
 container.set('OrderService', service);

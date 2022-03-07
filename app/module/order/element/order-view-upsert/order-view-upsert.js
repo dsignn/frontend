@@ -169,14 +169,6 @@ class OrderViewUpsert extends FormErrorMessage(StorageEntityMixin(NotifyMixin(Se
         return {
 
             /**
-             * @type FileEntity
-             */
-            entity: {
-         //       observer: '_changeEntity',
-                value: {}
-            },
-
-            /**
              * @type string
              */
             labelAction: {
@@ -256,6 +248,17 @@ class OrderViewUpsert extends FormErrorMessage(StorageEntityMixin(NotifyMixin(Se
      * @param {*} item 
      */
     renderAdditionalInfo(item) {
+/*
+        let nodes =this.$.additionalInfo.querySelectorAll('dsign-paper-dropdown-menu');
+        nodes.forEach((ele) => {
+            console.log(ele, 'povera')
+
+            ele.remove();
+        });
+        */
+
+        this.shadowRoot.querySelector('#additionalInfo').textContent = '';
+
         let ele;
 
         switch(item.name) {
@@ -297,20 +300,10 @@ class OrderViewUpsert extends FormErrorMessage(StorageEntityMixin(NotifyMixin(Se
     submitOrder(evt) {
         evt.preventDefault();
 
-        console.log(evt);
-    }
-
-        /**
-     * @param {CustomEvent} evt
-     */
-    submitOrderButton(evt) {
-        this.$.formOrder.submit();
-
-    
         let method = this.getStorageUpsertMethod();
         this._storage[method](this.entity)
             .then((data) => {
-console.log(method, 'salvato');
+
                 if (method === 'save') {
                     this.entity = this._storage.getHydrator().hydrate({});
                     this.$.formOrder.reset();
@@ -320,6 +313,13 @@ console.log(method, 'salvato');
             }).catch((error) => {
             this.errorMessage(this.$.formOrder, error);
         });
+    }
+
+        /**
+     * @param {CustomEvent} evt
+     */
+    submitOrderButton(evt) {
+        this.$.formOrder.submit();
     }
     
 }

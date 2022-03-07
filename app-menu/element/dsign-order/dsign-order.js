@@ -111,7 +111,7 @@ class DsignOrder extends OrderBehaviour(LocalizeMixin(ServiceInjectorMixin(Polym
               background: var(--status-can-order) ;
             }
 
-            #status[delivered] {
+            #status[preparation] {
               background: var(--status-in-order) ;
             }
 
@@ -303,7 +303,7 @@ class DsignOrder extends OrderBehaviour(LocalizeMixin(ServiceInjectorMixin(Polym
 
         _orderService: {
           readOnly: true,
-          observer: 'changeOrderService'
+          observer: '_orderServiceChanged'
         },
 
         page: {
@@ -481,11 +481,6 @@ class DsignOrder extends OrderBehaviour(LocalizeMixin(ServiceInjectorMixin(Polym
     let now = new Date(); 
     let entity = this._orderService.getStorage().getHydrator().hydrate({});
 
-    // TODO remove when add multi storage
-    /*
-    entity.id =((m = Math, d = Date, h = 16, s = s => m.floor(s).toString(h)) =>
-    s(d.now() / 1000) + ' '.repeat(h).replace(/./g, () => s(m.random() * h)))();
-    */
     entity.name = evt.target.parentElement.querySelector('#nameOrder').value;
 
     // in the menu the variable controll also the status of the menu "disable" in the order "rename" the value
@@ -548,17 +543,18 @@ class DsignOrder extends OrderBehaviour(LocalizeMixin(ServiceInjectorMixin(Polym
    * @param {OrderService} service 
    * @returns 
    */
-  changeOrderService(service) {
+   _orderServiceChanged(service) {
       if (!service) {
         return;
       }
+
+      super._orderServiceChanged(service);
   
       service.getStorage().getEventManager().on(Storage.POST_UPDATE, new Listener(this._updateViewOrder.bind(this)));
       service.getStorage().getEventManager().on(Storage.POST_SAVE, new Listener(this._updateViewOrder.bind(this)));
       service.getEventManager().on(OrderService.CHANGE_DEFAUL_ORDER, new Listener(this._updateViewOrder.bind(this)));
       service.getEventManager().on(OrderService.LOAD_DEFAUL_ORDER, new Listener(this._updateViewOrder.bind(this)));
-      service.getEventManager().on(OrderService.CHANGE_DEFAUL_ORDER, new Listener(this._updateCurrentOrder.bind(this)));
-      service.getEventManager().on(OrderService.LOAD_DEFAUL_ORDER, new Listener(this._updateCurrentOrder.bind(this)));
+      service.getEventManager().on(OrderService.UPDATE_DEFAUL_ORDER, new Listener(this._updateCurrentOrder.bind(this)));
   }
 
   /**
@@ -572,13 +568,13 @@ class DsignOrder extends OrderBehaviour(LocalizeMixin(ServiceInjectorMixin(Polym
     if (!orderService || !organization) {
       return;
     }
-/*
+
     orderService.loadCurreOrder(organization._id)
       .then((data) => {
         this.$.autocomplete.value = data;
         this._setStatusMessage();
       });
-      */
+      
   }
 
   /**
@@ -594,22 +590,27 @@ class DsignOrder extends OrderBehaviour(LocalizeMixin(ServiceInjectorMixin(Polym
    */
   _updateCurrentOrder(evt) {
 
-    this.__updateStatus(evt.data);
+    this._updateStatus(evt.data);
     this._setStatusMessage();
   }
 
-  __updateStatus(order) {
+  /**
+   * @param {*} order 
+   */
+  _updateStatus(order) {
     
     switch(order.status) {
       case OrderEntity.STATUS_QUEUE:
       case OrderEntity.STATUS_CHECK:
         this.$.status.removeAttribute('close');
-        this.$.status.removeAttribute('delivered');
+        this.$.status.removeAttribute('preparation');
         break;
       case OrderEntity.STATUS_PREPARATION:
-        this.$.status.setAttribute('delivered', null);
+        this.$.status.removeAttribute('close');
+        this.$.status.setAttribute('preparation', null);
         break;
       default:
+        this.$.status.removeAttribute('preparation');
         this.$.status.setAttribute('close', null);
     }
   }

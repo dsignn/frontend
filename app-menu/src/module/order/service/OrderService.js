@@ -1,4 +1,5 @@
 import {EventManagerAware} from "@dsign/library/src/event/EventManagerAware";
+import {OrderEntity} from "./../../order/entity/OrderEntity";
 /**
  * @class OrderService
  */
@@ -59,16 +60,19 @@ export class OrderService extends EventManagerAware {
             {'restaurantId': order.organization.id}
         ); 
 
-        /*
         for (let cont = 0; allOrder.length > cont; cont++) {
             
             allOrder[cont].currenteSelected = false;
-            await this.getStorage().update(allOrder[cont]);
+            this.storage.adapter.updateLocal(allOrder[cont])
+                        .then((updateData) => {
+                            console.log('update  for disable');
+                        }).catch((error) => {
+                            console.error('ERROR for disable', error);
+                        });
         }
 
         order.currenteSelected = true;
-        */
-    //    await this.getStorage().update(order);
+        await this.storage.adapter.updateLocal(order);
 
         this.currentOrder = order;
         this.getEventManager().emit(OrderService.CHANGE_DEFAUL_ORDER, order);
@@ -82,11 +86,18 @@ export class OrderService extends EventManagerAware {
      */
     pollingCurrentOrder() {
         if (this.currentOrder) {
-            console.log('CE TANTO UN CAZZO');
+      
             this.storage.get(this.currentOrder.id)
                 .then((data) => {
             
                     this.currentOrder = data;
+                    this.currentOrder.currenteSelected = true;
+                    this.storage.adapter.updateLocal(data)
+                        .then((updateData) => {
+                            //console.log('update local');
+                        }).catch((error) => {
+                            //console.error('ERROR', error);
+                        });
                     this.getEventManager().emit(OrderService.UPDATE_DEFAUL_ORDER, this.currentOrder);
                 });
         }
@@ -95,25 +106,17 @@ export class OrderService extends EventManagerAware {
     /**
      * @param {string} restaurantId 
      * @returns 
-  
+     */
     async loadCurreOrder(restaurantId) {
-        let orders = await this.getStorage().getAll({
+        let order = await this.getStorage().adapter.getCurrentOrder({
             'restaurantId': restaurantId
         });
 
-        if (orders > 1) {
-            console.warn('too many orders set as default', restaurantId);
-            return;
-        }
-
-        let order = null;
-        if (orders.length > 0) {
-            this.currentOrder = orders[0];
+        if (order) {
+            this.currentOrder = this.storage.hydrator.hydrate(order);
             this.getEventManager().emit(OrderService.LOAD_DEFAUL_ORDER, this.currentOrder);
         } 
 
-        return  this.currentOrder;
+        return this.currentOrder;
     }
-
-    */
 }
