@@ -5,29 +5,47 @@ import {EntityIdentifier} from "@dsign/library/src/storage/entity/EntityIdentifi
  */
 export class OrderEntity extends EntityIdentifier { 
 
-    static get STATUS_CHECK() {
-        return 'check';
-    }
+    /**
+     * Status can order dishes
+     *
+     * @return {string}
+     */
+    static get STATUS_CAN_ORDER() { return 'can-order'; }
 
-    static get STATUS_QUEUE() {
-        return 'queue';
-    }
+    /**
+     * Status order queue
+     *
+     * @return {string}
+     */
+    static get STATUS_QUEUE() { return 'queue'; }
 
-    static get STATUS_PREPARATION() {
-        return 'preparation';
-    }
+    /**
+     * Status order in preparation
+     *
+     * @return {string}
+     */
+    static get STATUS_PREPARATION() { return 'preparation'; }
 
-    static get  STATUS_DELIVERING() {
-        return 'delivering';
-    }
+    /**
+     * Status order on delivering
+     *
+     * @return {string}
+     */
+    static get  STATUS_DELIVERING() { return 'delivering'; }
 
-    static get STATUS_CLOSE() {
-        return 'close';
-    }
+    /**
+     * Status order close
+     *
+     * @return {string}
+     */
+    static get STATUS_CLOSE() { return 'close'; }
 
-    static get STATUS_INVALID() {
-        return 'invalid';
-    }
+    /**
+     * Status order ivalid
+     *
+     * @return {string}
+     */
+    static get STATUS_INVALID() { return 'invalid'; }
 
     constructor() {
         super();

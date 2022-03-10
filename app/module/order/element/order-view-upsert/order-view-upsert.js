@@ -144,7 +144,7 @@ class OrderViewUpsert extends FormErrorMessage(StorageEntityMixin(NotifyMixin(Se
                                 </dsign-paper-dropdown-menu>
              
                                 <div id="additionalInfo">
-                                    <template  is="dom-repeat" items="[[_toArray(entity.additionalInfo)]]" as="item">
+                                    <template is="dom-repeat" items="[[_toArray(entity.additionalInfo)]]" as="item">
                                         {{renderAdditionalInfo(item)}}
                                     </template>
                                 </div>
@@ -179,7 +179,7 @@ class OrderViewUpsert extends FormErrorMessage(StorageEntityMixin(NotifyMixin(Se
             states: {
 
                 value: [
-                    OrderEntity.STATUS_CHECK,
+                    OrderEntity.STATUS_CAN_ORDER,
                     OrderEntity.STATUS_QUEUE,
                     OrderEntity.STATUS_PREPARATION,
                     OrderEntity.STATUS_DELIVERING,
@@ -248,14 +248,7 @@ class OrderViewUpsert extends FormErrorMessage(StorageEntityMixin(NotifyMixin(Se
      * @param {*} item 
      */
     renderAdditionalInfo(item) {
-/*
-        let nodes =this.$.additionalInfo.querySelectorAll('dsign-paper-dropdown-menu');
-        nodes.forEach((ele) => {
-            console.log(ele, 'povera')
 
-            ele.remove();
-        });
-        */
 
         this.shadowRoot.querySelector('#additionalInfo').textContent = '';
 

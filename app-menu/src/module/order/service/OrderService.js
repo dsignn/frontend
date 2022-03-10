@@ -81,6 +81,21 @@ export class OrderService extends EventManagerAware {
     }
 
     /**
+     * 
+     */
+    sendOrderInQueue() {
+        this.currentOrder.status = OrderEntity.STATUS_QUEUE;
+        this.storage.update(this.currentOrder)
+            .then((updateData) => {
+                console.log('Update after send order', updateData);
+                this.getEventManager().emit(OrderService.UPDATE_DEFAUL_ORDER, this.currentOrder);
+            }).catch((error) => {
+                this.currentOrder.status = OrderEntity.STATUS_QUEUE;
+                console.error('Error after send order', error);
+            });
+    }
+
+    /**
 
      * @returns
      */
@@ -102,6 +117,8 @@ export class OrderService extends EventManagerAware {
                 });
         }
     }
+
+    
 
     /**
      * @param {string} restaurantId 

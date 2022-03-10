@@ -111,12 +111,17 @@ class DsignOrder extends OrderBehaviour(LocalizeMixin(ServiceInjectorMixin(Polym
               background: var(--status-can-order) ;
             }
 
-            #status[preparation] {
-              background: var(--status-in-order) ;
+            #status[queue] {
+              background: var(--status-in-queue) ;
             }
 
+            #status[preparation] {
+              background-color: var(--status-in-preparation);
+            }
+
+
             #status[close] {
-              background-color: var(--status-close-order);
+              background-color: var(--status-close);
             }
 
             .select {
@@ -309,6 +314,7 @@ class DsignOrder extends OrderBehaviour(LocalizeMixin(ServiceInjectorMixin(Polym
                 _config: 'config',
                 _localizeService: 'Localize',
                 _orderService: 'OrderService',
+                _orderStorage: 'OrderStorage',
             }
         },
 
@@ -317,6 +323,10 @@ class DsignOrder extends OrderBehaviour(LocalizeMixin(ServiceInjectorMixin(Polym
         _orderService: {
           readOnly: true,
           observer: '_orderServiceChanged'
+        },
+
+        _orderStorage: {
+          readOnly: true
         },
 
         page: {
@@ -547,7 +557,7 @@ class DsignOrder extends OrderBehaviour(LocalizeMixin(ServiceInjectorMixin(Polym
       service.getStorage().getEventManager().on(Storage.POST_UPDATE, new Listener(this._updateViewOrder.bind(this)));
       service.getStorage().getEventManager().on(Storage.POST_SAVE, new Listener(this._updateViewOrder.bind(this)));
       service.getEventManager().on(OrderService.CHANGE_DEFAUL_ORDER, new Listener(this._updateViewOrder.bind(this)));
-      service.getEventManager().on(OrderService.LOAD_DEFAUL_ORDER, new Listener(this._updateViewOrder.bind(this)));
+      service.getEventManager().on(OrderService.LOAD_DEFAUL_ORDER, new Listener(this._updateCurrentOrder.bind(this)));
       service.getEventManager().on(OrderService.UPDATE_DEFAUL_ORDER, new Listener(this._updateCurrentOrder.bind(this)));
   }
 
@@ -596,18 +606,25 @@ class DsignOrder extends OrderBehaviour(LocalizeMixin(ServiceInjectorMixin(Polym
   _updateStatus(order) {
     
     switch(order.status) {
-      case OrderEntity.STATUS_QUEUE:
       case OrderEntity.STATUS_CAN_ORDER:
         this.$.status.removeAttribute('close');
         this.$.status.removeAttribute('preparation');
+        this.$.status.removeAttribute('queue');
+        break;
+      case OrderEntity.STATUS_QUEUE:
+        this.$.status.removeAttribute('close');
+        this.$.status.removeAttribute('preparation');
+        this.$.status.setAttribute('queue', null);
         break;
       case OrderEntity.STATUS_PREPARATION:
         this.$.status.removeAttribute('close');
         this.$.status.setAttribute('preparation', null);
+        this.$.status.removeAttribute('queue');
         break;
       default:
-        this.$.status.removeAttribute('preparation');
         this.$.status.setAttribute('close', null);
+        this.$.status.removeAttribute('preparation');
+        this.$.status.removeAttribute('queue');
     }
   }
 
@@ -622,9 +639,11 @@ class DsignOrder extends OrderBehaviour(LocalizeMixin(ServiceInjectorMixin(Polym
 
     switch(this.currentOrder.status) {
       case OrderEntity.STATUS_CAN_ORDER:
-      case OrderEntity.STATUS_QUEUE:
         this.statusMessage = this.localize('status-message-can-order');
         break;
+      case OrderEntity.STATUS_QUEUE:
+        this.statusMessage = this.localize('status-message-queue');
+        break;  
       case OrderEntity.STATUS_PREPARATION:
         this.statusMessage = this.localize('status-message-waiting-order');
         break;
@@ -637,17 +656,12 @@ class DsignOrder extends OrderBehaviour(LocalizeMixin(ServiceInjectorMixin(Polym
    * 
    */
   _updateBtnOrder() {
-    switch(this.currentOrder.status) {
-      case OrderEntity.STATUS_CAN_ORDER:
-        this.$.order.disabled = false;
-        break;
-      default:
-        this.$.order.disabled = true;
-    }
+    this.$.order.disabled = !this.canOrder();
   }
 
   sendOrder() {
     console.log('Invia ordine');
+    this._orderService.sendOrderInQueue();
   }
 
   /**

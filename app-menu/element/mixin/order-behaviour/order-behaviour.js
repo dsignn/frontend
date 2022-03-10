@@ -173,21 +173,7 @@ export const OrderBehaviour = (superClass) => {
          * @param {OrderEntity} order 
          */
         _currentOrderChanged(order) {
-            if (!order) {
-                this.disableOrder = true;
-                return;
-            }
-
-            switch (order.status) {
-                case OrderEntity.STATUS_CAN_ORDER:
-                case OrderEntity.STATUS_QUEUE:
-                    this.disableOrder = false;
-                    break;
-     
-                default:      
-                    this.disableOrder = true;
-                    break;
-            }
+            this.disableOrder = !this.canOrder();
         }
 
         /**
@@ -236,6 +222,25 @@ export const OrderBehaviour = (superClass) => {
                     console.error(error)
                 });
             
+        }
+
+        /**
+         * @returns bool
+         */
+        canOrder() {
+            let can = false;
+
+            if(!this.currentOrder) {
+                return can;
+            }
+
+            switch(this.currentOrder.status) {
+                case OrderEntity.STATUS_CAN_ORDER:
+                    can =  true;
+                  break;
+            }
+
+            return can;
         }
 
         /**
