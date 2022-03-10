@@ -2,6 +2,7 @@ import {html, PolymerElement} from '@polymer/polymer/polymer-element.js';
 import {ServiceInjectorMixin} from "@dsign/polymer-mixin/service/injector-mixin"
 import {LocalizeMixin} from "@dsign/polymer-mixin/localize/localize-mixin"
 import {StorageEntityMixin} from "@dsign/polymer-mixin/storage/entity-mixin"
+import {OrderItemWrapper} from "./../../src/entity/embedded/OrderItemWrapper"
 import '@polymer/paper-card/paper-card';
 import '@polymer/paper-tooltip/paper-tooltip';
 import '@polymer/paper-item/paper-item';
@@ -77,7 +78,8 @@ class PaperOrderItem extends StorageEntityMixin(LocalizeMixin(ServiceInjectorMix
                 
                 #status {
                     border-radius: 50%;
-                    background-color: var(--status-in-order);
+                    background-color: var(--status-in-queue);
+                    color: var(--status-in-queue);
                     width: 20px;
                     min-width: 20px;
                     height: 20px;
@@ -85,11 +87,13 @@ class PaperOrderItem extends StorageEntityMixin(LocalizeMixin(ServiceInjectorMix
                 }
 
                 #status[terminate] {
-                    background-color: var(--status-close-order);
+                    background-color: var(--status-close);
+                    color: var(--status-close);
                 }
 
                 #status[ready] {
-                    background-color: var(--status-close-order);
+                    background-color: var(--status-can-order);
+                    color: var(--status-can-order);
                 }
 
 
@@ -113,17 +117,16 @@ class PaperOrderItem extends StorageEntityMixin(LocalizeMixin(ServiceInjectorMix
                 <div id="right-section">
                     <div id="content">                  
                         <div class="title-container" capitalize>
-                            <div id="status"></div>
+                            <paper-menu-button id="p_m_b" on-iron-select="selectStatus" ignore-select horizontal-align="right">
+                                <paper-icon-button id="status" icon="order:status" slot="dropdown-trigger" alt="multi menu"></paper-icon-button>
+                                <paper-listbox id="listStatus" slot="dropdown-content">
+                                    <paper-item value="to_do">{{localize("to_do")}}</paper-item>
+                                    <paper-item value="delivered">{{localize("delivered")}}</paper-item>
+                                    <paper-item value="terminate">{{localize("terminate")}}</paper-item>
+                                </paper-listbox>
+                            </paper-menu-button>
                             <div class="name">{{name}}</div>    
                         </div>
-                    </div>
-                    <div id="crud">
-                        <paper-menu-button ignore-select horizontal-align="right">
-                            <paper-icon-button icon="v-menu" slot="dropdown-trigger" alt="multi menu"></paper-icon-button>
-                            <paper-listbox slot="dropdown-content" multi>
-                                <paper-item on-click="_update">{{localize('modify')}}</paper-item>
-                            </paper-listbox>
-                        </paper-menu-button>
                     </div>
                 </div>
             </paper-card>
@@ -193,10 +196,45 @@ class PaperOrderItem extends StorageEntityMixin(LocalizeMixin(ServiceInjectorMix
             return;
         }
 
-        console.log('suca forte');
         if (item.ordered && item.ordered.name && item.ordered.name[this._localizeService.getDefaultLang()]) {
             this.name = item.ordered.name[this._localizeService.getDefaultLang()];
         }
+
+        switch (item.status) {
+            case 'to_do':
+                this.$.listStatus.selected = 0;
+                break;
+            case 'delivered':
+                this.$.listStatus.selected = 1;
+                break;    
+            case 'terminate':
+                this.$.listStatus.selected = 2;
+                break;    
+        }
+    }
+
+    /**
+     * @param {Event} evt 
+     */
+    selectStatus(evt) {
+        this.$.status.removeAttribute('ready');
+        this.$.status.removeAttribute('terminate');
+
+        switch (evt.detail.item.getAttribute('value')) {
+            case 'delivered':
+                this.$.status.setAttribute('ready', null);
+                this.item.status = 'delivered';
+                break;    
+            case 'terminate':
+                this.$.status.setAttribute('terminate', null);
+                this.item.status = 'terminate'
+                break;    
+            default:
+                this.item.status = 'to_do';
+        }
+
+        this.dispatchEvent(new CustomEvent('update', {detail: this.item}));
+        this.$.p_m_b.close();
     }
 }
 

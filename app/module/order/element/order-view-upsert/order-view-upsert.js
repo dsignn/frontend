@@ -155,8 +155,8 @@ class OrderViewUpsert extends FormErrorMessage(StorageEntityMixin(NotifyMixin(Se
                                 </div>
                             </div>
                             <div class="container-item">
-                                <template is="dom-repeat" items="[[entity.items]]" as="ordered">
-                                    <paper-order-item item="{{ordered}}"></paper-order-item>
+                                <template id="listItems" is="dom-repeat" items="[[entity.items]]" as="ordered" sort="sortItems">
+                                    <paper-order-item item="{{ordered}}" on-update="updateView"></paper-order-item>
                                 </template>
                             </div>        
                         </form>
@@ -313,6 +313,30 @@ class OrderViewUpsert extends FormErrorMessage(StorageEntityMixin(NotifyMixin(Se
      */
     submitOrderButton(evt) {
         this.$.formOrder.submit();
+    }
+
+    /**
+     * @param {object} item 
+     */
+    sortItems(item1, item2) {
+
+        let status1 = item1.status === 'to_do' ? 0 : (item1.status === 'delivered') ? 1 : 2;
+        let status2 = item2.status === 'to_do' ? 0 : (item2.status === 'delivered') ? 1 : 2;
+
+        if (status1 < status2) {
+            return -1;
+        }
+
+        if (status1 === status2) {
+            return 0;
+        }
+
+        return 1;
+    }
+
+    updateView() {
+        console.log('UPDATE BENE');
+        this.$.listItems.render();
     }
     
 }
