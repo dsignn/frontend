@@ -11,7 +11,7 @@ export class OrderEntity extends EntityIdentifier {
      *
      * @return {string}
      */
-    static get STATUS_CHECK()  { return 'check'; }
+    static get STATUS_CAN_ORDER()  { return 'can-order'; }
 
     /**
      * Status on queue
@@ -55,7 +55,7 @@ export class OrderEntity extends EntityIdentifier {
         
         let variable = {};
 
-        variable[OrderEntity.STATUS_CHECK] = [
+        variable[OrderEntity.STATUS_CAN_ORDER] = [
             OrderEntity.STATUS_QUEUE,
             OrderEntity.STATUS_INVALID
         ];
@@ -92,7 +92,7 @@ export class OrderEntity extends EntityIdentifier {
          */
         this.items = [];
 
-        this.status = OrderEntity.STATUS_CHECK;
+        this.status = OrderEntity.STATUS_CAN_ORDER;
         
         this.createdAt = null;
 

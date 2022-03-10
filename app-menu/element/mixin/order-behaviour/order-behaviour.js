@@ -179,7 +179,7 @@ export const OrderBehaviour = (superClass) => {
             }
 
             switch (order.status) {
-                case OrderEntity.STATUS_CHECK:
+                case OrderEntity.STATUS_CAN_ORDER:
                 case OrderEntity.STATUS_QUEUE:
                     this.disableOrder = false;
                     break;

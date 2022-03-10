@@ -151,6 +151,14 @@ class DsignOrder extends OrderBehaviour(LocalizeMixin(ServiceInjectorMixin(Polym
               margin-right: 10px;
             }
 
+            .btn-order {
+                      
+              background-color: var(--munu-background-color);
+              color: var(--munu-color);
+              width: 100%;
+              margin: 0;
+            }
+
             paper-tooltip {
            
               --paper-tooltip-background: var(--munu-background-color);
@@ -159,6 +167,10 @@ class DsignOrder extends OrderBehaviour(LocalizeMixin(ServiceInjectorMixin(Polym
               --paper-tooltip: {
                 font-size: 14px;
               }
+            }
+
+            paper-button[disabled] {
+              background-color: #757575;
             }
 
             paper-pagination {
@@ -273,6 +285,7 @@ class DsignOrder extends OrderBehaviour(LocalizeMixin(ServiceInjectorMixin(Polym
               [[getTotalOrderItemPrice()]] 
             </div>
           </div>
+          <paper-button id="order" class="btn-order" on-click="sendOrder">{{localize('send-order')}}</paper-button>
         `;
     }
 
@@ -380,25 +393,6 @@ class DsignOrder extends OrderBehaviour(LocalizeMixin(ServiceInjectorMixin(Polym
     dialog.querySelector('h3').innerHTML = this.localize('insert-order');
     dialog.querySelector('paper-input').label = this.localize('name');
     dialog.querySelector('paper-button').innerHTML = this.localize('insert-order');
-  }
-
-  _setStatusMessage() {
-    if (!this.currentOrder) {
-      this.statusMessage = "";
-      return;
-    }
-
-    switch(this.currentOrder.status) {
-      case OrderEntity.STATUS_CHECK:
-      case OrderEntity.STATUS_QUEUE:
-        this.statusMessage = this.localize('status-message-can-order');
-        break;
-      case OrderEntity.STATUS_PREPARATION:
-        this.statusMessage = this.localize('status-message-waiting-order');
-        break;
-      default:
-        this.statusMessage = this.localize('status-message-cant-order');
-    }
   }
 
   /***
@@ -572,7 +566,8 @@ class DsignOrder extends OrderBehaviour(LocalizeMixin(ServiceInjectorMixin(Polym
     orderService.loadCurreOrder(organization._id)
       .then((data) => {
         this.$.autocomplete.value = data;
-        this._setStatusMessage();
+        this._updateStatusMessage();
+        this. _updateBtnOrder();
       });
       
   }
@@ -591,7 +586,8 @@ class DsignOrder extends OrderBehaviour(LocalizeMixin(ServiceInjectorMixin(Polym
   _updateCurrentOrder(evt) {
 
     this._updateStatus(evt.data);
-    this._setStatusMessage();
+    this._updateStatusMessage();
+    this. _updateBtnOrder();
   }
 
   /**
@@ -601,7 +597,7 @@ class DsignOrder extends OrderBehaviour(LocalizeMixin(ServiceInjectorMixin(Polym
     
     switch(order.status) {
       case OrderEntity.STATUS_QUEUE:
-      case OrderEntity.STATUS_CHECK:
+      case OrderEntity.STATUS_CAN_ORDER:
         this.$.status.removeAttribute('close');
         this.$.status.removeAttribute('preparation');
         break;
@@ -613,6 +609,45 @@ class DsignOrder extends OrderBehaviour(LocalizeMixin(ServiceInjectorMixin(Polym
         this.$.status.removeAttribute('preparation');
         this.$.status.setAttribute('close', null);
     }
+  }
+
+  /**
+   * @returns 
+   */
+  _updateStatusMessage() {
+    if (!this.currentOrder) {
+      this.statusMessage = "";
+      return;
+    }
+
+    switch(this.currentOrder.status) {
+      case OrderEntity.STATUS_CAN_ORDER:
+      case OrderEntity.STATUS_QUEUE:
+        this.statusMessage = this.localize('status-message-can-order');
+        break;
+      case OrderEntity.STATUS_PREPARATION:
+        this.statusMessage = this.localize('status-message-waiting-order');
+        break;
+      default:
+        this.statusMessage = this.localize('status-message-cant-order');
+    }
+  }
+
+  /**
+   * 
+   */
+  _updateBtnOrder() {
+    switch(this.currentOrder.status) {
+      case OrderEntity.STATUS_CAN_ORDER:
+        this.$.order.disabled = false;
+        break;
+      default:
+        this.$.order.disabled = true;
+    }
+  }
+
+  sendOrder() {
+    console.log('Invia ordine');
   }
 
   /**
