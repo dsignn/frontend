@@ -9,6 +9,8 @@ import '@polymer/paper-listbox/paper-listbox';
 import '@polymer/paper-toggle-button/paper-toggle-button';
 import '@polymer/paper-menu-button/paper-menu-button';
 import {lang} from './language';
+import { EntityIdentifier } from '@dsign/library/src/storage/entity';
+import { OrderEntity } from './../../src/entity/OrderEntity';
 
 /**
  * @customElement
@@ -19,6 +21,10 @@ class PaperOrder extends StorageEntityMixin(LocalizeMixin(ServiceInjectorMixin(P
     static get template() {
         return html`
             <style >
+                :host {
+                    display: block;
+                }
+
                 paper-card {
                     @apply --layout-horizontal;
                     @apply --application-paper-card;
@@ -37,12 +43,19 @@ class PaperOrder extends StorageEntityMixin(LocalizeMixin(ServiceInjectorMixin(P
                             
                 #status {
                     border-radius: 50%;
-                    background-color: var(--status-in-order);
                     width: 20px;
                     min-width: 20px;
                     height: 20px;
                     margin-right: 6px;
-               }
+                }
+
+                #status[queue] {
+                    background-color: var(--status-in-queue);
+                }
+
+                #status[preparation] {
+                    background-color: var(--status-in-preparation);
+                }
 
                 #left-section {
                     width: 80px;
@@ -77,6 +90,8 @@ class PaperOrder extends StorageEntityMixin(LocalizeMixin(ServiceInjectorMixin(P
                     height: 46px;
                     overflow: hidden;
                     text-overflow: ellipsis;
+                    font-size: 18px;
+                    line-height: 18px;
                 }
                 
                 #content {
@@ -104,6 +119,7 @@ class PaperOrder extends StorageEntityMixin(LocalizeMixin(ServiceInjectorMixin(P
                     <div id="content">
                         <div class="title-container" capitalize>
                             <div id="status"></div>
+                            <paper-tooltip for="status" position="right">{{localize(statusMessage)}}</paper-tooltip>
                             <div class="name">{{entity.name}}</div> 
                         </div>    
                     </div>
@@ -146,6 +162,7 @@ class PaperOrder extends StorageEntityMixin(LocalizeMixin(ServiceInjectorMixin(P
             entity: {
                 type: Object,
                 notify: true,
+                observer: 'changeEntity'
             },
 
             /**
@@ -154,6 +171,12 @@ class PaperOrder extends StorageEntityMixin(LocalizeMixin(ServiceInjectorMixin(P
             _storage: {
                 type: Object,
                 readOnly: true
+            },
+
+            hideCrud: {
+                type: Boolean,
+                value: false,
+                observer: 'changeHideCrud'
             }
         }
     } 
@@ -164,6 +187,49 @@ class PaperOrder extends StorageEntityMixin(LocalizeMixin(ServiceInjectorMixin(P
      */
     _update(evt) {
         this.dispatchEvent(new CustomEvent('update', {detail: this.entity}));
+    }
+
+    /**
+     * @param {bool} hideCrud 
+     */
+    changeHideCrud(hideCrud) {
+    
+        if (hideCrud) {
+            this.$.crud.style.display = 'none';
+        } else {
+            this.$.crud.style.display = 'block';
+        }
+
+    }
+
+    /**
+     * @param {object} entity 
+     */
+    changeEntity(entity) {
+        this._clearStatus();
+        if (!entity) {
+            return;
+        }
+
+        switch (entity.status) {
+            case OrderEntity.STATUS_QUEUE:
+                this.$.status.setAttribute('queue', null);
+                this.statusMessage = OrderEntity.STATUS_QUEUE;
+                break;
+            case OrderEntity.STATUS_PREPARATION:
+                this.$.status.setAttribute('preparation', null);
+                this.statusMessage = OrderEntity.STATUS_PREPARATION;
+                break;
+        }
+        console.log('ENTITY', entity);
+    }
+
+    /**
+     * 
+     */
+    _clearStatus() {
+        this.$.status.removeAttribute('queue');
+        this.$.status.removeAttribute('preparation');
     }
 }
 

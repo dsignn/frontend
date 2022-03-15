@@ -83,7 +83,7 @@ class DsignOrderDetail extends OrderBehaviour(LocalizeMixin(ServiceInjectorMixin
             }
 
             .to-do {
-              background: var(--status-in-order) ;
+              background: var(--status-in-queue) ;
             }
 
             .delivered {
@@ -91,7 +91,7 @@ class DsignOrderDetail extends OrderBehaviour(LocalizeMixin(ServiceInjectorMixin
             }
 
             .terminate {
-              background-color: var(--status-close-order);
+              background-color: var(--status-close);
             }
 
             .container {

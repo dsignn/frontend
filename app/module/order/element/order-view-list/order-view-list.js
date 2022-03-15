@@ -78,8 +78,8 @@ class OrderViewList extends RefreshCollectionData(StorageCrudMixin(LocalizeMixin
             </style>
             <slot name="header"></slot>
                 <div id="container">
-                <template is="dom-repeat" items="[[entities]]" as="resource">
-                    <paper-order entity="{{resource}}" on-delete="_deleteEntity" on-update="_showUpdateView"></paper-order>
+                <template is="dom-repeat" items="[[entities]]" as="order">
+                    <paper-order entity="{{order}}" on-delete="_deleteEntity" on-update="_showUpdateView"></paper-order>
                 </template>
             </div>
             <paper-pagination page="{{page}}" total-items="{{totalItems}}" item-per-page="{{itemPerPage}}" next-icon="next" previous-icon="previous"></paper-pagination>

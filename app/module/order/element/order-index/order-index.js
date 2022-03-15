@@ -6,6 +6,7 @@ import '@polymer/paper-tabs/paper-tabs';
 import '@polymer/iron-pages/iron-pages';
 import '../order-view-list/order-view-list';
 import '../order-view-upsert/order-view-upsert';
+import '../working-order/working-order';
 import {lang} from './language';
 
 /**
@@ -87,7 +88,7 @@ class OrderIndex extends LocalizeMixin(ServiceInjectorMixin(PolymerElement)) {
                     </iron-pages>
                 </div>
                 <div id="details"> 
-                    dettaglio
+                    <working-order></working-order>
                 </div>
             </iron-pages>
     `;
@@ -106,7 +107,7 @@ class OrderIndex extends LocalizeMixin(ServiceInjectorMixin(PolymerElement)) {
             },
 
             selectedTab: {
-                value: 0
+                value: 1
             },
 
             /**
