@@ -293,7 +293,6 @@ class MenuItemViewUpsert extends LocalizeMixin(ServiceInjectorMixin(PolymerEleme
     }
 
     _changeEntity(entity) {
-        console.log('CHANGE', entity);
         this._controllAllergens();
     }
 

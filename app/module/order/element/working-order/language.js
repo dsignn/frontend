@@ -1,10 +1,8 @@
 export const lang = {
   "it": {
-     "list-order": "Lista ordini",
-     "detail-order": "Dettaglio ordine"
+     "selected-order": "Ordine selezionato"
   },
   "en": {
-     "list-order": "List order",
-     "detail-order": "Detail order"
+     "selected-order": "Selected order"
   }
 };

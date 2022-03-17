@@ -30,12 +30,28 @@ class WorkingOrder extends StorageEntityMixin(LocalizeMixin(ServiceInjectorMixin
                     height: 100%;
                 }
 
+                .container-order {
+                    min-height: 260px;
+                    overflow-y: scroll;
+                }
+
                 .list {
                     width: 25%;
                 }
 
                 .details {
                     width: 75%;
+                    padding-left: 8px;
+                    display: flex;
+                    flex-wrap: wrap;
+                    flex-direction: row;
+                    align-content: flex-start;
+                }
+
+                paper-order-item {
+                    width: 19.4%;
+                    margin-bottom: 6px;
+                    margin-right: 6px;
                 }
 
                 paper-order {
@@ -44,13 +60,17 @@ class WorkingOrder extends StorageEntityMixin(LocalizeMixin(ServiceInjectorMixin
             </style>
             <div class="container">
                 <div class="list">
-                    <h2>{{localize('list-order')}}</h2>
-                    <template is="dom-repeat" items="[[orders]]" as="order">
-                        <paper-order entity="{{order}}" on-delete="_deleteEntity" on-update="_showUpdateView" hide-crud="true"></paper-order>
-                    </template>
+                    <paper-input id="selected" label="{{localize('selected-order')}}"></paper-input>
+                    <div id="list" class="container-order">
+                        <template is="dom-repeat" items="[[orders]]" as="order">
+                            <paper-order entity="{{order}}" on-select="_selectEntity" small enable-action='{"modify":false,"select":true}'></paper-order>
+                        </template>
+                    </div>
                 </div>
                 <div class="details">
-                    <h2>{{localize('detail-order')}}</h2>
+                    <template id="listItems" is="dom-repeat" items="[[entitySelected.items]]" as="ordered">
+                        <paper-order-item item="{{ordered}}" on-update="updateView"></paper-order-item>
+                    </template>
                 </div>
             </div>
         `
@@ -59,6 +79,14 @@ class WorkingOrder extends StorageEntityMixin(LocalizeMixin(ServiceInjectorMixin
     constructor() {
         super();
         this.resources = lang;
+        window.addEventListener("resize", (evt) => {
+            this._resizeList();
+        });
+    }
+
+    connectedCallback() {
+        super.connectedCallback();
+        this._resizeList();
     }
 
     static get properties () {
@@ -74,6 +102,11 @@ class WorkingOrder extends StorageEntityMixin(LocalizeMixin(ServiceInjectorMixin
                         "_storage": "OrderStorage"
                     }
                 }
+            },
+
+            entitySelected: {
+                notify: true,
+                observer: 'changeEntitySelected'
             },
 
             /**
@@ -104,6 +137,49 @@ class WorkingOrder extends StorageEntityMixin(LocalizeMixin(ServiceInjectorMixin
 
                 this.orders = data;
             });
+
+        this._pollingKitchen()
+    }
+
+    /**
+     * 
+     */
+    _pollingKitchen() {
+        setInterval( 
+            () => {
+                console.log('Polling kitchen');
+                this._storage.getAll({status: 'for-kitchen'})
+                .then((data) => {
+    
+                    this.orders = data;
+                });
+            },
+            5000
+        );
+    }
+
+    /**
+     * 
+     */
+    _resizeList() {
+        this.$.list.style.height = (window.innerHeight - 64 -36 - 48 -6 - 40 - 10) + 'px'
+    }
+
+    /**
+     * @param {Event} evt 
+     */
+    _selectEntity(evt) {
+        this.entitySelected = evt.detail;
+        let paperButton =  evt.target.shadowRoot.querySelector('paper-menu-button');
+        paperButton.close();
+    }
+
+    /**
+     * @param {object} newEntity 
+     */
+    changeEntitySelected(newEntity) {
+        //console.log('fffffffffffff', newEntity);
+        this.$.selected.value = newEntity.name;
     }
 }
 

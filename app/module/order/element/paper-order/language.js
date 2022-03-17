@@ -6,8 +6,10 @@ export const lang = {
     "public-menu": "Imposta come menù interno",
     "public-delivery": "Imposta come menù delivery",
     "public-menu-ok": "Menu pubblicato correttamente",
+    "can-order": "Ordine da validare",
     "queue": "Ordine in coda",
-    "preparation": "Ordine in preparazione"
+    "preparation": "Ordine in preparazione",
+    "select": "Seleziona"
   },
   "en": {
     "modify": "Modify",
@@ -15,7 +17,9 @@ export const lang = {
     "enable-monitor" : "Enable monitor configuration",
     "public-menu": "Public menu",
     "public-menu-ok": "Public menu correctly",
+    "can-order": "Order to be validated",
     "queue": "Order on queue",
-    "preparation": "Order in preparation"
+    "preparation": "Order in preparation",
+    "select": "Select"
   }
 };

@@ -29,6 +29,7 @@ class PaperOrder extends StorageEntityMixin(LocalizeMixin(ServiceInjectorMixin(P
                     @apply --layout-horizontal;
                     @apply --application-paper-card;
                     @apply --paper-card;
+                    min-height: 120px;
                 }
                 
                 #fastAction {
@@ -57,9 +58,12 @@ class PaperOrder extends StorageEntityMixin(LocalizeMixin(ServiceInjectorMixin(P
                     background-color: var(--status-in-preparation);
                 }
 
+                #status[can-order] {
+                    background-color: var(--status-can-order-kitchen);
+                }
+               
                 #left-section {
                     width: 80px;
-                    min-height: 120px;
                     background-size: cover;
                     background-position: center;
                     background-repeat: no-repeat;
@@ -109,9 +113,13 @@ class PaperOrder extends StorageEntityMixin(LocalizeMixin(ServiceInjectorMixin(P
                          height: 28px;
                     }
                 }
+
+                [hide] {
+                    display:none;
+                }
     
             </style>
-            <paper-card>
+            <paper-card id="card">
                 <div id="left-section"></div>
                 <div id="fastAction">
                 </div>
@@ -127,7 +135,8 @@ class PaperOrder extends StorageEntityMixin(LocalizeMixin(ServiceInjectorMixin(P
                         <paper-menu-button ignore-select horizontal-align="right">
                             <paper-icon-button icon="v-menu" slot="dropdown-trigger" alt="multi menu"></paper-icon-button>
                             <paper-listbox slot="dropdown-content" multi>
-                                <paper-item on-click="_update">{{localize('modify')}}</paper-item>
+                                <paper-item id="modifyItem" on-click="_update">{{localize('modify')}}</paper-item>
+                                <paper-item id="selectItem" on-click="_select">{{localize('select')}}</paper-item>
                             </paper-listbox>
                         </paper-menu-button>
                     </div>
@@ -177,16 +186,39 @@ class PaperOrder extends StorageEntityMixin(LocalizeMixin(ServiceInjectorMixin(P
                 type: Boolean,
                 value: false,
                 observer: 'changeHideCrud'
+            },
+
+            enableAction: {
+                type: Object,
+                value: {
+                    modify: true,
+                    select: false
+                },
+                observer: 'changeEnableAction'
+            },
+
+            small: {
+                type: Boolean,
+                value: false,
+                observer: 'changeSmall'
             }
         }
     } 
 
-        /**
+    /**
      * @param evt
      * @private
      */
     _update(evt) {
         this.dispatchEvent(new CustomEvent('update', {detail: this.entity}));
+    }
+
+    /**
+     * @param evt
+     * @private
+     */
+    _select() {
+        this.dispatchEvent(new CustomEvent('select', {detail: this.entity}));
     }
 
     /**
@@ -212,16 +244,49 @@ class PaperOrder extends StorageEntityMixin(LocalizeMixin(ServiceInjectorMixin(P
         }
 
         switch (entity.status) {
+            case OrderEntity.STATUS_CAN_ORDER:
+                this.$.status.setAttribute('can-order', null);
+                this.statusMessage = entity.status;
+                break;
             case OrderEntity.STATUS_QUEUE:
                 this.$.status.setAttribute('queue', null);
-                this.statusMessage = OrderEntity.STATUS_QUEUE;
+                this.statusMessage = entity.status;
                 break;
             case OrderEntity.STATUS_PREPARATION:
                 this.$.status.setAttribute('preparation', null);
-                this.statusMessage = OrderEntity.STATUS_PREPARATION;
+                this.statusMessage = entity.status;
                 break;
         }
-        console.log('ENTITY', entity);
+    }
+
+    /**
+     * @param {boolean} newValue 
+     */
+    changeSmall(newValue) {
+
+        if (newValue) {
+            this.$.card.style.minHeight = '60px';
+        } else {
+            this.$.card.style.height = 'auto';
+        }
+    }
+
+    changeEnableAction(newValue) {
+
+        if (!newValue) {
+            return;
+        }
+
+        for (const [key, value] of Object.entries(newValue)) {
+            switch(key) {
+                case 'modify' :
+                    this.$.modifyItem.style.display = value ? 'flex' : 'none';
+                    break;
+                case 'select' :
+                    this.$.selectItem.style.display = value ? 'flex' : 'none';
+                    break;
+            }
+        }
     }
 
     /**
@@ -230,6 +295,7 @@ class PaperOrder extends StorageEntityMixin(LocalizeMixin(ServiceInjectorMixin(P
     _clearStatus() {
         this.$.status.removeAttribute('queue');
         this.$.status.removeAttribute('preparation');
+        this.$.status.removeAttribute('can-order');
     }
 }
 

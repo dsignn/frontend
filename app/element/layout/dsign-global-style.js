@@ -21,6 +21,7 @@ const template = html`
 
             --app-primary-color:  #015b63;
 
+            --status-can-order-kitchen: #d303fc;
             --status-can-order:#2da82d;
             --status-in-queue:#f0e500;
             --status-in-preparation:#3250a8;
