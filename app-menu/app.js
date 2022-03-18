@@ -11,7 +11,6 @@ import { XmlhAdapter } from '@dsign/library/src/storage/adapter/xmlh/XmlhAdapter
 import { JsonDecode } from '@dsign/library/src/data-transform/JsonDecode';
 import { JsonEncode } from '@dsign/library/src/data-transform/JsonEncode';
 import { DefaultBuilder } from '@dsign/library/src/storage/adapter/xmlh/url/DefaultBuilder';
-import { set } from '@polymer/polymer/lib/utils/path';
 
 const container = new Container();
 
