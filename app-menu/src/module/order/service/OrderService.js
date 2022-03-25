@@ -129,13 +129,11 @@ export class OrderService extends EventManagerAware {
      * @param {OrderEntity} order 
      * @returns {Promise}
      */
-    updateLocalOrder(order) {
-
+    updateLocalOrder(order) {   
         return new Promise((resolve, reject) => {
 
             this.storage.adapter.updateLocal(order)
                 .then((data) => {
-
                     this.getEventManager().emit(OrderService.UPDATE_LOCAL_ORDER, data); 
                     resolve(data);
                 }).catch((error) => {

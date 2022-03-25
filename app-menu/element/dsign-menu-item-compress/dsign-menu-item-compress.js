@@ -276,6 +276,7 @@ class DsignMenuItemCompress extends MergeTraslation(OrderBehaviour(MenuItemBehav
     
         service.getEventManager().on(OrderService.CHANGE_DEFAUL_ORDER, new Listener(this._updateViewOrder.bind(this)));
         service.getEventManager().on(OrderService.LOAD_DEFAUL_ORDER, new Listener(this._updateViewOrder.bind(this)));
+        service.getEventManager().on(OrderService.UPDATE_LOCAL_ORDER, new Listener(this._updateViewOrder.bind(this)));
     }
 
     /**

@@ -25,6 +25,7 @@ import { lang } from './language';
 import { OrderService } from '../../src/module/order/service/OrderService';
 import { OrderBehaviour } from '../mixin/order-behaviour/order-behaviour';
 import { OrderEntity } from '../../src/module/order/entity/OrderEntity';
+import { OrderItemWrapper } from '../../src/module/order/entity/embedded/OrderItemWrapper';
 import { Utility } from '../../src/storage/adapter/mongo/Utility';
 
 /** 
@@ -321,11 +322,6 @@ class DsignOrder extends OrderBehaviour(LocalizeMixin(ServiceInjectorMixin(Polym
 
       orders: {},
 
-      _orderService: {
-        readOnly: true,
-        observer: '_orderServiceChanged'
-      },
-
       _orderStorage: {
         readOnly: true
       },
@@ -609,6 +605,7 @@ class DsignOrder extends OrderBehaviour(LocalizeMixin(ServiceInjectorMixin(Polym
 
     this._updateStatus(evt.data);
     this._updateStatusMessage();
+    console.log('_updateViewOrder')
     this._updateBtnOrder();
 
   }
@@ -678,7 +675,21 @@ class DsignOrder extends OrderBehaviour(LocalizeMixin(ServiceInjectorMixin(Polym
    * 
    */
   _updateBtnOrder() {
-    this.$.order.disabled = !this.canOrder();
+    let enable = this.canOrder();
+    if (this.currentOrder && this.currentOrder.items) {
+      enable = false;
+
+      for (let cont = 0; this.currentOrder.items.length > cont; cont++) {
+
+        if (this.currentOrder.items[length].status === OrderItemWrapper.STATUS_TO_DO )  {
+          enable = true;
+          break;
+        }
+      }
+    }
+
+  
+    this.$.order.disabled = !enable;
   }
 
   sendOrder() {

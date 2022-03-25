@@ -212,12 +212,7 @@ export const OrderBehaviour = (superClass) => {
 
             this.currentOrder.addItemOrder(itemOrderTarget);
             
-            this._orderService.updateLocalOrder(this.currentOrder)
-                .then((data) => {
-                    this.updateView =  (new Date).getTime();
-                }).catch((error) => {
-                    console.error(error)
-                });
+            this._orderService.updateLocalOrder(this.currentOrder);
         }
 
         /**

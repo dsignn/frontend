@@ -273,6 +273,6 @@ Polymer({
     this.style.left = targetRect.left - parentRect.left +
         (targetRect.width - thisRect.width + this.offsetX - targetRect.width / 2) + 'px';
     this.style.top =
-        targetRect.top - parentRect.top + + this.offsetY - (thisRect.height / 2) + 'px';
+        targetRect.top - parentRect.top + this.offsetY - (thisRect.height / 2) + 'px';
   }
 })

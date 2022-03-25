@@ -122,7 +122,7 @@ class DsignOrderDetail extends OrderBehaviour(LocalizeMixin(ServiceInjectorMixin
             }
 
             .info {
-              min-height: 35px;
+              height: 35px;
               display: flex;
               align-items: end;
             }
@@ -176,19 +176,15 @@ class DsignOrderDetail extends OrderBehaviour(LocalizeMixin(ServiceInjectorMixin
                         <div class="data">
                           <div>[[getNameItemOrder(itemOrder.ordered)]]</div>
                           <div class="info">
-                            <dsign-badge top="20" for="badge-to-do-{{index}}" label="[[getTotalItemOrder(itemOrder.ordered, toDo)]]" offset-x="-2"></dsign-badge>
+                            <dsign-badge for="badge-to-do-{{index}}" label="[[getTotalItemOrder(itemOrder.ordered, toDo)]]" offset-x="-2" offset-y="1"></dsign-badge>
                             <div id="badge-to-do-{{index}}" class="status to-do"></div>
                             <paper-tooltip for="badge-to-do-{{index}}" position="right">{{localize('dish-in-preparation')}}</paper-tooltip>
-                            <dsign-badge top="20" for="badge-delivered-{{index}}" label="[[getTotalItemOrder(itemOrder.ordered, delivered)]]" offset-x="-2"></dsign-badge>
+                            <dsign-badge for="badge-delivered-{{index}}" label="[[getTotalItemOrder(itemOrder.ordered, delivered)]]" offset-x="-2" offset-y="1"></dsign-badge>
                             <div id="badge-delivered-{{index}}" class="status delivered"></div>
                             <paper-tooltip for="badge-delivered-{{index}}" position="right">{{localize('dish-delivered')}}</paper-tooltip>
-                            <dsign-badge top="20" for="badge-terminate-{{index}}" label="[[getTotalItemOrder(itemOrder.ordered, terminate)]]" offset-x="-2"></dsign-badge>
+                            <dsign-badge for="badge-terminate-{{index}}" label="[[getTotalItemOrder(itemOrder.ordered, terminate)]]" offset-x="-2" offset-y="1"></dsign-badge>
                             <div id="badge-terminate-{{index}}" class="status terminate"></div>
                             <paper-tooltip for="badge-terminate-{{index}}" position="right">{{localize('dish-terminated')}}</paper-tooltip>
-                            <div class="total">
-                              <label>{{localize('ordered')}}</label>
-                              <div>[[getTotalItemOrder(itemOrder.ordered)]]</div>
-                            </div>
                             <div class="price">
                               <label>{{localize('total')}}</label>
                               <div>[[getOrderItemPrice(itemOrder.ordered)]]</div>
