@@ -8,11 +8,11 @@
  * subject to an additional IP rights grant found at http://polymer.github.io/PATENTS.txt
  */
 
-import {PolymerElement, html} from '@polymer/polymer/polymer-element.js';
-import {LocalizeMixin} from "@dsign/polymer-mixin/localize/localize-mixin";
-import {ServiceInjectorMixin} from "@dsign/polymer-mixin/service/injector-mixin";
-import {Storage} from "@dsign/library/src/storage/Storage";
-import {Listener} from "@dsign/library/src/event/Listener";
+import { PolymerElement, html } from '@polymer/polymer/polymer-element.js';
+import { LocalizeMixin } from "@dsign/polymer-mixin/localize/localize-mixin";
+import { ServiceInjectorMixin } from "@dsign/polymer-mixin/service/injector-mixin";
+import { Storage } from "@dsign/library/src/storage/Storage";
+import { Listener } from "@dsign/library/src/event/Listener";
 import '@polymer/paper-icon-button/paper-icon-button';
 import '@fluidnext-polymer/paper-pagination/paper-pagination';
 import '@fluidnext-polymer/paper-pagination/icons/paper-pagination-icons';
@@ -22,7 +22,7 @@ import '@polymer/paper-tooltip/paper-tooltip';
 import '@polymer/paper-dialog/paper-dialog';
 import '@polymer/paper-button/paper-button';
 import '@polymer/paper-icon-button/paper-icon-button';
-import {lang} from './language-details';
+import { lang } from './language-details';
 import { OrderBehaviour } from '../mixin/order-behaviour/order-behaviour';
 import { OrderService } from '../../src/module/order/service/OrderService';
 import { OrderItemWrapper } from '../../src/module/order/entity/embedded/OrderItemWrapper';
@@ -32,8 +32,8 @@ import { OrderItemWrapper } from '../../src/module/order/entity/embedded/OrderIt
  */
 class DsignOrderDetail extends OrderBehaviour(LocalizeMixin(ServiceInjectorMixin(PolymerElement))) {
 
-    static get template() {
-        return html`
+  static get template() {
+    return html`
           <style>
             :host {
               display: block;
@@ -176,18 +176,18 @@ class DsignOrderDetail extends OrderBehaviour(LocalizeMixin(ServiceInjectorMixin
                         <div class="data">
                           <div>[[getNameItemOrder(itemOrder.ordered)]]</div>
                           <div class="info">
-                            <dsign-badge top="10" for="badge-to-do-{{index}}" label="[[getTotaleItemOrder(itemOrder.ordered, toDo)]]" offset-x="-2"></dsign-badge>
+                            <dsign-badge top="20" for="badge-to-do-{{index}}" label="[[getTotalItemOrder(itemOrder.ordered, toDo)]]" offset-x="-2"></dsign-badge>
                             <div id="badge-to-do-{{index}}" class="status to-do"></div>
                             <paper-tooltip for="badge-to-do-{{index}}" position="right">{{localize('dish-in-preparation')}}</paper-tooltip>
-                            <dsign-badge top="10" for="badge-delivered-{{index}}" label="[[getTotaleItemOrder(itemOrder.ordered, delivered)]]" offset-x="-2"></dsign-badge>
+                            <dsign-badge top="20" for="badge-delivered-{{index}}" label="[[getTotalItemOrder(itemOrder.ordered, delivered)]]" offset-x="-2"></dsign-badge>
                             <div id="badge-delivered-{{index}}" class="status delivered"></div>
                             <paper-tooltip for="badge-delivered-{{index}}" position="right">{{localize('dish-delivered')}}</paper-tooltip>
-                            <dsign-badge top="10" for="badge-terminate-{{index}}" label="[[getTotaleItemOrder(itemOrder.ordered, terminate)]]" offset-x="-2"></dsign-badge>
+                            <dsign-badge top="20" for="badge-terminate-{{index}}" label="[[getTotalItemOrder(itemOrder.ordered, terminate)]]" offset-x="-2"></dsign-badge>
                             <div id="badge-terminate-{{index}}" class="status terminate"></div>
                             <paper-tooltip for="badge-terminate-{{index}}" position="right">{{localize('dish-terminated')}}</paper-tooltip>
                             <div class="total">
                               <label>{{localize('ordered')}}</label>
-                              <div>[[getTotaleItemOrder(itemOrder.ordered)]]</div>
+                              <div>[[getTotalItemOrder(itemOrder.ordered)]]</div>
                             </div>
                             <div class="price">
                               <label>{{localize('total')}}</label>
@@ -201,55 +201,58 @@ class DsignOrderDetail extends OrderBehaviour(LocalizeMixin(ServiceInjectorMixin
                         </div
                         </paper-card>
                   </template>
+                  <template is="dom-if" if="{{!hasDishis(items)}}">
+                    TODO
+                  </template>
                 </dom-repeat>
               </div>
             </div>`;
-    }
+  }
 
   static get properties() {
-      return {
-        items : {
-          notify: true,
-          value: []
-        },
+    return {
+      items: {
+        notify: true,
+        value: []
+      },
 
-        services: {
-            value: {
-                _config: 'config',
-                _localizeService: 'Localize',
-                _orderService: 'OrderService',
-            }
-        },
-
-        _orderService: {
-          readOnly: true,
-          observer: 'changeOrderService'
-        },
-
-        toDo: {
-          value: OrderItemWrapper.STATUS_TO_DO
-        },
-
-        terminate: {
-          value: OrderItemWrapper.STATUS_TERMINATE
-        },
-
-        delivered: {
-          value: OrderItemWrapper.STATUS_DELIVERED
+      services: {
+        value: {
+          _config: 'config',
+          _localizeService: 'Localize',
+          _orderService: 'OrderService',
         }
-      };      
+      },
+
+      _orderService: {
+        readOnly: true,
+        observer: 'changeOrderService'
+      },
+
+      toDo: {
+        value: OrderItemWrapper.STATUS_TO_DO
+      },
+
+      terminate: {
+        value: OrderItemWrapper.STATUS_TERMINATE
+      },
+
+      delivered: {
+        value: OrderItemWrapper.STATUS_DELIVERED
+      }
+    };
   }
 
   constructor() {
-     super();
-     this.resources = lang;
+    super();
+    this.resources = lang;
   }
 
   connectedCallback() {
     super.connectedCallback();
     new ResizeObserver((evt) => {
       let ret = this.getBoundingClientRect()
-          this.style.height = (window.innerHeight - ret.top) + 'px';
+      this.style.height = (window.innerHeight - ret.top) + 'px';
     }).observe(this)
 
   }
@@ -268,23 +271,38 @@ class DsignOrderDetail extends OrderBehaviour(LocalizeMixin(ServiceInjectorMixin
     service.getStorage().getEventManager().on(Storage.POST_SAVE, new Listener(this._updateViewOrder.bind(this)));
     service.getEventManager().on(OrderService.CHANGE_DEFAUL_ORDER, new Listener(this._updateViewOrder.bind(this)));
     service.getEventManager().on(OrderService.LOAD_DEFAUL_ORDER, new Listener(this._updateViewOrder.bind(this)));
+    service.getEventManager().on(OrderService.UPDATE_LOCAL_ORDER, new Listener(this._updateViewOrder.bind(this)));
   }
-  
+
 
   /**
    * 
    */
-   _updateViewOrder() {
+  _updateViewOrder() {
 
     super._updateViewOrder();
     if (!this.currentOrder) {
       return;
     }
-  
+
     this.items = this.currentOrder.getDistinctItemOrder();
     this.notifyPath('items');
   }
 
+
+  /**
+   * @param {any} dishes 
+   * @returns boolean
+   */
+  hasDishis(dishes) {
+    let has = false;
+    if (dishes && Array.isArray(dishes) && dishes.length > 0) {
+      has = true;
+    }
+
+    return has;
+  }
+
 }
-                        
+
 window.customElements.define('dsign-order-detail', DsignOrderDetail);

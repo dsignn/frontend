@@ -35,24 +35,7 @@ export class XmlhLocalStorageAdapter {
      * @return {Promise<any>}
      */
     save(data) {
-        return new Promise((resolve, reject) => {
-
-            this.xmlhAdapter.save(data).then((respXml) => {
-                console.log('salva respXml', respXml);
-
-                this.localStorageAdapter.save(respXml).then((respLocalStorage) => {
-                    console.log('salva respLocalStorage', respLocalStorage);
-                    resolve(respLocalStorage);
-                }).catch((error) => {
-                    console.error('errore respLocalStorage', error);
-                    reject(error);
-                });
-
-            }).catch((error) => {
-                console.error('errore respXml', error);
-                reject(error);
-            });
-        });
+        return this.localStorageAdapter.save(data);
     }
 
     /**
@@ -85,14 +68,7 @@ export class XmlhLocalStorageAdapter {
      * @return {Promise<any>}
      */
     updateLocal(data) {
-        return new Promise((resolve, reject) => {
-            this.localStorageAdapter.update(data)
-                .then((respLocalStorage) => {
-                    resolve(respLocalStorage);
-                }).catch((error) => {
-                    reject(error);
-                });
-        });
+        return this.localStorageAdapter.update(data);
     }
 
     /**

@@ -20,7 +20,7 @@
     "@fluidnext-polymer/paper-grid": "github:fluidnext/paper-grid",
     "@fluidnext-polymer/paper-input-color": "^3.1.0",
     "@fluidnext-polymer/paper-input-file": "^3.0.0",
-    "@fluidnext-polymer/paper-pagination": "git+ssh://git@github.com:fluidnext/paper-pagination.git#master",
+    "@fluidnext-polymer/paper-pagination": "git+ssh://git@github.com/fluidnext/paper-pagination.git#master",
     "@polymer/app-layout": "^3.0.2",
     "@polymer/app-localize-behavior": "^3.0.1",
     "@polymer/app-media": "^3.0.1",

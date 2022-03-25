@@ -42,13 +42,13 @@ orderLocalStorageAdapter.setFilterCallback(function(filter) {
 
     if (filter.restaurantId) {
         dataToReturn = this.data.filter((element) => {
-            return element.organization.id === filter.restaurantId;
+            return element.organization ? element.organization.id === filter.restaurantId : false;
         })
     }
 
     if (filter.name) {
         dataToReturn = this.data.filter((element) => {
-            return element.name.match(new RegExp(filter.name, 'i'));
+            return element.name ?  element.name.match(new RegExp(filter.name, 'i')) : false;
         })
     } 
 

@@ -516,7 +516,7 @@ class DsignMenu extends OrderBehaviour(MergeTraslation(LocalizeMixin(ServiceInje
             </div>          
             <div id="orderButtonContainer" class="flex-row">
                 <paper-icon-button id="btn-menu" icon="v-menu" on-tap="tapMenu"></paper-icon-button>
-                <dsign-badge id="badgeMenu" for="btn-menu" label="{{totalOrder}}" offset-y="6"></dsign-badge>
+                <dsign-badge id="badgeMenu" for="btn-menu" label="{{getTotalOrder()}}" offset-y="6"></dsign-badge>
             </div>
         </app-toolbar>
         <paper-tabs scrollable align-bottom>
@@ -621,11 +621,6 @@ class DsignMenu extends OrderBehaviour(MergeTraslation(LocalizeMixin(ServiceInje
                 value: 1
             },
 
-            totalOrder: {
-                value: 0,
-                observer: 'changeTotalOrder'
-            },
-
             layoutType: {
                 value: 'dsign-menu-item-image',
                 readOnly: true
@@ -712,16 +707,10 @@ class DsignMenu extends OrderBehaviour(MergeTraslation(LocalizeMixin(ServiceInje
         return;
         }
 
-        service.getStorage().getEventManager().on(Storage.POST_UPDATE, new Listener(this._currentOrder.bind(this)));
-        service.getEventManager().on(OrderService.CHANGE_DEFAUL_ORDER, new Listener(this._currentOrder.bind(this)));
-        service.getEventManager().on(OrderService.LOAD_DEFAUL_ORDER, new Listener(this._currentOrder.bind(this)));
-    }
-
-    _currentOrder(evt) {
-        if (this.menu && this.menu.enable_order && this.currentOrder) {
-            this.totalOrder = this.currentOrder.getTotalItemOrder();
-        }
-        
+        service.getStorage().getEventManager().on(Storage.POST_UPDATE, new Listener(this._updateViewOrder.bind(this)));
+        service.getEventManager().on(OrderService.CHANGE_DEFAUL_ORDER, new Listener(this._updateViewOrder.bind(this)));
+        service.getEventManager().on(OrderService.LOAD_DEFAUL_ORDER, new Listener(this._updateViewOrder.bind(this)));
+        service.getEventManager().on(OrderService.UPDATE_LOCAL_ORDER, new Listener(this._updateViewOrder.bind(this)));
     }
 
     /**
@@ -778,19 +767,6 @@ class DsignMenu extends OrderBehaviour(MergeTraslation(LocalizeMixin(ServiceInje
             request.setRequestHeader('Accept','application/json');
             request.send();
         });
-    }
-
-    /**
-     * @param totalOrder
-     */
-    changeTotalOrder(totalOrder) {
-
-        if(!totalOrder) {
-            this.$.badgeMenu.style.visibility = 'hidden';
-            return;
-        }
-
-        this.$.badgeMenu.style.visibility = 'visible';
     }
 
     /**

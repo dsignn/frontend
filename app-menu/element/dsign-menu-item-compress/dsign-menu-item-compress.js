@@ -230,7 +230,7 @@ class DsignMenuItemCompress extends MergeTraslation(OrderBehaviour(MenuItemBehav
              <div class="header-card-category">{{localize(category)}}</div>
              <div class="paragraph-card">{{localizeEntityPropriety(menuItem.description)}}</div>
              <div id="action" class="action">
-                 <dsign-badge id="badgeMenu" for="btn-menu" label="{{getTotaleItemOrder(menuItem)}}" class="red" offset-x="-2"></dsign-badge>
+                 <dsign-badge id="badgeMenu" for="btn-menu" label="{{getTotalItemOrder(menuItem)}}" class="red" offset-x="-2"></dsign-badge>
                  <paper-icon-button icon="add" id="btn-menu" item-order="{{menuItem}}" on-tap="addItemOrder" disabled="{{disableOrder}}"></paper-icon-button>
              </div>
         </div>

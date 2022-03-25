@@ -18,7 +18,11 @@ export class DateStrategy {
      * @param data
      * @return {any}
      */
-    hydrateValue(property, data) {       
+    hydrateValue(property, data) {   
+        if (!data) {
+            return;
+        }
+        
         return new Date(data);
     }
     /**
@@ -27,6 +31,10 @@ export class DateStrategy {
      * @returns {any}
      */
     extractValue(data) {
+        if (!data) {
+            return;
+        }
+
         let extract = data;
         switch (this.type) {
             case DateStrategy.TYPE_TIME:

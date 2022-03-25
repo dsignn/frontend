@@ -8,12 +8,12 @@
  * subject to an additional IP rights grant found at http://polymer.github.io/PATENTS.txt
  */
 
-import {PolymerElement, html} from '@polymer/polymer/polymer-element.js';
-import {LocalizeMixin} from "@dsign/polymer-mixin/localize/localize-mixin";
-import {ServiceInjectorMixin} from "@dsign/polymer-mixin/service/injector-mixin";
-import {Storage} from "@dsign/library/src/storage/Storage";
-import {Listener} from "@dsign/library/src/event/Listener";
-import {Localize} from '@dsign/library/src/localize/Localize';
+import { PolymerElement, html } from '@polymer/polymer/polymer-element.js';
+import { LocalizeMixin } from "@dsign/polymer-mixin/localize/localize-mixin";
+import { ServiceInjectorMixin } from "@dsign/polymer-mixin/service/injector-mixin";
+import { Storage } from "@dsign/library/src/storage/Storage";
+import { Listener } from "@dsign/library/src/event/Listener";
+import { Localize } from '@dsign/library/src/localize/Localize';
 import '@polymer/paper-icon-button/paper-icon-button';
 import '@fluidnext-polymer/paper-pagination/paper-pagination';
 import '@fluidnext-polymer/paper-pagination/icons/paper-pagination-icons';
@@ -21,18 +21,19 @@ import '@fluidnext-polymer/paper-autocomplete/paper-autocomplete';
 import '@polymer/paper-tooltip/paper-tooltip';
 import '@polymer/paper-dialog/paper-dialog';
 import '@polymer/paper-button/paper-button';
-import {lang} from './language';
+import { lang } from './language';
 import { OrderService } from '../../src/module/order/service/OrderService';
 import { OrderBehaviour } from '../mixin/order-behaviour/order-behaviour';
 import { OrderEntity } from '../../src/module/order/entity/OrderEntity';
+import { Utility } from '../../src/storage/adapter/mongo/Utility';
 
 /** 
  * @class DsignOrder
  */
 class DsignOrder extends OrderBehaviour(LocalizeMixin(ServiceInjectorMixin(PolymerElement))) {
 
-    static get template() {
-        return html`
+  static get template() {
+    return html`
           <style>
             :host {
               --paper-input-container: {
@@ -292,65 +293,65 @@ class DsignOrder extends OrderBehaviour(LocalizeMixin(ServiceInjectorMixin(Polym
           </div>
           <paper-button id="order" class="btn-order" on-click="sendOrder">{{localize('send-order')}}</paper-button>
         `;
-    }
+  }
 
   static get properties() {
-      return {
+    return {
 
-        organization: {
-          notify: true,
-        },
+      organization: {
+        notify: true,
+      },
 
-        currentOrder: {
-          observer: 'changeCurrentOrder'
-        },
+      currentOrder: {
+        observer: 'changeCurrentOrder'
+      },
 
-        menu: {
-          notify: true,
-        },
+      menu: {
+        notify: true,
+      },
 
-        services: {
-            value: {
-                _config: 'config',
-                _localizeService: 'Localize',
-                _orderService: 'OrderService',
-                _orderStorage: 'OrderStorage',
-            }
-        },
-
-        orders: { },
-
-        _orderService: {
-          readOnly: true,
-          observer: '_orderServiceChanged'
-        },
-
-        _orderStorage: {
-          readOnly: true
-        },
-
-        page: {
-          value: 1
-        },
-
-        itemPerPage: {
-          value: 4
-        },
-
-        totalItems: {
-          readOnly: true,
-        },
-
-        statusMessage: {
-          notify: true,
+      services: {
+        value: {
+          _config: 'config',
+          _localizeService: 'Localize',
+          _orderService: 'OrderService',
+          _orderStorage: 'OrderStorage',
         }
+      },
 
-      };      
+      orders: {},
+
+      _orderService: {
+        readOnly: true,
+        observer: '_orderServiceChanged'
+      },
+
+      _orderStorage: {
+        readOnly: true
+      },
+
+      page: {
+        value: 1
+      },
+
+      itemPerPage: {
+        value: 4
+      },
+
+      totalItems: {
+        readOnly: true,
+      },
+
+      statusMessage: {
+        notify: true,
+      }
+
+    };
   }
 
   constructor() {
-     super();
-     this.resources = lang;
+    super();
+    this.resources = lang;
   }
 
   connectedCallback() {
@@ -361,10 +362,10 @@ class DsignOrder extends OrderBehaviour(LocalizeMixin(ServiceInjectorMixin(Polym
 
   static get observers() {
     return [
-        '_observeOrders(_orderService, organization)',
-        '_observePages(_orderService, page, organization)',
-        '_obeserveLocalizeService(_localizeService)',
-        '_obeserveOrderDialog(_localizeService, menu)'
+      '_observeOrders(_orderService, organization)',
+      '_observePages(_orderService, page, organization)',
+      '_obeserveLocalizeService(_localizeService)',
+      '_obeserveOrderDialog(_localizeService, menu)'
     ];
   }
 
@@ -384,18 +385,32 @@ class DsignOrder extends OrderBehaviour(LocalizeMixin(ServiceInjectorMixin(Polym
     if (!service || !menu) {
       return;
     }
-   
+
     this._createDialogCreateOrder();
   }
 
+  /**
+   * 
+   * @param {} value 
+   */
   changeCurrentOrder(value) {
-    if (!value) {
-      this.$.status.style.visibility = 'hidden';
-      this.$.price.style.visibility = 'hidden';
-    } else {
-      this.$.status.style.visibility = 'visible';
-      this.$.price.style.visibility = 'visible';
-    }
+
+    this._showPrice(!!value);
+    this._showStatus(!!value)
+  }
+
+  /**
+   * @param {boolean} show 
+   */
+  _showStatus(show) {
+    this.$.status.style.visibility = show ? 'visible' : 'hidden';
+  }
+
+  /**
+   * @param {boolean} show 
+   */
+  _showPrice(show) {
+    this.$.price.style.visibility = show ? 'visible' : 'hidden';
   }
 
   _changeLanguage(evt) {
@@ -418,19 +433,19 @@ class DsignOrder extends OrderBehaviour(LocalizeMixin(ServiceInjectorMixin(Polym
     dialog.setAttribute('with-backdrop', null);
 
     // Add title
-    let h3  = document.createElement('h3');
+    let h3 = document.createElement('h3');
     h3.innerHTML = this.localize('insert-order');
     dialog.appendChild(h3);
 
     // Add Name order
-    let input  = document.createElement('paper-input');
+    let input = document.createElement('paper-input');
     input.setAttribute('id', 'nameOrder');
     input.setAttribute('label', this.localize('name'));
     input.addEventListener('value-changed', this.validateInput.bind(this));
     dialog.appendChild(input);
-  
 
-    switch(this.menu.status) {
+
+    switch (this.menu.status) {
       case 'indoor':
         // Add table number
         input = document.createElement('paper-input');
@@ -441,7 +456,7 @@ class DsignOrder extends OrderBehaviour(LocalizeMixin(ServiceInjectorMixin(Polym
         dialog.appendChild(input);
         break;
 
-     default:
+      default:
         // Add phone number
         input = document.createElement('paper-input');
         input.setAttribute('id', 'phoneNumber');
@@ -467,7 +482,7 @@ class DsignOrder extends OrderBehaviour(LocalizeMixin(ServiceInjectorMixin(Polym
     button.addEventListener('tap', this.AddOrder.bind(this));
     dialog.appendChild(button);
 
-    document.body.appendChild(dialog);   
+    document.body.appendChild(dialog);
   }
 
   /**
@@ -482,9 +497,11 @@ class DsignOrder extends OrderBehaviour(LocalizeMixin(ServiceInjectorMixin(Polym
    */
   AddOrder(evt) {
 
-    let now = new Date(); 
+    let now = new Date();
     let entity = this._orderService.getStorage().getHydrator().hydrate({});
 
+    // TODO Move to the service?????
+    entity.id = Utility.generateObjectId();
     entity.name = evt.target.parentElement.querySelector('#nameOrder').value;
 
     // in the menu the variable controll also the status of the menu "disable" in the order "rename" the value
@@ -518,21 +535,21 @@ class DsignOrder extends OrderBehaviour(LocalizeMixin(ServiceInjectorMixin(Polym
    * @param {CustomEvent} evt 
    */
   validateInput(evt) {
-    
+
     document.getElementById('addOrderDialog').querySelector('paper-button').disabled = false;
     let inputName = evt.target.parentElement.querySelector('#nameOrder');
-    
+
     if (!inputName.value) {
       document.getElementById('addOrderDialog').querySelector('paper-button').disabled = true;
     }
 
     let inputEmail = evt.target.parentElement.querySelector('#email');
-    if (inputEmail  != null && (!inputEmail.value || this._validateEmail(inputEmail.value) === null)) { 
+    if (inputEmail != null && (!inputEmail.value || this._validateEmail(inputEmail.value) === null)) {
       document.getElementById('addOrderDialog').querySelector('paper-button').disabled = true;
     }
 
     let inputTable = evt.target.parentElement.querySelector('#phoneNumber');
-    if (inputTable  != null && !inputTable.value) { 
+    if (inputTable != null && !inputTable.value) {
       document.getElementById('addOrderDialog').querySelector('paper-button').disabled = true;
     }
   }
@@ -547,19 +564,21 @@ class DsignOrder extends OrderBehaviour(LocalizeMixin(ServiceInjectorMixin(Polym
    * @param {OrderService} service 
    * @returns 
    */
-   _orderServiceChanged(service) {
-      if (!service) {
-        return;
-      }
+  _orderServiceChanged(service) {
+    if (!service) {
+      return;
+    }
 
-      super._orderServiceChanged(service);
-  
-      service.getStorage().getEventManager().on(Storage.POST_UPDATE, new Listener(this._updateViewOrder.bind(this)));
-      service.getStorage().getEventManager().on(Storage.POST_SAVE, new Listener(this._updateViewOrder.bind(this)));
-      service.getEventManager().on(OrderService.CHANGE_DEFAUL_ORDER, new Listener(this._updateViewOrder.bind(this)));
-      service.getEventManager().on(OrderService.LOAD_DEFAUL_ORDER, new Listener(this._updateCurrentOrder.bind(this)));
-      service.getEventManager().on(OrderService.UPDATE_DEFAUL_ORDER, new Listener(this._updateCurrentOrder.bind(this)));
+    super._orderServiceChanged(service);
+
+    service.getStorage().getEventManager().on(Storage.POST_UPDATE, new Listener(this._updateViewOrder.bind(this)));
+    service.getStorage().getEventManager().on(Storage.POST_SAVE, new Listener(this._postOrderEvt.bind(this)));
+    service.getEventManager().on(OrderService.CHANGE_DEFAUL_ORDER, new Listener(this._updateViewOrder.bind(this)));
+    service.getEventManager().on(OrderService.LOAD_DEFAUL_ORDER, new Listener(this._updateViewOrder.bind(this)));
+    service.getEventManager().on(OrderService.UPDATE_DEFAUL_ORDER, new Listener(this._updateViewOrder.bind(this)));
+    service.getEventManager().on(OrderService.UPDATE_LOCAL_ORDER, new Listener(this._updateViewOrder.bind(this)));
   }
+
 
   /**
    * 
@@ -577,35 +596,37 @@ class DsignOrder extends OrderBehaviour(LocalizeMixin(ServiceInjectorMixin(Polym
       .then((data) => {
         this.$.autocomplete.value = data;
         this._updateStatusMessage();
-        this. _updateBtnOrder();
+        this._updateBtnOrder();
       });
-      
+
   }
 
   /**
    * @param {CustomEvent} evt 
    */
-   _updateViewOrder(evt) {
-    super._updateViewOrder();
-    this._getOrders();
-  }
-  
-  /**
-   * @param {CustomEvent} evt 
-   */
-  _updateCurrentOrder(evt) {
+  _updateViewOrder(evt) {
+    super._updateViewOrder(evt);
 
     this._updateStatus(evt.data);
     this._updateStatusMessage();
-    this. _updateBtnOrder();
+    this._updateBtnOrder();
+
+  }
+
+    /**
+   * @param {CustomEvent} evt 
+   */
+  _postOrderEvt(evt) { 
+    this._getOrders();
   }
 
   /**
    * @param {*} order 
    */
   _updateStatus(order) {
-    
-    switch(order.status) {
+
+    switch (order.status) {
+      case OrderEntity.STATUS_LOCAL:
       case OrderEntity.STATUS_CAN_ORDER:
         this.$.status.removeAttribute('close');
         this.$.status.removeAttribute('preparation');
@@ -637,13 +658,14 @@ class DsignOrder extends OrderBehaviour(LocalizeMixin(ServiceInjectorMixin(Polym
       return;
     }
 
-    switch(this.currentOrder.status) {
+    switch (this.currentOrder.status) {
       case OrderEntity.STATUS_CAN_ORDER:
+      case OrderEntity.STATUS_LOCAL:
         this.statusMessage = this.localize('status-message-can-order');
         break;
       case OrderEntity.STATUS_QUEUE:
         this.statusMessage = this.localize('status-message-queue');
-        break;  
+        break;
       case OrderEntity.STATUS_PREPARATION:
         this.statusMessage = this.localize('status-message-waiting-order');
         break;
@@ -660,7 +682,6 @@ class DsignOrder extends OrderBehaviour(LocalizeMixin(ServiceInjectorMixin(Polym
   }
 
   sendOrder() {
-    console.log('Invia ordine');
     this._orderService.sendOrderInQueue();
   }
 
@@ -669,17 +690,17 @@ class DsignOrder extends OrderBehaviour(LocalizeMixin(ServiceInjectorMixin(Polym
    */
   _getOrders() {
     this._orderService.getStorage()
-        .getPaged(this.page, this.itemPerPage, {'restaurantId': this.organization._id})
-        .then((pagination) => {
-  
-      this.set('orders', pagination);
-      this._setTotalItems(pagination.totalItems);
-      this.notifyPath('totalItems');
-    });
+      .getPaged(this.page, this.itemPerPage, { 'restaurantId': this.organization._id })
+      .then((pagination) => {
+
+        this.set('orders', pagination);
+        this._setTotalItems(pagination.totalItems);
+        this.notifyPath('totalItems');
+      });
   }
 
   _isOrderIndor() {
-      return window.location.href.search(new RegExp('89')) > -1
+    return window.location.href.search(new RegExp('89')) > -1
   }
 
   /**
@@ -699,12 +720,12 @@ class DsignOrder extends OrderBehaviour(LocalizeMixin(ServiceInjectorMixin(Polym
   }
 
   _autocompleteChanged(evt) {
-      this._orderService.getStorage()
-        .getAll({'restaurantId': this.organization._id, name: evt.detail.text})
-          .then((reults) => {
+    this._orderService.getStorage()
+      .getAll({ 'restaurantId': this.organization._id, name: evt.detail.text })
+      .then((reults) => {
 
-            this.$.autocomplete.suggestions(reults);
-        });
+        this.$.autocomplete.suggestions(reults);
+      });
   }
 
   _autocompleteSelect(evt) {
@@ -712,5 +733,5 @@ class DsignOrder extends OrderBehaviour(LocalizeMixin(ServiceInjectorMixin(Polym
   }
 
 }
-                        
+
 window.customElements.define('dsign-order', DsignOrder);

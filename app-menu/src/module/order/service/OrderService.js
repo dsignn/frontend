@@ -1,30 +1,37 @@
-import {EventManagerAware} from "@dsign/library/src/event/EventManagerAware";
-import {OrderEntity} from "./../../order/entity/OrderEntity";
+import { EventManagerAware } from "@dsign/library/src/event/EventManagerAware";
+import { OrderEntity } from "./../../order/entity/OrderEntity";
 /**
  * @class OrderService
  */
-export class OrderService extends EventManagerAware { 
+export class OrderService extends EventManagerAware {
 
     /**
      * Change default order
      *
      * @return {string}
      */
-     static get CHANGE_DEFAUL_ORDER()  { return 'change-default-order'; }
+    static get CHANGE_DEFAUL_ORDER() { return 'change-default-order'; }
 
     /**
      * Update default order
      *
      * @return {string}
      */
-    static get UPDATE_DEFAUL_ORDER()  { return 'update-default-order'; }
-    
+    static get UPDATE_DEFAUL_ORDER() { return 'update-default-order'; }
+
+    /**
+     * Update default order
+     *
+     * @return {string}
+     */
+     static get UPDATE_LOCAL_ORDER() { return 'update-local-order'; }
+
     /**
      * Load default order
      *
      * @return {string}
      */
-    static get LOAD_DEFAUL_ORDER()  { return 'load-default-order'; }
+    static get LOAD_DEFAUL_ORDER() { return 'load-default-order'; }
 
     /**
      * 
@@ -54,21 +61,21 @@ export class OrderService extends EventManagerAware {
      * @param {OrderEntity} currentOrder 
      * @returns OrderService
      */
-     async setCurrentOrder(order) {
+    async setCurrentOrder(order) {
 
         let allOrder = await this.getStorage().getAll(
-            {'restaurantId': order.organization.id}
-        ); 
+            { 'restaurantId': order.organization.id }
+        );
 
         for (let cont = 0; allOrder.length > cont; cont++) {
-            
+
             allOrder[cont].currenteSelected = false;
-            this.storage.adapter.updateLocal(allOrder[cont])
-                        .then((updateData) => {
-                            console.log('update  for disable');
-                        }).catch((error) => {
-                            console.error('ERROR for disable', error);
-                        });
+            this.updateLocalOrder(allOrder[cont])
+                .then((updateData) => {
+                    console.info('Update all order and disable current');
+                }).catch((error) => {
+                    console.error('Error when updare local order', error);
+                });
         }
 
         order.currenteSelected = true;
@@ -100,25 +107,43 @@ export class OrderService extends EventManagerAware {
      * @returns
      */
     pollingCurrentOrder() {
-        if (this.currentOrder) {
-      
+        if (this.currentOrder && this.currentOrder.status !== OrderEntity.STATUS_LOCAL) {
+
             this.storage.get(this.currentOrder.id)
                 .then((data) => {
-            
+
                     this.currentOrder = data;
                     this.currentOrder.currenteSelected = true;
-                    this.storage.adapter.updateLocal(data)
+                    this.updateLocalOrder(data)
                         .then((updateData) => {
-                            //console.log('update local');
+                            console.info('Update polling current order');
                         }).catch((error) => {
-                            //console.error('ERROR', error);
+                            console.error('Polling current order error', error);
                         });
                     this.getEventManager().emit(OrderService.UPDATE_DEFAUL_ORDER, this.currentOrder);
                 });
         }
     }
 
-    
+    /**
+     * @param {OrderEntity} order 
+     * @returns {Promise}
+     */
+    updateLocalOrder(order) {
+
+        return new Promise((resolve, reject) => {
+
+            this.storage.adapter.updateLocal(order)
+                .then((data) => {
+
+                    this.getEventManager().emit(OrderService.UPDATE_LOCAL_ORDER, data); 
+                    resolve(data);
+                }).catch((error) => {
+                    reject(error);
+                });
+
+        });
+    }
 
     /**
      * @param {string} restaurantId 
@@ -132,7 +157,7 @@ export class OrderService extends EventManagerAware {
         if (order) {
             this.currentOrder = this.storage.hydrator.hydrate(order);
             this.getEventManager().emit(OrderService.LOAD_DEFAUL_ORDER, this.currentOrder);
-        } 
+        }
 
         return this.currentOrder;
     }

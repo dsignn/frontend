@@ -7,6 +7,20 @@ import {OrderItemWrapper} from "./embedded/OrderItemWrapper";
 export class OrderEntity extends EntityIdentifier { 
 
     /**
+     * Status can order dishes
+     *
+     * @return {string}
+     */
+     static get STATUS_LOCAL() { return 'local'; }
+
+    /**
+     * Status can order dishes
+     *
+     * @return {string}
+     */
+    static get STATUS_VALIDATING() { return 'validating'; }
+
+    /**
      * Status to check
      *
      * @return {string}
@@ -55,9 +69,17 @@ export class OrderEntity extends EntityIdentifier {
         
         let variable = {};
 
-        variable[OrderEntity.STATUS_CAN_ORDER] = [
+        variable[OrderEntity.STATUS_LOCAL] = [
+            OrderEntity.STATUS_VALIDATING
+        ];
+
+        variable[OrderEntity.STATUS_VALIDATING] = [
             OrderEntity.STATUS_QUEUE,
             OrderEntity.STATUS_INVALID
+        ];
+
+        variable[OrderEntity.STATUS_CAN_ORDER] = [
+            OrderEntity.STATUS_QUEUE,
         ];
 
         variable[OrderEntity.STATUS_QUEUE] = [
@@ -74,7 +96,6 @@ export class OrderEntity extends EntityIdentifier {
             OrderEntity.STATUS_CLOSE
         ];
 
-        
         return variable;
     }
 
@@ -92,7 +113,7 @@ export class OrderEntity extends EntityIdentifier {
          */
         this.items = [];
 
-        this.status = OrderEntity.STATUS_CAN_ORDER;
+        this.status = OrderEntity.STATUS_LOCAL;
         
         this.createdAt = null;
 

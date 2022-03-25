@@ -48,7 +48,12 @@ export const OrderBehaviour = (superClass) => {
                     computed: '__computedItemOrderName(language)'
                 },
 
-                getTotaleItemOrder: {
+                getTotalOrder: {
+                    type: Function,
+                    computed: '__computedTotalItemOrderCount(updateView, currentOrder)'
+                },
+     
+                getTotalItemOrder: {
                     type: Function,
                     computed: '__computedItemOrderCount(updateView, currentOrder)'
                 },
@@ -79,8 +84,24 @@ export const OrderBehaviour = (superClass) => {
         }
 
         /**
-         * @param {strijng}} updateView
-         
+         * @param {string}} updateView
+         * @param {object} currentOrder 
+         * @returns 
+         */
+        __computedTotalItemOrderCount(updateView, currentOrder) {
+            return function() {   
+                if (!this.currentOrder) {
+                    return 0;
+                }
+
+                return this.currentOrder.getTotalItemOrder();       
+            }
+        }
+        
+
+        /**
+         * @param {string}} updateView
+         * @param {object} currentOrder 
          * @returns 
          */
         __computedItemOrderCount(updateView, currentOrder) {
@@ -191,8 +212,7 @@ export const OrderBehaviour = (superClass) => {
 
             this.currentOrder.addItemOrder(itemOrderTarget);
             
-            this._orderService.getStorage()
-                .update(this.currentOrder)
+            this._orderService.updateLocalOrder(this.currentOrder)
                 .then((data) => {
                     this.updateView =  (new Date).getTime();
                 }).catch((error) => {
@@ -214,8 +234,7 @@ export const OrderBehaviour = (superClass) => {
 
             this.currentOrder.removeItemOrder(itemOrderTarget);
 
-            this._orderService.getStorage()
-                .update(this.currentOrder)
+            this._orderService.updateLocalOrder(this.currentOrder)
                 .then((data) => {
                     this.updateView =  (new Date).getTime();
                 }).catch((error) => {
@@ -236,8 +255,9 @@ export const OrderBehaviour = (superClass) => {
 
             switch(this.currentOrder.status) {
                 case OrderEntity.STATUS_CAN_ORDER:
+                case OrderEntity.STATUS_LOCAL:
                     can =  true;
-                  break;
+                    break;
             }
 
             return can;
