@@ -605,7 +605,6 @@ class DsignOrder extends OrderBehaviour(LocalizeMixin(ServiceInjectorMixin(Polym
 
     this._updateStatus(evt.data);
     this._updateStatusMessage();
-    console.log('_updateViewOrder')
     this._updateBtnOrder();
 
   }
@@ -692,8 +691,11 @@ class DsignOrder extends OrderBehaviour(LocalizeMixin(ServiceInjectorMixin(Polym
     this.$.order.disabled = !enable;
   }
 
-  sendOrder() {
-    this._orderService.sendOrderInQueue();
+  /**
+   * @param {Event} evt 
+   */
+  sendOrder(evt) {
+    this._orderService.sendOrderToTheKitchen();
   }
 
   /**

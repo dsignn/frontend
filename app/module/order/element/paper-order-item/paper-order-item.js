@@ -57,7 +57,6 @@ class PaperOrderItem extends StorageEntityMixin(LocalizeMixin(ServiceInjectorMix
 
                 #left-section {
                     width: 80px;
-                    min-height: 120px;
                     background-size: cover;
                     background-position: center;
                     background-repeat: no-repeat;
@@ -111,13 +110,13 @@ class PaperOrderItem extends StorageEntityMixin(LocalizeMixin(ServiceInjectorMix
                 }
     
             </style>
-            <paper-card>
+            <paper-card id="card">
                 <div id="left-section"></div>
                
                 <div id="right-section">
                     <div id="content">                  
                         <div class="title-container" capitalize>
-                            <paper-menu-button id="p_m_b" on-iron-select="selectStatus" ignore-select horizontal-align="right">
+                            <paper-menu-button id="p_m_b" on-iron-select="selectStatus" horizontal-align="right">
                                 <paper-icon-button id="status" icon="order:status" slot="dropdown-trigger" alt="multi menu"></paper-icon-button>
                                 <paper-listbox id="listStatus" slot="dropdown-content">
                                     <paper-item value="to_do">{{localize("to_do")}}</paper-item>
@@ -136,6 +135,11 @@ class PaperOrderItem extends StorageEntityMixin(LocalizeMixin(ServiceInjectorMix
     constructor() {
         super();
         this.resources = lang;
+    }
+
+    ready() {
+        super.ready();
+        this.addEventListener('custom_update', this.customUpdateCallBack, true);
     }
 
     static get properties () {
@@ -167,6 +171,16 @@ class PaperOrderItem extends StorageEntityMixin(LocalizeMixin(ServiceInjectorMix
             _storage: {
                 type: Object,
                 readOnly: true
+            },
+
+            small: {
+                type: Boolean,
+                value: false,
+                observer: 'changeSmall'
+            },
+
+            customUpdate: {
+                value: true,
             }
         }
     } 
@@ -176,14 +190,6 @@ class PaperOrderItem extends StorageEntityMixin(LocalizeMixin(ServiceInjectorMix
           // Observer method name, followed by a list of dependencies, in parenthesis
           'changeItem(item, _localizeService)'
         ]
-      }
-
-        /**
-     * @param evt
-     * @private
-     */
-    _update(evt) {
-        this.dispatchEvent(new CustomEvent('update', {detail: this.item}));
     }
 
     /**
@@ -199,7 +205,7 @@ class PaperOrderItem extends StorageEntityMixin(LocalizeMixin(ServiceInjectorMix
         if (item.ordered && item.ordered.name && item.ordered.name[this._localizeService.getDefaultLang()]) {
             this.name = item.ordered.name[this._localizeService.getDefaultLang()];
         }
-
+        this.customUpdate = false;
         switch (item.status) {
             case 'to_do':
                 this.$.listStatus.selected = 0;
@@ -211,12 +217,33 @@ class PaperOrderItem extends StorageEntityMixin(LocalizeMixin(ServiceInjectorMix
                 this.$.listStatus.selected = 2;
                 break;    
         }
+
+        setInterval(
+            () => {
+                this.customUpdate = true;
+            },
+            500
+        );
+    }
+
+
+    /**
+     * @param {boolean} newValue 
+     */
+     changeSmall(newValue) {
+
+        if (newValue) {
+            this.$.card.style.minHeight = '60px';
+        } else {
+            this.$.card.style.height = 'auto';
+        }
     }
 
     /**
      * @param {Event} evt 
      */
     selectStatus(evt) {
+
         this.$.status.removeAttribute('ready');
         this.$.status.removeAttribute('terminate');
 
@@ -233,8 +260,17 @@ class PaperOrderItem extends StorageEntityMixin(LocalizeMixin(ServiceInjectorMix
                 this.item.status = 'to_do';
         }
 
+        if(this.customUpdate) {
+            this.dispatchEvent(new CustomEvent('custom_update', {detail: this.item}));
+        }
+    }
+
+    /**
+     * @param {CustomEvent} evt 
+     */
+    customUpdateCallBack(evt) {
+
         this.dispatchEvent(new CustomEvent('update', {detail: this.item}));
-        this.$.p_m_b.close();
     }
 }
 

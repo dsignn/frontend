@@ -68,8 +68,13 @@ class WorkingOrder extends StorageEntityMixin(LocalizeMixin(ServiceInjectorMixin
                     </div>
                 </div>
                 <div class="details">
-                    <template id="listItems" is="dom-repeat" items="[[entitySelected.items]]" as="ordered">
-                        <paper-order-item item="{{ordered}}" on-update="updateView"></paper-order-item>
+                    <template is="dom-if" if="{{hasDishis(entitySelected.items)}}">
+                        <template id="listItems" is="dom-repeat" items="[[entitySelected.items]]" as="ordered" sort="sortItems">
+                         <paper-order-item item="{{ordered}}" on-update="updateOrder" small></paper-order-item>
+                        </template>
+                    </template>
+                    <template is="dom-if" if="{{!hasDishis(entitySelected.items)}}">
+                    {{localize('no-dishes')}}
                     </template>
                 </div>
             </div>
@@ -159,6 +164,22 @@ class WorkingOrder extends StorageEntityMixin(LocalizeMixin(ServiceInjectorMixin
     }
 
     /**
+     * @param {Event} evt 
+     */
+    updateOrder(evt) {
+        
+        /**
+         * 
+         */
+        this._storage.update(this.entitySelected)
+            .then((data) => {
+                console.log('aggiornato', data);
+                this.shadowRoot.querySelector('#listItems').render();
+                this._notify.notify( this.localize('update-dish'));
+            });
+    }
+
+    /**
      * 
      */
     _resizeList() {
@@ -180,6 +201,39 @@ class WorkingOrder extends StorageEntityMixin(LocalizeMixin(ServiceInjectorMixin
     changeEntitySelected(newEntity) {
         //console.log('fffffffffffff', newEntity);
         this.$.selected.value = newEntity.name;
+    }
+
+    /**
+     * @param {any} dishes 
+     * @returns boolean
+     */
+    hasDishis(dishes) {
+        let has = false;
+        if (dishes && Array.isArray(dishes) && dishes.length > 0) {
+            has = true;
+        }
+
+        return has;
+    }
+
+    
+    /**
+     * @param {object} item 
+     */
+     sortItems(item1, item2) {
+
+        let status1 = item1.status === 'to_do' ? 0 : (item1.status === 'delivered') ? 1 : 2;
+        let status2 = item2.status === 'to_do' ? 0 : (item2.status === 'delivered') ? 1 : 2;
+
+        if (status1 < status2) {
+            return -1;
+        }
+
+        if (status1 === status2) {
+            return 0;
+        }
+
+        return 1;
     }
 }
 

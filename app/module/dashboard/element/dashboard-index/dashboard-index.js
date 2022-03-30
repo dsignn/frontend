@@ -8,14 +8,14 @@
  * subject to an additional IP rights grant found at http://polymer.github.io/PATENTS.txt
  */
 
-import {PolymerElement, html} from '@polymer/polymer/polymer-element.js';
-import {LocalizeMixin} from "@dsign/polymer-mixin/localize/localize-mixin.js";
-import {AclMixin} from "@dsign/polymer-mixin/acl/acl-mixin";
-import {ServiceInjectorMixin} from "@dsign/polymer-mixin/service/injector-mixin.js";
-import {lang} from './language.js';
+import { PolymerElement, html } from '@polymer/polymer/polymer-element.js';
+import { LocalizeMixin } from "@dsign/polymer-mixin/localize/localize-mixin.js";
+import { AclMixin } from "@dsign/polymer-mixin/acl/acl-mixin";
+import { ServiceInjectorMixin } from "@dsign/polymer-mixin/service/injector-mixin.js";
+import { lang } from './language.js';
 // TODO add to widget load
 import './../../../restaurant/element/widget/active-menu/active-menu.js';
-import {Auth} from "../../../../src/authentication/Auth";
+import { Auth } from "../../../../src/authentication/Auth";
 
 
 /**
@@ -23,8 +23,8 @@ import {Auth} from "../../../../src/authentication/Auth";
  */
 class DashboardIndex extends LocalizeMixin(AclMixin(ServiceInjectorMixin(PolymerElement))) {
 
-    static get template() {
-        return html`
+  static get template() {
+    return html`
       <style>
       
         :host {
@@ -1053,14 +1053,24 @@ class DashboardIndex extends LocalizeMixin(AclMixin(ServiceInjectorMixin(Polymer
                     <div class="step">
                       <div class="">
                         <p class="name">Paolo</p>
-                        <p class="role">Web Designer</p>
+                        <p class="role">
+                          Full Stack developer
+                          <a class="icon-work" href="https://www.linkedin.com/in/paolo-sartorio-83039b66/" target="_blank" !important;">
+                            <iron-icon icon="linkedin"></iron-icon>     
+                          </a>
+                        </p>
                         <p class="desc">Bisogna saper prendere la palla al balzo, come diceva il castratore di canguri</p>
                         </div>
                     </div>
                     <div class="step">
                       <div class="">
                         <p class="name">Martina</p>
-                        <p class="role">Creative</p>
+                        <p class="role">
+                          Creative
+                          <a class="icon-work" href="https://www.linkedin.com/in/martina-bertinazzi-224192196/" target="_blank" !important;">
+                            <iron-icon icon="linkedin"></iron-icon>     
+                          </a>  
+                        </p>
                         <p class="desc">Appassionata di comunicazione e grafica, martina una ne fa e mille ne pensa</p>
                         </div>
                     </div>
@@ -1089,272 +1099,272 @@ class DashboardIndex extends LocalizeMixin(AclMixin(ServiceInjectorMixin(Polymer
         <template is="dom-if" if="{{isAllowed('dashboard', 'index-logged')}}">
             <active-menu></active-menu>
         </template>`;
-    }
+  }
 
-    constructor() {
-        super();
-        this.resources = lang;
-    }
+  constructor() {
+    super();
+    this.resources = lang;
+  }
 
-    connectedCallback() {
-        super.connectedCallback();
-        this.initReviewDiv();
-    }
+  connectedCallback() {
+    super.connectedCallback();
+    this.initReviewDiv();
+  }
 
 
-    static get properties() {
-        return {
+  static get properties() {
+    return {
 
-            services: {
-                value: {
-                    _notify: "Notify",
-                    _localizeService: 'Localize',
-                    _aclService: "Acl",
-                    _authService: "Auth",
-                    _config: "config"
-                }
-            },
-
-            _authService: {
-                observer: 'changeAuthService'
-            },
-
-            _config: {
-              observer: 'changeConfig'
-            },
-
-            restaurants: {
-              value: [],
-            }
-        };
-    }
-
-    /**
-     * @param next
-     * @private
-     */
-    _updateDot(next) {
-        let dots = this.shadowRoot.querySelectorAll('.navigation span');
-        for (let index = 0; dots.length > index; index++) {
-            dots[index].classList.remove('active');
-            if (index === next) {
-                dots[index].classList.add('active');
-            }
+      services: {
+        value: {
+          _notify: "Notify",
+          _localizeService: 'Localize',
+          _aclService: "Acl",
+          _authService: "Auth",
+          _config: "config"
         }
-    }
+      },
 
-    prevReview() {
-        let elements = this.shadowRoot.querySelectorAll('.review');
-        let current = this._getCurrentActiveReviewIndex(elements);
-        let next = current === 0 ? elements.length - 1 : current - 1;
+      _authService: {
+        observer: 'changeAuthService'
+      },
 
-        this._updateDot(next);
+      _config: {
+        observer: 'changeConfig'
+      },
 
-        setTimeout(
-            () => {
-                elements[next].style.display = 'none';
-                elements[next].style.right = '-1500px';
-            },
-            10
-        );
-
-        setTimeout(
-            () => {
-                elements[next].style.display = 'block';
-            },
-            50
-        );
-
-        setTimeout(
-            () => {
-                elements[current].style.right = '1500px';
-                elements[current].classList.remove('active');
-                elements[next].style.right = '0';
-                elements[next].classList.add('active');
-            },
-            100
-        );
+      restaurants: {
+        value: [],
+      }
     };
+  }
 
-    /**
-     * @param authService
-     */
-    changeAuthService(authService) {
-        if(!authService) {
-            return;
-        }
-
-        authService.eventManager.on(
-            Auth.LOGIN,
-            (evt) => {
-                this.style.backgroundColor = '#eeeeee'
-            }
-        );
-
-        authService.eventManager.on(
-            Auth.LOGOUT,
-            (evt) => {
-                this.style.backgroundColor = '#ffffff'
-            }
-        );
-
-        authService.eventManager.on(
-            Auth.IDENTITY,
-            (evt) => {
-                this.style.backgroundColor = '#eeeeee'
-            }
-        );
-
-        if (authService.getIdentity()) {
-            this.style.backgroundColor = '#eeeeee'
-        }
-    }
-
-    /**
-     * @param {*} config 
-     */
-    changeConfig(config) {
-      this.getRestaurantWithMenu()
-        .then((data) => {
-          this.restaurants = data;
-        });
-    }
-
-    nextReview() {
-        let elements = this.shadowRoot.querySelectorAll('.review');
-        let current = this._getCurrentActiveReviewIndex(elements);
-        let next = current === (elements.length - 1) ? 0 : current + 1;
-
-        this._updateDot(next);
-
-        setTimeout(
-            () => {
-                elements[next].style.display = 'none';
-                elements[next].style.right = '1500px';
-            },
-            10
-        );
-
-        setTimeout(
-            () => {
-                elements[next].style.display = 'block';
-            },
-            50
-        );
-
-        setTimeout(
-            () => {
-                elements[current].style.right = '-1500px';
-                elements[current].classList.remove('active');
-                elements[next].classList.add('active');
-                elements[next].style.right = '0';
-            },
-            100
-        );
-    }
-
-    /**
-     * @param {object} restaurant 
-     */
-    getBackgroundCard(restaurant) {
-      if (restaurant && restaurant.logo && restaurant.logo.src) {
-          return  restaurant.logo.src;
+  /**
+   * @param next
+   * @private
+   */
+  _updateDot(next) {
+    let dots = this.shadowRoot.querySelectorAll('.navigation span');
+    for (let index = 0; dots.length > index; index++) {
+      dots[index].classList.remove('active');
+      if (index === next) {
+        dots[index].classList.add('active');
       }
-      return '';
+    }
+  }
+
+  prevReview() {
+    let elements = this.shadowRoot.querySelectorAll('.review');
+    let current = this._getCurrentActiveReviewIndex(elements);
+    let next = current === 0 ? elements.length - 1 : current - 1;
+
+    this._updateDot(next);
+
+    setTimeout(
+      () => {
+        elements[next].style.display = 'none';
+        elements[next].style.right = '-1500px';
+      },
+      10
+    );
+
+    setTimeout(
+      () => {
+        elements[next].style.display = 'block';
+      },
+      50
+    );
+
+    setTimeout(
+      () => {
+        elements[current].style.right = '1500px';
+        elements[current].classList.remove('active');
+        elements[next].style.right = '0';
+        elements[next].classList.add('active');
+      },
+      100
+    );
+  };
+
+  /**
+   * @param authService
+   */
+  changeAuthService(authService) {
+    if (!authService) {
+      return;
     }
 
-    /**
-     * @param {object} restaurant
-     * @param {string} type 
-     */
-    enableMenuCard(restaurant, type) {
-   
-      if (restaurant.menus.length > 1) {
-        return 'block';  
-      } 
-
-      if (restaurant.menus[0].status === type) {
-        return 'block';  
+    authService.eventManager.on(
+      Auth.LOGIN,
+      (evt) => {
+        this.style.backgroundColor = '#eeeeee'
       }
-   
-      return 'none';
+    );
+
+    authService.eventManager.on(
+      Auth.LOGOUT,
+      (evt) => {
+        this.style.backgroundColor = '#ffffff'
+      }
+    );
+
+    authService.eventManager.on(
+      Auth.IDENTITY,
+      (evt) => {
+        this.style.backgroundColor = '#eeeeee'
+      }
+    );
+
+    if (authService.getIdentity()) {
+      this.style.backgroundColor = '#eeeeee'
+    }
+  }
+
+  /**
+   * @param {*} config 
+   */
+  changeConfig(config) {
+    this.getRestaurantWithMenu()
+      .then((data) => {
+        this.restaurants = data;
+      });
+  }
+
+  nextReview() {
+    let elements = this.shadowRoot.querySelectorAll('.review');
+    let current = this._getCurrentActiveReviewIndex(elements);
+    let next = current === (elements.length - 1) ? 0 : current + 1;
+
+    this._updateDot(next);
+
+    setTimeout(
+      () => {
+        elements[next].style.display = 'none';
+        elements[next].style.right = '1500px';
+      },
+      10
+    );
+
+    setTimeout(
+      () => {
+        elements[next].style.display = 'block';
+      },
+      50
+    );
+
+    setTimeout(
+      () => {
+        elements[current].style.right = '-1500px';
+        elements[current].classList.remove('active');
+        elements[next].classList.add('active');
+        elements[next].style.right = '0';
+      },
+      100
+    );
+  }
+
+  /**
+   * @param {object} restaurant 
+   */
+  getBackgroundCard(restaurant) {
+    if (restaurant && restaurant.logo && restaurant.logo.src) {
+      return restaurant.logo.src;
+    }
+    return '';
+  }
+
+  /**
+   * @param {object} restaurant
+   * @param {string} type 
+   */
+  enableMenuCard(restaurant, type) {
+
+    if (restaurant.menus.length > 1) {
+      return 'block';
     }
 
-    /**
-     * Load restaurant
-     */
-    getRestaurantWithMenu() {
-      return new Promise( (resolve, reject) => {
-        let request = new XMLHttpRequest();
+    if (restaurant.menus[0].status === type) {
+      return 'block';
+    }
 
-        request.addEventListener("load", (data) => {
+    return 'none';
+  }
 
-            if (request.status >= 300) {
-                let response = {
-                    status: request.status,
-                    message: request.responseText
-                };
+  /**
+   * Load restaurant
+   */
+  getRestaurantWithMenu() {
+    return new Promise((resolve, reject) => {
+      let request = new XMLHttpRequest();
 
-                return reject(response)
-            }
-            resolve(JSON.parse(request.response));
-        });
-        request.open("GET", `${this._config.rest.path}/organization/enable-menu`);
-        request.setRequestHeader('Accept','application/json');
-        request.send();
+      request.addEventListener("load", (data) => {
+
+        if (request.status >= 300) {
+          let response = {
+            status: request.status,
+            message: request.responseText
+          };
+
+          return reject(response)
+        }
+        resolve(JSON.parse(request.response));
+      });
+      request.open("GET", `${this._config.rest.path}/organization/enable-menu`);
+      request.setRequestHeader('Accept', 'application/json');
+      request.send();
     });
-    }
+  }
 
-    /**
-     * @returns {number}
-     * @private
-     */
-    _getCurrentActiveReviewIndex(elements) {
-        let index;
-        for (index = 0; index < elements.length; index++) {
-            if (elements[index].classList.contains('active')) {
-                break;
-            }
-        }
-        return index;
+  /**
+   * @returns {number}
+   * @private
+   */
+  _getCurrentActiveReviewIndex(elements) {
+    let index;
+    for (index = 0; index < elements.length; index++) {
+      if (elements[index].classList.contains('active')) {
+        break;
+      }
     }
+    return index;
+  }
 
-    /**
-     *
-     */
-    initReviewDiv() {
-        let elements = this.shadowRoot.querySelectorAll('.review');
-        for (let index = 0; index < elements.length; index++) {
-            if (!elements[index].classList.contains('active')) {
-                elements[index].style.right = '1200px';
-            } else {
-                elements[index].style.right = '0';
-            }
-        }
+  /**
+   *
+   */
+  initReviewDiv() {
+    let elements = this.shadowRoot.querySelectorAll('.review');
+    for (let index = 0; index < elements.length; index++) {
+      if (!elements[index].classList.contains('active')) {
+        elements[index].style.right = '1200px';
+      } else {
+        elements[index].style.right = '0';
+      }
     }
+  }
 
-    /**
-     * @param evt
-     */
-    openLogin(evt) {
-        let drawer = document.querySelector('dsign-app').shadowRoot.querySelector('#authDrawer');
-        drawer.querySelector('paper-tabs').selected = 1;
-        drawer.open();
-    }
+  /**
+   * @param evt
+   */
+  openLogin(evt) {
+    let drawer = document.querySelector('dsign-app').shadowRoot.querySelector('#authDrawer');
+    drawer.querySelector('paper-tabs').selected = 1;
+    drawer.open();
+  }
 
-    /**
-     * @param {CustomEvent} evt 
-     */
-    openIndoor(evt) {
-      window.open(`${this._config.app.menuPath}/${evt.target.parentElement.restaurant.normalize_name}`,"_blank")
-    }
+  /**
+   * @param {CustomEvent} evt 
+   */
+  openIndoor(evt) {
+    window.open(`${this._config.app.menuPath}/${evt.target.parentElement.restaurant.normalize_name}`, "_blank")
+  }
 
-    /**
-     * @param {CustomEvent} evt 
-     */
-    openDelivery(evt) {
-      window.open(`${this._config.app.menuPath}/${evt.target.parentElement.restaurant.normalize_name}?delivery`,"_blank")
-    }
+  /**
+   * @param {CustomEvent} evt 
+   */
+  openDelivery(evt) {
+    window.open(`${this._config.app.menuPath}/${evt.target.parentElement.restaurant.normalize_name}?delivery`, "_blank")
+  }
 
 }
 

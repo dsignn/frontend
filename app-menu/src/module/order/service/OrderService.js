@@ -90,15 +90,37 @@ export class OrderService extends EventManagerAware {
     /**
      * 
      */
-    sendOrderInQueue() {
-        this.currentOrder.status = OrderEntity.STATUS_QUEUE;
-        this.storage.update(this.currentOrder)
-            .then((updateData) => {
-                console.log('Update after send order', updateData);
+    sendOrderToTheKitchen() { 
+
+        if(!this.currentOrder) {
+            throw 'No order selected';
+        }
+
+        let copy = this.storage.hydrator.hydrate(this.currentOrder);
+        let method = 'update';
+        switch(this.currentOrder.status) {
+            case  OrderEntity.STATUS_LOCAL:
+                copy.status = OrderEntity.STATUS_VALIDATING;
+                method = 'save';
+                break;
+            case  OrderEntity.STATUS_CAN_ORDER:
+                copy.status = OrderEntity.STATUS_QUEUE;
+                break;
+            default:
+                throw 'Invalid status to send order';
+        }
+
+        console.log('check', this.currentOrder.status, copy.status);
+          
+
+        this.storage[method](copy)
+            .then((order) => {
+
+                this.currentOrder = order;
                 this.getEventManager().emit(OrderService.UPDATE_DEFAUL_ORDER, this.currentOrder);
             }).catch((error) => {
                 this.currentOrder.status = OrderEntity.STATUS_QUEUE;
-                console.error('Error after send order', error);
+                console.error('Error after send order to the kitchen', error);
             });
     }
 

@@ -2,6 +2,9 @@
 /**
  * @class XmlhLocalStorageAdapter
  */
+
+ import { OrderEntity } from '../../../src/module/order/entity/OrderEntity';
+
 export class XmlhLocalStorageAdapter { 
  
     constructor(xmlhAdapter, localStorageAdapter) {
@@ -35,7 +38,35 @@ export class XmlhLocalStorageAdapter {
      * @return {Promise<any>}
      */
     save(data) {
-        return this.localStorageAdapter.save(data);
+        if (OrderEntity.STATUS_LOCAL === data.status) {
+            return this.localStorageAdapter.save(data);
+        } else {
+            return new Promise((resolve, reject) => {
+                this.xmlhAdapter.save(data).then((respXmlh) => {
+                    console.log('salvato remote', respXmlh);
+                    this.localStorageAdapter.remove(data).then((respLocalStorageDelete) => {
+                        console.log('eliminato local', respLocalStorageDelete);
+
+                        this.localStorageAdapter.save(respXmlh).then((respLocalStoragePost) => {
+
+                            console.log('save local', respLocalStoragePost);
+                            resolve(respLocalStoragePost);
+                        }).catch((error) => {
+                            console.error('Error post local', error);
+                            reject(error);
+                        });;
+                       
+                    }).catch((error) => {
+                        console.error('Error delete local', error);
+                        reject(error);
+                    });
+    
+                }).catch((error) => {
+                    console.error('errore respXml', error);
+                    reject(error);
+                });
+            });
+        }
     }
 
     /**

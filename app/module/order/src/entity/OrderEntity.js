@@ -10,6 +10,13 @@ export class OrderEntity extends EntityIdentifier {
      *
      * @return {string}
      */
+     static get STATUS_VALIDATING() { return 'validating'; }
+
+    /**
+     * Status can order dishes
+     *
+     * @return {string}
+     */
     static get STATUS_CAN_ORDER() { return 'can-order'; }
 
     /**
@@ -47,6 +54,7 @@ export class OrderEntity extends EntityIdentifier {
      */
     static get STATUS_INVALID() { return 'invalid'; }
 
+  
     constructor() {
         super();
         /**
