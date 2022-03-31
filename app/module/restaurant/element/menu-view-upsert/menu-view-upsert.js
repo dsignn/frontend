@@ -352,16 +352,23 @@ class MenuViewUpsert extends StorageEntityMixin(NotifyMixin(LocalizeMixin(Servic
                             <paper-tooltip for="enableOrder" position="left">{{localize('enable-order')}}</paper-tooltip>
                         </div>
                         <div class="row space-b">
-                            <dsign-paper-dropdown-menu label="{{localize('restaurant')}}" value="{{entity.organization.id}}" required w50>
+                            <dsign-paper-dropdown-menu label="{{localize('restaurant')}}" value="{{entity.organization.id}}" required w33>
                                 <paper-listbox id="listboxRestaurant" slot="dropdown-content"></paper-listbox>
                             </dsign-paper-dropdown-menu>
-                            <dsign-paper-dropdown-menu label="{{localize('status')}}" value="{{entity.status}}" on-iron-select="changeStatus" required w50>
+                            <dsign-paper-dropdown-menu label="{{localize('status')}}" value="{{entity.status}}" on-iron-select="changeStatus" required w33>
                                 <paper-listbox id="listboxStatus" slot="dropdown-content">
                                      <template is="dom-repeat" items="[[status]]" as="value">
                                        <paper-item value="{{value}}">{{localize(value)}}</paper-item>
                                     </template>
                                 </paper-listbox>
                             </dsign-paper-dropdown-menu>
+                            <dsign-paper-dropdown-menu label="{{localize('type')}}" value="{{entity.type}}" required w33>
+                            <paper-listbox id="listboxStatus" slot="dropdown-content">
+                                 <template is="dom-repeat" items="[[types]]" as="value">
+                                   <paper-item value="{{value}}">{{localize(value)}}</paper-item>
+                                </template>
+                            </paper-listbox>
+                        </dsign-paper-dropdown-menu>
                         </div>
                         <div class="row space-b">
                             <paper-datepicker name="statusDate" id="statusDate" label="{{localize('date-activation')}}" value="{{entity.statusDate}}" w33></paper-datepicker>
@@ -434,10 +441,16 @@ class MenuViewUpsert extends StorageEntityMixin(NotifyMixin(LocalizeMixin(Servic
             status: {
                 notify: true,
                 value: [
-                    'indoor',
-                    'delivery',
-               //     'date',
-                    'disable'
+                    MenuEntity.STATUS_DISABLE,
+                    MenuEntity.STATUS_ENABLE,
+                ]
+            },
+
+            types: {
+                notify: true,
+                value: [
+                    MenuEntity.TYPE_INDOOR,
+                    MenuEntity.TYPE_DELIVERY
                 ]
             },
 

@@ -5,20 +5,24 @@ import {EntityIdentifier} from "@dsign/library/src/storage/entity/EntityIdentifi
  */
 export class MenuEntity extends EntityIdentifier {
 
-    static get STATUS_DEFAULT() {
+    static get TYPE_INDOOR() {
         return 'indoor';
     }
 
-    static get STATUS_DELIVERY() {
+    static get TYPE_DELIVERY() {
         return 'delivery';
     }
 
-    static get STATUS_DATE() {
+    static get TYPE_DAILY() {
         return 'date';
     }
 
     static get STATUS_DISABLE() {
         return 'disable';
+    }
+
+    static get STATUS_ENABLE() {
+        return 'enable';
     }
 
 
@@ -44,6 +48,12 @@ export class MenuEntity extends EntityIdentifier {
          * @type {string}
          */
         this.status = MenuEntity.STATUS_DISABLE;
+
+        /**
+         * @type {string}
+         */
+        this.type = MenuEntity.TYPE_INDOOR;
+
 
         /**
          * @type {Array}

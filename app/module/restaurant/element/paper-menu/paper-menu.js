@@ -80,7 +80,7 @@ class PaperMenu extends StorageEntityMixin(LocalizeMixin(ServiceInjectorMixin(Po
                 <div id="left-section"></div>
                 <div id="fastAction">
                     <div class="action">
-                        <paper-toggle-button id="paperToggleDefault" on-change="_publicMenu" checked="{{enableDefault}}"></paper-toggle-button>
+                        <paper-toggle-button id="paperToggleDefault" on-change="_enbleIndoor" checked="{{enableDefault}}"></paper-toggle-button>
                         <paper-tooltip for="paperToggleDefault" position="bottom">{{localize('public-menu')}}</paper-tooltip>
                     </div>
                           <div class="action">
@@ -170,22 +170,17 @@ class PaperMenu extends StorageEntityMixin(LocalizeMixin(ServiceInjectorMixin(Po
             return;
         }
 
-        if (entity.status === MenuEntity.STATUS_DEFAULT  && this.enableDefault === false) {
+        if (entity.status === MenuEntity.STATUS_ENABLE  && entity.type ===  MenuEntity.TYPE_INDOOR ) {
             this._setEnableDefault(true);
-        }
-
-        if (entity.status !== MenuEntity.STATUS_DEFAULT  && this.enableDefault !== false) {
+        } else {
             this._setEnableDefault(false);
         }
 
-        if (entity.status === MenuEntity.STATUS_DELIVERY  && this.enableDelivery === false) {
+        if (entity.status === MenuEntity.STATUS_ENABLE  && entity.type ===  MenuEntity.TYPE_DELIVERY ) {
             this._setEnableDelivery(true);
-        }
-
-        if (entity.status !== MenuEntity.STATUS_DELIVERY  && this.enableDelivery !== false) {
+        } else {
             this._setEnableDelivery(false);
         }
-
     }
 
 
@@ -193,11 +188,11 @@ class PaperMenu extends StorageEntityMixin(LocalizeMixin(ServiceInjectorMixin(Po
      * @param evt
      * @private
      */
-    _publicMenu(evt) {
+     _enbleIndoor(evt) {
 
         this.disableToggle();
         if (evt.target.checked) {
-            this.entity.status = MenuEntity.STATUS_DEFAULT
+            this.entity.status = MenuEntity.STATUS_ENABLE
         } else {
             this.entity.status = MenuEntity.STATUS_DISABLE
         }
@@ -217,7 +212,7 @@ class PaperMenu extends StorageEntityMixin(LocalizeMixin(ServiceInjectorMixin(Po
 
         this.disableToggle();
         if (evt.target.checked) {
-            this.entity.status = MenuEntity.STATUS_DELIVERY
+            this.entity.status = MenuEntity.STATUS_ENABLE
         } else {
             this.entity.status = MenuEntity.STATUS_DISABLE
         }

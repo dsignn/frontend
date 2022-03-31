@@ -179,6 +179,7 @@ class OrderViewUpsert extends FormErrorMessage(StorageEntityMixin(NotifyMixin(Se
             states: {
 
                 value: [
+                    OrderEntity.STATUS_VALIDATING,
                     OrderEntity.STATUS_CAN_ORDER,
                     OrderEntity.STATUS_QUEUE,
                     OrderEntity.STATUS_PREPARATION,
