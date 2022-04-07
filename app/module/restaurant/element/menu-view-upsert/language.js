@@ -13,7 +13,7 @@ export const lang = {
     'available': 'Disponibile',
     'over': 'Finito',
     'not-available': 'Fuori menù',
-    "price": "Prezzo",
+    "price": "Prezzo menu fisso",
     "add" : "Aggiugi",
     "save" : "Salva",
     "append": "Aggiungi",
@@ -40,6 +40,7 @@ export const lang = {
     "enable": "Status attivo",
     "disable": "Status disattivo",
     "enable-order": "Abilita gli ordini",
+    "enable-fixedMenu": "Abilita il menù a prezzo fisso",
     "date-activation": "Data di abilitazione del menù",
     "print-menu": "Stampa menu"
   },
@@ -56,7 +57,7 @@ export const lang = {
     'available': 'Available',
     'over': 'Over',
     'not-available': 'Out of menu',
-    "price": "Prezzo",
+    "price": "Fixed menu price",
     "add" : "Add",
     "save" : "Save",
     "append": "Append",
@@ -83,6 +84,7 @@ export const lang = {
     "enable": "Status active",
     "disable": "Status disable",
     "enable-order": "Enable order",
+    "enable-fixedMenu": "Enable fixed menu",
     "date-activation": "Menu date enable",
     "print-menu": "Print menu"
   }

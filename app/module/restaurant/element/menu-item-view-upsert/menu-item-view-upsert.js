@@ -185,7 +185,7 @@ class MenuItemViewUpsert extends LocalizeMixin(ServiceInjectorMixin(PolymerEleme
                         </paper-listbox>
                     </dsign-paper-dropdown-menu>
                     <div class="price" w33>
-                        <paper-input value="{{menuItem.price.value}}" name="price[value]" label="{{localize('price')}}">
+                        <paper-input id="inputPrice" value="{{menuItem.price.value}}" name="price[value]" label="{{localize('price')}}">
                             <iron-icon icon="restaurant:eur" slot="suffix"></iron-icon>
                         </paper-input>
                     </div>
@@ -245,9 +245,13 @@ class MenuItemViewUpsert extends LocalizeMixin(ServiceInjectorMixin(PolymerEleme
                 value: [
                     'generic',
                     'vegetarian',
-               //     'date',
                     'vegan'
                 ]
+            },
+
+            enablePrice: {
+                value: true,
+                observer: '_changeEnablePrice',
             },
 
             services: {
@@ -421,6 +425,10 @@ class MenuItemViewUpsert extends LocalizeMixin(ServiceInjectorMixin(PolymerEleme
         }
     }
 
+    _changeEnablePrice(enablePrice) {
+       this.$.inputPrice.disabled = !enablePrice;
+    }
+ 
     /**
      *
      */

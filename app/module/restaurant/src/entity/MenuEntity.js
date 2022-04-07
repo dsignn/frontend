@@ -1,4 +1,5 @@
 import {EntityIdentifier} from "@dsign/library/src/storage/entity/EntityIdentifier";
+import {FixedMenu} from "./embedded/FixedMenu";
 
 /**
  * @class MenuEntity
@@ -70,6 +71,12 @@ export class MenuEntity extends EntityIdentifier {
          * @type {{}}
          */
         this.organization = {};
+
+
+        /**
+         * FixedMenu
+         */
+         this.fixedMenu = new FixedMenu();
     }
 
     /**

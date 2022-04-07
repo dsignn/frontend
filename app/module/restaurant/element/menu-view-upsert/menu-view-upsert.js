@@ -90,7 +90,13 @@ class MenuViewUpsert extends StorageEntityMixin(NotifyMixin(LocalizeMixin(Servic
                 @apply  --layout-horizontal;
                 @apply  --layout-center-center;
             }
-            
+
+            paper-textarea {
+                width: 100%;
+                padding-top: 1px;
+                padding-right: 4px;
+            }
+        
             #content-right {
                  @apply --layout-vertical;
                 justify-content: space-between;
@@ -124,6 +130,10 @@ class MenuViewUpsert extends StorageEntityMixin(NotifyMixin(LocalizeMixin(Servic
                 padding: 16px 0;
                 @apply --layout-horizontal;
                 @apply --layout-wrap;
+            }
+
+            #fixedMenuBox {
+                display:none;
             }
             
             #content-left {
@@ -348,8 +358,16 @@ class MenuViewUpsert extends StorageEntityMixin(NotifyMixin(LocalizeMixin(Servic
                     <form method="post">
                         <div class="row">
                             <paper-input name="name" label="{{localize('name-menu')}}" value="{{entity.name}}" required></paper-input>
+                            <paper-toggle-button id="enableFixedMenu" checked="{{entity.fixedMenu.enable}}" on-iron-change="changeFixedMenu"></paper-toggle-button>
+                            <paper-tooltip for="enableFixedMenu" position="left">{{localize('enable-fixedMenu')}}</paper-tooltip>
                             <paper-toggle-button id="enableOrder" checked="{{entity.enableOrder}}"></paper-toggle-button>
                             <paper-tooltip for="enableOrder" position="left">{{localize('enable-order')}}</paper-tooltip>
+                        </div>
+                        <div id="fixedMenuBox" class="row">
+                            <paper-textarea name="note" label="{{localize('note')}}" value="{{entity.fixedMenu.note}}"></paper-textarea>
+                            <paper-input value="{{entity.fixedMenu.price.value}}" name="price[value]" label="{{localize('price')}}">
+                            <iron-icon icon="restaurant:eur" slot="suffix"></iron-icon>
+                        </paper-input>
                         </div>
                         <div class="row space-b">
                             <dsign-paper-dropdown-menu label="{{localize('restaurant')}}" value="{{entity.organization.id}}" required w33>
@@ -378,7 +396,7 @@ class MenuViewUpsert extends StorageEntityMixin(NotifyMixin(LocalizeMixin(Servic
                             <paper-input-color name="backgroundHeader" label="{{localize('background-header')}}" value="{{entity.backgroundHeader}}" required w33></paper-input-color>
                             <paper-input-color name="colorHeader" label="{{localize('color-header')}}" value="{{entity.colorHeader}}" required w33></paper-input-color>
                         </div>    
-                        <paper-textarea name="note" label="{{localize('note')}}" value="{{entity.note}}"></paper-textarea>
+                     
                         <div class="row main padding-top-52">
                             <paper-button on-tap="submitMenuButton">{{localize(labelAction)}}</paper-button>
                             <paper-button id="preview" on-tap="openPreview">{{localize('preview')}}</paper-button>
@@ -400,7 +418,7 @@ class MenuViewUpsert extends StorageEntityMixin(NotifyMixin(LocalizeMixin(Servic
         <h2>{{localize('menu-title')}}</h2>
         <div id="menuItemContainer">
              <template id="items" is="dom-repeat" items="[[entity.items]]" as="menuItem">
-                 <menu-item menu-item="{{menuItem}}" index$="{{index}}" on-delete="_deleteMenuItem" on-update="_updateMenuItem" on-upload-file="uploadFile" show="{{showUpdateMenuItem}}" api-category="{{apiCategory}}" api-allergen="{{apiAllergen}}" show-crud></menu-item>
+                 <menu-item menu-item="{{menuItem}}" index$="{{index}}" on-delete="_deleteMenuItem" on-update="_updateMenuItem" on-upload-file="uploadFile" show="{{showUpdateMenuItem}}" api-category="{{apiCategory}}" api-allergen="{{apiAllergen}}" show-crud show-price="{{!entity.fixedMenu.enable}}"></menu-item>
              </template>
         </div>`;
     }
@@ -573,6 +591,30 @@ class MenuViewUpsert extends StorageEntityMixin(NotifyMixin(LocalizeMixin(Servic
     }
 
     /**
+     * @param {Event} evt 
+     */
+    changeFixedMenu(evt) {
+     
+        if (evt.target.checked) {
+            this.$.fixedMenuBox.style.display = 'flex';
+        } else {
+            this.$.fixedMenuBox.style.display = 'none';
+        }
+       
+        let nodes = this.shadowRoot.querySelectorAll('menu-item-view-upsert');
+        nodes.forEach((element) => {
+            element.enablePrice = !evt.target.checked;
+        });
+/*
+        let dishes = this.shadowRoot.querySelectorAll('menu-item');
+        dishes.forEach((element) => {
+            element.showPrice = !evt.target.checked;
+        });
+
+        */
+    }
+
+    /**
      * @param loadMenuaAllergen 
      * @param merge 
      */
@@ -621,6 +663,7 @@ class MenuViewUpsert extends StorageEntityMixin(NotifyMixin(LocalizeMixin(Servic
     _changeEntity(newValue, oldValue) {
 
         this.labelAction = 'save';
+      
         if (!newValue) {
             this.$.preview.style.display = 'none';
             this.$.printMenu.style.display = 'none';

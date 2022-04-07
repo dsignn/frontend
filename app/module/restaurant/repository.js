@@ -18,6 +18,7 @@ import {RestaurantEntity} from "./src/entity/RestaurantEntity";
 import {MenuEntity} from "./src/entity/MenuEntity";
 import {ListBuilder} from "./src/storage/adapter/xmlh/url/ListBuilder"
 import {MenuItem} from "./src/entity/embedded/MenuItem";
+import {FixedMenu} from "./src/entity/embedded/FixedMenu";
 import {Auth} from "./../../src/authentication/Auth";
 import {FormDataEncode} from "@dsign/library/src/data-transform/FormDataEncode";
 import {AbstractRepository} from "../../src/AbstractRepository";
@@ -363,13 +364,18 @@ export class Repository extends AbstractRepository {
      */
     static getMenuHydrator(container) {
 
-        let strategy = new HydratorStrategy();
-        strategy.setHydrator(Repository.getMenuItemHydrator(container));
+        let menuItemstrategy = new HydratorStrategy();
+        menuItemstrategy.setHydrator(Repository.getMenuItemHydrator(container));
+
+
+        let fixedMenustrategy = new HydratorStrategy();
+        fixedMenustrategy.setHydrator(Repository.getFixedMenuHydrator(container));
 
         let hydrator = new PropertyHydrator();
         hydrator.setTemplateObjectHydration(container.get(Repository.MENU_ENTITY_SERVICE));
 
-        hydrator.addValueStrategy('items', strategy);
+        hydrator.addValueStrategy('items', menuItemstrategy);
+        hydrator.addValueStrategy('fixedMenu', fixedMenustrategy);
 
         return hydrator;
     }
@@ -382,5 +388,16 @@ export class Repository extends AbstractRepository {
         hydrator.setTemplateObjectHydration(new MenuItem());
 
         return hydrator;
+    }
+
+
+    /**
+     * @returns {PropertyHydrator}
+     */
+         static getFixedMenuHydrator(container) {
+            let hydrator = new PropertyHydrator();
+            hydrator.setTemplateObjectHydration(new FixedMenu());
+    
+            return hydrator;
     }
 }

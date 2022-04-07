@@ -164,19 +164,31 @@ class PaperMenu extends StorageEntityMixin(LocalizeMixin(ServiceInjectorMixin(Po
         }
     }
 
+    /**
+     * 
+     * @param {object} entity 
+     * @returns 
+     */
     _changeEntity(entity) {
 
-        if (!entity) {
+        if (!this.entity) {
             return;
         }
+        this._updateStatus();
+    }
 
-        if (entity.status === MenuEntity.STATUS_ENABLE  && entity.type ===  MenuEntity.TYPE_INDOOR ) {
+    /**
+     * Update status  
+     */
+    _updateStatus() {
+
+        if (this.entity.status === MenuEntity.STATUS_ENABLE  && this.entity.type ===  MenuEntity.TYPE_INDOOR ) {
             this._setEnableDefault(true);
         } else {
             this._setEnableDefault(false);
         }
 
-        if (entity.status === MenuEntity.STATUS_ENABLE  && entity.type ===  MenuEntity.TYPE_DELIVERY ) {
+        if (this.entity.status === MenuEntity.STATUS_ENABLE  && this.entity.type ===  MenuEntity.TYPE_DELIVERY ) {
             this._setEnableDelivery(true);
         } else {
             this._setEnableDelivery(false);
@@ -192,16 +204,21 @@ class PaperMenu extends StorageEntityMixin(LocalizeMixin(ServiceInjectorMixin(Po
 
         this.disableToggle();
         if (evt.target.checked) {
-            this.entity.status = MenuEntity.STATUS_ENABLE
+            this.entity.type = MenuEntity.TYPE_INDOOR;
+            this.entity.status = MenuEntity.STATUS_ENABLE;
         } else {
-            this.entity.status = MenuEntity.STATUS_DISABLE
+            this.entity.status = MenuEntity.STATUS_DISABLE;
         }
 
         this._storage.update(this.entity)
             .then((data) => {
                 this.enableToggle();
+                this._updateStatus();
                 this._notify.notify(this.localize('public-menu-ok'));
-        })
+        }).catch((error) => {
+            console.error('Update status paper menu', error);
+            this.enableToggle();
+        });
 
     }
 
@@ -212,16 +229,21 @@ class PaperMenu extends StorageEntityMixin(LocalizeMixin(ServiceInjectorMixin(Po
 
         this.disableToggle();
         if (evt.target.checked) {
-            this.entity.status = MenuEntity.STATUS_ENABLE
+            this.entity.type =  MenuEntity.TYPE_DELIVERY;
+            this.entity.status = MenuEntity.STATUS_ENABLE;
         } else {
-            this.entity.status = MenuEntity.STATUS_DISABLE
+            this.entity.status = MenuEntity.STATUS_DISABLE;
         }
 
         this._storage.update(this.entity)
             .then((data) => {
                 this.enableToggle();
+                this._updateStatus();
                 this._notify.notify(this.localize('public-menu-ok'));
-            })
+            }).catch((error) => {
+                console.error('Update status paper menu', error);
+                this.enableToggle();
+            });
     }
 
     /**

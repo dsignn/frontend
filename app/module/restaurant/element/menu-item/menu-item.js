@@ -170,9 +170,7 @@ class MenuItem extends LocalizeMixin(ServiceInjectorMixin(PolymerElement)) {
                         </div>
                         <div class="middle-info">
                           <div class="category" capitalize>{{localize(menuItem.category)}}</div>
-                          <template is="dom-if" if="{{showPrice}}">
-                                <div class="price">{{menuItem.price.value}} €</div>
-                          </template>
+                          <div id="price" class="price">{{_computePrice(menuItem.price.value)}}</div>
                         </div>
                         <div class="description">{{description}}</div>
                     </div>
@@ -226,8 +224,9 @@ class MenuItem extends LocalizeMixin(ServiceInjectorMixin(PolymerElement)) {
 
             showPrice: {
                 type: Boolean,
-                readOnly: true,
-                value: false
+                value: false,
+                notify: true,
+                observer: 'changedShowPrice',
             },
 
             /**
@@ -281,6 +280,18 @@ class MenuItem extends LocalizeMixin(ServiceInjectorMixin(PolymerElement)) {
         this.$.formResource.addEventListener('iron-form-presubmit', this.submitResource.bind(this));
     }
 
+    _computePrice(price) {
+        if (!price) {
+            return 0;
+        } else {
+            if (Intl) {
+                let formatter = Intl.NumberFormat('it-IT', {style: 'currency', currency: 'EUR'});
+                return formatter.format(price);
+            } else {
+                return value;
+            }           
+        }
+    }
 
     /**
      * @param value
@@ -330,12 +341,6 @@ class MenuItem extends LocalizeMixin(ServiceInjectorMixin(PolymerElement)) {
         }
 
         this._checkStatus();
-
-        if(menuItem.price && menuItem.price.value) {
-            this._setShowPrice(true);
-        } else {
-            this._setShowPrice(false);
-        }
     }
 
     changedShow(value) {
@@ -450,6 +455,15 @@ class MenuItem extends LocalizeMixin(ServiceInjectorMixin(PolymerElement)) {
             },
             300
         );
+    }
+
+    changedShowPrice(value) {
+        console.log('change VIsibilit', value);
+        if (value) {
+            this.$.price.style.display = 'flex';
+        } else {
+            this.$.price.style.display = 'none';
+        }
     }
 }
 
