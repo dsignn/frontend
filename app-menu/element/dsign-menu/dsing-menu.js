@@ -8,14 +8,15 @@
  * subject to an additional IP rights grant found at http://polymer.github.io/PATENTS.txt
  */
 
-import {PolymerElement, html} from '@polymer/polymer/polymer-element.js';
-import {setPassiveTouchGestures, setRootPath} from '@polymer/polymer/lib/utils/settings.js';
-import {LocalizeMixin} from "@dsign/polymer-mixin/localize/localize-mixin";
-import {ServiceInjectorMixin} from "@dsign/polymer-mixin/service/injector-mixin";
-import {Storage} from "@dsign/library/src/storage/Storage";
+import { PolymerElement, html } from '@polymer/polymer/polymer-element.js';
+import { setPassiveTouchGestures, setRootPath } from '@polymer/polymer/lib/utils/settings.js';
+import { LocalizeMixin } from "@dsign/polymer-mixin/localize/localize-mixin";
+import { ServiceInjectorMixin } from "@dsign/polymer-mixin/service/injector-mixin";
+import { Storage } from "@dsign/library/src/storage/Storage";
 import { OrderService } from '../../src/module/order/service/OrderService';
-import {Listener} from "@dsign/library/src/event/Listener";
-import {MergeTraslation} from "../mixin/merge-traslation/merge-traslation";
+import { MenuService } from '../../src/module/order/service/MenuService';
+import { Listener } from "@dsign/library/src/event/Listener";
+import { MergeTraslation } from "../mixin/merge-traslation/merge-traslation";
 import '@polymer/app-layout/app-toolbar/app-toolbar';
 import '@polymer/app-layout/app-drawer/app-drawer';
 import '@polymer/app-layout/app-header/app-header';
@@ -29,18 +30,18 @@ import '@polymer/paper-icon-button/paper-icon-button';
 import '@polymer/paper-listbox/paper-listbox';
 import '@polymer/paper-input/paper-input';
 import '@polymer/paper-button/paper-button';
-import '@polymer/paper-tabs/paper-tabs'; 
-import '@polymer/paper-tabs/paper-tab'; 
-import '@polymer/paper-tooltip/paper-tooltip'; 
+import '@polymer/paper-tabs/paper-tabs';
+import '@polymer/paper-tabs/paper-tab';
+import '@polymer/paper-tooltip/paper-tooltip';
 import '@dsign/polymer-mixin/localize/localize-mixin';
 import '../paper-select-language/paper-select-language';
 import '../dsign-menu-wrap-item/dsing-menu-wrap-item';
 import '../dsign-badge/dsing-badge';
 import '../dsign-logo/dsing-logo';
-import '../dsign-info/dsing-info';
+import '../dsign-fixed-menu/dsign-fixed-menu';
 import '../dsign-order/dsign-order';
 import '../dsign-order/dsign-order-detail';
-import {lang} from './language';
+import { lang } from './language';
 import { OrderBehaviour } from '../mixin/order-behaviour/order-behaviour';
 
 // Gesture events like tap and track generated from touch will not be
@@ -67,6 +68,7 @@ class DsignMenu extends OrderBehaviour(MergeTraslation(LocalizeMixin(ServiceInje
        app-toolbar paper-input,
        app-toolbar paper-dropdown-menu {
            --primary-text-color: white; 
+
            --paper-input-container-color: white;
            --paper-input-container-focus-color: #BFBFBF;
            --paper-input-container-invalid-color: white;
@@ -609,6 +611,7 @@ class DsignMenu extends OrderBehaviour(MergeTraslation(LocalizeMixin(ServiceInje
                     _localizeService: 'Localize',
                     _config: 'config',
                     _orderService: 'OrderService',
+                    _menuService: 'MenuService',
                     _notifyService: 'Notify',
                 }
             },
@@ -626,7 +629,7 @@ class DsignMenu extends OrderBehaviour(MergeTraslation(LocalizeMixin(ServiceInje
                 readOnly: true
             },
 
-            apiUrl: { },
+            apiUrl: {},
 
             menuUrl: {
                 observer: 'changeMenuUrl'
@@ -640,7 +643,13 @@ class DsignMenu extends OrderBehaviour(MergeTraslation(LocalizeMixin(ServiceInje
             _orderService: {
                 readOnly: true,
                 observer: 'changeOrderService'
-              },
+            },
+
+            _menuService: {
+                readOnly: true,
+                observer: 'changeMenuService'
+            },
+
 
             _config: {
                 readOnly: true,
@@ -651,7 +660,7 @@ class DsignMenu extends OrderBehaviour(MergeTraslation(LocalizeMixin(ServiceInje
                 notify: true
             },
 
-            allCategory: { },
+            allCategory: {},
 
             hasLogo: {
                 value: false
@@ -671,7 +680,11 @@ class DsignMenu extends OrderBehaviour(MergeTraslation(LocalizeMixin(ServiceInje
             interval: {
                 type: Number,
                 readOnly: true,
-                value: 60000
+                value: 600000
+            },
+
+            debugUrl: {
+                value: 'http://menu.dsign.local/toni1'
             }
         };
     }
@@ -691,20 +704,20 @@ class DsignMenu extends OrderBehaviour(MergeTraslation(LocalizeMixin(ServiceInje
         super();
         this.resources = lang;
         let param = this.parseUrlParam();
-        if (param && param['menu'] &&  param['menu'] === 'compress') {
+        if (param && param['menu'] && param['menu'] === 'compress') {
             this._setLayoutType('dsign-menu-i2tem-compress');
         }
     }
 
 
-  /**
-   * 
-   * @param {OrderService} service 
-   * @returns 
-   */
-   changeOrderService(service) {
+    /**
+     * 
+     * @param {OrderService} service 
+     * @returns 
+     */
+    changeOrderService(service) {
         if (!service) {
-        return;
+            return;
         }
 
         service.getStorage().getEventManager().on(Storage.POST_UPDATE, new Listener(this._updateViewOrder.bind(this)));
@@ -713,13 +726,32 @@ class DsignMenu extends OrderBehaviour(MergeTraslation(LocalizeMixin(ServiceInje
         service.getEventManager().on(OrderService.UPDATE_LOCAL_ORDER, new Listener(this._updateViewOrder.bind(this)));
     }
 
+
+    /**
+     * @param {MenuService} service 
+     * @returns 
+     */
+    changeMenuService(service) {
+        if (!service) {
+            return;
+        }
+
+        console.log('sucaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa');
+        service.getEventManager().on(MenuService.CHANGE_MENU, new Listener((evt) => {
+            console.log('sfff  ucaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa');
+            this.menu = evt.data;
+        }));
+
+        this.menu = service.getMenu();
+    }
+
     /**
      * TODO config url and create service
      * @returns array
      */
     getCategory() {
 
-        return new Promise( (resolve, reject) => {
+        return new Promise((resolve, reject) => {
             let request = new XMLHttpRequest();
 
             request.addEventListener("load", (data) => {
@@ -735,7 +767,7 @@ class DsignMenu extends OrderBehaviour(MergeTraslation(LocalizeMixin(ServiceInje
                 resolve(JSON.parse(request.response));
             });
             request.open("GET", `${this.apiUrl}/menu-category`);
-            request.setRequestHeader('Accept','application/json');
+            request.setRequestHeader('Accept', 'application/json');
             request.send();
         });
     }
@@ -745,9 +777,9 @@ class DsignMenu extends OrderBehaviour(MergeTraslation(LocalizeMixin(ServiceInje
      * TODO config url and create service
      * @returns array
      */
-     getAllergen() {
+    getAllergen() {
 
-        return new Promise( (resolve, reject) => {
+        return new Promise((resolve, reject) => {
             let request = new XMLHttpRequest();
 
             request.addEventListener("load", (data) => {
@@ -760,11 +792,11 @@ class DsignMenu extends OrderBehaviour(MergeTraslation(LocalizeMixin(ServiceInje
 
                     return reject(response)
                 }
-                
+
                 resolve(JSON.parse(request.response));
             });
             request.open("GET", `${this.apiUrl}/menu-allergen`);
-            request.setRequestHeader('Accept','application/json');
+            request.setRequestHeader('Accept', 'application/json');
             request.send();
         });
     }
@@ -779,7 +811,6 @@ class DsignMenu extends OrderBehaviour(MergeTraslation(LocalizeMixin(ServiceInje
 
         this.apiUrl = config.apiUrl;
         this.menuUrl = config.menuUrl;
-        this.menu = config.menu;
     }
 
     /**
@@ -796,7 +827,7 @@ class DsignMenu extends OrderBehaviour(MergeTraslation(LocalizeMixin(ServiceInje
             this.$.btnWhattapp.remove();
         }
 
-        if (typeof organization.address === 'object' && organization.address.lat && organization.address.lng ) {
+        if (typeof organization.address === 'object' && organization.address.lat && organization.address.lng) {
             this.$.btnMaps.style.display = 'flex';
         } else {
             this.$.btnMaps.remove();
@@ -812,7 +843,7 @@ class DsignMenu extends OrderBehaviour(MergeTraslation(LocalizeMixin(ServiceInje
      */
     hasEnglish() {
         let has = false;
-        if(!this.menu && !Array.isArray(this.menu.items)) {
+        if (!this.menu && !Array.isArray(this.menu.items)) {
             return;
         } else {
             has = !!this.menu.items[0].name['en'];
@@ -828,7 +859,7 @@ class DsignMenu extends OrderBehaviour(MergeTraslation(LocalizeMixin(ServiceInje
 
         let ele = document.createElement('a');
         ele.href = `https://api.whatsapp.com/send?phone=${this.organization.whatsapp_phone.prefix}${this.organization.whatsapp_phone.number}`;
-        ele.target="_blank";
+        ele.target = "_blank";
         ele.click();
     }
 
@@ -870,7 +901,7 @@ class DsignMenu extends OrderBehaviour(MergeTraslation(LocalizeMixin(ServiceInje
             return;
         }
 
-        if(!this.allergens) {
+        if (!this.allergens) {
             this.getAllergen().then((allergens) => {
                 this._mergeTraslation(allergens);
                 this.allergens = Object.keys(allergens);
@@ -884,7 +915,7 @@ class DsignMenu extends OrderBehaviour(MergeTraslation(LocalizeMixin(ServiceInje
      */
     _getCategorySelect() {
         let category = null;
-        if (this.shadowRoot.querySelector('paper-tabs').selected !== undefined ) {
+        if (this.shadowRoot.querySelector('paper-tabs').selected !== undefined) {
             let nodes = this.shadowRoot.querySelector('paper-tabs').querySelectorAll('paper-tab');
             category = nodes[this.shadowRoot.querySelector('paper-tabs').selected].value
         }
@@ -897,10 +928,10 @@ class DsignMenu extends OrderBehaviour(MergeTraslation(LocalizeMixin(ServiceInje
      */
     parseUrlParam() {
         var match,
-            pl     = /\+/g,  // Regex for replacing addition symbol with a space
+            pl = /\+/g,  // Regex for replacing addition symbol with a space
             search = /([^&=]+)=?([^&]*)/g,
             decode = function (s) { return decodeURIComponent(s.replace(pl, " ")); },
-            query  = window.location.search.substring(1);
+            query = window.location.search.substring(1);
 
         let urlParams = {};
         while (match = search.exec(query))
@@ -923,10 +954,10 @@ class DsignMenu extends OrderBehaviour(MergeTraslation(LocalizeMixin(ServiceInje
         this.items = [];
         this.notifyPath('items');
         this.$.list.render();
-        
+
         let tmpMenu = [];
 
-        for (let index = 0;  menu.items.length > index; index++) {
+        for (let index = 0; menu.items.length > index; index++) {
             if (menu.items[index].status === 'not-available') {
                 continue;
             }
@@ -941,7 +972,7 @@ class DsignMenu extends OrderBehaviour(MergeTraslation(LocalizeMixin(ServiceInje
         setTimeout(
             () => {
                 this.search(
-                    this.$.search.value, 
+                    this.$.search.value,
                     this._getCategorySelect(),
                     this.searchType,
                     this.searchAllergen
@@ -970,15 +1001,16 @@ class DsignMenu extends OrderBehaviour(MergeTraslation(LocalizeMixin(ServiceInje
             this._setLayoutType(menu.layout_type);
         }
 
-        if (menu.note) {
-            let ele = document.querySelector('dsign-info');
+        if (menu.fixed_menu && menu.fixed_menu.enable) {
+            let ele = document.querySelector('dsign-fixed-menu');
             if (!ele) {
-                ele = document.createElement('dsign-info');
+                ele = document.createElement('dsign-fixed-menu');
                 document.body.appendChild(ele);
             }
-            ele.text = menu.note;
+            ele.text = menu.fixed_menu.note;
+            ele.price = menu.fixed_menu.price;
         } else {
-            let ele = document.querySelector('dsign-info');
+            let ele = document.querySelector('dsign-fixed-menu');
             if (ele) {
                 ele.remove();
             }
@@ -1049,7 +1081,7 @@ class DsignMenu extends OrderBehaviour(MergeTraslation(LocalizeMixin(ServiceInje
      */
     searchByName(evt) {
         this.search(
-            evt.target.value, 
+            evt.target.value,
             this._getCategorySelect(),
             this.searchType,
             this.searchAllergen
@@ -1062,23 +1094,23 @@ class DsignMenu extends OrderBehaviour(MergeTraslation(LocalizeMixin(ServiceInje
     searchByCategory(evt) {
         if (this.shadowRoot.querySelector('paper-tabs').selected === evt.target.index) {
             setTimeout(() => {
-                    this.shadowRoot.querySelector('paper-tabs').selected = undefined;
-                    this.search(
-                        this.$.search.value ? this.$.search.value : null,
-                         evt.target.value,
-                        this.searchType,
-                        this.searchAllergen
-                    );
-                },
+                this.shadowRoot.querySelector('paper-tabs').selected = undefined;
+                this.search(
+                    this.$.search.value ? this.$.search.value : null,
+                    evt.target.value,
+                    this.searchType,
+                    this.searchAllergen
+                );
+            },
                 200
             );
             return;
         }
 
-       
+
         this.search(
             this.$.search.value ? this.$.search.value : null,
-             evt.target.value,
+            evt.target.value,
             this.searchType,
             this.searchAllergen
         );
@@ -1087,12 +1119,12 @@ class DsignMenu extends OrderBehaviour(MergeTraslation(LocalizeMixin(ServiceInje
     /**
      * @param {Event} evt 
      */
-    searchByType(evt) { 
-        
+    searchByType(evt) {
+
         this.searchType = '';
         let isSelect = evt.target.getAttribute('selected') !== null ? true : false;
-  
-        if(isSelect) {
+
+        if (isSelect) {
             evt.target.removeAttribute('selected');
             this
 
@@ -1115,17 +1147,17 @@ class DsignMenu extends OrderBehaviour(MergeTraslation(LocalizeMixin(ServiceInje
      * @param {Event} evt 
      */
     searchByAllergen(evt) {
-        
+
         let isSelect = evt.target.getAttribute('selected') !== '' ? true : false;
         let allergen = evt.target.type;
-  
-        if(isSelect) {
+
+        if (isSelect) {
             evt.target.setAttribute('selected', '');
             this.searchAllergen.push(allergen)
 
         } else {
-     
-            let index =  this.searchAllergen.indexOf(allergen);
+
+            let index = this.searchAllergen.indexOf(allergen);
             if (index > -1) {
                 this.searchAllergen.splice(index, 1);
                 evt.target.removeAttribute('selected');
@@ -1156,7 +1188,7 @@ class DsignMenu extends OrderBehaviour(MergeTraslation(LocalizeMixin(ServiceInje
                 hide = true;
             }
 
-            if (!category === false && nodes[index].item.category !== category ) {
+            if (!category === false && nodes[index].item.category !== category) {
                 hide = true;
             }
 
@@ -1164,19 +1196,19 @@ class DsignMenu extends OrderBehaviour(MergeTraslation(LocalizeMixin(ServiceInje
                 hide = true;
             }
 
-            if (Array.isArray(allergen) && allergen.length > 0 && Array.isArray(nodes[index].item.allergens) && nodes[index].item.allergens.length > 0 ) {
+            if (Array.isArray(allergen) && allergen.length > 0 && Array.isArray(nodes[index].item.allergens) && nodes[index].item.allergens.length > 0) {
                 for (let cont = 0; allergen.length > cont; cont++) {
-                    if(nodes[index].item.allergens.indexOf(allergen[cont]) > -1) {
+                    if (nodes[index].item.allergens.indexOf(allergen[cont]) > -1) {
                         hide = true;
                         break;
                     }
                 }
             }
-            
+
             nodes[index].hide = hide;
             hide = false;
         }
-    }    
+    }
 
     /**
      * @param categoryDocument
@@ -1224,12 +1256,13 @@ class DsignMenu extends OrderBehaviour(MergeTraslation(LocalizeMixin(ServiceInje
 
                     try {
                         this.menu = JSON.parse(request.response);
+                        this._menuService.setMenu(this.menu);
                     } catch (error) {
                         console.warn('Unable to parse response');
                     }
-                   
+
                 };
-                request.open("GET", window.location.href);
+                request.open("GET", this.debugUrl ? this.debugUrl : window.location.href);
                 request.setRequestHeader('accept', 'application/json');
                 request.send();
             },

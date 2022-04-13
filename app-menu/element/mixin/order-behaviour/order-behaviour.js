@@ -1,8 +1,8 @@
-import {mixinBehaviors} from '@polymer/polymer/lib/legacy/class.js';
-import {NotifyMixin} from "@dsign/polymer-mixin/notify/notify-mixin";
-import {LocalizeMixin} from "@dsign/polymer-mixin/localize/localize-mixin";
-import {Storage} from "@dsign/library/src/storage/Storage";
-import {OrderService} from "../../../src/module/order/service/OrderService";
+import { mixinBehaviors } from '@polymer/polymer/lib/legacy/class.js';
+import { NotifyMixin } from "@dsign/polymer-mixin/notify/notify-mixin";
+import { LocalizeMixin } from "@dsign/polymer-mixin/localize/localize-mixin";
+import { Storage } from "@dsign/library/src/storage/Storage";
+import { OrderService } from "../../../src/module/order/service/OrderService";
 import { OrderEntity } from '../../../src/module/order/entity/OrderEntity';
 
 /**
@@ -14,6 +14,8 @@ export const OrderBehaviour = (superClass) => {
 
         static get properties() {
             return {
+
+                
 
                 currentOrder: {
                     observer: '_currentOrderChanged'
@@ -37,7 +39,7 @@ export const OrderBehaviour = (superClass) => {
                 },
 
                 showOrder: {
-                    value:true,
+                    value: true,
                     notify: true,
                     observer: '_showOrderChanged'
 
@@ -52,7 +54,7 @@ export const OrderBehaviour = (superClass) => {
                     type: Function,
                     computed: '__computedTotalItemOrderCount(updateView, currentOrder)'
                 },
-     
+
                 getTotalItemOrder: {
                     type: Function,
                     computed: '__computedItemOrderCount(updateView, currentOrder)'
@@ -75,9 +77,9 @@ export const OrderBehaviour = (superClass) => {
          * @param {string} language 
          * @returns 
          */
-         __computedItemOrderName(language) {
+        __computedItemOrderName(language) {
 
-            return function() {
+            return function () {
                 var itemOrder = arguments[0];
                 return itemOrder.name[this._localizeService.getDefaultLang()];
             }
@@ -89,15 +91,15 @@ export const OrderBehaviour = (superClass) => {
          * @returns 
          */
         __computedTotalItemOrderCount(updateView, currentOrder) {
-            return function() {   
+            return function () {
                 if (!this.currentOrder) {
                     return 0;
                 }
 
-                return this.currentOrder.getTotalItemOrder();       
+                return this.currentOrder.getTotalItemOrder();
             }
         }
-        
+
 
         /**
          * @param {string}} updateView
@@ -106,7 +108,7 @@ export const OrderBehaviour = (superClass) => {
          */
         __computedItemOrderCount(updateView, currentOrder) {
 
-            return function() {
+            return function () {
                 var itemOrder = arguments[0];
 
                 if (!this.currentOrder) {
@@ -114,11 +116,11 @@ export const OrderBehaviour = (superClass) => {
                 }
 
                 let total = this.currentOrder.getTotalItemOrder(itemOrder._id, arguments.length > 1 ? arguments[1] : undefined);
-           
+
                 if (this.$.badgeMenu) {
                     if (total) {
                         this.$.badgeMenu.style.visibility = 'visible';
-                       
+
                     } else {
                         this.$.badgeMenu.style.visibility = 'hidden';
                     }
@@ -134,7 +136,7 @@ export const OrderBehaviour = (superClass) => {
          * @param {object} currentOrder 
          */
         __computedOrderItemPrice(updateView, currentOrder) {
-            return function() {
+            return function () {
                 var itemOrder = arguments[0];
                 if (!this.currentOrder) {
                     return;
@@ -142,31 +144,31 @@ export const OrderBehaviour = (superClass) => {
 
                 let price = this.currentOrder.getItemOrderPrice(itemOrder._id);
                 try {
-                   // TODO cofigurable
-                  let formatter =  Intl.NumberFormat('it-IT', {style: 'currency', currency: 'EUR'});
-                  return formatter.format(price.value);
-                } catch(e) {
-                  return price.value + ' €';
+                    // TODO cofigurable
+                    let formatter = Intl.NumberFormat('it-IT', { style: 'currency', currency: 'EUR' });
+                    return formatter.format(price.value);
+                } catch (e) {
+                    return price.value + ' €';
                 }
             }
         }
 
         __computedTotalOrderItemPrice(updateView, currentOrder) {
-            return function() {
-           
+            return function () {
+
                 if (!this.currentOrder) {
                     return;
                 }
 
-                let price = this.currentOrder.getTotalItemOrderPrice();               
+                let price = this.currentOrder.getTotalItemOrderPrice();
 
                 try {
                     // TODO cofigurable
-                   let formatter =  Intl.NumberFormat('it-IT', {style: 'currency', currency: 'EUR'});
-                   return formatter.format(price.value);
-                 } catch(e) {
-                   return price.value + ' €';
-                 }
+                    let formatter = Intl.NumberFormat('it-IT', { style: 'currency', currency: 'EUR' });
+                    return formatter.format(price.value);
+                } catch (e) {
+                    return price.value + ' €';
+                }
             }
         }
 
@@ -204,14 +206,14 @@ export const OrderBehaviour = (superClass) => {
         addItemOrder(evt) {
 
             let itemOrderTarget = evt.target.itemOrder;
-           
+
             if (!itemOrderTarget) {
                 console.error('Attach event on element without item order setted');
                 return;
             }
 
             this.currentOrder.addItemOrder(itemOrderTarget);
-            
+
             this._orderService.updateLocalOrder(this.currentOrder);
         }
 
@@ -221,7 +223,7 @@ export const OrderBehaviour = (superClass) => {
          */
         removeItemOrder(evt) {
             let itemOrderTarget = evt.target.itemOrder;
-           
+
             if (!itemOrderTarget) {
                 console.error('Attach event on element without item order setted');
                 return;
@@ -231,11 +233,11 @@ export const OrderBehaviour = (superClass) => {
 
             this._orderService.updateLocalOrder(this.currentOrder)
                 .then((data) => {
-                    this.updateView =  (new Date).getTime();
+                    this.updateView = (new Date).getTime();
                 }).catch((error) => {
                     console.error(error)
                 });
-            
+
         }
 
         /**
@@ -244,14 +246,14 @@ export const OrderBehaviour = (superClass) => {
         canOrder() {
             let can = false;
 
-            if(!this.currentOrder) {
+            if (!this.currentOrder) {
                 return can;
             }
 
-            switch(this.currentOrder.status) {
+            switch (this.currentOrder.status) {
                 case OrderEntity.STATUS_CAN_ORDER:
                 case OrderEntity.STATUS_LOCAL:
-                    can =  true;
+                    can = true;
                     break;
             }
 
@@ -266,9 +268,9 @@ export const OrderBehaviour = (superClass) => {
             if (!this.currentOrder) {
                 return;
             }
-            
+
             this.updateView = (new Date).getTime();
-        }      
+        }
 
         /**
          * @param value

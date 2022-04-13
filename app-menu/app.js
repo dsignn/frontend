@@ -5,12 +5,14 @@ import {LocalStorageAdapter} from '@dsign/library/src/storage/adapter/local-stor
 import {PropertyHydrator} from '@dsign/library/src/hydrator';
 import {OrderEntity} from './src/module/order/entity/OrderEntity';
 import {OrderService} from './src/module/order/service/OrderService';
+import {MenuService} from './src/module/order/service/MenuService';
 import {DateStrategy} from './src/hydrator/strategy/value/DateStrategy'
 import { XmlhLocalStorageAdapter } from './src/storage/adapter/XmlhLocalStorageAdapter';
 import { XmlhAdapter } from '@dsign/library/src/storage/adapter/xmlh/XmlhAdapter';
 import { JsonDecode } from '@dsign/library/src/data-transform/JsonDecode';
 import { JsonEncode } from '@dsign/library/src/data-transform/JsonEncode';
 import { DefaultBuilder } from '@dsign/library/src/storage/adapter/xmlh/url/DefaultBuilder';
+import { config } from './src/config';
 
 const container = new Container();
 
@@ -112,14 +114,18 @@ setInterval(
 
 container.set('OrderService', service);
 
+service = new MenuService();
+service.setMenu(config.menu);
+container.set('MenuService', service);
+
 
 window.container = container;
 
 var loadMenuApp = function() {
     var menu = document.querySelector('dsign-menu');
     if (!menu) {
-    var ele = document.createElement('dsign-menu');
-    document.body.appendChild(ele);
+        var ele = document.createElement('dsign-menu');
+        document.body.appendChild(ele);
     }
 };
 

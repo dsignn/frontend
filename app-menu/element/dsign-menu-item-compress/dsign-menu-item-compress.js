@@ -219,11 +219,7 @@ class DsignMenuItemCompress extends MergeTraslation(OrderBehaviour(MenuItemBehav
                 </dom-repeat>
             </div>
             <div class="status-dish">{{localize(statusLabel)}}</div>
-            <template is="dom-if" if="{{hasPrice}}">
-                <div class="price">
-                    {{_computePrice(menuItem.price)}} €
-                </div>
-            </template>
+            <div id="price" class="price">{{formatPrice(menuItem.price)}}</div>
         </div>
         <div class="content">
              <div class="header-card-title">{{localizeEntityPropriety(menuItem.name)}}</div>

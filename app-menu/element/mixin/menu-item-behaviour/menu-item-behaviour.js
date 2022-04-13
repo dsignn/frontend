@@ -1,31 +1,38 @@
-
-import {mixinBehaviors} from '@polymer/polymer/lib/legacy/class.js';
-import {NotifyMixin} from "@dsign/polymer-mixin/notify/notify-mixin";
-import {LocalizeMixin} from "@dsign/polymer-mixin/localize/localize-mixin";
-import {Storage} from "@dsign/library/src/storage/Storage";
-import {OrderService} from "../../../src/module/order/service/OrderService";
-import { OrderEntity } from '../../../src/module/order/entity/OrderEntity';
+import { mixinBehaviors } from '@polymer/polymer/lib/legacy/class.js';
+import { LocalizeMixin } from "@dsign/polymer-mixin/localize/localize-mixin";
+import { MenuBehaviour } from '../menu-behaviour/menu-behaviour';
 
 /**
  * @type {Function}
  */
 export const MenuItemBehaviour = (superClass) => {
 
-    return class extends superClass {
+    return class extends mixinBehaviors([LocalizeMixin, MenuBehaviour], superClass) {
 
         static get properties() {
             return {
 
-                menuItem: { 
+                menu: {
+                    notify: true,
+                    observer: 'changeMenu'
+                },
+
+                menuItem: {
                     notify: true,
                     observer: 'menuItemChange'
                 },
 
-                hasPrice: {
+                enablePrice: {
                     type: Boolean,
                     readOnly: true,
                     notify: true,
-                    value: false
+                    value: false,
+                    observer: 'changeEnablePrice'
+                },
+
+                formatPrice: {
+                    type: Function,
+                    computed: '__computePrice(language, price)'
                 }
             };
         }
@@ -40,12 +47,6 @@ export const MenuItemBehaviour = (superClass) => {
 
             if (menuItem.status) {
                 this._updateStatus(menuItem.status);
-            }
-
-            if (!menuItem.price || !menuItem.price.value)  {
-                this._setHasPrice(false);
-            } else {
-                this._setHasPrice(true);
             }
         }
 
@@ -77,15 +78,59 @@ export const MenuItemBehaviour = (superClass) => {
         }
 
         /**
+         * @param {string} language
          * @param {object} price
          * @returns {string}
          * @private
          */
-        _computePrice(price) {
-            if (!price) {
-                return ;
+        __computePrice(language) {
+            if (!language) {
+                return;
             }
-            return price.value;
+
+            return (price) => {
+
+                let value = 0;
+
+                if (!price) {
+                    return value;
+                }
+
+                if (Intl) {
+                    // TODO calculate current from locale??
+                    let formatter =  Intl.NumberFormat('it-IT', {style: 'currency', currency: 'EUR'});
+                    value = formatter.format(price.value);
+                } else {
+                    value = price.value + ' ' + price.currency;
+                }
+                return value
+            }
+        }
+
+        /**
+         * @param {object} menu 
+         * @returns 
+         */
+        changeMenu(menu) {
+            if (!menu) {
+                return;
+            }
+
+            if (menu.fixed_menu) {
+                //console.log('Abilita menu fisso', menu.fixed_menu.enable, this);
+                this._setEnablePrice(!menu.fixed_menu.enable);
+            }
+
+        }
+
+        /**
+         * @param {bool} enablePrice 
+         */
+        changeEnablePrice(enablePrice) {
+            //console.log('Visualizza menu', enablePrice);
+            if (this.$.price) {
+                this.$.price.style.display = enablePrice ?  'flex' : 'none';
+            }
         }
     }
 };

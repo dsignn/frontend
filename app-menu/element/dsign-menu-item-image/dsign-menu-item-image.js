@@ -8,13 +8,13 @@
  * subject to an additional IP rights grant found at http://polymer.github.io/PATENTS.txt
  */
 
-import {PolymerElement, html} from '@polymer/polymer/polymer-element.js';
-import {LocalizeMixin} from "@dsign/polymer-mixin/localize/localize-mixin";
-import {ServiceInjectorMixin} from "@dsign/polymer-mixin/service/injector-mixin";
-import {OrderBehaviour} from "../mixin/order-behaviour/order-behaviour";
-import {MergeTraslation} from "../mixin/merge-traslation/merge-traslation";
-import {Storage} from "@dsign/library/src/storage/Storage";
-import {Listener} from "@dsign/library/src/event/Listener";
+import { PolymerElement, html } from '@polymer/polymer/polymer-element.js';
+import { LocalizeMixin } from "@dsign/polymer-mixin/localize/localize-mixin";
+import { ServiceInjectorMixin } from "@dsign/polymer-mixin/service/injector-mixin";
+import { OrderBehaviour } from "../mixin/order-behaviour/order-behaviour";
+import { MergeTraslation } from "../mixin/merge-traslation/merge-traslation";
+import { Storage } from "@dsign/library/src/storage/Storage";
+import { Listener } from "@dsign/library/src/event/Listener";
 import '@polymer/paper-dropdown-menu/paper-dropdown-menu';
 import '@polymer/paper-item/paper-item';
 import '@polymer/paper-icon-button/paper-icon-button';
@@ -23,14 +23,16 @@ import '@polymer/paper-card/paper-card';
 import '@polymer/neon-animation/neon-animation';
 import '@polymer/paper-input/paper-input';
 import '@polymer/paper-button/paper-button';
-import {lang} from './language';
+import { lang } from './language';
 import { LocalizeEntityPropriety } from '../mixin/localize/localize-entity-proprierty';
 import { OrderService } from '../../src/module/order/service/OrderService';
+import { MenuItemBehaviour } from '../mixin/menu-item-behaviour/menu-item-behaviour';
+import { MenuBehaviour } from '../mixin/menu-behaviour/menu-behaviour';
 
 /**
  * @class DsignMenuItemImage
  */
-class DsignMenuItemImage extends MergeTraslation(OrderBehaviour(LocalizeEntityPropriety(LocalizeMixin(ServiceInjectorMixin(PolymerElement))))) {
+class DsignMenuItemImage extends MergeTraslation(OrderBehaviour(MenuItemBehaviour(LocalizeEntityPropriety(LocalizeMixin(ServiceInjectorMixin(PolymerElement)))))) {
     static get template() {
         return html`
     <style> 
@@ -222,12 +224,8 @@ class DsignMenuItemImage extends MergeTraslation(OrderBehaviour(LocalizeEntityPr
         </div>
         <div id="image" class="image">
             <div class="triangle" hidden></div>
-            <div class="status-dish">{{localize(statusLabel)}}</div>
-            <template is="dom-if" if="{{hasPrice}}">
-                <div class="price">
-                    {{_computePrice(menuItem.price)}} €
-                </div>
-            </template>
+            <div class="status-dish">{{localize(statusLabel)}}</div>     
+            <div id="price" class="price">{{formatPrice(menuItem.price)}}</div>
             <div class="header-card-category">{{localize(category)}}</div>
             <div id="action" class="action">
                 <dsign-badge id="badgeMenu" for="btn-menu" label="{{getTotalItemOrder(menuItem)}}" class="red" offset-x="-2"></dsign-badge>
@@ -270,6 +268,7 @@ class DsignMenuItemImage extends MergeTraslation(OrderBehaviour(LocalizeEntityPr
                     _localizeService: 'Localize',
                     _notifyService: 'Notify',
                     _orderService: 'OrderService',
+                    _menuService: 'MenuService'
                 }
             },
 
@@ -277,20 +276,23 @@ class DsignMenuItemImage extends MergeTraslation(OrderBehaviour(LocalizeEntityPr
                 notify: true
             },
 
-
             _orderService: {
                 readOnly: true,
                 observer: 'changeOrderService'
-            }    
+            },
 
         };
     }
 
+    disconnectedCallback() {
+        super.disconnectedCallback();
+    }
+
     changeOrderService(service) {
         if (!service) {
-          return;
+            return;
         }
-    
+
         service.getEventManager().on(OrderService.CHANGE_DEFAUL_ORDER, new Listener(this._updateViewOrder.bind(this)));
         service.getEventManager().on(OrderService.LOAD_DEFAUL_ORDER, new Listener(this._updateViewOrder.bind(this)));
         service.getEventManager().on(OrderService.UPDATE_LOCAL_ORDER, new Listener(this._updateViewOrder.bind(this)));
@@ -334,7 +336,6 @@ class DsignMenuItemImage extends MergeTraslation(OrderBehaviour(LocalizeEntityPr
 
     changeLanguage(evt) {
         super.changeLanguage(evt);
-        console.log('cambio')
     }
 }
 

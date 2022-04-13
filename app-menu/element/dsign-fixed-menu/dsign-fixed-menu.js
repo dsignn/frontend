@@ -46,7 +46,8 @@ class DsignInfo extends PolymerElement {
             }
             
             #content {
-            white-space:pre-wrap;
+                flex-direction: column;
+                white-space:pre-wrap;
                 display: flex;
                 align-items: center;
                 padding-left: 8px;
@@ -65,6 +66,15 @@ class DsignInfo extends PolymerElement {
                 --paper-icon-button : {
                     padding: 1px;
                }  
+            }
+
+            .title {
+                font-size: 18px;
+                padding-bottom: 6px;
+            }
+
+            .text {
+                font-size: 16px;
             }
             
             @-webkit-keyframes rotate-left { 
@@ -119,7 +129,10 @@ class DsignInfo extends PolymerElement {
         </style>
         <div id="container">
             <paper-icon-button icon="arrow-left" on-tap="toggle"></paper-icon-button>
-            <p id="content">{{text}}</p>
+            <div id="content">
+                <div class="title">Menu fisso {{computePrice(price)}}</div>
+                <div class="text">{{text}}</div>
+            </div>
         </div>`;
     }
 
@@ -129,6 +142,10 @@ class DsignInfo extends PolymerElement {
             text: {
                 notify: true,
                 observer: 'textChanged'
+            },
+
+            price: {
+                notify: true,
             }
         };
     }
@@ -157,6 +174,21 @@ class DsignInfo extends PolymerElement {
     }
 
     /**
+     * @param {object} value 
+     * @returns 
+     */
+    computePrice(price) {
+        if (Intl) {
+            // TODO calculate current from locale??
+            let formatter =  Intl.NumberFormat('it-IT', {style: 'currency', currency: 'EUR'});
+            price = formatter.format(price.value);
+        } else {
+            price = price.value + ' ' + price.currency;
+        }
+        return price
+    }
+
+    /**
      *
      */
     close() {
@@ -173,4 +205,4 @@ class DsignInfo extends PolymerElement {
     }
 }
 
-window.customElements.define('dsign-info', DsignInfo);
+window.customElements.define('dsign-fixed-menu', DsignInfo);
