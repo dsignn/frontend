@@ -32,7 +32,7 @@ import { MenuItemBehaviour } from '../mixin/menu-item-behaviour/menu-item-behavi
 /**
  * @class DsignMenuItemCompress
  */
-class DsignMenuItemCompress extends MergeTraslation(OrderBehaviour(MenuItemBehaviour(LocalizeEntityPropriety(LocalizeMixin(ServiceInjectorMixin(PolymerElement)))))) {
+class DsignMenuItemCompress extends MergeTraslation(OrderBehaviour(MenuItemBehaviour(LocalizeEntityPropriety(ServiceInjectorMixin(PolymerElement))))) {
     static get template() {
         return html`
     <style> 

@@ -42,6 +42,8 @@ export class OrderService extends EventManagerAware {
 
         this.storage = storage;
 
+        this.organization = null;
+
         this.currentOrder = null;
     }
 
@@ -56,6 +58,10 @@ export class OrderService extends EventManagerAware {
         return this.currentOrder;
     }
 
+    setOrganization(organization) {
+        this.organization = organization;
+    }
+
     /**
      * 
      * @param {OrderEntity} currentOrder 
@@ -64,7 +70,7 @@ export class OrderService extends EventManagerAware {
     async setCurrentOrder(order) {
 
         let allOrder = await this.getStorage().getAll(
-            { 'restaurantId': order.organization.id }
+            { 'restaurantId': this.organization.id }
         );
 
         for (let cont = 0; allOrder.length > cont; cont++) {
@@ -78,9 +84,12 @@ export class OrderService extends EventManagerAware {
                 });
         }
 
-        order.currenteSelected = true;
-        await this.storage.adapter.updateLocal(order);
-
+        if (order) {
+           order.currenteSelected = true;
+            await this.storage.adapter.updateLocal(order);
+        }
+     
+        console.log('CHANGEEEEEEEEEEEEE', order);
         this.currentOrder = order;
         this.getEventManager().emit(OrderService.CHANGE_DEFAUL_ORDER, order);
 
@@ -167,17 +176,21 @@ export class OrderService extends EventManagerAware {
 
     /**
      * @param {string} restaurantId 
+     * @param {string} menuId 
      * @returns 
      */
-    async loadCurreOrder(restaurantId) {
-        let order = await this.getStorage().adapter.getCurrentOrder({
-            'restaurantId': restaurantId
-        });
+    async loadCurreOrder(restaurantId, menuId) {
+        
+        console.log('MENU ID', menuId);
+        let order = await this.getStorage().adapter.getCurrentOrder(restaurantId, menuId);
 
         if (order) {
             this.currentOrder = this.storage.hydrator.hydrate(order);
-            this.getEventManager().emit(OrderService.LOAD_DEFAUL_ORDER, this.currentOrder);
+        } else {
+            this.currentOrder = null;
         }
+        this.getEventManager().emit(OrderService.LOAD_DEFAUL_ORDER, this.currentOrder);
+
 
         return this.currentOrder;
     }

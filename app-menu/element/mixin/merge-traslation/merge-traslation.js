@@ -6,8 +6,7 @@ import {mergeDeep} from "@dsign/library/src/object/Utils";
  * @type {Function}
  */
 export const MergeTraslation = (superClass) => {
-
-    return class extends mixinBehaviors([LocalizeMixin], superClass) {
+    return class extends LocalizeMixin(superClass) {
 
         /**
          * @param value

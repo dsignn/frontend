@@ -1,21 +1,19 @@
-import { mixinBehaviors } from '@polymer/polymer/lib/legacy/class.js';
 import { NotifyMixin } from "@dsign/polymer-mixin/notify/notify-mixin";
 import { LocalizeMixin } from "@dsign/polymer-mixin/localize/localize-mixin";
 import { Storage } from "@dsign/library/src/storage/Storage";
 import { OrderService } from "../../../src/module/order/service/OrderService";
 import { OrderEntity } from '../../../src/module/order/entity/OrderEntity';
+import { MenuBehaviour } from "../menu-behaviour/menu-behaviour";
 
 /**
  * @type {Function}
  */
 export const OrderBehaviour = (superClass) => {
 
-    return class extends mixinBehaviors([NotifyMixin, LocalizeMixin], superClass) {
+    return class extends MenuBehaviour(NotifyMixin(LocalizeMixin(superClass))) {
 
         static get properties() {
             return {
-
-                
 
                 currentOrder: {
                     observer: '_currentOrderChanged'
@@ -42,7 +40,6 @@ export const OrderBehaviour = (superClass) => {
                     value: true,
                     notify: true,
                     observer: '_showOrderChanged'
-
                 },
 
                 getNameItemOrder: {

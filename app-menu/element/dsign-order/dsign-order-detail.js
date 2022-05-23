@@ -26,6 +26,7 @@ import { lang } from './language-details';
 import { OrderBehaviour } from '../mixin/order-behaviour/order-behaviour';
 import { OrderService } from '../../src/module/order/service/OrderService';
 import { OrderItemWrapper } from '../../src/module/order/entity/embedded/OrderItemWrapper';
+import { set } from '@polymer/polymer/lib/utils/path';
 
 /** 
  * @class DsignOrderDetail
@@ -212,6 +213,11 @@ class DsignOrderDetail extends OrderBehaviour(LocalizeMixin(ServiceInjectorMixin
         value: []
       },
 
+      menu: {
+        notify: true,
+        observer: 'changeMenu'
+      },
+
       services: {
         value: {
           _config: 'config',
@@ -253,6 +259,31 @@ class DsignOrderDetail extends OrderBehaviour(LocalizeMixin(ServiceInjectorMixin
 
   }
 
+
+  changeMenu(menu) {
+    if (!menu) {
+        return;
+    }
+
+    // TODO refector
+    setTimeout( function() {
+
+        let nodes = this.shadowRoot.querySelectorAll('.price');
+
+        nodes.forEach(
+          (currentValue, currentIndex) => {
+            
+            if (menu.fixed_menu && menu.fixed_menu.enable) { 
+              currentValue.style.display = 'none';
+            } else {
+              currentValue.style.display = 'flex';
+            }
+          }
+        );
+      }.bind(this), 
+      500);
+  }
+
   /**
    * 
    * @param {OrderService} service 
@@ -278,10 +309,10 @@ class DsignOrderDetail extends OrderBehaviour(LocalizeMixin(ServiceInjectorMixin
 
     super._updateViewOrder();
     if (!this.currentOrder) {
-      return;
+      this.items = [];
+    } else {
+      this.items = this.currentOrder.getDistinctItemOrder();
     }
-
-    this.items = this.currentOrder.getDistinctItemOrder();
     this.notifyPath('items');
   }
 

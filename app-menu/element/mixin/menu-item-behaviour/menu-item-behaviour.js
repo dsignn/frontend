@@ -1,5 +1,3 @@
-import { mixinBehaviors } from '@polymer/polymer/lib/legacy/class.js';
-import { LocalizeMixin } from "@dsign/polymer-mixin/localize/localize-mixin";
 import { MenuBehaviour } from '../menu-behaviour/menu-behaviour';
 
 /**
@@ -7,7 +5,7 @@ import { MenuBehaviour } from '../menu-behaviour/menu-behaviour';
  */
 export const MenuItemBehaviour = (superClass) => {
 
-    return class extends mixinBehaviors([LocalizeMixin, MenuBehaviour], superClass) {
+    return class extends MenuBehaviour(superClass) {
 
         static get properties() {
             return {
@@ -127,7 +125,6 @@ export const MenuItemBehaviour = (superClass) => {
          * @param {bool} enablePrice 
          */
         changeEnablePrice(enablePrice) {
-            //console.log('Visualizza menu', enablePrice);
             if (this.$.price) {
                 this.$.price.style.display = enablePrice ?  'flex' : 'none';
             }

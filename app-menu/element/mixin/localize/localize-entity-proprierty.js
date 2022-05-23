@@ -5,7 +5,7 @@ import {LocalizeMixin} from "@dsign/polymer-mixin/localize/localize-mixin";
  * @type {Function}
  */
 export const LocalizeEntityPropriety = (superClass) => {
-    return class extends mixinBehaviors([LocalizeMixin], superClass) {
+    return class extends LocalizeMixin(superClass) {
 
         static get properties() {
             return {

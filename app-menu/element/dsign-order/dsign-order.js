@@ -250,6 +250,7 @@ class DsignOrder extends OrderBehaviour(LocalizeMixin(ServiceInjectorMixin(Polym
             label="{{localize('select-order')}}"
             text-property="name"
             remote-source
+            on-autocomplete-reset-blur="_autocompleteReset"
             on-autocomplete-change="_autocompleteChanged"
             on-autocomplete-selected="_autocompleteSelect">
               <template id="customTemplate" slot="autocomplete-custom-template">
@@ -309,6 +310,7 @@ class DsignOrder extends OrderBehaviour(LocalizeMixin(ServiceInjectorMixin(Polym
 
       menu: {
         notify: true,
+        observer: 'changeMenu'
       },
 
       services: {
@@ -358,11 +360,23 @@ class DsignOrder extends OrderBehaviour(LocalizeMixin(ServiceInjectorMixin(Polym
 
   static get observers() {
     return [
-      '_observeOrders(_orderService, organization)',
-      '_observePages(_orderService, page, organization)',
+      '_observeOrders(_orderService, organization, menu)',
+      '_observePages(_orderService, page, organization, menu)',
       '_obeserveLocalizeService(_localizeService)',
       '_obeserveOrderDialog(_localizeService, menu)'
     ];
+  }
+
+  changeMenu(menu) {
+    if (!menu) {
+        return;
+    }
+
+    if (menu.fixed_menu && menu.fixed_menu.enable) { 
+      this.$.price.style.display = 'none';
+    } else {
+      this.$.price.style.display = 'flex';
+    }
   }
 
   /**
@@ -500,6 +514,7 @@ class DsignOrder extends OrderBehaviour(LocalizeMixin(ServiceInjectorMixin(Polym
     entity.id = Utility.generateObjectId();
     entity.name = evt.target.parentElement.querySelector('#nameOrder').value;
 
+    entity.pushAdditionInfo('menuId', this.menu._id);
     // in the menu the variable controll also the status of the menu "disable" in the order "rename" the value
     entity.pushAdditionInfo('orderType', this.menu.status);
     if (evt.target.parentElement.querySelector('#tableNumber')) {
@@ -579,22 +594,25 @@ class DsignOrder extends OrderBehaviour(LocalizeMixin(ServiceInjectorMixin(Polym
   /**
    * 
    * @param {OrderService} orderService 
-   * @param {*} organization 
+   * @param {object} organization 
+   * @param {object} menu 
    * @returns 
    */
-  _observeOrders(orderService, organization) {
+  _observeOrders(orderService, organization, menu) {
 
-    if (!orderService || !organization) {
+    if (!orderService || !organization || !menu) {
       return;
     }
+    
 
-    orderService.loadCurreOrder(organization._id)
+    /*
+    orderService.loadCurreOrder(organization._id, menu._id)
       .then((data) => {
         this.$.autocomplete.value = data;
         this._updateStatusMessage();
         this._updateBtnOrder();
       });
-
+*/
   }
 
   /**
@@ -620,6 +638,10 @@ class DsignOrder extends OrderBehaviour(LocalizeMixin(ServiceInjectorMixin(Polym
    * @param {*} order 
    */
   _updateStatus(order) {
+
+    if (!order) {
+      return;
+    }
 
     switch (order.status) {
       case OrderEntity.STATUS_LOCAL:
@@ -702,8 +724,10 @@ class DsignOrder extends OrderBehaviour(LocalizeMixin(ServiceInjectorMixin(Polym
    * 
    */
   _getOrders() {
+    console.log('org', this.organization._id);
+    console.log('menu', this.menu._id);
     this._orderService.getStorage()
-      .getPaged(this.page, this.itemPerPage, { 'restaurantId': this.organization._id })
+      .getPaged(this.page, this.itemPerPage, { 'restaurantId': this.organization._id , 'menuId': this.menu._id})
       .then((pagination) => {
 
         this.set('orders', pagination);
@@ -725,8 +749,8 @@ class DsignOrder extends OrderBehaviour(LocalizeMixin(ServiceInjectorMixin(Polym
     return `${date.getHours()}:${date.getMinutes()} ${date.getDay()}/${date.getMonth()}/${date.getFullYear()}`;
   }
 
-  _observePages(service, page, organization) {
-    if (!service || !page || !organization) {
+  _observePages(service, page, organization, menu) {
+    if (!service || !page || !organization || !menu) {
       return;
     }
     this._getOrders();
@@ -734,7 +758,7 @@ class DsignOrder extends OrderBehaviour(LocalizeMixin(ServiceInjectorMixin(Polym
 
   _autocompleteChanged(evt) {
     this._orderService.getStorage()
-      .getAll({ 'restaurantId': this.organization._id, name: evt.detail.text })
+      .getAll({ 'restaurantId': this.organization._id, 'menuId': this.menu._id, name: evt.detail.text })
       .then((reults) => {
 
         this.$.autocomplete.suggestions(reults);
@@ -745,6 +769,10 @@ class DsignOrder extends OrderBehaviour(LocalizeMixin(ServiceInjectorMixin(Polym
     this._orderService.setCurrentOrder(evt.detail.value);
   }
 
+  _autocompleteReset(evt) {
+    console.log('RESETTAAAAAAAAAAAAAAAAAAAAAA');
+    this._orderService.setCurrentOrder(null);
+  }
 }
 
 window.customElements.define('dsign-order', DsignOrder);

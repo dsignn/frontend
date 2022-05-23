@@ -7,9 +7,9 @@ import { Listener } from '@dsign/library/src/event';
 /**
  * @type {Function}
  */
-export const MenuBehaviour = (superClass) => {
+ export const MenuBehaviour = (superClass) => {
 
-    return class extends mixinBehaviors([LocalizeMixin], superClass) {
+    return class extends superClass {
 
         static get properties() {
             return {
@@ -25,11 +25,6 @@ export const MenuBehaviour = (superClass) => {
             };
         }
 
-        topppppppp() {
-            
-        }
-
-
         /**
          * @param {MenuService} service 
          * @returns 
@@ -39,7 +34,6 @@ export const MenuBehaviour = (superClass) => {
                 return;
             }
 
-            console.log('ddddd');
             service.getEventManager().on(MenuService.CHANGE_MENU, new Listener((evt) => {
                 this.menu = evt.data;
             }));

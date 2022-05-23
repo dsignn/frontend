@@ -41,21 +41,31 @@ orderLocalStorageAdapter.setIdentifier('id');
 orderLocalStorageAdapter.setFilterCallback(function(filter) {
 
     let dataToReturn = this.data;
+    
+    if (filter.name) {
+        dataToReturn = dataToReturn.filter((element) => {
+            return element.name ? element.name.match(new RegExp(filter.name, 'i')) : false;
+        })
+    } 
 
     if (filter.restaurantId) {
-        dataToReturn = this.data.filter((element) => {
+
+        dataToReturn = dataToReturn.filter((element) => {
             return element.organization ? element.organization.id === filter.restaurantId : false;
         })
     }
 
-    if (filter.name) {
-        dataToReturn = this.data.filter((element) => {
-            return element.name ?  element.name.match(new RegExp(filter.name, 'i')) : false;
+    if (filter.menuId) {
+     
+        dataToReturn = dataToReturn.filter((element) => {
+            let res =  element.additionalInfo ? element.additionalInfo.menuId === filter.menuId : false;
+            console.log('res', res);
+            return res;
         })
-    } 
+    }
 
     if (filter.currenteSelected) {
-        dataToReturn = this.data.filter((element) => {
+        dataToReturn = dataToReturn.filter((element) => {
             return element.currenteSelected;
         })
     }
@@ -67,7 +77,7 @@ orderLocalStorageAdapter.setFilterCallback(function(filter) {
              return -1;
          }
     });
-
+    console.log('TOT', dataToReturn);
     return dataToReturn;
 }.bind(orderLocalStorageAdapter));
 

@@ -584,7 +584,7 @@ class DsignMenu extends OrderBehaviour(MergeTraslation(LocalizeMixin(ServiceInje
                 </div>
                 <div>
                     <dsign-order organization="[[organization]]" menu="[[menu]]"></dsign-order>
-                    <dsign-order-detail></dsign-order-detail>
+                    <dsign-order-detail menu="[[menu]]"></dsign-order-detail>
                 </div>
             </iron-pages>           
         </div>
@@ -621,7 +621,7 @@ class DsignMenu extends OrderBehaviour(MergeTraslation(LocalizeMixin(ServiceInje
             },
 
             tabMenu: {
-                value: 1
+                value: 0
             },
 
             layoutType: {
@@ -644,12 +644,6 @@ class DsignMenu extends OrderBehaviour(MergeTraslation(LocalizeMixin(ServiceInje
                 readOnly: true,
                 observer: 'changeOrderService'
             },
-
-            _menuService: {
-                readOnly: true,
-                observer: 'changeMenuService'
-            },
-
 
             _config: {
                 readOnly: true,
@@ -680,7 +674,7 @@ class DsignMenu extends OrderBehaviour(MergeTraslation(LocalizeMixin(ServiceInje
             interval: {
                 type: Number,
                 readOnly: true,
-                value: 600000
+                value: 2000000
             },
 
             debugUrl: {
@@ -720,29 +714,14 @@ class DsignMenu extends OrderBehaviour(MergeTraslation(LocalizeMixin(ServiceInje
             return;
         }
 
+        if (this.organization) {
+            service.setOrganization(this.organization);
+        }
+
         service.getStorage().getEventManager().on(Storage.POST_UPDATE, new Listener(this._updateViewOrder.bind(this)));
         service.getEventManager().on(OrderService.CHANGE_DEFAUL_ORDER, new Listener(this._updateViewOrder.bind(this)));
         service.getEventManager().on(OrderService.LOAD_DEFAUL_ORDER, new Listener(this._updateViewOrder.bind(this)));
         service.getEventManager().on(OrderService.UPDATE_LOCAL_ORDER, new Listener(this._updateViewOrder.bind(this)));
-    }
-
-
-    /**
-     * @param {MenuService} service 
-     * @returns 
-     */
-    changeMenuService(service) {
-        if (!service) {
-            return;
-        }
-
-        console.log('sucaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa');
-        service.getEventManager().on(MenuService.CHANGE_MENU, new Listener((evt) => {
-            console.log('sfff  ucaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa');
-            this.menu = evt.data;
-        }));
-
-        this.menu = service.getMenu();
     }
 
     /**
@@ -988,6 +967,9 @@ class DsignMenu extends OrderBehaviour(MergeTraslation(LocalizeMixin(ServiceInje
         }
 
         this.organization = menu.organization;
+        if (this._orderService) {
+            this._orderService.setOrganization(this.organization);
+        }
 
         if (menu.background_header) {
             this._changeBackgroundColorHeader(menu.background_header)

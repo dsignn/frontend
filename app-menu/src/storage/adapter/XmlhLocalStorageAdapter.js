@@ -106,17 +106,20 @@ export class XmlhLocalStorageAdapter {
      * @param {*} restaurantId 
      * @returns 
      */
-    getCurrentOrder(restaurantId) {
+    getCurrentOrder(restaurantId, menuId) {
+
         return new Promise((resolve, reject) => {
             let search = {
                 'restaurantId': restaurantId,
+                'menuId': menuId,
                 'currenteSelected': true
             };
 
             this.localStorageAdapter.getAll(search)
                 .then((respLocalStorage) => {
-                        let result = null;
-                      
+                    console.log('res', respLocalStorage);
+                      let result = null;
+                 
                         if(respLocalStorage.length > 0) {
                             result = respLocalStorage[0];
                         }
