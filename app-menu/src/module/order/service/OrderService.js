@@ -85,7 +85,7 @@ export class OrderService extends EventManagerAware {
         }
 
         if (order) {
-           order.currenteSelected = true;
+            order.currenteSelected = true;
             await this.storage.adapter.updateLocal(order);
         }
      

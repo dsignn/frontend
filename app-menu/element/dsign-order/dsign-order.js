@@ -250,6 +250,7 @@ class DsignOrder extends OrderBehaviour(LocalizeMixin(ServiceInjectorMixin(Polym
             label="{{localize('select-order')}}"
             text-property="name"
             remote-source
+            on-autocomplete-blur="_autocompletBlur"
             on-autocomplete-reset-blur="_autocompleteReset"
             on-autocomplete-change="_autocompleteChanged"
             on-autocomplete-selected="_autocompleteSelect">
@@ -406,7 +407,10 @@ class DsignOrder extends OrderBehaviour(LocalizeMixin(ServiceInjectorMixin(Polym
   changeCurrentOrder(value) {
 
     this._showPrice(!!value);
-    this._showStatus(!!value)
+    this._showStatus(!!value);
+    if (!value) {
+      this.$.autocomplete.clear();
+    }
   }
 
   /**
@@ -724,6 +728,7 @@ class DsignOrder extends OrderBehaviour(LocalizeMixin(ServiceInjectorMixin(Polym
    * 
    */
   _getOrders() {
+    // console.log('restaurantId',  this.organization._id, 'menuId', this.menu._id);
     this._orderService.getStorage()
       .getPaged(this.page, this.itemPerPage, { 'restaurantId': this.organization._id , 'menuId': this.menu._id})
       .then((pagination) => {
@@ -769,6 +774,18 @@ class DsignOrder extends OrderBehaviour(LocalizeMixin(ServiceInjectorMixin(Polym
 
   _autocompleteReset(evt) {
     this._orderService.setCurrentOrder(null);
+  }
+
+  _autocompletBlur(evt) {
+    console.log('blurrrrrrrrrr', evt);
+
+    switch (true) {
+      case !evt.target.value:
+      case evt.target.value !== null && evt.target.value[evt.target.textProperty] !== evt.target.text:
+        evt.target.clear();
+        break;
+
+    }
   }
 }
 

@@ -674,7 +674,7 @@ class DsignMenu extends OrderBehaviour(MergeTraslation(LocalizeMixin(ServiceInje
             interval: {
                 type: Number,
                 readOnly: true,
-                value: 100000
+                value: 150000
             },
 
             debugUrl: {
@@ -1239,6 +1239,11 @@ class DsignMenu extends OrderBehaviour(MergeTraslation(LocalizeMixin(ServiceInje
                     try {
                         this.menu = JSON.parse(request.response);
                         this._menuService.setMenu(this.menu);
+                        if (this._orderService.getCurrentOrder()) {
+                            if(this._orderService.getCurrentOrder().additionalInfo.menuId !== this.menu._id) {
+                                  this._orderService.setCurrentOrder(null);
+                            }
+                        }
                     } catch (error) {
                         console.warn('Unable to parse response');
                     }

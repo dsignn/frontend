@@ -261,7 +261,6 @@ class DsignOrderItem extends OrderBehaviour(LocalizeMixin(ServiceInjectorMixin(P
         return;
     }
 
-    console.log('MENU', menu);
     if (menu.fixed_menu && menu.fixed_menu.enable) { 
       this.$.price.style.display = 'none';
     } else {

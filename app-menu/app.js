@@ -41,6 +41,13 @@ orderLocalStorageAdapter.setIdentifier('id');
 orderLocalStorageAdapter.setFilterCallback(function(filter) {
 
     let dataToReturn = this.data;
+
+    if (filter.id) { 
+        dataToReturn = dataToReturn.filter((element) => {
+            console.log('check', element.id , filter.id, element.id === filter.id);
+            return element.id === filter.id ? filter.id : false;
+        })
+    }
     
     if (filter.name) {
         dataToReturn = dataToReturn.filter((element) => {
@@ -109,22 +116,26 @@ orderStorage.setHydrator(hydrator);
 container.set('OrderStorage', orderStorage);
 
 /**
- * Order service
+ * Menu service
  */
-
-let service = new OrderService(orderStorage);
-
-
-setInterval(
-    service.pollingCurrentOrder.bind(service), 
-    8000
-);
-
-container.set('OrderService', service);
-
-service = new MenuService();
+let service = new MenuService();
 service.setMenu(config.menu);
 container.set('MenuService', service);
+
+/**
+ * Order service
+ */
+ service = new OrderService(orderStorage);
+
+ service.setOrganization(config.menu.organization);
+
+ setInterval(
+     service.pollingCurrentOrder.bind(service), 
+     8000
+ );
+ 
+ container.set('OrderService', service);
+ 
 
 
 window.container = container;
