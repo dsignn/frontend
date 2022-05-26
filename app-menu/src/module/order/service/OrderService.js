@@ -89,7 +89,7 @@ export class OrderService extends EventManagerAware {
             await this.storage.adapter.updateLocal(order);
         }
      
-        console.log('CHANGEEEEEEEEEEEEE', order);
+        //console.log('CHANGEEEEEEEEEEEEE', order);
         this.currentOrder = order;
         this.getEventManager().emit(OrderService.CHANGE_DEFAUL_ORDER, order);
 
@@ -119,9 +119,7 @@ export class OrderService extends EventManagerAware {
                 throw 'Invalid status to send order';
         }
 
-        console.log('check', this.currentOrder.status, copy.status);
-          
-
+       // console.log('check', this.currentOrder.status, copy.status);
         this.storage[method](copy)
             .then((order) => {
 

@@ -109,6 +109,9 @@ export const OrderBehaviour = (superClass) => {
                 var itemOrder = arguments[0];
 
                 if (!this.currentOrder) {
+                    if (this.$.badgeMenu) {
+                        this.$.badgeMenu.style.visibility = 'hidden';
+                    }
                     return;
                 }
 

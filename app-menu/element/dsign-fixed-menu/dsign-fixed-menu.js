@@ -19,7 +19,7 @@ class DsignInfo extends PolymerElement {
         <style>
             :host {
                 bottom: 12px;
-                right: 12px;
+                right: 24px;
                 z-index: 1;
                 display: block;
                 position: fixed;

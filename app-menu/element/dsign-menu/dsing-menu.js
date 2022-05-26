@@ -40,7 +40,7 @@ import '../dsign-badge/dsing-badge';
 import '../dsign-logo/dsing-logo';
 import '../dsign-fixed-menu/dsign-fixed-menu';
 import '../dsign-order/dsign-order';
-import '../dsign-order/dsign-order-detail';
+import '../dsign-order-list/dsign-order-list';
 import { lang } from './language';
 import { OrderBehaviour } from '../mixin/order-behaviour/order-behaviour';
 
@@ -584,7 +584,7 @@ class DsignMenu extends OrderBehaviour(MergeTraslation(LocalizeMixin(ServiceInje
                 </div>
                 <div>
                     <dsign-order organization="[[organization]]" menu="[[menu]]"></dsign-order>
-                    <dsign-order-detail menu="[[menu]]"></dsign-order-detail>
+                    <dsign-order-list menu="[[menu]]"></dsign-order-list>
                 </div>
             </iron-pages>           
         </div>
@@ -674,7 +674,7 @@ class DsignMenu extends OrderBehaviour(MergeTraslation(LocalizeMixin(ServiceInje
             interval: {
                 type: Number,
                 readOnly: true,
-                value: 2000000
+                value: 100000
             },
 
             debugUrl: {

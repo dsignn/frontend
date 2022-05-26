@@ -59,7 +59,6 @@ orderLocalStorageAdapter.setFilterCallback(function(filter) {
      
         dataToReturn = dataToReturn.filter((element) => {
             let res =  element.additionalInfo ? element.additionalInfo.menuId === filter.menuId : false;
-            console.log('res', res);
             return res;
         })
     }
@@ -77,7 +76,6 @@ orderLocalStorageAdapter.setFilterCallback(function(filter) {
              return -1;
          }
     });
-    console.log('TOT', dataToReturn);
     return dataToReturn;
 }.bind(orderLocalStorageAdapter));
 

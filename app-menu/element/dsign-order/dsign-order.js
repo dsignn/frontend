@@ -724,8 +724,6 @@ class DsignOrder extends OrderBehaviour(LocalizeMixin(ServiceInjectorMixin(Polym
    * 
    */
   _getOrders() {
-    console.log('org', this.organization._id);
-    console.log('menu', this.menu._id);
     this._orderService.getStorage()
       .getPaged(this.page, this.itemPerPage, { 'restaurantId': this.organization._id , 'menuId': this.menu._id})
       .then((pagination) => {
@@ -770,7 +768,6 @@ class DsignOrder extends OrderBehaviour(LocalizeMixin(ServiceInjectorMixin(Polym
   }
 
   _autocompleteReset(evt) {
-    console.log('RESETTAAAAAAAAAAAAAAAAAAAAAA');
     this._orderService.setCurrentOrder(null);
   }
 }

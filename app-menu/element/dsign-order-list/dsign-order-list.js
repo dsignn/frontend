@@ -22,16 +22,17 @@ import '@polymer/paper-tooltip/paper-tooltip';
 import '@polymer/paper-dialog/paper-dialog';
 import '@polymer/paper-button/paper-button';
 import '@polymer/paper-icon-button/paper-icon-button';
-import { lang } from './language-details';
+import { lang } from './language';
 import { OrderBehaviour } from '../mixin/order-behaviour/order-behaviour';
 import { OrderService } from '../../src/module/order/service/OrderService';
+import '../dsign-order-item/dsign-order-item';
 import { OrderItemWrapper } from '../../src/module/order/entity/embedded/OrderItemWrapper';
 import { set } from '@polymer/polymer/lib/utils/path';
 
 /** 
- * @class DsignOrderDetail
+ * @class DsignOrderList
  */
-class DsignOrderDetail extends OrderBehaviour(LocalizeMixin(ServiceInjectorMixin(PolymerElement))) {
+class DsignOrderList extends OrderBehaviour(LocalizeMixin(ServiceInjectorMixin(PolymerElement))) {
 
   static get template() {
     return html`
@@ -171,32 +172,9 @@ class DsignOrderDetail extends OrderBehaviour(LocalizeMixin(ServiceInjectorMixin
           </style>       
             <div class="container">
               <div class="wrapper">
-                <dom-repeat id="menu" items="{{items}}" as="itemOrder">
+                <dom-repeat id="menu" items="{{items}}" as="item">
                   <template>
-                    <paper-card elevation="1">
-                        <div class="data">
-                          <div>[[getNameItemOrder(itemOrder.ordered)]]</div>
-                          <div class="info">
-                            <dsign-badge for="badge-to-do-{{index}}" label="[[getTotalItemOrder(itemOrder.ordered, toDo)]]" offset-x="-2" offset-y="1"></dsign-badge>
-                            <div id="badge-to-do-{{index}}" class="status to-do"></div>
-                            <paper-tooltip for="badge-to-do-{{index}}" position="right">{{localize('dish-in-preparation')}}</paper-tooltip>
-                            <dsign-badge for="badge-delivered-{{index}}" label="[[getTotalItemOrder(itemOrder.ordered, delivered)]]" offset-x="-2" offset-y="1"></dsign-badge>
-                            <div id="badge-delivered-{{index}}" class="status delivered"></div>
-                            <paper-tooltip for="badge-delivered-{{index}}" position="right">{{localize('dish-delivered')}}</paper-tooltip>
-                            <dsign-badge for="badge-terminate-{{index}}" label="[[getTotalItemOrder(itemOrder.ordered, terminate)]]" offset-x="-2" offset-y="1"></dsign-badge>
-                            <div id="badge-terminate-{{index}}" class="status terminate"></div>
-                            <paper-tooltip for="badge-terminate-{{index}}" position="right">{{localize('dish-terminated')}}</paper-tooltip>
-                            <div class="price">
-                              <label>{{localize('total')}}</label>
-                              <div>[[getOrderItemPrice(itemOrder.ordered)]]</div>
-                            </div>
-                          </div>
-                        </div>
-                        <div class="action">
-                          <paper-icon-button id="remove" icon="remove" item-order="{{itemOrder.ordered}}" on-tap="removeItemOrder" disabled="{{disableOrder}}"></paper-icon-button>
-                          <paper-icon-button id="add" icon="add" item-order="{{itemOrder.ordered}}" on-tap="addItemOrder" disabled="{{disableOrder}}"></paper-icon-button>
-                        </div
-                        </paper-card>
+                    <dsign-order-item item="{{item}}" menu="[[menu]]"></dsign-order-item>
                   </template>
                   <template is="dom-if" if="{{!hasDishis(items)}}">
                     TODO
@@ -214,8 +192,7 @@ class DsignOrderDetail extends OrderBehaviour(LocalizeMixin(ServiceInjectorMixin
       },
 
       menu: {
-        notify: true,
-        observer: 'changeMenu'
+        notify: true
       },
 
       services: {
@@ -229,18 +206,6 @@ class DsignOrderDetail extends OrderBehaviour(LocalizeMixin(ServiceInjectorMixin
       _orderService: {
         readOnly: true,
         observer: 'changeOrderService'
-      },
-
-      toDo: {
-        value: OrderItemWrapper.STATUS_TO_DO
-      },
-
-      terminate: {
-        value: OrderItemWrapper.STATUS_TERMINATE
-      },
-
-      delivered: {
-        value: OrderItemWrapper.STATUS_DELIVERED
       }
     };
   }
@@ -257,31 +222,6 @@ class DsignOrderDetail extends OrderBehaviour(LocalizeMixin(ServiceInjectorMixin
       this.style.height = (window.innerHeight - ret.top) + 'px';
     }).observe(this)
 
-  }
-
-
-  changeMenu(menu) {
-    if (!menu) {
-        return;
-    }
-
-    // TODO refector
-    setTimeout( function() {
-
-        let nodes = this.shadowRoot.querySelectorAll('.price');
-
-        nodes.forEach(
-          (currentValue, currentIndex) => {
-            
-            if (menu.fixed_menu && menu.fixed_menu.enable) { 
-              currentValue.style.display = 'none';
-            } else {
-              currentValue.style.display = 'flex';
-            }
-          }
-        );
-      }.bind(this), 
-      500);
   }
 
   /**
@@ -332,4 +272,4 @@ class DsignOrderDetail extends OrderBehaviour(LocalizeMixin(ServiceInjectorMixin
 
 }
 
-window.customElements.define('dsign-order-detail', DsignOrderDetail);
+window.customElements.define('dsign-order-list', DsignOrderList);
