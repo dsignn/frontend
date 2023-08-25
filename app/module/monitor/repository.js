@@ -76,6 +76,7 @@ export class Repository extends ContainerAware {
     initAcl() {
         this.getContainer().get('Acl').addResource('monitor');
         this.getContainer().get('Acl').allow('admin', 'monitor', 'menu')
+        this.getContainer().get('Acl').allow('organizationOwner', 'monitor', 'menu');
     }
 
     /**

@@ -67,10 +67,6 @@ class UserMe extends StorageCrudMixin(FormErrorMessage(ServiceInjectorMixin(Poly
                             <paper-input name="lastName" label="{{localize('surname')}}" value="{{userData.lastName}}" ></paper-input>
                         </div>
                     </div>
-                    <paper-input name="email" label="{{localize('email')}}" value="{{userData.email}}"></paper-input>
-                    <paper-input name="password" type="password" label="{{localize('password')}}"></paper-input>
-                    <paper-input name="recoverPassword" type="password" label="{{localize('repeat-password')}}" skip></paper-input>
-                    <!--<paper-select-language></paper-select-language>-->
                 </form>
             </iron-form>`;
     }
