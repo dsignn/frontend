@@ -14,7 +14,6 @@ import { AclMixin } from "@dsign/polymer-mixin/acl/acl-mixin";
 import { ServiceInjectorMixin } from "@dsign/polymer-mixin/service/injector-mixin.js";
 import { lang } from './language.js';
 // TODO add to widget load
-import './../../../restaurant/element/widget/active-menu/active-menu.js';
 import { Auth } from "../../../../src/authentication/Auth";
 
 
@@ -1130,7 +1129,7 @@ class DashboardIndex extends LocalizeMixin(AclMixin(ServiceInjectorMixin(Polymer
       },
 
       _config: {
-        observer: 'changeConfig'
+
       },
 
       restaurants: {
@@ -1220,115 +1219,8 @@ class DashboardIndex extends LocalizeMixin(AclMixin(ServiceInjectorMixin(Polymer
     }
   }
 
-  /**
-   * @param {*} config 
-   */
-  changeConfig(config) {
-    this.getRestaurantWithMenu()
-      .then((data) => {
-        this.restaurants = data;
-      });
-  }
 
-  nextReview() {
-    let elements = this.shadowRoot.querySelectorAll('.review');
-    let current = this._getCurrentActiveReviewIndex(elements);
-    let next = current === (elements.length - 1) ? 0 : current + 1;
-
-    this._updateDot(next);
-
-    setTimeout(
-      () => {
-        elements[next].style.display = 'none';
-        elements[next].style.right = '1500px';
-      },
-      10
-    );
-
-    setTimeout(
-      () => {
-        elements[next].style.display = 'block';
-      },
-      50
-    );
-
-    setTimeout(
-      () => {
-        elements[current].style.right = '-1500px';
-        elements[current].classList.remove('active');
-        elements[next].classList.add('active');
-        elements[next].style.right = '0';
-      },
-      100
-    );
-  }
-
-  /**
-   * @param {object} restaurant 
-   */
-  getBackgroundCard(restaurant) {
-    if (restaurant && restaurant.logo && restaurant.logo.src) {
-      return restaurant.logo.src;
-    }
-    return '';
-  }
-
-  /**
-   * @param {object} restaurant
-   * @param {string} type 
-   */
-  enableMenuCard(restaurant, type) {
-
-    if (restaurant.menus.length > 1) {
-      return 'block';
-    }
-
-    if (restaurant.menus[0].status === type) {
-      return 'block';
-    }
-
-    return 'none';
-  }
-
-  /**
-   * Load restaurant
-   */
-  getRestaurantWithMenu() {
-    return new Promise((resolve, reject) => {
-      let request = new XMLHttpRequest();
-
-      request.addEventListener("load", (data) => {
-
-        if (request.status >= 300) {
-          let response = {
-            status: request.status,
-            message: request.responseText
-          };
-
-          return reject(response)
-        }
-        resolve(JSON.parse(request.response));
-      });
-      request.open("GET", `${this._config.rest.path}/organization/enable-menu`);
-      request.setRequestHeader('Accept', 'application/json');
-      request.send();
-    });
-  }
-
-  /**
-   * @returns {number}
-   * @private
-   */
-  _getCurrentActiveReviewIndex(elements) {
-    let index;
-    for (index = 0; index < elements.length; index++) {
-      if (elements[index].classList.contains('active')) {
-        break;
-      }
-    }
-    return index;
-  }
-
+  
   /**
    *
    */

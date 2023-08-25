@@ -56,16 +56,8 @@ class DsignSignup extends FormErrorMessage(AclMixin(ServiceInjectorMixin(Polymer
               <paper-input id="email" name="email" label="{{localize('email')}}" required></paper-input>
               <paper-input id="password" type="password" name="password" label="{{localize('password')}}" required></paper-input>
               <paper-input name="confirmPassword" type="password" label="{{localize('repeat-password')}}" required></paper-input>
-              <paper-input name="roleId" value="restaurantOwner" hidden></paper-input>
+              <paper-input name="roleId" value="organizationOwner" hidden></paper-input>
               <paper-input id="nameOrganization" name="nameOrganization" label="{{localize('name-restaurant')}}" on-value-changed="changeNameRestaurant" required></paper-input>
-              <paper-input 
-                id="url"
-                label="{{localize('url')}}" 
-                value="{{url}}"
-                always-float-label
-                disabled>
-                <div class="url" slot="prefix">{{_getUrl(_config.app.menuPath)}}/</div>
-              </paper-input>
               <paper-button on-tap="submitSignupButton">{{localize('signup')}}</paper-button>
             </form>
           </iron-form>
