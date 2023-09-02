@@ -13,11 +13,12 @@ import {HydratorStrategy} from "@dsign/library/src/hydrator/strategy/value/Hydra
 import {HybridStrategy} from "@dsign/library/src/hydrator/strategy/value/HybridStrategy";
 import {NumberStrategy} from "@dsign/library/src/hydrator/strategy/value/NumberStrategy";
 import {MapPropertyStrategy} from "@dsign/library/src/hydrator/strategy/proprerty/MapPropertyStrategy";
+import {AbstractRepository} from "../../src/AbstractRepository";
 
 /**
  * @class Repository
  */
-export class Repository extends ContainerAware {
+export class Repository extends AbstractRepository {
 
     /**
      * @return {string}
@@ -95,6 +96,8 @@ export class Repository extends ContainerAware {
             .addHeader(    'Accept', 'application/json');
 
         let storage = new Storage(adapterStorage);
+
+        this.injectAuthHeader(adapterStorage);
         storage.setHydrator(this.getContainer().get('HydratorContainerAggregate')
             .get(Repository.MONITOR_CONTAINER_HYDRATOR_SERVICE)
         );

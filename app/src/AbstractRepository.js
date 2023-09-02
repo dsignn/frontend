@@ -15,15 +15,16 @@ export class AbstractRepository extends ContainerAware {
 
         this.getContainer().get('Auth').eventManager.on(Auth.LOGIN, (data) => {
             //console.log('TODO ADD HEADER', data);
-            adapter.addHeader('Authorization', `Bearer ${this.getContainer().get('Auth').token.access_token}`);
+            adapter.addHeader('Authorization', `Bearer ${this.getContainer().get('Auth').getToken().access_token}`);
         });
 
         this.getContainer().get('Auth').eventManager.on(Auth.LOGOUT, (data) => {
             adapter.removeHeader('Authorization');
         });
 
-        if(this.getContainer().get('Auth') && this.getContainer().get('Auth').token) {
-            adapter.addHeader('Authorization', `Bearer ${this.getContainer().get('Auth').token.access_token}`);
+        if(this.getContainer().get('Auth') && this.getContainer().get('Auth').getToken()) {
+            console.log('DIO CANE');
+            adapter.addHeader('Authorization', `Bearer ${this.getContainer().get('Auth').getToken().access_token}`);
         }
     }
 }

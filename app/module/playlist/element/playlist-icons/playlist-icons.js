@@ -11,10 +11,12 @@
 import '@polymer/iron-iconset-svg/iron-iconset-svg.js';
 
 const $_documentContainer = document.createElement('template');
-$_documentContainer.innerHTML = `<iron-iconset-svg name="monitor" size="24">
+$_documentContainer.innerHTML = `<iron-iconset-svg name="playlist" size="24">
   <svg>
     <defs>
-      <g id="menu"><path d="M21 3H3c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h18c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm-9 9H3V5h9v7z"></path></g>
+      <g id="menu">
+        <g id="menu"><path d="M19,9H2V11H19V9M19,5H2V7H19V5M2,15H15V13H2V15M17,13V19L22,16L17,13Z"/></g>       
+      </g>
     </defs>
   </svg>
 </iron-iconset-svg>`;

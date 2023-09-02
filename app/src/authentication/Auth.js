@@ -60,6 +60,7 @@ export class Auth extends EventManagerAware {
          * @type {null}
          */
         this.token = null;
+
         if (localStorage.getItem('token')) {
             this._setToken(JSON.parse(localStorage.getItem('token')));
             this.eventManager.emit(Auth.LOGIN, this.token);
@@ -82,10 +83,17 @@ export class Auth extends EventManagerAware {
     }
 
     /**
-     * @returns {null}
+     * @returns {object}
      */
     getIdentity() {
         return this.identity;
+    }
+
+    /**
+     * @returns {string}
+     */
+    getToken() {
+        return this.token;
     }
 
     /**
