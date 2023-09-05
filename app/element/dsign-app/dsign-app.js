@@ -55,8 +55,7 @@ class DsignApp extends LocalizeMixin(AclMixin(ServiceInjectorMixin(PolymerElemen
        }
        
         app-header-layout {
-          /**  margin-left: 64px;*/
-          visibility: visible;
+            display:block;
         }
        
         app-header {
@@ -74,12 +73,13 @@ class DsignApp extends LocalizeMixin(AclMixin(ServiceInjectorMixin(PolymerElemen
           left: 0;
           background-color: white; 
           width: 64px;
-          position: fixed;
+          position: absolute;
           display: none;
         }
         
-        .content-pages {
-           height: 100%;
+        .content {
+          margin-left: 64pX;
+          width: 100%;
         }
         
         .name-module {
@@ -132,9 +132,15 @@ class DsignApp extends LocalizeMixin(AclMixin(ServiceInjectorMixin(PolymerElemen
              @apply --layout-justified;
         }
         
+        @media (max-width: 700px) {
+          app-toolbar {
+            padding-left: 4px;
+          }
+        }
+        
         @media only screen and (max-width: 499px) {
             app-header-layout {
-            overflow-x: hidden;
+              overflow-x: hidden;
             }
         }
         
@@ -144,33 +150,35 @@ class DsignApp extends LocalizeMixin(AclMixin(ServiceInjectorMixin(PolymerElemen
             }
             
             .auth-container {
-             width: 292px;
+              width: 292px;
             }
         }        
       </style>
 
       <app-location route="{{route}}" url-space-regex="^[[rootPath]]"></app-location>
-
-      <app-route route="{{route}}" pattern="[[rootPath]]:page" data="{{routeData}}" tail="{{subroute}}" query-params="{{query}}"></app-route>
+      <app-route route="{{route}}" pattern="[[rootPath]]:page" data="{{routeData}}" tail="{{subRoute}}" query-params="{{query}}"></app-route>
      
-      <div id="menuStatic">
-        <iron-selector id="menuStaticSelector" selected="[[page]]" attr-for-selected="name" class="drawer-list" role="navigation">
-        </iron-selector>
-      </div>
+
       <app-header-layout fullbleed>
         <app-header slot="header" fixed effects="waterfall">
           <app-toolbar>
-            <paper-icon-button id="menuBtn" icon="menu" on-tap="tapMenuDrawer"></paper-icon-button>
-            <div main-title>Dsing</div>
+            <paper-icon-button id="menuBtn" icon="menu" on-tap="tapMenuDrawer" style="margin-right: 28px;"></paper-icon-button>
+            <div main-title class="main-title">Dsing</div>
             <paper-icon-button icon="account" on-tap="tapAuthDrawer"></paper-icon-button>
           </app-toolbar>
         </app-header>
-        <div class="content-pages">
-          <iron-pages id="moduleEntryPoint" selected="[[page]]" attr-for-selected="name" role="main">
-            <activation-code root-path="[[rootPath]]" query={{query}} name="activation-code"></activation-code>
-            <reset-password query={{query}} name="reset-password"></reset-password>
-            <dsing-404 name="404" root-path="[[rootPath]]dashboard"></dsing-404>
-          </iron-pages>
+        <div class="layout-container layout-horizontal" style="display:flex; flex-direction: row; position:relative;">
+          <div id="menuStatic">
+            <iron-selector id="menuStaticSelector" selected="[[page]]" attr-for-selected="name" class="drawer-list" role="navigation">
+            </iron-selector>
+          </div>
+          <div id="content" class="content">
+            <iron-pages id="moduleEntryPoint" selected="[[page]]" attr-for-selected="name" role="main">
+              <activation-code root-path="[[rootPath]]" query={{query}} name="activation-code"></activation-code>
+              <reset-password query={{query}} name="reset-password"></reset-password>
+              <dsing-404 name="404" root-path="[[rootPath]]dashboard"></dsing-404>
+            </iron-pages>
+          </div>
         </div>
       </app-header-layout>
       <app-drawer id="menuDrawer" align="left" swipe-open open>
@@ -221,7 +229,7 @@ class DsignApp extends LocalizeMixin(AclMixin(ServiceInjectorMixin(PolymerElemen
         value: Object
       },
 
-      subroute: {
+      subRoute: {
         value: Object
       },
 
@@ -260,9 +268,7 @@ class DsignApp extends LocalizeMixin(AclMixin(ServiceInjectorMixin(PolymerElemen
     ];
   }
 
-  /**
-   * @event
-   */
+  
   connectedCallback() {
     super.connectedCallback();
     this.updateHeightMenu();
@@ -272,10 +278,7 @@ class DsignApp extends LocalizeMixin(AclMixin(ServiceInjectorMixin(PolymerElemen
     };
   }
 
-  /**
-   * @param application
-   * @private
-   */
+
   _applicationChanged(application) {
 
     let entryPoint;
@@ -299,10 +302,7 @@ class DsignApp extends LocalizeMixin(AclMixin(ServiceInjectorMixin(PolymerElemen
     }
   }
 
-  /**
-   * @param page
-   * @private
-   */
+
   _routePageChanged(page, application) {
 
     if (!page || !application) {
@@ -320,39 +320,25 @@ class DsignApp extends LocalizeMixin(AclMixin(ServiceInjectorMixin(PolymerElemen
     }
   }
 
-  /**
-   *
-   * @param Event event
-   */
+
   tapMenuDrawer(event) {
     this.$.menuDrawer.open();
   }
 
-  /**
-   * @param event
-   */
+
   tapAuthDrawer(event) {
     this.$.authDrawer.open();
   }
 
-  /**
-   * @param evt
-   */
   logout(evt) {
     this._authService.logout();
   }
 
-  /**
-   *
-   */
   hideMenu() {
     this.hideSmallMenu();
     this.hideBigMenu();
   }
 
-  /**
-   *
-   */
   showMenu() {
     if (window.innerWidth > 700) {
       this.showBigMenu();
@@ -363,55 +349,38 @@ class DsignApp extends LocalizeMixin(AclMixin(ServiceInjectorMixin(PolymerElemen
     }
   }
 
-  /**
-   *
-   */
   showBigMenu() {
     this.$.menuStatic.style.display = 'block';
-    this.shadowRoot.querySelector('app-header-layout').style.marginLeft = '64px';
-    this.shadowRoot.querySelector('app-header').style.left = '64px';
+   // this.shadowRoot.querySelector('app-header-layout').style.marginLeft = '64px';
+   // this.shadowRoot.querySelector('app-header').style.left = '64px';
+    this.$.content.style.marginLeft = '64px';
   }
 
   hideBigMenu() {
     this.$.menuStatic.style.display = 'none';
-    this.shadowRoot.querySelector('app-header-layout').style.marginLeft = '0';
-    this.shadowRoot.querySelector('app-header').style.left = '0';
+    this.$.content.style.marginLeft = '0';
+ //   this.shadowRoot.querySelector('app-header-layout').style.marginLeft = '0';
+ //   this.shadowRoot.querySelector('app-header').style.left = '0';
   }
 
-  /**
-   *
-   */
   showSmallMenu() {
     this.$.menuBtn.style.display = 'block'
   }
 
-  /**
-   *
-   */
   hideSmallMenu() {
     this.$.menuBtn.style.display = 'none'
   }
 
-  /**
-   *
-   */
   updateMenuVisibility() {
       if (this._authService && this._authService.getIdentity()) {
         this.showMenu();
       }
   }
 
-  /**
-   *
-   */
   updateHeightMenu() {
     this.$.menuStatic.style.height = `${this._getMaxHeight()}px`;
   }
 
-  /**
-   * @returns {number}
-   * @private
-   */
   _getMaxHeight() {
     let body = document.body,
         html = document.documentElement;
@@ -458,9 +427,6 @@ class DsignApp extends LocalizeMixin(AclMixin(ServiceInjectorMixin(PolymerElemen
     }
   }
 
-  /**
-   * @private
-   */
   _redirectRoleView() {
     if (!this._aclService.isAllowed(this._aclService.getRole(), this.page)) {
       window.history.pushState("", "", "");
@@ -468,12 +434,10 @@ class DsignApp extends LocalizeMixin(AclMixin(ServiceInjectorMixin(PolymerElemen
     }
   }
 
-  /**
-   * @param evt
-   */
   updateUserData(evt) {
     this.shadowRoot.querySelector('user-me').updateUserData();
   }
+  
 }
 
 window.customElements.define('dsign-app', DsignApp);

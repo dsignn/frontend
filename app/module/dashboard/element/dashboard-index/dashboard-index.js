@@ -1096,7 +1096,7 @@ class DashboardIndex extends LocalizeMixin(AclMixin(ServiceInjectorMixin(Polymer
           </footer>
         </template>
         <template is="dom-if" if="{{isAllowed('dashboard', 'index-logged')}}">
-            <active-menu></active-menu>
+            dashboard
         </template>`;
   }
 
