@@ -119,10 +119,6 @@ class DsignApp extends LocalizeMixin(AclMixin(ServiceInjectorMixin(PolymerElemen
             margin-bottom: 20px;
         }
         
-        #menuBtn {
-            : none;
-        }
-        
         #menuDrawer {
             --app-drawer-width: 64px;
         }
@@ -130,12 +126,6 @@ class DsignApp extends LocalizeMixin(AclMixin(ServiceInjectorMixin(PolymerElemen
         .user-me-container {
              @apply --layout-horizontal;
              @apply --layout-justified;
-        }
-        
-        @media (max-width: 700px) {
-          app-toolbar {
-            padding-left: 4px;
-          }
         }
         
         @media only screen and (max-width: 499px) {
