@@ -20,7 +20,6 @@ class ResourceViewList extends RefreshCollectionData(StorageCrudMixin(LocalizeMi
             <style>
 
                 #container {
-                    padding: var(--padding-top-view-list);
                     @apply --layout-horizontal;
                     @apply --layout-wrap;
                 }

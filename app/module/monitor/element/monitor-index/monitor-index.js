@@ -8,6 +8,7 @@ import '@polymer/paper-tooltip/paper-tooltip';
 import '@polymer/iron-pages/iron-pages';
 import '../monitor-view-list/monitor-view-list';
 import '../monitor-view-upsert/monitor-view-upsert';
+import './../../../../element/paper-filter-storage/paper-filter-storage'
 import {lang} from './language';
 
 /**
@@ -19,27 +20,41 @@ class MonitorIndex extends LocalizeMixin(ServiceInjectorMixin(PolymerElement)) {
         return html`
        <style >
        
-       .header {
-          @apply --layout-horizontal;
-          @apply --layout-center;
-          padding: 10px 20px;
-       }
-       
-       .text-content {
-          font-size: 20px;
-          flex: 1;
-       }
-       
-       .circle {
-            @apply --paper-icon-button-action;
-       }
+        .header {
+            @apply --layout-horizontal;
+            @apply --layout-center;
+            padding-bottom: 8px;
+        }
+        
+        .text-content {
+            font-size: 20px;
+            flex: 1;
+        }
+        
+        .circle {
+                @apply --paper-icon-button-action;
+        }
+        
+        paper-filter-storage {
+            flex: 1;
+            --paper-filter-storage : {
+                align-items: center;
+                display: flex;
+                min-height: 70px;
+                width: -webkit-fill-available;
+            }
+        }
        
        </style>
        <iron-pages id="index" selected="{{selected}}">
             <div id="list">
                 <monitor-view-list selected="{{selected}}" entity-selected="{{entitySelected}}">
                     <div slot="header" class="header">
-                        <div class="text-content">{{localize('list-monitor')}}</div>
+                        <paper-filter-storage id="filterStorage" on-value-changed="_filterChange">
+                            <div slot="filters" class="filter-container">
+                                <paper-input name="name" label="{{localize('name')}}" ></paper-input>
+                            </div>
+                        </paper-filter-storage>
                         <paper-icon-button id="iconInsertMonitor" icon="insert" class="circle" on-click="displayAddView"></paper-icon-button>
                         <paper-tooltip for="iconInsertMonitor" position="left">{{localize('insert-monitor')}}</paper-tooltip>
                      </div>
