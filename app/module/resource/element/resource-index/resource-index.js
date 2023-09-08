@@ -17,7 +17,6 @@ class ResourceIndex extends LocalizeMixin(ServiceInjectorMixin(PolymerElement)) 
 
     static get template() {
         return html`
-         
             <style>
                    
                .header {
@@ -44,7 +43,6 @@ class ResourceIndex extends LocalizeMixin(ServiceInjectorMixin(PolymerElement)) 
                         min-height: 70px;
                         width: -webkit-fill-available;
                         margin-right: 8px;
-
                     }
                 }
             </style>

@@ -18,9 +18,9 @@ import { Auth } from "../../../../src/authentication/Auth.js";
 
 
 /**
- * @class DeviceIndex
+ * @class PlaylistIndex
  */
-class DeviceIndex extends LocalizeMixin(AclMixin(ServiceInjectorMixin(PolymerElement))) {
+class PlaylistIndex extends LocalizeMixin(AclMixin(ServiceInjectorMixin(PolymerElement))) {
 
   static get template() {
     return html`
@@ -29,7 +29,7 @@ class DeviceIndex extends LocalizeMixin(AclMixin(ServiceInjectorMixin(PolymerEle
 
         
       </style>
-    device`;
+    playlisgggggggggt`;
   }
 
   constructor() {
@@ -192,5 +192,5 @@ class DeviceIndex extends LocalizeMixin(AclMixin(ServiceInjectorMixin(PolymerEle
 
 }
 
-window.customElements.define('device-index', DeviceIndex);
+window.customElements.define('playlist-index', PlaylistIndex);
 

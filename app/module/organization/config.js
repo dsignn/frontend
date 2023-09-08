@@ -4,7 +4,7 @@
 export const config = {
     rest: {
         resources: {
-            playlist: {
+            organization: {
                 name: "organization"
             }
         }

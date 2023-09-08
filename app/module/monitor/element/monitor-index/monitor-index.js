@@ -32,16 +32,18 @@ class MonitorIndex extends LocalizeMixin(ServiceInjectorMixin(PolymerElement)) {
         }
         
         .circle {
-                @apply --paper-icon-button-action;
+            @apply --paper-icon-button-action;
         }
         
         paper-filter-storage {
             flex: 1;
             --paper-filter-storage : {
+                padding: 0 8px;
                 align-items: center;
                 display: flex;
                 min-height: 70px;
                 width: -webkit-fill-available;
+                margin-right: 8px;
             }
         }
        

@@ -1,20 +1,18 @@
 export const lang = {
   "it": {
-    "email": "Email",
-    "password" : "Password",
-    "repeat-password" : "Ripeti password",
-    "signup": "Registrati",
-    "signup-ok": "Registrazione eseguita con successo verrà inviata una mail per completare la registrazione",
-    "thinking": "Hai mai pensato a un menu digitale per il tuo ristorante?",
-    "find-more": "Scopri di piu"
+    "list-playlist": "Lista playlist",
+    "insert-playlist" : "Inserisci playlist",
+    "update-playlist" : "Modifica playlist",
+    "back" : "Torna indietro",
+    "playlist-data": "Dati playlist",
+    "name": "Nome",
   },
   "en": {
-    "email": "Email",
-    "password" : "Password",
-    "repeat-password" : "Repeat password",
-    "signup": "Signup",
-    "signup-ok": "Registrazione eseguita con successo verrà inviata una mail per completare la registrazione",
-    "thinking": "Hai mai pensato a un menu digitale per il tuo ristorante?",
-    "find-more": "Scopri di piu"
+    "list-playlist": "List playlist",
+    "insert-playlist" : "Insert playlist",
+    "update-playlist" : "Update playlist",
+    "back" : "Back",
+    "playlist-data": "playlist data",
+    "name": "Name",
   }
 };

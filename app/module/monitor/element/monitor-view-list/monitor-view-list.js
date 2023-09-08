@@ -16,7 +16,6 @@ class MonitorViewList extends StoragePaginationMixin(LocalizeMixin(ServiceInject
         <style>
         
             #container {
-                padding: var(--padding-top-view-list);
                 @apply --layout-horizontal;
                 @apply --layout-wrap;
             }

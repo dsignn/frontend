@@ -14,34 +14,88 @@ import { AclMixin } from "@dsign/polymer-mixin/acl/acl-mixin";
 import { ServiceInjectorMixin } from "@dsign/polymer-mixin/service/injector-mixin.js";
 import { lang } from './language.js';
 // TODO add to widget load
+
+import './../organization-view-list/organization-view-list'
+import './../../../../element/paper-filter-storage/paper-filter-storage'
 import { Auth } from "../../../../src/authentication/Auth.js";
 
 
 /**
- * @class PlaylistIndex
+ * @class OrganizationIndex
  */
-class PlaylistIndex extends LocalizeMixin(AclMixin(ServiceInjectorMixin(PolymerElement))) {
+class OrganizationIndex extends LocalizeMixin(AclMixin(ServiceInjectorMixin(PolymerElement))) {
 
   static get template() {
     return html`
-      <style>
-      
-
+      <style>             
+        .header {
+          @apply --layout-horizontal;
+          @apply --layout-center;
+          padding-bottom: 8px;
+        }
         
+      .text-content {
+          font-size: 20px;
+          flex: 1;
+        }
+        
+        paper-icon-button.circle {
+            @apply --paper-icon-button-action;
+        }
+
+        paper-filter-storage {
+            flex: 1;
+            --paper-filter-storage : {
+                padding: 0 8px;
+                align-items: center;
+                display: flex;
+                min-height: 70px;
+                width: -webkit-fill-available;
+                margin-right: 8px;
+            }
+        }
       </style>
-    playlist`;
+      <iron-pages id="index" selected="{{selected}}">
+          <div id="list"> 
+              <organization-view-list selected="{{selected}}" entity-selected="{{entitySelected}}">
+                  <div slot="header" class="header">
+                      <paper-filter-storage id="filterStorage" on-value-changed="_filterChange">
+                          <div slot="filters" class="filter-container">
+                              <paper-input name="name" label="{{localize('name')}}" ></paper-input>
+                          </div>
+                      </paper-filter-storage>
+                      <paper-icon-button id="iconInsertMonitor" icon="insert" class="circle" on-click="displayAddView"></paper-icon-button>
+                      <paper-tooltip for="iconInsertMonitor" position="left">{{localize('insert-resource')}}</paper-tooltip>
+                    </div>
+              </organization-view-list>
+          </div>
+          <div id="insert"> 
+          insert
+              <organization-view-upsert>
+                  <div slot="header" class="header">
+                      <div class="text-content">{{localize('insert-resource')}}</div>
+                      <paper-icon-button id="iconBackInsert" icon="arrow-back" class="circle" on-click="displayListView"></paper-icon-button>
+                      <paper-tooltip for="iconBackInsert" position="left">{{localize('back')}}</paper-tooltip>
+                  </div>
+              </organization-view-upsert>
+          </div>
+          <div id="update"> 
+              update
+              <organization-view-upsert entity="{{entitySelected}}">
+                  <div slot="header" class="header">
+                      <div class="text-content">{{localize('update-resource')}}</div>
+                      <paper-icon-button id="iconBackUpdate" icon="arrow-back" class="circle" on-click="displayListView"></paper-icon-button>
+                      <paper-tooltip for="iconBackUpdate" position="left">{{localize('back')}}</paper-tooltip>
+                  </div>
+              </organization-view-upsert>
+          </div>
+      </iron-pages>`;
   }
 
   constructor() {
     super();
     this.resources = lang;
   }
-
-  connectedCallback() {
-    super.connectedCallback();
-    this.initReviewDiv();
-  }
-
 
   static get properties() {
     return {
@@ -63,59 +117,8 @@ class PlaylistIndex extends LocalizeMixin(AclMixin(ServiceInjectorMixin(PolymerE
       _config: {
 
       },
-
-      restaurants: {
-        value: [],
-      }
     };
   }
-
-  /**
-   * @param next
-   * @private
-   */
-  _updateDot(next) {
-    let dots = this.shadowRoot.querySelectorAll('.navigation span');
-    for (let index = 0; dots.length > index; index++) {
-      dots[index].classList.remove('active');
-      if (index === next) {
-        dots[index].classList.add('active');
-      }
-    }
-  }
-
-  prevReview() {
-    let elements = this.shadowRoot.querySelectorAll('.review');
-    let current = this._getCurrentActiveReviewIndex(elements);
-    let next = current === 0 ? elements.length - 1 : current - 1;
-
-    this._updateDot(next);
-
-    setTimeout(
-      () => {
-        elements[next].style.display = 'none';
-        elements[next].style.right = '-1500px';
-      },
-      10
-    );
-
-    setTimeout(
-      () => {
-        elements[next].style.display = 'block';
-      },
-      50
-    );
-
-    setTimeout(
-      () => {
-        elements[current].style.right = '1500px';
-        elements[current].classList.remove('active');
-        elements[next].style.right = '0';
-        elements[next].classList.add('active');
-      },
-      100
-    );
-  };
 
   /**
    * @param authService
@@ -151,22 +154,6 @@ class PlaylistIndex extends LocalizeMixin(AclMixin(ServiceInjectorMixin(PolymerE
     }
   }
 
-
-  
-  /**
-   *
-   */
-  initReviewDiv() {
-    let elements = this.shadowRoot.querySelectorAll('.review');
-    for (let index = 0; index < elements.length; index++) {
-      if (!elements[index].classList.contains('active')) {
-        elements[index].style.right = '1200px';
-      } else {
-        elements[index].style.right = '0';
-      }
-    }
-  }
-
   /**
    * @param evt
    */
@@ -175,22 +162,7 @@ class PlaylistIndex extends LocalizeMixin(AclMixin(ServiceInjectorMixin(PolymerE
     drawer.querySelector('paper-tabs').selected = 1;
     drawer.open();
   }
-
-  /**
-   * @param {CustomEvent} evt 
-   */
-  openIndoor(evt) {
-    window.open(`${this._config.app.menuPath}/${evt.target.parentElement.restaurant.normalize_name}`, "_blank")
-  }
-
-  /**
-   * @param {CustomEvent} evt 
-   */
-  openDelivery(evt) {
-    window.open(`${this._config.app.menuPath}/${evt.target.parentElement.restaurant.normalize_name}?delivery`, "_blank")
-  }
-
 }
 
-window.customElements.define('playlist-index', PlaylistIndex);
+window.customElements.define('organization-index', OrganizationIndex);
 

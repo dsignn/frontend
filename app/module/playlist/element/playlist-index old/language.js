@@ -1,6 +1,5 @@
 export const lang = {
   "it": {
-    "name": "Nome",
     "email": "Email",
     "password" : "Password",
     "repeat-password" : "Ripeti password",
@@ -16,7 +15,6 @@ export const lang = {
     "signup": "Signup",
     "signup-ok": "Registrazione eseguita con successo verrà inviata una mail per completare la registrazione",
     "thinking": "Hai mai pensato a un menu digitale per il tuo ristorante?",
-    "find-more": "Scopri di piu",
-    "name": "Name",
+    "find-more": "Scopri di piu"
   }
 };

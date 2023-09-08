@@ -1,22 +1,22 @@
 /**
  * Reosuroce repository
  */
-import {config} from './config';
-import {XmlhAdapter} from "@dsign/library/src/storage/adapter/xmlh/XmlhAdapter";
-import {JsonEncode} from "@dsign/library/src/data-transform/JsonEncode";
-import {JsonDecode} from "@dsign/library/src/data-transform/JsonDecode";
-import {FormDataEncode} from "@dsign/library/src/data-transform/FormDataEncode";
-import {DefaultBuilder} from "@dsign/library/src/storage/adapter/xmlh/url/DefaultBuilder";
-import {Storage} from "@dsign/library/src/storage/Storage";
-import {AggregatePropertyHydrator, PropertyHydrator} from "@dsign/library/src/hydrator/index";
-import {HydratorStrategy, MongoIdStrategy} from "@dsign/library/src/hydrator/strategy/value/index";
-import {MapProprertyStrategy} from "@dsign/library/src/hydrator/strategy/proprerty/index";
-import {FileEntity} from "./src/entity/FileEntity";
-import {AudioEntity} from "./src/entity/AudioEntity";
-import {VideoEntity} from "./src/entity/VideoEntity";
-import {ImageEntity} from "./src/entity/ImageEntity";
-import {PathGeneric} from "@dsign/library/src/path/PathGeneric";
-import {AbstractRepository} from "../../src/AbstractRepository";
+import { config } from './config';
+import { XmlhAdapter } from "@dsign/library/src/storage/adapter/xmlh/XmlhAdapter";
+import { JsonEncode } from "@dsign/library/src/data-transform/JsonEncode";
+import { JsonDecode } from "@dsign/library/src/data-transform/JsonDecode";
+import { FormDataEncode } from "@dsign/library/src/data-transform/FormDataEncode";
+import { DefaultBuilder } from "@dsign/library/src/storage/adapter/xmlh/url/DefaultBuilder";
+import { Storage } from "@dsign/library/src/storage/Storage";
+import { AggregatePropertyHydrator, PropertyHydrator } from "@dsign/library/src/hydrator/index";
+import { HydratorStrategy, MongoIdStrategy } from "@dsign/library/src/hydrator/strategy/value/index";
+import { MapProprertyStrategy } from "@dsign/library/src/hydrator/strategy/proprerty/index";
+import { FileEntity } from "./src/entity/FileEntity";
+import { AudioEntity } from "./src/entity/AudioEntity";
+import { VideoEntity } from "./src/entity/VideoEntity";
+import { ImageEntity } from "./src/entity/ImageEntity";
+import { PathGeneric } from "@dsign/library/src/path/PathGeneric";
+import { AbstractRepository } from "../../src/AbstractRepository";
 
 /**
  * @class Repository
@@ -85,7 +85,7 @@ export class Repository extends AbstractRepository {
     /**
      * @const
      */
-    static get STORAGE_SERVICE() { return 'ResourceStorage';};
+    static get STORAGE_SERVICE() { return 'ResourceStorage'; };
 
     init() {
 
@@ -129,7 +129,7 @@ export class Repository extends AbstractRepository {
 
         adapterStorage.setUpdateMethod('PATCH');
 
-        adapterStorage.addHeader(    'Accept', 'application/json');
+        adapterStorage.addHeader('Accept', 'application/json');
 
         this.injectAuthHeader(adapterStorage);
 
