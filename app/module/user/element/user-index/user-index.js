@@ -10,13 +10,15 @@
 
 import { PolymerElement, html } from '@polymer/polymer/polymer-element.js';
 import '@polymer/paper-card/paper-card.js';
-import {LocalizeMixin} from "@dsign/polymer-mixin/localize/localize-mixin";
-import {ServiceInjectorMixin} from "@dsign/polymer-mixin/service/injector-mixin";
+import { LocalizeMixin } from "@dsign/polymer-mixin/localize/localize-mixin";
+import { ServiceInjectorMixin } from "@dsign/polymer-mixin/service/injector-mixin";
 import '@polymer/paper-icon-button/paper-icon-button';
 import '@polymer/iron-pages/iron-pages';
 import './../user-view-list/user-view-list';
 import './../user-view-upsert/user-view-upsert'
-import {lang} from './language';
+import './../../../../element/paper-filter-storage/paper-filter-storage'
+
+import { lang } from './language';
 
 class UserIndex extends LocalizeMixin(ServiceInjectorMixin(PolymerElement)) {
   static get template() {
@@ -25,25 +27,40 @@ class UserIndex extends LocalizeMixin(ServiceInjectorMixin(PolymerElement)) {
            .header {
               @apply --layout-horizontal;
               @apply --layout-center;
-              padding: 10px 20px;
+              padding-bottom: 8px;
            }
            
-          .text-content {
+           .text-content {
               font-size: 20px;
               flex: 1;
            }
            
-        
-            paper-icon-button.circle {
-                @apply --paper-icon-button-action;
-            }
+           paper-icon-button.circle {
+              @apply --paper-icon-button-action;
+           }
+
+           paper-filter-storage {
+              flex: 1;
+              --paper-filter-storage : {
+                  padding: 0 8px;
+                  align-items: center;
+                  display: flex;
+                  min-height: 70px;
+                  width: -webkit-fill-available;
+                  margin-right: 8px;
+              }
+           }
       </style>
     
       <iron-pages id="index" selected="{{selected}}">
           <div id="list"> 
               <user-view-list selected="{{selected}}" entity-selected="{{entitySelected}}">
                    <div slot="header" class="header">
-                      <div class="text-content">{{localize('user-resource')}}</div>
+                      <paper-filter-storage id="filterStorage" on-value-changed="_filterChange">
+                          <div slot="filters" class="filter-container">
+                              <paper-input name="name" label="{{localize('name')}}" ></paper-input>
+                          </div>
+                      </paper-filter-storage>
                       <paper-icon-button id="iconInsertMonitor" icon="insert" class="circle" on-click="displayAddView"></paper-icon-button>
                       <paper-tooltip for="iconInsertMonitor" position="left">{{localize('user-resource')}}</paper-tooltip>
                    </div>
@@ -77,7 +94,7 @@ class UserIndex extends LocalizeMixin(ServiceInjectorMixin(PolymerElement)) {
     this.resources = lang;
   }
 
-  static get properties () {
+  static get properties() {
     return {
       selected: {
         type: Number,
@@ -87,8 +104,8 @@ class UserIndex extends LocalizeMixin(ServiceInjectorMixin(PolymerElement)) {
       /**
        * @type object
        */
-      services : {
-        value : {
+      services: {
+        value: {
           _localizeService: 'Localize'
         }
       },

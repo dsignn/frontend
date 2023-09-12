@@ -15,8 +15,9 @@ import { ServiceInjectorMixin } from "@dsign/polymer-mixin/service/injector-mixi
 import { lang } from './language.js';
 // TODO add to widget load
 
-import './../organization-view-list/organization-view-list'
-import './../../../../element/paper-filter-storage/paper-filter-storage'
+import './../organization-view-list/organization-view-list';
+import './../organization-view-upsert/organization-view-upsert';
+import './../../../../element/paper-filter-storage/paper-filter-storage';
 import { Auth } from "../../../../src/authentication/Auth.js";
 
 
@@ -70,7 +71,6 @@ class OrganizationIndex extends LocalizeMixin(AclMixin(ServiceInjectorMixin(Poly
               </organization-view-list>
           </div>
           <div id="insert"> 
-          insert
               <organization-view-upsert>
                   <div slot="header" class="header">
                       <div class="text-content">{{localize('insert-resource')}}</div>
@@ -118,6 +118,20 @@ class OrganizationIndex extends LocalizeMixin(AclMixin(ServiceInjectorMixin(Poly
 
       },
     };
+  }
+
+  /**
+   * @param evt
+   */
+  displayAddView(evt) {
+    this.selected = 1;
+  }
+
+  /**
+   * @param evt
+   */
+  displayListView(evt) {
+    this.selected = 0;
   }
 
   /**

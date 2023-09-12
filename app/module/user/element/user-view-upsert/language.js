@@ -9,7 +9,8 @@ export const lang = {
     "repeatPassword" : "Ripeti password",
     "role" : "Ruolo",
     "notify-save" : "Timeslot salvato",
-    "notify-update" : "Timeslot modificato"
+    "notify-update" : "Timeslot modificato",
+    "nameOrganization": 'Nome organizzazione'
   },
   "en": {
     "name": "Name",
@@ -21,6 +22,7 @@ export const lang = {
     "repeatPassword" : "Repeat password",
     "role" : "Role",
     "notify-save" : "Timeslot saved",
-    "notify-update" : "Timeslot updated"
+    "notify-update" : "Timeslot updated",
+    "nameOrganization": 'Nome organization'
   }
 };

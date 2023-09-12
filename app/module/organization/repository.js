@@ -4,13 +4,13 @@
 import { ContainerAware } from "@dsign/library/src/container/ContainerAware.js";
 import { XmlhAdapter } from "@dsign/library/src/storage/adapter/xmlh/XmlhAdapter";
 import { JsonDecode } from "@dsign/library/src/data-transform/JsonDecode";
-import { FormDataEncode } from "@dsign/library/src/data-transform/FormDataEncode";
 import { DefaultBuilder } from "@dsign/library/src/storage/adapter/xmlh/url/DefaultBuilder";
 import { Storage } from "@dsign/library/src/storage/Storage";
 import { PropertyHydrator } from "@dsign/library/src/hydrator/index";
 import { config } from './config.js';
 import { AbstractRepository } from "../../src/AbstractRepository";
 import { OrganizationEntity } from "./src/entity/OrganizationEntity";
+import { JsonEncode } from "@dsign/library/src/data-transform/JsonEncode.js";
 
 export class Repository extends AbstractRepository {
 
@@ -84,14 +84,14 @@ export class Repository extends AbstractRepository {
         let adapterStorage = new XmlhAdapter(
             container.get('config')['rest']['path'],
             container.get('config')['rest']['resources']['organization']['name'],
-            new FormDataEncode(),
+            new JsonEncode(),
             new JsonDecode(),
             new DefaultBuilder()
         );
 
-        adapterStorage.setUpdateMethod('PATCH');
 
-        adapterStorage.addHeader('Accept', 'application/json');
+        adapterStorage.addHeader('Content-Type', 'application/json')
+            .addHeader('Accept', 'application/json');
 
         this.injectAuthHeader(adapterStorage);
 

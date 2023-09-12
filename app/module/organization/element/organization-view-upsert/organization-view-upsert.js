@@ -56,12 +56,6 @@ class OrganizationViewUpsert extends StorageEntityMixin(NotifyMixin(LocalizeMixi
                             <div>
                                 <div class="name">
                                     <paper-input id="name" name="name" label="{{localize('name')}}" value="{{entity.name}}" required></paper-input>
-                                    <paper-icon-button on-tap="openViewer" icon="resource:viewer"></paper-icon-button>
-                                </div>
-                                <paper-input-file id="fileUpload" label="{{localize('search-file')}}" accept="image/png, image/jpeg, video/*, audio/*, application/zip"></paper-input-file>
-                                <div>
-                                    <paper-input id="tag" name="name" label="{{localize('tag')}}" on-keypress="addTag"></paper-input>
-                                    <paper-chips id="chips" items="{{entity.tags}}"></paper-chips>
                                 </div>
                             </div>
                             <div>
@@ -71,9 +65,6 @@ class OrganizationViewUpsert extends StorageEntityMixin(NotifyMixin(LocalizeMixi
                             </div>
                         </form>
                     </iron-form>
-                    <paper-dialog id="viewer" entry-animation="scale-up-animation" exit-animation="fade-out-animation">
-                        <img>
-                    </paper-dialog>
                 </div>
         `;
     }
@@ -86,7 +77,7 @@ class OrganizationViewUpsert extends StorageEntityMixin(NotifyMixin(LocalizeMixi
              */
             entity: {
                 observer: '_changeEntity',
-                value: {type: "text/html", tags: []}
+                value: {}
             },
 
             /**
@@ -104,11 +95,8 @@ class OrganizationViewUpsert extends StorageEntityMixin(NotifyMixin(LocalizeMixi
                 value : {
                     _notifyService : "Notify",
                     _localizeService: 'Localize',
-                    "HydratorContainerAggregate" : {
-                        _resourceHydrator : "ResourceEntityHydrator"
-                    },
                     StorageContainerAggregate : {
-                        _storage :"ResourceStorage"
+                        _storage :"OrganizationStorage"
                     }
                 }
             }
@@ -123,16 +111,6 @@ class OrganizationViewUpsert extends StorageEntityMixin(NotifyMixin(LocalizeMixi
     ready() {
         super.ready();
         this.$.formResource.addEventListener('iron-form-presubmit', this.submitResource.bind(this));
-    }
-
-    /**
-     * @param evt
-     */
-    addTag(evt) {
-       if (evt.charCode === 13 && evt.target.value) {
-            this.$.chips.add(evt.target.value);
-            this.$.tag.value = "";
-       }
     }
 
     /**
@@ -164,74 +142,13 @@ class OrganizationViewUpsert extends StorageEntityMixin(NotifyMixin(LocalizeMixi
         evt.preventDefault();
 
         let method = this.getStorageUpsertMethod();
-        let template = this.$.fileUpload.files[0] ?
-            this.$.fileUpload.files[0] : (method === 'update' ?
-                {id: this.entity.id, mime_type: this.entity.mimeType} : null);
 
-        if (this.entity.id) {
-            template.id = this.entity.id;
-        }
-
-        let entity = this._resourceHydrator.hydrate(template);
-        entity.name = this.$.name.value;
-        entity.tags = this.entity.tags;
-        if (this.$.fileUpload.files[0]) {
-            entity.resourceToImport = this.$.fileUpload.files[0];
-        }
-
-        this._storage[method](entity)
+        this._storage[method](this.entity)
             .then((data) => {
 
-                if (method === 'save') {
-                    this.entity = this._storage.getHydrator().hydrate({type: "text/html"});
-                    this.$.formResource.reset();
-                }
-
-                this.$.fileUpload.reset();
+                
                 this.notify(this.localize(method === 'save' ? 'notify-save' : 'notify-update'));
             });
-
-    }
-
-    /**
-     * @param evt
-     */
-    openViewer(evt) {
-        this._appendTagOnViewer();
-        setTimeout(
-            () => {
-                this.$.viewer.open();
-            },
-            300
-        )
-    }
-
-    /**
-     * @private
-     */
-    _appendTagOnViewer() {
-        for (let i = 0; i < this.$.viewer.children.length; i++) {
-            this.$.viewer.children[i].remove();
-        }
-
-        let element;
-        switch (this.entity.mimeType) {
-            case 'image/png':
-            case 'image/jpeg':
-                element = document.createElement('img');
-                element.setAttribute('src', this.entity.src);
-                break;
-            case 'video/mp4':
-                element = document.createElement('video');
-                element.setAttribute('controls', '');
-                element.setAttribute('src', this.entity.src);
-                break;
-
-        }
-
-        if (element) {
-            this.$.viewer.appendChild(element);
-        }
 
     }
 

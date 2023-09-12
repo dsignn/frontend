@@ -1,20 +1,21 @@
-import {html, PolymerElement} from '@polymer/polymer/polymer-element.js';
-import {ServiceInjectorMixin} from "@dsign/polymer-mixin/service/injector-mixin";
-import {LocalizeMixin} from "@dsign/polymer-mixin/localize/localize-mixin";
-import {StorageEntityMixin} from "@dsign/polymer-mixin/storage/entity-mixin";
+import { html, PolymerElement } from '@polymer/polymer/polymer-element.js';
+import { ServiceInjectorMixin } from "@dsign/polymer-mixin/service/injector-mixin";
+import { LocalizeMixin } from "@dsign/polymer-mixin/localize/localize-mixin";
+import { StorageEntityMixin } from "@dsign/polymer-mixin/storage/entity-mixin";
+import {FormErrorMessage} from "../../../../element/mixin/form-error-message/form-error-message";
 import "@fluidnext-polymer/paper-pagination/paper-pagination";
 import "@fluidnext-polymer/paper-pagination/icons/paper-pagination-icons";
 import '@polymer/iron-form/iron-form';
 import '@polymer/paper-button/paper-button';
 import '@polymer/paper-input/paper-input';
-import {lang} from './language';
+import { lang } from './language';
 
 
 /**
  * @customElement
  * @polymer
  */
-class UserViewUpsert extends StorageEntityMixin(LocalizeMixin(ServiceInjectorMixin(PolymerElement))) {
+class UserViewUpsert extends FormErrorMessage(StorageEntityMixin(LocalizeMixin(ServiceInjectorMixin(PolymerElement)))) {
 
     static get template() {
         return html`
@@ -75,13 +76,15 @@ class UserViewUpsert extends StorageEntityMixin(LocalizeMixin(ServiceInjectorMix
             <div id="container">
                 <iron-form id="formUser">
                      <form method="post">
-                        <paper-input id="name" name="name" label="{{localize('name')}}" value="{{entity.name}}" required></paper-input>
-                        <paper-input id="name" name="lastName" label="{{localize('lastName')}}" value="{{entity.lastName}}" required></paper-input>
-                        <paper-input id="name" name="email" label="{{localize('email')}}" value="{{entity.email}}" required></paper-input>
-                       <paper-dropdown-menu label="{{localize('role')}}" value="{{entity.roleId}}">
+                        <paper-input name="name" label="{{localize('name')}}" value="{{entity.name}}" required></paper-input>
+                        <paper-input name="lastName" label="{{localize('lastName')}}" value="{{entity.lastName}}" required></paper-input>
+                        <paper-input name="email" label="{{localize('email')}}" value="{{entity.email}}" required></paper-input>
+                        <paper-input name="password" label="{{localize('password')}}" value="{{entity.password}}" required></paper-input>
+                        <paper-input name="nameOrganization" label="{{localize('nameOrganization')}}" value="{{entity.nameOrganization}}"></paper-input>
+                        <paper-dropdown-menu label="{{localize('role')}}" value="{{entity.roleId}}" required>
                           <paper-listbox slot="dropdown-content">
-                            <paper-item>guest</paper-item>
-                            <paper-item>admin</paper-item>
+                            <paper-item value="organizationOwner">organizationOwner</paper-item>
+                            <paper-item value="admin">admin</paper-item>
                           </paper-listbox>
                         </paper-dropdown-menu>
                         <div>{{entity.status}}</div>
@@ -101,7 +104,7 @@ class UserViewUpsert extends StorageEntityMixin(LocalizeMixin(ServiceInjectorMix
         this.resources = lang;
     }
 
-    static get properties () {
+    static get properties() {
         return {
 
             /**
@@ -123,9 +126,9 @@ class UserViewUpsert extends StorageEntityMixin(LocalizeMixin(ServiceInjectorMix
             /**
              * @type object
              */
-            services : {
-                value : {
-                    _notify : "Notify",
+            services: {
+                value: {
+                    _notify: "Notify",
                     _localizeService: 'Localize',
                     StorageContainerAggregate: {
                         _storage: "UserStorage"
@@ -165,7 +168,9 @@ class UserViewUpsert extends StorageEntityMixin(LocalizeMixin(ServiceInjectorMix
                 }
 
                 this._notify.notify(this.localize(method === 'save' ? 'notify-save' : 'notify-update'));
-            });
+            }).catch((error) => {
+                this.errorMessage(this.$.formUser, error);
+            });;
 
     }
 
