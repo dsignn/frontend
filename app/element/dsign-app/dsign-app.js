@@ -106,9 +106,9 @@ class DsignApp extends LocalizeMixin(AclMixin(ServiceInjectorMixin(PolymerElemen
         
         .auth-container {
             display: block;
-            width: 392px;
+            width: 414px;
             height: 100%;
-            padding: 6px 12px;
+            padding: 6px 6px;
         }
         
         #auth-tab {
@@ -141,8 +141,8 @@ class DsignApp extends LocalizeMixin(AclMixin(ServiceInjectorMixin(PolymerElemen
             }
             
             .auth-container {
-              width: 292px;
-            }
+              width: 314px;
+          }
         }        
       </style>
 
@@ -390,6 +390,7 @@ class DsignApp extends LocalizeMixin(AclMixin(ServiceInjectorMixin(PolymerElemen
         (evt) => {
           this.hideMenu();
           this._redirectRoleView();
+          this.$.content.style.padding = '0';
         }
     );
 
@@ -397,6 +398,7 @@ class DsignApp extends LocalizeMixin(AclMixin(ServiceInjectorMixin(PolymerElemen
         Auth.LOGIN,
         (evt) => {
           this.$.authDrawer.close();
+          this.$.content.style.padding = '8px';
         }
     );
 
@@ -410,6 +412,7 @@ class DsignApp extends LocalizeMixin(AclMixin(ServiceInjectorMixin(PolymerElemen
     if (authService.getIdentity()) {
       this.showMenu();
     } else {
+      this.$.content.style.padding = '0';
       this.hideMenu();
       if (!this.page) {
         window.history.pushState("", "", "");

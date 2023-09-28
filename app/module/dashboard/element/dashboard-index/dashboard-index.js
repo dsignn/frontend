@@ -158,7 +158,7 @@ class DashboardIndex extends LocalizeMixin(AclMixin(ServiceInjectorMixin(Polymer
     }
     
     .text-block {
-      max-width: 1000px;
+      max-width: 1600px;
       width: 90%;
       font-size: 26px;
       margin: 50px auto;
@@ -234,12 +234,13 @@ class DashboardIndex extends LocalizeMixin(AclMixin(ServiceInjectorMixin(Polymer
     }
     
     .boxed{
+      min-width: 400px;
       border-radius:25px;
       border:5px solid #f0b906;
       text-align:center;
-      padding:50px;
       display:inline-block;
       margin:auto auto;
+      margin-bottom: 10px;
     }
     
     .boxed ul {
@@ -253,13 +254,30 @@ class DashboardIndex extends LocalizeMixin(AclMixin(ServiceInjectorMixin(Polymer
       font-weight: 500;
       margin: 20px 0;
       font-size: 22px;
-      max-width: 300px;
     }
     
     .boxed ul li span{
       font-size:40px;
       font-weight:bold;
     }
+
+    .discount {
+      position: relative;
+      font-size:30px !important;
+      font-weight:bold;
+    }
+
+
+    .discount:before {
+      position: absolute;
+      content: "";
+      left: 0;
+      top: 45%;
+      right: 0;
+      border-top: 3px solid #dc2626;
+      transform: skewY(-10deg);
+    }
+    
     
     .boxed hr {
       border-color: black;
@@ -403,11 +421,11 @@ class DashboardIndex extends LocalizeMixin(AclMixin(ServiceInjectorMixin(Polymer
     }
     
     #how .text-block{
-      max-width:1200px;
+      max-width:1600px;
     }
     
     #how .text-block .flex .step {
-      width: 24%;
+      width: 16%;
     }
     
     #how .text-block .flex .step div {
@@ -471,11 +489,21 @@ class DashboardIndex extends LocalizeMixin(AclMixin(ServiceInjectorMixin(Polymer
         content:"3";
       }
       
-      #how .text-block .flex .step:nth-child(4) div:after {
+    #how .text-block .flex .step:nth-child(4) div:after {
         content:"4";
         color:#015b63;
-      }
-      
+    }
+    
+    #how .text-block .flex .step:nth-child(5) div:after {
+      content:"5";
+      color:#015b63;
+    }
+
+    #how .text-block .flex .step:nth-child(6) div:after {
+      content:"6";
+      color:#015b63;
+    }
+    
     
     #how .text-block .flex .step img{
       width: 100%;
@@ -689,8 +717,6 @@ class DashboardIndex extends LocalizeMixin(AclMixin(ServiceInjectorMixin(Polymer
         padding-top: 30px;
     }
 
-
-    
     .strengths {
         flex-wrap: wrap;
     }
@@ -736,6 +762,14 @@ class DashboardIndex extends LocalizeMixin(AclMixin(ServiceInjectorMixin(Polymer
         min-width: 400px;
       }
     }
+
+    .w-5 {
+      width: 4.25rem;
+     }
+
+     .h-6  {
+      height: 1.5rem;
+     }
     
     @media only screen and (max-width: 1250px) {
       .partner-card {
@@ -882,6 +916,10 @@ class DashboardIndex extends LocalizeMixin(AclMixin(ServiceInjectorMixin(Polymer
          .row-responsive.mail {
             padding-left: 0;
          }
+
+         .boxed ul li div {
+           width: 300px !important;
+         }
     }
         
       </style>
@@ -903,27 +941,30 @@ class DashboardIndex extends LocalizeMixin(AclMixin(ServiceInjectorMixin(Polymer
           </div>
           <div class="menu">
           <div class="inside">
-                  <h2>Dsign Menù</h2>
+                  <h2>Dsign</h2>
               <div class="text-block">
-                    <p class="">Di addio alle continue ristampe dei menù cartacei, all'usura e alla loro poca igienicità.<br/>Da oggi c'è Dsign Menu, il primo <b>menu interamente digitale</b>, l'ideale per i tuoi clienti!<br/>FACILE, VELOCE E PERSONALIZZABILE.</p>
-                    <div class="flex">
+                  <p class="">
+                      Vuoi comuincare ai tuoi clienti in modo creativo e coinvolgente? Dsign è la piattaforma facile e veloce per caricare contenuti e create playlist da visualizzare su qualsiasi monitor.
+                      ideale per portare la tua attività nella pubblicità 2.0
+                  </p>
+                  <div class="flex">
                     <div class="">
-                    <a class="icon"><img src="https://dsign-asset.s3.eu-central-1.amazonaws.com/ico1.png" /></a><p>Innovativo</p>
+                      <a class="icon"><img src="https://dsign-asset.s3.eu-central-1.amazonaws.com/ico1.png" /></a><p>Innovativo</p>
                     </div>
                     <div class="">
-                    <a class="icon"><img src="https://dsign-asset.s3.eu-central-1.amazonaws.com/ico2.png" /></a><p>Personalizzabile</p>
+                      <a class="icon"><img src="https://dsign-asset.s3.eu-central-1.amazonaws.com/ico2.png" /></a><p>Personalizzabile</p>
                     </div>
                     <div class="">
-                    <a class="icon"><img src="https://dsign-asset.s3.eu-central-1.amazonaws.com/ico3.png" /></a><p>Sempre aggiornato</p>
+                      <a class="icon"><img src="https://dsign-asset.s3.eu-central-1.amazonaws.com/ico3.png" /></a><p>Sempre aggiornato</p>
                     </div>
                     <div class="">
-                    <a class="icon"><img src="https://dsign-asset.s3.eu-central-1.amazonaws.com/ico7.png" /></a><p>Nessuna APP da scaricare</p>
+                      <a class="icon"><img src="https://dsign-asset.s3.eu-central-1.amazonaws.com/ico7.png" /></a><p>Windows, Linux, Mac e Raspberry</p>
                     </div>
                     <div class="">
-                    <a class="icon"><img src="https://dsign-asset.s3.eu-central-1.amazonaws.com/ico4.png" /></a><p>Semplicemente Veloce</p>
+                      <a class="icon"><img src="https://dsign-asset.s3.eu-central-1.amazonaws.com/ico4.png" /></a><p>Semplicemente Veloce</p>
                     </div>
                     <div class="">
-                    <a class="icon"><img src="https://dsign-asset.s3.eu-central-1.amazonaws.com/ico5.png" /></a><p>Rispettoso dell'ambiente</p>
+                      <a class="icon"><img src="https://dsign-asset.s3.eu-central-1.amazonaws.com/ico5.png" /></a><p>Rispettoso dell'ambiente</p>
                     </div>
                 </div>
                 </div>
@@ -935,8 +976,9 @@ class DashboardIndex extends LocalizeMixin(AclMixin(ServiceInjectorMixin(Polymer
                       <h2 class="margin-0">PERCHE’ SCEGLIERCI?</h2>
                       <div class="text-block">
                           <p>
-                          I menù cartacei ormai sono obsoleti. Necessitano di continue attenzioni igieniche e aggiornamenti.
-                          Con Design menù l’ordine si fa più velocemente, il cliente viene fornito di un menù digitale e personalizzato sul quale cercare i vostri piatti con filtri avanzati per soddisfare ogni richiesta e si sa.... cliente felice, cliente fidelizzato!
+                            Pubblicià e comunicazione sono in continua evoluzione. Dsign è lo strumento per velocizzare e digitalizzare la visualizzazione di contenuti o messaggi creativi in modo autonomo.
+                            Può funzionare online o offline.
+                         
                           </p>
                         </div>
                   </div>
@@ -946,19 +988,25 @@ class DashboardIndex extends LocalizeMixin(AclMixin(ServiceInjectorMixin(Polymer
             <div id="how" class="row center">
                 <h2>Come Funziona?</h2>
                 <div class="text-block">
-                  <p class="">Ti basteranno quattro semplici passaggi per avere il tuo menù digitale pronto all'uso!</p>
+                  <p class="">Ti basteranno pochi semplici passaggi per avere il tuo menù digitale pronto all'uso!</p>
                   <div class="flex">
                     <div class="step">
                       <div class=""></div><p>Registrati gratuitamente cliccando l'icona in alto a destra</p>
                     </div>
                     <div class="step">
-                      <div class=""></div><p>Genera il QrCode che hai intenzione di utilizzare, sala e/o delivery</p>
+                      <div class=""></div><p>Crea il tuo impianto</p>
                     </div>
                     <div class="step">
-                      <div class=""></div><p>Inserisci i dati del tuo ristorante e crea il menù</p>
+                      <div class=""></div><p>Carica i contenuti multimediali</p>
                     </div>
                     <div class="step">
-                      <div class=""></div><p>Metti il tuo QrCode sui tavoli o invalo ai tuoi contatti</p>
+                      <div class=""></div><p>Crea la tua playlist</p>
+                    </div>
+                    <div class="step">
+                      <div class=""></div><p>Installa il player al pc collegato alla tv</p>
+                    </div>
+                    <div class="step">
+                      <div class=""></div><p>Associa la playlist all'impianto</p>
                     </div>
                   </div>
                 </div>         
@@ -967,24 +1015,75 @@ class DashboardIndex extends LocalizeMixin(AclMixin(ServiceInjectorMixin(Polymer
           </div>
           <div class="section column second white">
              <div class="row center">
-                <h2 class="c-green">Quanto mi costa?</h2>
+                <h2 class="c-green">Pricing</h2>
              </div>
              <div class="text-block">
                 <div class="boxed">
                   <ul>
-                    <li>Inserimento di menu ILLIMITATO</li>
-                    <li>Attivazione singola oppure di due diversi menù (delivery o in loco)</li>
-                    <li>Due diversi template per il tuo menu</li>
-                    <li>Generatore del menù cartaceo</li>
-                    <li>Generatore QR CODE</li>
-                    <li>Filtri di ricerca avanzati</li>
-                    <hr/>
                     <li>
-                      <span>1 ANNO GRATIS</span>
-                      <div>poi 14,90€/Mese</div>
+                      <span>19,90€ Mese</span>
                     </li>
+                    <li class="flex gap-x-3 py-2" style="justify-content: unset">
+                      <svg class="h-6 w-5" viewBox="0 0 20 20" fill="currentcolor" aria-hidden="true"><path fill-rule="evenodd" d="M16.704 4.153a.75.75.0 01.143 1.052l-8 10.5a.75.75.0 01-1.127.075l-4.5-4.5a.75.75.0 011.06-1.06l3.894 3.893 7.48-9.817a.75.75.0 011.05-.143z" clip-rule="evenodd"></path></svg>
+                      <div style="width:100%; text-align: left;">Creazione di playlist infine</div>
+                    </li>
+                    <li  class="flex gap-x-3 py-2" style="justify-content: unset">
+                      <svg class="h-6 w-5" viewBox="0 0 20 20" fill="currentcolor" aria-hidden="true"><path fill-rule="evenodd" d="M16.704 4.153a.75.75.0 01.143 1.052l-8 10.5a.75.75.0 01-1.127.075l-4.5-4.5a.75.75.0 011.06-1.06l3.894 3.893 7.48-9.817a.75.75.0 011.05-.143z" clip-rule="evenodd"></path></svg>
+                      <div style="width:100%; text-align: left;">Caricamento illimitato di risorse</div>
+                    </li>
+                    <li  class="flex gap-x-3 py-2" style="justify-content: unset">
+                      <svg class="h-6 w-5" viewBox="0 0 20 20" fill="currentcolor" aria-hidden="true"><path fill-rule="evenodd" d="M16.704 4.153a.75.75.0 01.143 1.052l-8 10.5a.75.75.0 01-1.127.075l-4.5-4.5a.75.75.0 011.06-1.06l3.894 3.893 7.48-9.817a.75.75.0 011.05-.143z" clip-rule="evenodd"></path></svg>
+                      <div style="width:100%; text-align: left;">Gestione di 2 monitor</div>
+                    </li>     
+                    <li>&nbsp</li>          
                   </ul>
                 </div>
+                <div class="boxed">
+                  <ul>
+                    <li>
+                      <span class="discount">98€</span> <span>68€ Mese</span>
+                    </li>
+                    <li class="flex gap-x-3 py-2" style="justify-content: unset">
+                      <svg class="h-6 w-5" viewBox="0 0 20 20" fill="currentcolor" aria-hidden="true"><path fill-rule="evenodd" d="M16.704 4.153a.75.75.0 01.143 1.052l-8 10.5a.75.75.0 01-1.127.075l-4.5-4.5a.75.75.0 011.06-1.06l3.894 3.893 7.48-9.817a.75.75.0 011.05-.143z" clip-rule="evenodd"></path></svg>
+                      <div style="width:100%; text-align: left;">Creazione di playlist infine</div>
+                    </li>
+                    <li  class="flex gap-x-3 py-2" style="justify-content: unset">
+                      <svg class="h-6 w-5" viewBox="0 0 20 20" fill="currentcolor" aria-hidden="true"><path fill-rule="evenodd" d="M16.704 4.153a.75.75.0 01.143 1.052l-8 10.5a.75.75.0 01-1.127.075l-4.5-4.5a.75.75.0 011.06-1.06l3.894 3.893 7.48-9.817a.75.75.0 011.05-.143z" clip-rule="evenodd"></path></svg>
+                      <div style="width:100%; text-align: left;">Caricamento illimitato di risorse</div>
+                    </li>
+                    <li  class="flex gap-x-3 py-2" style="justify-content: unset">
+                      <svg class="h-6 w-5" viewBox="0 0 20 20" fill="currentcolor" aria-hidden="true"><path fill-rule="evenodd" d="M16.704 4.153a.75.75.0 01.143 1.052l-8 10.5a.75.75.0 01-1.127.075l-4.5-4.5a.75.75.0 011.06-1.06l3.894 3.893 7.48-9.817a.75.75.0 011.05-.143z" clip-rule="evenodd"></path></svg>
+                      <div style="width:100%; text-align: left;">30% di sconto</div>
+                    </li>    
+                    <li  class="flex gap-x-3 py-2" style="justify-content: unset">
+                      <svg class="h-6 w-5" viewBox="0 0 20 20" fill="currentcolor" aria-hidden="true"><path fill-rule="evenodd" d="M16.704 4.153a.75.75.0 01.143 1.052l-8 10.5a.75.75.0 01-1.127.075l-4.5-4.5a.75.75.0 011.06-1.06l3.894 3.893 7.48-9.817a.75.75.0 011.05-.143z" clip-rule="evenodd"></path></svg>
+                      <div style="width:100%; text-align: left;">Gestione di 10 monitor</div>
+                    </li>               
+                  </ul>
+                </div>
+                <div class="boxed">
+                <ul>
+                  <li>
+                    <span class="discount">196€</span> <span>117€ Mese</span>
+                  </li>
+                  <li class="flex gap-x-3 py-2" style="justify-content: unset">
+                    <svg class="h-6 w-5" viewBox="0 0 20 20" fill="currentcolor" aria-hidden="true"><path fill-rule="evenodd" d="M16.704 4.153a.75.75.0 01.143 1.052l-8 10.5a.75.75.0 01-1.127.075l-4.5-4.5a.75.75.0 011.06-1.06l3.894 3.893 7.48-9.817a.75.75.0 011.05-.143z" clip-rule="evenodd"></path></svg>
+                    <div style="width:100%; text-align: left;">Creazione di playlist infine</div>
+                  </li>
+                  <li  class="flex gap-x-3 py-2" style="justify-content: unset">
+                    <svg class="h-6 w-5" viewBox="0 0 20 20" fill="currentcolor" aria-hidden="true"><path fill-rule="evenodd" d="M16.704 4.153a.75.75.0 01.143 1.052l-8 10.5a.75.75.0 01-1.127.075l-4.5-4.5a.75.75.0 011.06-1.06l3.894 3.893 7.48-9.817a.75.75.0 011.05-.143z" clip-rule="evenodd"></path></svg>
+                    <div style="width:100%; text-align: left;">Caricamento illimitato di risorse</div>
+                  </li>
+                  <li  class="flex gap-x-3 py-2" style="justify-content: unset">
+                    <svg class="h-6 w-5" viewBox="0 0 20 20" fill="currentcolor" aria-hidden="true"><path fill-rule="evenodd" d="M16.704 4.153a.75.75.0 01.143 1.052l-8 10.5a.75.75.0 01-1.127.075l-4.5-4.5a.75.75.0 011.06-1.06l3.894 3.893 7.48-9.817a.75.75.0 011.05-.143z" clip-rule="evenodd"></path></svg>
+                    <div style="width:100%; text-align: left;">40% di sconto</div>
+                  </li>    
+                  <li  class="flex gap-x-3 py-2" style="justify-content: unset">
+                    <svg class="h-6 w-5" viewBox="0 0 20 20" fill="currentcolor" aria-hidden="true"><path fill-rule="evenodd" d="M16.704 4.153a.75.75.0 01.143 1.052l-8 10.5a.75.75.0 01-1.127.075l-4.5-4.5a.75.75.0 011.06-1.06l3.894 3.893 7.48-9.817a.75.75.0 011.05-.143z" clip-rule="evenodd"></path></svg>
+                    <div style="width:100%; text-align: left;">Gestione di 20 monitor</div>
+                  </li>               
+                </ul>
+              </div>
              </div>
           </div>
           <div class="menu">
@@ -994,8 +1093,8 @@ class DashboardIndex extends LocalizeMixin(AclMixin(ServiceInjectorMixin(Polymer
                     <div class="quote">
                       <a class="left prev" on-tap="prevReview">&#10094;</a>
                       <div class="slideshow-container">
-                          <div class="review active">Ottima iniziativa. Vista la pandemia, avere il mio menù interamente digitale mi risparmia un sacco di lavoro e di preoccupazioni.<br/><i>Claudio</i></div>
-                          <div class="review" style="display: block; right: 1500px;">I miei clienti mi hanno fatto i complimenti! App ben fatta, intuitiva e soprattutto igienicamente sicura!<br/><i>Antonio</i></div>
+                          <div class="review active">Ottima iniziativa. strumento facile e intuivo per organizzare i contenuti a far girare sugli schermi della mia attività<br/><i>Claudio</i></div>
+                          <div class="review" style="display: block; right: 1500px;">Veloce con 2 click riesco ad aggiornare facilemente i contenuti da visualizzare<br/><i>Matteo</i></div>
                           <div class="review" style="display: block; right: 1500px;">Inizialmente ero un po' preoccupata visto la mia clientela di tutte le età. L'idea però mi è piaciuta fin da subito, l'ho provata e i miei clienti sono soddisfatti.<br/><i>Gabriella</i></div>      
                       </div>
                       <a class="right next" on-tap="nextReview">&#10095;</a>
@@ -1010,7 +1109,7 @@ class DashboardIndex extends LocalizeMixin(AclMixin(ServiceInjectorMixin(Polymer
           </div>
           <div class="section column blue">
               <div id="partner" class="row center">
-                <h2>I nostri ristoranti</h2>
+                <h2>Scarica player</h2>
                 <div class="text-block partner-container">
                   <dom-repeat id="menu" items="{{restaurants}}" as="restaurant">
                     <template>
@@ -1152,6 +1251,20 @@ class DashboardIndex extends LocalizeMixin(AclMixin(ServiceInjectorMixin(Polymer
     }
   }
 
+  /**
+ * @returns {number}
+ * @private
+ */
+  _getCurrentActiveReviewIndex(elements) {
+    let index;
+    for (index = 0; index < elements.length; index++) {
+      if (elements[index].classList.contains('active')) {
+        break;
+      }
+    }
+    return index;
+  }
+
   prevReview() {
     let elements = this.shadowRoot.querySelectorAll('.review');
     let current = this._getCurrentActiveReviewIndex(elements);
@@ -1220,7 +1333,7 @@ class DashboardIndex extends LocalizeMixin(AclMixin(ServiceInjectorMixin(Polymer
   }
 
 
-  
+
   /**
    *
    */
@@ -1233,6 +1346,39 @@ class DashboardIndex extends LocalizeMixin(AclMixin(ServiceInjectorMixin(Polymer
         elements[index].style.right = '0';
       }
     }
+  }
+
+  nextReview() {
+    let elements = this.shadowRoot.querySelectorAll('.review');
+    let current = this._getCurrentActiveReviewIndex(elements);
+    let next = current === (elements.length - 1) ? 0 : current + 1;
+
+    this._updateDot(next);
+
+    setTimeout(
+      () => {
+        elements[next].style.display = 'none';
+        elements[next].style.right = '1500px';
+      },
+      10
+    );
+
+    setTimeout(
+      () => {
+        elements[next].style.display = 'block';
+      },
+      50
+    );
+
+    setTimeout(
+      () => {
+        elements[current].style.right = '-1500px';
+        elements[current].classList.remove('active');
+        elements[next].classList.add('active');
+        elements[next].style.right = '0';
+      },
+      100
+    );
   }
 
   /**

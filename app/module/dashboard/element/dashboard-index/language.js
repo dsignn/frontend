@@ -5,7 +5,7 @@ export const lang = {
     "repeat-password" : "Ripeti password",
     "signup": "Registrati",
     "signup-ok": "Registrazione eseguita con successo verrà inviata una mail per completare la registrazione",
-    "thinking": "Hai mai pensato a un menu digitale per il tuo ristorante?",
+    "thinking": "Hai mai pensato di presentare contenuti digitali per la tua attività?",
     "find-more": "Scopri di piu"
   },
   "en": {
@@ -14,7 +14,7 @@ export const lang = {
     "repeat-password" : "Repeat password",
     "signup": "Signup",
     "signup-ok": "Registrazione eseguita con successo verrà inviata una mail per completare la registrazione",
-    "thinking": "Hai mai pensato a un menu digitale per il tuo ristorante?",
+    "thinking": "Hai mai pensato di presentare contenuti digitali per la tua attività?",
     "find-more": "Scopri di piu"
   }
 };
