@@ -1,13 +1,13 @@
-import {html, PolymerElement} from "@polymer/polymer/polymer-element";
-import {AclMixin} from "@dsign/polymer-mixin/acl/acl-mixin";
-import {ServiceInjectorMixin} from "@dsign/polymer-mixin/service/injector-mixin";
-import {FormErrorMessage} from "../mixin/form-error-message/form-error-message";
+import { html, PolymerElement } from "@polymer/polymer/polymer-element";
+import { AclMixin } from "@dsign/polymer-mixin/acl/acl-mixin";
+import { ServiceInjectorMixin } from "@dsign/polymer-mixin/service/injector-mixin";
+import { FormErrorMessage } from "../mixin/form-error-message/form-error-message";
 import "@polymer/paper-button/paper-button";
 import "@fluidnext-polymer/paper-autocomplete/paper-autocomplete";
 import "@polymer/paper-input/paper-input";
 import "@polymer/iron-form/iron-form";
-import {layout} from "../layout/dsing-layout";
-import {lang} from './language';
+import { layout } from "../layout/dsing-layout";
+import { lang } from './language';
 
 /**
  * @DsignSignup
@@ -37,7 +37,8 @@ class DsignSignup extends FormErrorMessage(AclMixin(ServiceInjectorMixin(Polymer
             width: max-content;
         }
         
-        paper-input {
+        paper-input,
+        paper-autocomplete {
             text-align: left;
         }
         
@@ -57,7 +58,27 @@ class DsignSignup extends FormErrorMessage(AclMixin(ServiceInjectorMixin(Polymer
               <paper-input id="password" type="password" name="password" label="{{localize('password')}}" required></paper-input>
               <paper-input name="confirmPassword" type="password" label="{{localize('repeat-password')}}" required></paper-input>
               <paper-input name="roleId" value="organizationOwner" hidden></paper-input>
-              <paper-input id="nameOrganization" name="nameOrganization" label="{{localize('name-restaurant')}}" on-value-changed="changeNameRestaurant" required></paper-input>
+            <!--  <paper-input id="nameOrganization" name="nameOrganization" label="{{localize('name-organization')}}" on-value-changed="changeNameRestaurant" required></paper-input>
+            -->
+            <paper-autocomplete
+                id="defaultTimeslot"
+                label="{{localize('name-organization')}}"
+                text-property="name"
+                value-property="name"
+                remote-source
+                on-autocomplete-change="_defaultChanged"
+                on-autocomplete-selected="_selectDefault"
+                on-autocomplete-reset-blur="_removeDefault">
+                    <template slot="autocomplete-custom-template">
+                        <paper-item class="account-item" on-tap="_onSelect" role="option" aria-selected="false">
+                            <div index="[[index]]">
+                                <div class="service-name">[[item.name]]</div>
+                            </div>
+                        </paper-item>
+                    </template>
+
+                    <iron-icon icon="info" slot="suffix"></iron-icon>
+              </paper-autocomplete>
               <paper-button on-tap="submitSignupButton">{{localize('signup')}}</paper-button>
             </form>
           </iron-form>
@@ -74,7 +95,6 @@ class DsignSignup extends FormErrorMessage(AclMixin(ServiceInjectorMixin(Polymer
 
             services: {
                 value: {
-                    _slugify: "Slugify",
                     _config: "config",
                     _notify: "Notify",
                     _localizeService: 'Localize',
@@ -97,10 +117,6 @@ class DsignSignup extends FormErrorMessage(AclMixin(ServiceInjectorMixin(Polymer
                 readOnly: true
             },
 
-            _slugify: {
-                readOnly: true
-            },
-
             _config: {
                 readOnly: true
             }
@@ -114,7 +130,24 @@ class DsignSignup extends FormErrorMessage(AclMixin(ServiceInjectorMixin(Polymer
 
     /**
      * @param evt
+     * @private
      */
+    _defaultChanged(evt) {
+        if(!this.organizationStorage) {
+            return;
+        } 
+
+        this.organizationStorage
+            .getAll({ name: evt.detail })
+            .then(
+                (data) => {
+                    evt.detail.target.suggestions(data);
+                }
+            );
+    }
+    /**
+     * @param evt
+     
     changeNameRestaurant(evt) {
         if (!this._slugify) {
             return;
@@ -122,13 +155,13 @@ class DsignSignup extends FormErrorMessage(AclMixin(ServiceInjectorMixin(Polymer
 
         this.url = evt.detail.value ? this._slugify.slugify(evt.detail.value) : '';
     }
-
+*/
     /**
      * @param {string} url
      * @private
      */
     _getUrl(url) {
-        return url.replace(/^https?:\/\//,'').replace(/^http?:\/\//,'');
+        return url.replace(/^https?:\/\//, '').replace(/^http?:\/\//, '');
     }
 
     /**
@@ -172,7 +205,7 @@ class DsignSignup extends FormErrorMessage(AclMixin(ServiceInjectorMixin(Polymer
      */
     _searchRestaurant(evt) {
 
-        this.organizationStorage.getAll({name: evt.detail.value.text})
+        this.organizationStorage.getAll({ name: evt.detail.value.text })
             .then((data) => {
                 console.log(evt.detail, this);
                 this.$.organization.value = {
