@@ -334,11 +334,13 @@ class DsignApp extends LocalizeMixin(AclMixin(ServiceInjectorMixin(PolymerElemen
   }
 
   hideMenu() {
+    this.$.content.style.padding = '0';
     this.hideSmallMenu();
     this.hideBigMenu();
   }
 
   showMenu() {
+    this.$.content.style.padding = '8px';
     if (window.innerWidth > 700) {
       this.showBigMenu();
       this.hideSmallMenu();
@@ -350,16 +352,12 @@ class DsignApp extends LocalizeMixin(AclMixin(ServiceInjectorMixin(PolymerElemen
 
   showBigMenu() {
     this.$.menuStatic.style.display = 'block';
-   // this.shadowRoot.querySelector('app-header-layout').style.marginLeft = '64px';
-   // this.shadowRoot.querySelector('app-header').style.left = '64px';
     this.$.content.style.marginLeft = '64px';
   }
 
   hideBigMenu() {
     this.$.menuStatic.style.display = 'none';
     this.$.content.style.marginLeft = '0';
- //   this.shadowRoot.querySelector('app-header-layout').style.marginLeft = '0';
- //   this.shadowRoot.querySelector('app-header').style.left = '0';
   }
 
   showSmallMenu() {
@@ -398,7 +396,6 @@ class DsignApp extends LocalizeMixin(AclMixin(ServiceInjectorMixin(PolymerElemen
         (evt) => {
           this.hideMenu();
           this._redirectRoleView();
-          this.$.content.style.padding = '0';
         }
     );
 
@@ -406,7 +403,6 @@ class DsignApp extends LocalizeMixin(AclMixin(ServiceInjectorMixin(PolymerElemen
         Auth.LOGIN,
         (evt) => {
           this.$.authDrawer.close();
-          this.$.content.style.padding = '8px';
         }
     );
 
@@ -418,6 +414,7 @@ class DsignApp extends LocalizeMixin(AclMixin(ServiceInjectorMixin(PolymerElemen
     );
 
     if (authService.getIdentity()) {
+      this.$.content.style.padding = '8px';
       this.showMenu();
     } else {
       this.$.content.style.padding = '0';

@@ -79,7 +79,6 @@ class UserViewUpsert extends FormErrorMessage(StorageEntityMixin(LocalizeMixin(S
                         <paper-input name="name" label="{{localize('name')}}" value="{{entity.name}}" required></paper-input>
                         <paper-input name="lastName" label="{{localize('lastName')}}" value="{{entity.lastName}}" required></paper-input>
                         <paper-input name="email" label="{{localize('email')}}" value="{{entity.email}}" required></paper-input>
-                        <paper-input name="password" label="{{localize('password')}}" value="{{entity.password}}" required></paper-input>
                         <paper-input name="nameOrganization" label="{{localize('nameOrganization')}}" value="{{entity.nameOrganization}}"></paper-input>
                         <paper-dropdown-menu label="{{localize('role')}}" value="{{entity.roleId}}" required>
                           <paper-listbox slot="dropdown-content">

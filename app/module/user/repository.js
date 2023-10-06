@@ -10,11 +10,12 @@ import {DefaultBuilder} from "@dsign/library/src/storage/adapter/xmlh/url/Defaul
 import {JsonEncode} from "@dsign/library/src/data-transform/JsonEncode";
 import {PropertyHydrator} from "@dsign/library/src/hydrator";
 import {UserEntity} from "./src/entity/UserEntity";
+import { AbstractRepository } from "../../src/AbstractRepository";
 
 /**
  * @class Repository
  */
-export class Repository extends ContainerAware {
+export class Repository extends AbstractRepository {
 
     /**
      * @const
@@ -85,6 +86,8 @@ export class Repository extends ContainerAware {
 
         adapterStorage.addHeader('Content-Type', 'application/json')
             .addHeader('Accept', 'application/json');
+
+        this.injectAuthHeader(adapterStorage);    
 
         let storage = new Storage(adapterStorage);
         storage.setHydrator(this.getContainer().get('HydratorContainerAggregate').get(Repository.USER_HYDRATOR_SERVICE));

@@ -80,7 +80,6 @@ class OrganizationIndex extends LocalizeMixin(AclMixin(ServiceInjectorMixin(Poly
               </organization-view-upsert>
           </div>
           <div id="update"> 
-              update
               <organization-view-upsert entity="{{entitySelected}}">
                   <div slot="header" class="header">
                       <div class="text-content">{{localize('update-resource')}}</div>
