@@ -58,17 +58,15 @@ class DsignSignup extends FormErrorMessage(AclMixin(ServiceInjectorMixin(Polymer
               <paper-input id="password" type="password" name="password" label="{{localize('password')}}" required></paper-input>
               <paper-input name="confirmPassword" type="password" label="{{localize('repeat-password')}}" required></paper-input>
               <paper-input name="roleId" value="organizationOwner" hidden></paper-input>
-            <!--  <paper-input id="nameOrganization" name="nameOrganization" label="{{localize('name-organization')}}" on-value-changed="changeNameRestaurant" required></paper-input>
-            -->
             <paper-autocomplete
-                id="defaultTimeslot"
+                id="orgAutocomplete"
                 label="{{localize('name-organization')}}"
                 text-property="name"
                 value-property="name"
                 remote-source
                 on-autocomplete-change="_defaultChanged"
-                on-autocomplete-selected="_selectDefault"
-                on-autocomplete-reset-blur="_removeDefault">
+                on-autocomplete-reset-blur="_removeDefault"
+                required>
                     <template slot="autocomplete-custom-template">
                         <paper-item class="account-item" on-tap="_onSelect" role="option" aria-selected="false">
                             <div index="[[index]]">
@@ -136,26 +134,17 @@ class DsignSignup extends FormErrorMessage(AclMixin(ServiceInjectorMixin(Polymer
         if(!this.organizationStorage) {
             return;
         } 
+        console.log('test')
 
         this.organizationStorage
             .getAll({ name: evt.detail })
             .then(
                 (data) => {
-                    evt.detail.target.suggestions(data);
+                    this.$.orgAutocomplete.suggestions(data);
                 }
             );
     }
-    /**
-     * @param evt
-     
-    changeNameRestaurant(evt) {
-        if (!this._slugify) {
-            return;
-        }
 
-        this.url = evt.detail.value ? this._slugify.slugify(evt.detail.value) : '';
-    }
-*/
     /**
      * @param {string} url
      * @private
@@ -190,32 +179,19 @@ class DsignSignup extends FormErrorMessage(AclMixin(ServiceInjectorMixin(Polymer
             return;
         }
 
+        if (!this.$.orgAutocomplete.value) {
+            userData.organization = this.$.orgAutocomplete.text
+        } else {
+            userData.organization = this.$.orgAutocomplete.text == this.$.orgAutocomplete.value.name ? this.$.orgAutocomplete.value._id.$oid:  this.$.orgAutocomplete.text;
+        }
+
+       
         this.userStorage.save(userData).then((data) => {
             this._notify.notify(this.localize('signup-ok'));
             this.$.signupUser.reset();
         }).catch((error) => {
             this.errorMessage(this.$.signupUser, error);
         });
-
-    }
-
-    /**
-     * @param evt
-     * @private
-     */
-    _searchRestaurant(evt) {
-
-        this.organizationStorage.getAll({ name: evt.detail.value.text })
-            .then((data) => {
-                console.log(evt.detail, this);
-                this.$.organization.value = {
-                    name: evt.detail.value.text
-                };
-                evt.detail.target.suggestions(
-                    data
-                );
-            })
-
     }
 }
 

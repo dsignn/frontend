@@ -87,7 +87,6 @@ class PaperDatepicker extends mixinBehaviors([PaperInputBehavior], PolymerElemen
 	}
 
 	clear(e) {
-		console.log('porco dio');
 		this.value = null;
 	}
 

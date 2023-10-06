@@ -77,6 +77,16 @@ widgetHydrator.addValueStrategy('webComponentData', new HydratorStrategy(webComp
  */
 
 const application = new Application();
+application.setCoreModules([
+    'dashboard',
+    'monitor',
+    'resource',
+    'playlist',
+    'admin',
+    'device',
+    'user',
+    'organization' 
+]);
 application.setBasePath(config.app.basePath)
     .setModulePath(`${config.app.basePath}${config.app.moduleRelativePath}`);
 
@@ -184,7 +194,7 @@ const authStorageAdapter = new XmlhAdapter(
 );
 
 authStorageAdapter.addHeader(   'Content-Type', 'application/json', 'GET')
-    .addHeader(    'Accept', 'application/json', 'GET');
+    .addHeader('Accept', 'application/json', 'GET');
 
 const authStorage = new Storage(authStorageAdapter);
 
@@ -212,7 +222,7 @@ application.getEventManager().on(
     }
 );
 
-const auth = new Auth(authStorage,  container.get('config')['rest']['resources']['auth']['options']);
+const auth = new Auth(authStorage, container.get('config')['rest']['resources']['auth']['options']);
 
 auth.eventManager.on(
     Auth.IDENTITY,

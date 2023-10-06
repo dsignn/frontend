@@ -35,6 +35,7 @@ import '../../element/dsign-login/dsign-login';
 import '../../element/dsign-signup/dsign-signup';
 import '../../element/paper-select-language/paper-select-language';
 import {layout} from '../../element/layout/dsing-layout.js';
+import { lang } from './language.js';
 
 // Gesture events like tap and track generated from touch will not be
 // preventable, allowing for better scrolling performance.
@@ -190,7 +191,7 @@ class DsignApp extends LocalizeMixin(AclMixin(ServiceInjectorMixin(PolymerElemen
             <div class="auth-container">
               <paper-tabs id="auth-tab" selected="{{authSelected}}" no-slide>
                 <paper-tab>LOGIN</paper-tab>
-                <paper-tab>SIGNUP</paper-tab>
+                <paper-tab style="text-transform: uppercase;">{{localize('signup')}}</paper-tab>
               </paper-tabs>
               <iron-pages id="authPages" selected="{{authSelected}}" role="main">
                 <div>
@@ -205,6 +206,12 @@ class DsignApp extends LocalizeMixin(AclMixin(ServiceInjectorMixin(PolymerElemen
         </div>
       </app-drawer>`;
 
+  }
+
+
+  constructor() {
+    super();
+    this.resources = lang;
   }
 
   static get properties() {
@@ -238,7 +245,8 @@ class DsignApp extends LocalizeMixin(AclMixin(ServiceInjectorMixin(PolymerElemen
         value : {
           application:  "Application",
           _aclService: "Acl",
-          _authService: "Auth"
+          _authService: "Auth",
+          _localizeService: 'Localize',
         }
       },
 

@@ -56,11 +56,11 @@
     "@polymer/polymer": "^3.4.1",
     "@webcomponents/webcomponentsjs": "^2.6.0",
     "js-acl": "^1.0.0",
-    "moment": "2.29.1"
+    "moment": "^2.29.4"
   },
   "devDependencies": {
     "polymer-cli": "^1.9.11",
-    "polymer-webpack-loader": "^2.0.3",
+    "polymer-webpack-loader": "^3.1.0",
     "wct-browser-legacy": "^1.0.2"
   },
   "engines": {

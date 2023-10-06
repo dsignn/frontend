@@ -61,6 +61,8 @@ export class Auth extends EventManagerAware {
          */
         this.token = null;
 
+
+        
         if (localStorage.getItem('token')) {
             this._setToken(JSON.parse(localStorage.getItem('token')));
             this.eventManager.emit(Auth.LOGIN, this.token);
@@ -111,6 +113,7 @@ export class Auth extends EventManagerAware {
                 'grant_type':  this.grantType,
             }).then((response) => {
                 this._setToken(response);
+      
                 this.eventManager.emit(Auth.LOGIN, this.token);
                 this.storage.adapter.addHeader('Authorization', this.token['access_token'], 'GET');
                 localStorage.setItem(Auth.TOKEN, JSON.stringify(this.token));

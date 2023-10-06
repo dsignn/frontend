@@ -12,9 +12,9 @@ export class AbstractRepository extends ContainerAware {
     injectAuthHeader(storageAdapter) {
 
         let adapter = storageAdapter;
-
+        //console.log('Sti cazzi', this.getContainer().get('Auth').getToken().access_token);
         this.getContainer().get('Auth').eventManager.on(Auth.LOGIN, (data) => {
-            //console.log('TODO ADD HEADER', data);
+            //console.log('Evento', this.getContainer().get('Auth').getToken().access_token);
             adapter.addHeader('Authorization', `Bearer ${this.getContainer().get('Auth').getToken().access_token}`);
         });
 
@@ -23,7 +23,7 @@ export class AbstractRepository extends ContainerAware {
         });
 
         if(this.getContainer().get('Auth') && this.getContainer().get('Auth').getToken()) {
-            console.log('DIO CANE');
+            //console.log('GIA presente', this.getContainer().get('Auth').getToken().access_token);
             adapter.addHeader('Authorization', `Bearer ${this.getContainer().get('Auth').getToken().access_token}`);
         }
     }
