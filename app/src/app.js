@@ -63,7 +63,7 @@ webComponentHydrator.addValueStrategy('path',new HydratorStrategy(pathHydrator))
 let autoLoadClassHydrator = new PropertyHydrator(new AutoLoadClass());
 autoLoadClassHydrator.addValueStrategy('path',new HydratorStrategy(pathHydrator));
 
-moduleHydrator.addValueStrategy('autoloadsWs', new HydratorStrategy(webComponentHydrator));
+moduleHydrator.addValueStrategy('autoloadsWc', new HydratorStrategy(webComponentHydrator));
 moduleHydrator.addValueStrategy('entryPoint', new HydratorStrategy(webComponentHydrator));
 moduleHydrator.addValueStrategy('autoloads', new HydratorStrategy(autoLoadClassHydrator));
 
