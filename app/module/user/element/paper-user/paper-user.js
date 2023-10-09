@@ -30,11 +30,11 @@ class PaperUser extends StorageEntityMixin(LocalizeMixin(ServiceInjectorMixin(Po
                 #leftSection {
                     width: 80px;
                     min-height: 120px;
-                    background-size: cover;
+                    background-size: contain;
                     background-position: center;
                     background-repeat: no-repeat;
-                    background-image: url("../../module/user/element/paper-user/img/user.jpg") !important;
-                    @apply --application-paper-card-left-content;      
+                    background-image: url("./../../module/user/element/paper-user/img/cover.png");
+                    background-color: #F06409; 
                 }
                 
                 #fastAction {
