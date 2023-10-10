@@ -98,12 +98,6 @@ class PaperOrganization extends StorageEntityMixin(LocalizeMixin(ServiceInjector
             </style>
             <paper-card>
                 <div id="leftSection"></div>
-                <div id="fastAction">
-                    <div class="action">
-                        <paper-icon-button id="previewButton" icon="resource:preview" on-tap="_openPreview"></paper-icon-button>
-                        <paper-tooltip for="previewButton" position="right">{{localize('preview-resource')}}</paper-tooltip>
-                    </div>
-                </div>
                 <div id="rightSection">
                     <div id="content">
                         <div class="name">{{entity.name}}</div>

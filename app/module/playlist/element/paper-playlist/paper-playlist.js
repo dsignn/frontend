@@ -25,7 +25,7 @@ class PaperPlaylist extends StorageEntityMixin(LocalizeMixin(ServiceInjectorMixi
                 
                 #left-section {
                     width: 80px;
-                    min-height: 140px;
+                    min-height: 120px;
                     background-size: contain;
                     background-position: center;
                     background-repeat: no-repeat;
@@ -165,16 +165,6 @@ class PaperPlaylist extends StorageEntityMixin(LocalizeMixin(ServiceInjectorMixi
             </style>
             <paper-card>
                 <div id="left-section"></div>
-                <div id="fastAction">
-                    <paper-icon-button id="contextIcon" class="activePaperButton" on-tap="_tapOverlay"  disabled="{{hideCrud}}"></paper-icon-button>
-                    <paper-tooltip for="contextIcon" position="right"></paper-tooltip>
-                    <paper-icon-button id="rotationIcon" class="activePaperButton" on-tap="_tapRotation" disabled="{{hideCrud}}"></paper-icon-button>
-                    <paper-tooltip for="rotationIcon" position="right"></paper-tooltip>
-                    <paper-icon-button id="fitIcon" class="activePaperButton" on-tap="_tapFit" disabled="{{hideCrud}}"></paper-icon-button>
-                    <paper-tooltip for="fitIcon" position="right"></paper-tooltip>
-                    <paper-icon-button id="volumeIcon" class="activePaperButton" on-tap="_tapVolume" disabled="{{hideCrud}}"></paper-icon-button>
-                    <paper-tooltip for="volumeIcon" position="right"></paper-tooltip>
-                </div>
                 <div id="right-section">
                     <div class="content">
                         <div class="sub-content">
@@ -202,14 +192,6 @@ class PaperPlaylist extends StorageEntityMixin(LocalizeMixin(ServiceInjectorMixi
                         </div>
                         <paper-slider id="slider" pin on-mousedown="sliderDown" on-mouseup="sliderUp" on-mouseout="sliderOut" disabled></paper-slider>
                     </div>      
-                    <div class="content-action">
-                        <paper-icon-button id="play" icon="resource:play" on-click="_play" class="circle-small action"></paper-icon-button>
-                        <paper-tooltip for="play" position="bottom">{{localize('play-resource')}}</paper-tooltip>
-                        <paper-icon-button id="stop" icon="resource:stop" on-click="_stop" class="circle-small action"></paper-icon-button>
-                        <paper-tooltip for="stop" position="bottom">{{localize('stop-resource')}}</paper-tooltip>
-                        <paper-icon-button id="pause" icon="resource:pause" on-click="_pause" class="circle-small action"></paper-icon-button>
-                        <paper-tooltip for="pause" position="bottom">{{localize('pause-resource')}}</paper-tooltip>
-                    </div>
                 </div>
             </paper-card>
         `

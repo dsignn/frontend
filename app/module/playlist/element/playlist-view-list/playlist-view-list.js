@@ -18,7 +18,6 @@ class PlaylistViewList extends StoragePaginationMixin(StorageCrudMixin(LocalizeM
         return html`
             <style>
                 #list {
-                    padding-top: var(--padding-top-view-list);
                     @apply --layout-horizontal;
                     @apply --layout-wrap;
                 }

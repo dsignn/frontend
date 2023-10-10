@@ -41,13 +41,6 @@ class PaperUser extends StorageEntityMixin(LocalizeMixin(ServiceInjectorMixin(Po
                     border-right: 1px solid var(--divider-color);
                 }
                 
-                #fastAction .action {
-                    height: 30px;
-                    @apply --layout;
-                    @apply --layout-center
-                    @apply --layout-center-justified;
-                }
-                
                 #rightSection {
                     @apply --layout-horizontal;
                     @apply --layout-flex;
@@ -81,12 +74,6 @@ class PaperUser extends StorageEntityMixin(LocalizeMixin(ServiceInjectorMixin(Po
             </style>
             <paper-card>
                 <div id="leftSection"></div>
-                <div id="fastAction">
-                    <div class="action">
-                        <paper-icon-button id="previewButton" icon="resource:preview" on-tap="_openPreview"></paper-icon-button>
-                        <paper-tooltip for="previewButton" position="right">{{localize('preview-user')}}</paper-tooltip>
-                    </div>
-                </div>
                 <div id="rightSection">
                     <div id="content">
                         <div class="name">{{entity.name}}</div>

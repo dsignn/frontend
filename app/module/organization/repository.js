@@ -1,7 +1,6 @@
 /**
  * Dashboard repository
  */
-import { ContainerAware } from "@dsign/library/src/container/ContainerAware.js";
 import { XmlhAdapter } from "@dsign/library/src/storage/adapter/xmlh/XmlhAdapter";
 import { JsonDecode } from "@dsign/library/src/data-transform/JsonDecode";
 import { DefaultBuilder } from "@dsign/library/src/storage/adapter/xmlh/url/DefaultBuilder";
