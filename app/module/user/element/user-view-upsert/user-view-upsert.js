@@ -35,6 +35,11 @@ class UserViewUpsert extends FormErrorMessage(StorageEntityMixin(LocalizeMixin(S
                      @apply --layout-horizontal;
                      @apply --layout-end-justified;
                 }
+
+                paper-button.status { 
+                    background-color: green;
+                    color: white;
+                }
                 
                 @media (max-width: 500px) {
                     paper-resource {
@@ -78,16 +83,37 @@ class UserViewUpsert extends FormErrorMessage(StorageEntityMixin(LocalizeMixin(S
                      <form method="post">
                         <paper-input name="name" label="{{localize('name')}}" value="{{entity.name}}" required></paper-input>
                         <paper-input name="lastName" label="{{localize('lastName')}}" value="{{entity.lastName}}" required></paper-input>
+                        <div>
+                            <paper-dropdown-menu label="{{localize('role')}}" value="{{entity.roleId}}" required>
+                                <paper-listbox slot="dropdown-content">
+                                    <paper-item value="organizationOwner">organizationOwner</paper-item>
+                                    <paper-item value="admin">admin</paper-item>
+                                </paper-listbox>
+                            </paper-dropdown-menu>
+                            <paper-button class="status" disabled>{{localize(entity.status)}}</paper-button>
+                        </div>
                         <paper-input name="email" label="{{localize('email')}}" value="{{entity.email}}" required></paper-input>
-                        <paper-input name="nameOrganization" label="{{localize('nameOrganization')}}" value="{{entity.nameOrganization}}"></paper-input>
-                        <paper-chips id="bindChips" items="{{entity.organizations}}" text-property="collection"></paper-chips>   
-                        <paper-dropdown-menu label="{{localize('role')}}" value="{{entity.roleId}}" required>
-                        <paper-listbox slot="dropdown-content">
-                            <paper-item value="organizationOwner">organizationOwner</paper-item>
-                            <paper-item value="admin">admin</paper-item>
-                          </paper-listbox>
-                        </paper-dropdown-menu>
-                        <div>{{entity.status}}</div>
+                        <paper-autocomplete
+                            id="widgetAutocomplete"
+                            label="{{localize('nameOrganization')}}"
+                            text-property="name"
+                            value-property="name"
+                            on-autocomplete-selected="_selectWidget"
+                            on-autocomplete-change="_searchOrganization"
+                            on-autocomplete-reset-blur="_clearWidget"
+                            remote-source>
+                            <template slot="autocomplete-custom-template">
+                            
+                                <paper-item class="account-item" on-tap="_onSelect" role="option" aria-selected="false">
+                                    <div index="[[index]]">
+                                        <div class="service-name">[[item.name]]</div>
+                                        <div class="service-description">[[item.description]]</div>
+                                    </div>
+                                    <paper-ripple></paper-ripple>
+                                </paper-item>
+                            </template>
+                        </paper-autocomplete>
+                        <paper-chips id="bindChips" items="{{entity.organizations}}" text-property="name"></paper-chips>                          
                         <div>
                             <div class="form-action" style="margin-top: 20px;">
                                 <paper-button on-tap="submitUsertButton">{{localize(labelAction)}}</paper-button>
@@ -151,6 +177,16 @@ class UserViewUpsert extends FormErrorMessage(StorageEntityMixin(LocalizeMixin(S
         this.$.formUser.submit();
     }
 
+    _searchOrganization(evt) {
+
+        this._organizationStorage.getAll({name: evt.detail.value.text})
+            .then(
+                (data) => {
+                    evt.detail.target.suggestions(data);
+                }
+            );
+    }
+
     /**
      * @param evt
      */
@@ -188,7 +224,29 @@ class UserViewUpsert extends FormErrorMessage(StorageEntityMixin(LocalizeMixin(S
         if (newValue.id) {
             this.labelAction = 'update';
         }
+ 
+        if (newValue.organizations && Array.isArray(newValue.organizations) && newValue.organizations.length > 0 ) {
 
+            let promises = [];
+
+            for (let cont = 0; newValue.organizations.length > cont; cont++) {
+                promises.push(this._organizationStorage.get( newValue.organizations[cont].id));
+            }
+
+            Promise.all(promises).then((organizations) => {
+                //console.log('PORCO DIO', organizations);
+                for (let cont = 0; newValue.organizations.length > cont; cont++) { 
+                    let found = organizations.find((element) => {
+                        return newValue.organizations[cont].id === element.id
+                    });
+
+                    newValue.organizations[cont] = found;
+                }
+
+                this.$.bindChips.shadowRoot.querySelector('dom-repeat').render();
+            });
+        }
+     
         console.log(newValue, this._organizationStorage)
         
     }

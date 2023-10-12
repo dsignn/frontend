@@ -28,6 +28,11 @@ class OrganizationViewUpsert extends StorageEntityMixin(NotifyMixin(LocalizeMixi
                     iron-form {
                         width: 100%;
                     }
+
+                    .form-action {
+                        @apply --layout-horizontal;
+                        @apply --layout-end-justified;
+                    }
                     
                     video {
                         outline: none;
@@ -59,7 +64,7 @@ class OrganizationViewUpsert extends StorageEntityMixin(NotifyMixin(LocalizeMixi
                                 </div>
                             </div>
                             <div>
-                                <div class="flex flex-horizontal-end" style="margin-top: 20px;">
+                                <div class="form-action" style="margin-top: 20px;">
                                     <paper-button on-tap="submitResourceButton">{{localize(labelAction)}}</paper-button>
                                 </div>
                             </div>

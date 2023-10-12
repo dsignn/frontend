@@ -10,7 +10,8 @@ export const lang = {
     "role" : "Ruolo",
     "notify-save" : "Timeslot salvato",
     "notify-update" : "Timeslot modificato",
-    "nameOrganization": 'Nome organizzazione'
+    "nameOrganization": 'Nome organizzazione',
+    "enable": "attivo"
   },
   "en": {
     "name": "Name",
@@ -23,6 +24,7 @@ export const lang = {
     "role" : "Role",
     "notify-save" : "Timeslot saved",
     "notify-update" : "Timeslot updated",
-    "nameOrganization": 'Nome organization'
+    "nameOrganization": 'Nome organization',
+    "enable": "enable"
   }
 };
