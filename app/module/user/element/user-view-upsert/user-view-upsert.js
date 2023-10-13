@@ -3,6 +3,7 @@ import { ServiceInjectorMixin } from "@dsign/polymer-mixin/service/injector-mixi
 import { LocalizeMixin } from "@dsign/polymer-mixin/localize/localize-mixin";
 import { StorageEntityMixin } from "@dsign/polymer-mixin/storage/entity-mixin";
 import {FormErrorMessage} from "../../../../element/mixin/form-error-message/form-error-message";
+import {autocompleteStyle} from "../../../../element/paper-autocomplete/autocomplete-custom-style";
 import "@fluidnext-polymer/paper-pagination/paper-pagination";
 import "@fluidnext-polymer/paper-pagination/icons/paper-pagination-icons";
 import '@polymer/iron-form/iron-form';
@@ -94,16 +95,15 @@ class UserViewUpsert extends FormErrorMessage(StorageEntityMixin(LocalizeMixin(S
                         </div>
                         <paper-input name="email" label="{{localize('email')}}" value="{{entity.email}}" required></paper-input>
                         <paper-autocomplete
-                            id="widgetAutocomplete"
+                            id="organizationAutocomplete"
                             label="{{localize('nameOrganization')}}"
                             text-property="name"
                             value-property="name"
-                            on-autocomplete-selected="_selectWidget"
+                            on-autocomplete-selected="_selectOrganization"
                             on-autocomplete-change="_searchOrganization"
-                            on-autocomplete-reset-blur="_clearWidget"
                             remote-source>
                             <template slot="autocomplete-custom-template">
-                            
+                                ${autocompleteStyle}
                                 <paper-item class="account-item" on-tap="_onSelect" role="option" aria-selected="false">
                                     <div index="[[index]]">
                                         <div class="service-name">[[item.name]]</div>
@@ -187,6 +187,20 @@ class UserViewUpsert extends FormErrorMessage(StorageEntityMixin(LocalizeMixin(S
             );
     }
 
+    _selectOrganization(evt) {
+
+        console.log('select', evt.detail.value);
+        this.$.bindChips.add(evt.detail.value);
+
+        setTimeout(
+            () => {
+                this.$.organizationAutocomplete.clear();
+            },
+            300
+        );
+       
+    }
+
     /**
      * @param evt
      */
@@ -245,10 +259,7 @@ class UserViewUpsert extends FormErrorMessage(StorageEntityMixin(LocalizeMixin(S
 
                 this.$.bindChips.shadowRoot.querySelector('dom-repeat').render();
             });
-        }
-     
-        console.log(newValue, this._organizationStorage)
-        
+        }        
     }
 }
 window.customElements.define('user-view-upsert', UserViewUpsert);

@@ -39,8 +39,8 @@ export class Repository extends AbstractRepository {
          */
         this.loadConfig();
         this.loadAcl();
-        this.initOrganizationHydrator();
         this.initEntity();
+        this.initOrganizationHydrator();
         this.initStorage()
     }
 
@@ -72,7 +72,7 @@ export class Repository extends AbstractRepository {
             .get('HydratorContainerAggregate')
             .set(
                 Repository.ORGANIZATION_HYDRATOR_SERVICE,
-                Repository.getOrganizationHydrator(this.getContainer().get('EntityContainerAggregate'))
+                Repository.getOrganizationHydrator(this.getContainer())
             );
     }
 
@@ -95,7 +95,8 @@ export class Repository extends AbstractRepository {
         this.injectAuthHeader(adapterStorage);
 
         let storage = new Storage(adapterStorage);
-        storage.setHydrator(this.getContainer().get('HydratorContainerAggregate').get(Repository.ORGANIZATION_HYDRATOR_SERVICE));
+        storage.setHydrator(this.getContainer().get('HydratorContainerAggregate')
+            .get(Repository.ORGANIZATION_HYDRATOR_SERVICE));
 
         this.getContainer().set(Repository.STORAGE_SERVICE, storage);
     }
@@ -105,8 +106,9 @@ export class Repository extends AbstractRepository {
      */
     static getOrganizationHydrator(container) {
 
-        let hydrator = new PropertyHydrator(container.get(Repository.ORGANIZATION_ENTITY_SERVICE));
-
+        let hydrator = new PropertyHydrator(
+            container.get('EntityContainerAggregate').get(Repository.ORGANIZATION_ENTITY_SERVICE)
+        );
 
         hydrator.enableHydrateProperty('id')
             .enableHydrateProperty('_id')
