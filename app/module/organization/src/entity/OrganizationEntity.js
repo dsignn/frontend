@@ -12,5 +12,7 @@ export class OrganizationEntity extends EntityIdentifier {
          * @type {string|null}
          */
         this.name = null;
+
+        this.oauthToken = null;
     }
 }

@@ -25,34 +25,37 @@ class OrganizationViewUpsert extends StorageEntityMixin(NotifyMixin(LocalizeMixi
         return html`
           
                 <style>
+                   
                     iron-form {
                         width: 100%;
                     }
 
-                    .form-action {
-                        @apply --layout-horizontal;
-                        @apply --layout-end-justified;
-                    }
-                    
-                    video {
-                        outline: none;
-                    }
-                    
-                    .name {
-                       @apply --layout-horizontal;
-                       @apply --layout-center;
-                    }
-                    
-                     .name paper-input {
-                       width: 100%;
-                       margin-right: 12px;
-                    }
-                    
                     #container {
                         padding: var(--padding-top-view-list);
                         @apply --layout-horizontal;
                         @apply --layout-wrap;
                     }
+                    
+                    .form-action {
+                        @apply --layout-horizontal;
+                        @apply --layout-end-justified;
+                    }
+
+                    pre {
+                        width: 85%;
+                        padding: 16px;
+                        overflow: auto;
+                        font-size: 85%;
+                        line-height: 1.45;
+                        color: black;
+                        background-color: #f6f8fa;
+                        border-radius: 6px;
+                    }
+
+                    #code {
+                        display:none;
+                    }
+
                 </style>
                 <slot name="header"></slot>
                 <div id="container">
@@ -62,9 +65,16 @@ class OrganizationViewUpsert extends StorageEntityMixin(NotifyMixin(LocalizeMixi
                                 <div class="name">
                                     <paper-input id="name" name="name" label="{{localize('name')}}" value="{{entity.name}}" required></paper-input>
                                 </div>
+                                <div>
+                                    <div class="text">
+                                        Token
+                                    </div>
+                                    <pre id="code">{{entity.oauthToken}}</pre>
+                                </div>
                             </div>
                             <div>
                                 <div class="form-action" style="margin-top: 20px;">
+                                    <paper-button id="orgToken" on-tap="generateOrganizationToken">{{localize('generate-token')}}</paper-button>
                                     <paper-button on-tap="submitResourceButton">{{localize(labelAction)}}</paper-button>
                                 </div>
                             </div>
@@ -99,7 +109,8 @@ class OrganizationViewUpsert extends StorageEntityMixin(NotifyMixin(LocalizeMixi
             services : {
                 value : {
                     _notifyService : "Notify",
-                    _localizeService: 'Localize',
+                    _localizeService: "Localize",
+                    _auth: "Auth",
                     StorageContainerAggregate : {
                         _storage :"OrganizationStorage"
                     }
@@ -130,6 +141,14 @@ class OrganizationViewUpsert extends StorageEntityMixin(NotifyMixin(LocalizeMixi
 
         if (newValue.id) {
             this.labelAction = 'update';
+        } 
+
+        if (newValue.oauthToken) {
+            this.$.orgToken.style.display = 'none';
+            this.$.code.style.display = 'block';
+        } else {
+            this.$.orgToken.style.display = 'block';
+            this.$.code.style.display = 'none';
         }
     }
 
@@ -155,6 +174,12 @@ class OrganizationViewUpsert extends StorageEntityMixin(NotifyMixin(LocalizeMixi
                 this.notify(this.localize(method === 'save' ? 'notify-save' : 'notify-update'));
             });
 
+    }
+
+    generateOrganizationToken(evt) {
+        this._auth.generateToken(
+            this.entity.id
+        );
     }
 
     /**

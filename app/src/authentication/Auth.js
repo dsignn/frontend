@@ -18,6 +18,11 @@ export class Auth extends EventManagerAware {
     /**
      * @returns {string}
      */
+     static get ORGANIZATION_TOKE() { return 'organization-token'; };
+
+    /**
+     * @returns {string}
+     */
     static get LOGOUT() { return 'logout'; };
 
     /**
@@ -118,6 +123,27 @@ export class Auth extends EventManagerAware {
                 this.storage.adapter.addHeader('Authorization', this.token['access_token'], 'GET');
                 localStorage.setItem(Auth.TOKEN, JSON.stringify(this.token));
                 this.loadIdentity();
+                resolve(response)
+            }).catch((error) => {
+                reject(error);
+            });
+        });
+    }
+
+    /**
+     * @param {string} organizationId 
+     * @returns 
+     */
+    generateToken(organizationId) {
+        return new Promise( (resolve ,reject) => {
+            this.storage.save({
+                'organization_id': organizationId,
+                'scope': 'client',
+                'grant_type':  'organization-token',
+            }).then((response) => {
+                console.log('generate', response);
+
+                this.eventManager.emit(Auth.ORGANIZATION_TOKE, response);
                 resolve(response)
             }).catch((error) => {
                 reject(error);

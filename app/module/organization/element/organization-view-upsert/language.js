@@ -15,7 +15,8 @@ export const lang = {
     "search-file" : "Cerca file",
     "tag" : 'Tag',
     "notify-save" : "Risorsa salvata",
-    "notify-update" : "Risorsa modificata"
+    "notify-update" : "Risorsa modificata",
+    "generate-token": "Genera token"
   },
   "en": {
     "header": "List monitor",
@@ -33,6 +34,7 @@ export const lang = {
     "search-file" : "Search file",
     "tag" : 'Tag',
     "notify-save" : "Resource saved",
-    "notify-update" : "Resource updated"
+    "notify-update" : "Resource updated",
+    "generate-token": "Generate token"
   }
 };
