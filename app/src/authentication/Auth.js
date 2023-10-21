@@ -18,7 +18,7 @@ export class Auth extends EventManagerAware {
     /**
      * @returns {string}
      */
-     static get ORGANIZATION_TOKE() { return 'organization-token'; };
+     static get ORGANIZATION_TOKEN() { return 'organization-token'; };
 
     /**
      * @returns {string}
@@ -143,7 +143,7 @@ export class Auth extends EventManagerAware {
             }).then((response) => {
                 console.log('generate', response);
 
-                this.eventManager.emit(Auth.ORGANIZATION_TOKE, response);
+                this.eventManager.emit(Auth.ORGANIZATION_TOKEN, response);
                 resolve(response)
             }).catch((error) => {
                 reject(error);

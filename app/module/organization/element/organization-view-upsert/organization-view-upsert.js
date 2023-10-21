@@ -3,6 +3,7 @@ import {ServiceInjectorMixin} from "@dsign/polymer-mixin/service/injector-mixin"
 import {LocalizeMixin} from "@dsign/polymer-mixin/localize/localize-mixin";
 import {NotifyMixin} from "@dsign/polymer-mixin/notify/notify-mixin";
 import {StorageEntityMixin} from "@dsign/polymer-mixin/storage/entity-mixin";
+import {Auth} from "../../../../src/authentication/Auth";
 import '@polymer/paper-input/paper-input';
 import '@fluidnext-polymer/paper-autocomplete/paper-autocomplete';
 import '@fluidnext-polymer/paper-chip/paper-chips';
@@ -41,8 +42,15 @@ class OrganizationViewUpsert extends StorageEntityMixin(NotifyMixin(LocalizeMixi
                         @apply --layout-end-justified;
                     }
 
+                    .text {
+                        font-size: 12px;
+                    }
+
+                    #copy {
+                        height: 35px;
+                    }
+
                     pre {
-                        width: 85%;
                         padding: 16px;
                         overflow: auto;
                         font-size: 85%;
@@ -50,6 +58,7 @@ class OrganizationViewUpsert extends StorageEntityMixin(NotifyMixin(LocalizeMixi
                         color: black;
                         background-color: #f6f8fa;
                         border-radius: 6px;
+                        white-space: pre-line;
                     }
 
                     #code {
@@ -62,18 +71,16 @@ class OrganizationViewUpsert extends StorageEntityMixin(NotifyMixin(LocalizeMixi
                    <iron-form id="formResource">
                         <form method="post">
                             <div>
-                                <div class="name">
-                                    <paper-input id="name" name="name" label="{{localize('name')}}" value="{{entity.name}}" required></paper-input>
-                                </div>
-                                <div>
+                                <paper-input id="name" name="name" label="{{localize('name')}}" value="{{entity.name}}" required></paper-input>
+                                <div id="code">
                                     <div class="text">
-                                        Token
+                                        Token &nbsp&nbsp<paper-icon-button id="copy" icon="copy" on-tap="copyFn"></paper-icon-button>
                                     </div>
-                                    <pre id="code">{{entity.oauthToken}}</pre>
+                                    <pre>{{entity.oauthToken}}</pre>
                                 </div>
                             </div>
                             <div>
-                                <div class="form-action" style="margin-top: 20px;">
+                                <div class="flex flex-horizontal-end" style="margin-top: 20px;">
                                     <paper-button id="orgToken" on-tap="generateOrganizationToken">{{localize('generate-token')}}</paper-button>
                                     <paper-button on-tap="submitResourceButton">{{localize(labelAction)}}</paper-button>
                                 </div>
@@ -93,6 +100,10 @@ class OrganizationViewUpsert extends StorageEntityMixin(NotifyMixin(LocalizeMixi
             entity: {
                 observer: '_changeEntity',
                 value: {}
+            },
+
+            _auth: {
+                observer: '_changeAuth',
             },
 
             /**
@@ -133,6 +144,39 @@ class OrganizationViewUpsert extends StorageEntityMixin(NotifyMixin(LocalizeMixi
      * @param newValue
      * @private
      */
+    _changeAuth(newValue) {
+        if (!newValue) {
+            return;
+        }
+
+        newValue.eventManager.on(
+            Auth.ORGANIZATION_TOKEN,
+            (evt) => {
+                this.entity.oauthToken = evt.data.access_token;
+                this.notifyPath('entity.oauthToken');
+                this._hideToken(false);
+            }
+        );
+    }
+
+    /**
+     * @param {bool} hide 
+     */
+    _hideToken(hide) {
+      
+        if (hide) {
+            this.$.orgToken.style.display = 'unset';
+            this.$.code.style.display = 'none';
+        } else {
+            this.$.orgToken.style.display = 'none';
+            this.$.code.style.display = 'unset';
+        }
+    }
+
+    /**
+     * @param newValue
+     * @private
+     */
     _changeEntity(newValue) {
         this.labelAction = 'save';
         if (!newValue) {
@@ -143,13 +187,7 @@ class OrganizationViewUpsert extends StorageEntityMixin(NotifyMixin(LocalizeMixi
             this.labelAction = 'update';
         } 
 
-        if (newValue.oauthToken) {
-            this.$.orgToken.style.display = 'none';
-            this.$.code.style.display = 'block';
-        } else {
-            this.$.orgToken.style.display = 'block';
-            this.$.code.style.display = 'none';
-        }
+        this._hideToken(!newValue.oauthToken);
     }
 
     /**
@@ -169,8 +207,6 @@ class OrganizationViewUpsert extends StorageEntityMixin(NotifyMixin(LocalizeMixi
 
         this._storage[method](this.entity)
             .then((data) => {
-
-                
                 this.notify(this.localize(method === 'save' ? 'notify-save' : 'notify-update'));
             });
 
@@ -187,6 +223,28 @@ class OrganizationViewUpsert extends StorageEntityMixin(NotifyMixin(LocalizeMixi
      */
     getStorageUpsertMethod() {
         return this.entity.id ? 'update' : 'save';
+    }
+
+    /** */
+    copyFn(evt) {      
+
+        const textArea = document.createElement("textarea");
+        textArea.value = this.entity.oauthToken;
+            
+        // Move textarea out of the viewport so it's not visible
+        textArea.style.position = "absolute";
+        textArea.style.left = "-999999px";
+            
+        document.body.prepend(textArea);
+        textArea.select();
+
+        try {
+            document.execCommand('copy');
+        } catch (error) {
+            console.error(error);
+        } finally {
+            textArea.remove();
+        }
     }
 }
 window.customElements.define('organization-view-upsert', OrganizationViewUpsert);

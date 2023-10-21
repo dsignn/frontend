@@ -55,6 +55,11 @@ class OrganizationIndex extends LocalizeMixin(AclMixin(ServiceInjectorMixin(Poly
                 margin-right: 8px;
             }
         }
+
+        #update {
+           display: block;
+           width: 96%;
+        }
       </style>
       <iron-pages id="index" selected="{{selected}}">
           <div id="list"> 
@@ -101,21 +106,9 @@ class OrganizationIndex extends LocalizeMixin(AclMixin(ServiceInjectorMixin(Poly
 
       services: {
         value: {
-          _notify: "Notify",
           _localizeService: 'Localize',
-          _aclService: "Acl",
-          _authService: "Auth",
-          _config: "config"
         }
-      },
-
-      _authService: {
-        observer: 'changeAuthService'
-      },
-
-      _config: {
-
-      },
+      }
     };
   }
 
@@ -131,49 +124,6 @@ class OrganizationIndex extends LocalizeMixin(AclMixin(ServiceInjectorMixin(Poly
    */
   displayListView(evt) {
     this.selected = 0;
-  }
-
-  /**
-   * @param authService
-   */
-  changeAuthService(authService) {
-    if (!authService) {
-      return;
-    }
-
-    authService.eventManager.on(
-      Auth.LOGIN,
-      (evt) => {
-        this.style.backgroundColor = '#eeeeee'
-      }
-    );
-
-    authService.eventManager.on(
-      Auth.LOGOUT,
-      (evt) => {
-        this.style.backgroundColor = '#ffffff'
-      }
-    );
-
-    authService.eventManager.on(
-      Auth.IDENTITY,
-      (evt) => {
-        this.style.backgroundColor = '#eeeeee'
-      }
-    );
-
-    if (authService.getIdentity()) {
-      this.style.backgroundColor = '#eeeeee'
-    }
-  }
-
-  /**
-   * @param evt
-   */
-  openLogin(evt) {
-    let drawer = document.querySelector('dsign-app').shadowRoot.querySelector('#authDrawer');
-    drawer.querySelector('paper-tabs').selected = 1;
-    drawer.open();
   }
 }
 
