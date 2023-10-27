@@ -15,6 +15,8 @@ import { ServiceInjectorMixin } from "@dsign/polymer-mixin/service/injector-mixi
 import { lang } from './language.js';
 // TODO add to widget load
 import { Auth } from "../../../../src/authentication/Auth.js";
+import './../device-view-list/device-view-list.js';
+//import './../organization-view-upsert/organization-view-upsert';
 
 
 /**
@@ -24,12 +26,72 @@ class DeviceIndex extends LocalizeMixin(AclMixin(ServiceInjectorMixin(PolymerEle
 
   static get template() {
     return html`
-      <style>
-      
+    <style>             
+    .header {
+      @apply --layout-horizontal;
+      @apply --layout-center;
+      padding-bottom: 8px;
+    }
+    
+  .text-content {
+      font-size: 20px;
+      flex: 1;
+    }
+    
+    paper-icon-button.circle {
+        @apply --paper-icon-button-action;
+    }
 
-        
-      </style>
-    device`;
+    paper-filter-storage {
+        flex: 1;
+        --paper-filter-storage : {
+            padding: 0 8px;
+            align-items: center;
+            display: flex;
+            min-height: 70px;
+            width: -webkit-fill-available;
+            margin-right: 8px;
+        }
+    }
+
+    #update {
+       display: block;
+       width: 96%;
+    }
+  </style>
+  <iron-pages id="index" selected="{{selected}}">
+      <div id="list"> 
+          <device-view-list selected="{{selected}}" entity-selected="{{entitySelected}}">
+              <div slot="header" class="header">
+                  <paper-filter-storage id="filterStorage" on-value-changed="_filterChange">
+                      <div slot="filters" class="filter-container">
+                          <paper-input name="name" label="{{localize('name')}}" ></paper-input>
+                      </div>
+                  </paper-filter-storage>
+                  <paper-icon-button id="iconInsertMonitor" icon="insert" class="circle" on-click="displayAddView"></paper-icon-button>
+                  <paper-tooltip for="iconInsertMonitor" position="left">{{localize('insert-resource')}}</paper-tooltip>
+                </div>
+          </device-view-list>
+      </div>
+      <div id="insert"> 
+          <device-view-upsert>
+              <div slot="header" class="header">
+                  <div class="text-content">{{localize('insert-resource')}}</div>
+                  <paper-icon-button id="iconBackInsert" icon="arrow-back" class="circle" on-click="displayListView"></paper-icon-button>
+                  <paper-tooltip for="iconBackInsert" position="left">{{localize('back')}}</paper-tooltip>
+              </div>
+          </device-view-upsert>
+      </div>
+      <div id="update"> 
+          <device-view-upsert entity="{{entitySelected}}">
+              <div slot="header" class="header">
+                  <div class="text-content">{{localize('update-resource')}}</div>
+                  <paper-icon-button id="iconBackUpdate" icon="arrow-back" class="circle" on-click="displayListView"></paper-icon-button>
+                  <paper-tooltip for="iconBackUpdate" position="left">{{localize('back')}}</paper-tooltip>
+              </div>
+          </device-view-upsert>
+      </div>
+  </iron-pages>`;
   }
 
   constructor() {
@@ -37,159 +99,30 @@ class DeviceIndex extends LocalizeMixin(AclMixin(ServiceInjectorMixin(PolymerEle
     this.resources = lang;
   }
 
-  connectedCallback() {
-    super.connectedCallback();
-    this.initReviewDiv();
-  }
-
-
   static get properties() {
     return {
 
       services: {
         value: {
-          _notify: "Notify",
           _localizeService: 'Localize',
-          _aclService: "Acl",
-          _authService: "Auth",
-          _config: "config"
         }
-      },
-
-      _authService: {
-        observer: 'changeAuthService'
-      },
-
-      _config: {
-
-      },
-
-      restaurants: {
-        value: [],
       }
     };
   }
 
   /**
-   * @param next
-   * @private
+   * @param evt
    */
-  _updateDot(next) {
-    let dots = this.shadowRoot.querySelectorAll('.navigation span');
-    for (let index = 0; dots.length > index; index++) {
-      dots[index].classList.remove('active');
-      if (index === next) {
-        dots[index].classList.add('active');
-      }
-    }
-  }
-
-  prevReview() {
-    let elements = this.shadowRoot.querySelectorAll('.review');
-    let current = this._getCurrentActiveReviewIndex(elements);
-    let next = current === 0 ? elements.length - 1 : current - 1;
-
-    this._updateDot(next);
-
-    setTimeout(
-      () => {
-        elements[next].style.display = 'none';
-        elements[next].style.right = '-1500px';
-      },
-      10
-    );
-
-    setTimeout(
-      () => {
-        elements[next].style.display = 'block';
-      },
-      50
-    );
-
-    setTimeout(
-      () => {
-        elements[current].style.right = '1500px';
-        elements[current].classList.remove('active');
-        elements[next].style.right = '0';
-        elements[next].classList.add('active');
-      },
-      100
-    );
-  };
-
-  /**
-   * @param authService
-   */
-  changeAuthService(authService) {
-    if (!authService) {
-      return;
-    }
-
-    authService.eventManager.on(
-      Auth.LOGIN,
-      (evt) => {
-        this.style.backgroundColor = '#eeeeee'
-      }
-    );
-
-    authService.eventManager.on(
-      Auth.LOGOUT,
-      (evt) => {
-        this.style.backgroundColor = '#ffffff'
-      }
-    );
-
-    authService.eventManager.on(
-      Auth.IDENTITY,
-      (evt) => {
-        this.style.backgroundColor = '#eeeeee'
-      }
-    );
-
-    if (authService.getIdentity()) {
-      this.style.backgroundColor = '#eeeeee'
-    }
-  }
-
-
-  
-  /**
-   *
-   */
-  initReviewDiv() {
-    let elements = this.shadowRoot.querySelectorAll('.review');
-    for (let index = 0; index < elements.length; index++) {
-      if (!elements[index].classList.contains('active')) {
-        elements[index].style.right = '1200px';
-      } else {
-        elements[index].style.right = '0';
-      }
-    }
+  displayAddView(evt) {
+    this.selected = 1;
   }
 
   /**
    * @param evt
    */
-  openLogin(evt) {
-    let drawer = document.querySelector('dsign-app').shadowRoot.querySelector('#authDrawer');
-    drawer.querySelector('paper-tabs').selected = 1;
-    drawer.open();
+  displayListView(evt) {
+    this.selected = 0;
   }
-
-  /**
-   * @param {CustomEvent} evt 
-   */
-  openIndoor(evt) {
-    window.open(`${this._config.app.menuPath}/${evt.target.parentElement.restaurant.normalize_name}`, "_blank")
-  }
-
-  /**
-   * @param {CustomEvent} evt 
-   */
-  openDelivery(evt) {
-    window.open(`${this._config.app.menuPath}/${evt.target.parentElement.restaurant.normalize_name}?delivery`, "_blank")
-  }
-
 }
 
 window.customElements.define('device-index', DeviceIndex);

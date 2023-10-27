@@ -6,7 +6,8 @@ export const lang = {
     "signup": "Registrati",
     "signup-ok": "Registrazione eseguita con successo verrà inviata una mail per completare la registrazione",
     "thinking": "Hai mai pensato a un menu digitale per il tuo ristorante?",
-    "find-more": "Scopri di piu"
+    "find-more": "Scopri di piu",
+    "name": "Nome"
   },
   "en": {
     "email": "Email",
@@ -15,6 +16,7 @@ export const lang = {
     "signup": "Signup",
     "signup-ok": "Registrazione eseguita con successo verrà inviata una mail per completare la registrazione",
     "thinking": "Hai mai pensato a un menu digitale per il tuo ristorante?",
-    "find-more": "Scopri di piu"
+    "find-more": "Scopri di piu",
+    "name": "Name"
   }
 };

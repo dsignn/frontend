@@ -1,12 +1,19 @@
 /**
  * Config
- */
+ */ 
 export const config = {
     rest: {
         resources: {
-            playlist: {
+            device: {
                 name: "device"
             }
+        }
+    },
+    'device': {
+        'storage': {
+            'name': 'DeviceStorage',
+            'hydrator': 'DeviceEntityHydrator',
+            'entity': 'DeviceEntity'
         }
     }
 }
