@@ -35,7 +35,7 @@ class OrganizationIndex extends LocalizeMixin(AclMixin(ServiceInjectorMixin(Poly
           padding-bottom: 8px;
         }
         
-      .text-content {
+        .text-content {
           font-size: 20px;
           flex: 1;
         }
@@ -54,11 +54,6 @@ class OrganizationIndex extends LocalizeMixin(AclMixin(ServiceInjectorMixin(Poly
                 width: -webkit-fill-available;
                 margin-right: 8px;
             }
-        }
-
-        #update {
-           display: block;
-           width: 96%;
         }
       </style>
       <iron-pages id="index" selected="{{selected}}">

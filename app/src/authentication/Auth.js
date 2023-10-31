@@ -72,12 +72,20 @@ export class Auth extends EventManagerAware {
             this._setToken(JSON.parse(localStorage.getItem('token')));
             this.eventManager.emit(Auth.LOGIN, this.token);
             this.storage.adapter.addHeader('Authorization', this.token['access_token'], 'GET');
+        } else {
+            if (window.location.pathname != '/') {
+                this.goToHome();
+            }
         }
 
         /**
          * @type {null}
          */
         this.identity = null;
+    }
+
+    goToHome() {
+        window.location = '/';
     }
 
     /**

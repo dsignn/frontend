@@ -137,7 +137,7 @@ class DsignSignup extends FormErrorMessage(AclMixin(ServiceInjectorMixin(Polymer
         console.log('test')
 
         this.organizationStorage
-            .getAll({ name: evt.detail })
+            .getAll({ name: evt.detail.value.text })
             .then(
                 (data) => {
                     this.$.orgAutocomplete.suggestions(data);

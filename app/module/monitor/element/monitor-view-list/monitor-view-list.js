@@ -5,6 +5,7 @@ import {StoragePaginationMixin} from "@dsign/polymer-mixin//storage/pagination-m
 import '@polymer/iron-pages/iron-pages.js';
 import '@fluidnext-polymer/paper-pagination/paper-pagination';
 import '../paper-monitor/paper-monitor';
+import {lang} from './language';
 
 /**
  * @class MonitorViewList
@@ -14,6 +15,11 @@ class MonitorViewList extends StoragePaginationMixin(LocalizeMixin(ServiceInject
     static get template() {
         return html`
         <style>
+
+            .empty {
+                padding: 10px 0;
+                font-size: 20px;
+            }
         
             #container {
                 @apply --layout-horizontal;
@@ -65,9 +71,13 @@ class MonitorViewList extends StoragePaginationMixin(LocalizeMixin(ServiceInject
             <template is="dom-repeat" items="[[entities]]" as="monitor">
                 <paper-monitor entity="{{monitor}}" on-delete="_deleteEntity" on-update="_showUpdateView" on-enable-monitor="_updateEntity"></paper-monitor>
             </template>
+            <template is="dom-if" if="{{!entities.length}}">
+                <div class="empty">{{localize('empty-list')}} </div>
+            </template>
         </div>
         <paper-pagination page="{{page}}" total-items="{{totalItems}}" item-per-page="{{itemPerPage}}" next-icon="next" previous-icon="previous"></paper-pagination>`;
     }
+
     static get properties() {
         return {
 
@@ -89,10 +99,17 @@ class MonitorViewList extends StoragePaginationMixin(LocalizeMixin(ServiceInject
 
             services : {
                 value : {
+                    _localizeService: 'Localize',
                     _storage:  "MonitorStorage"
                 }
             }
         };
+    }
+
+
+    constructor() {
+        super();
+        this.resources = lang;
     }
 
     /**

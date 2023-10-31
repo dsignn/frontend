@@ -63,7 +63,7 @@ class OrganizationViewList extends RefreshCollectionData(StorageCrudMixin(Locali
             <slot name="header"></slot>
                 <div id="container">
                 <template is="dom-repeat" items="[[entities]]" as="paper-organization">
-                    <paper-organization entity="{{paper-organization}}" on-delete="_deleteEntity" on-update="_showUpdateView"></paper-paper-organization>
+                    <paper-organization entity="{{paper-organization}}" on-update="_showUpdateView"></paper-paper-organization>
                 </template>
             </div>
             <paper-pagination page="{{page}}" total-items="{{totalItems}}" item-per-page="{{itemPerPage}}" next-icon="next" previous-icon="previous"></paper-pagination>

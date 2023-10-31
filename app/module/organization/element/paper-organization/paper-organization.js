@@ -116,7 +116,6 @@ class PaperOrganization extends StorageEntityMixin(LocalizeMixin(ServiceInjector
                             <paper-icon-button icon="v-menu" slot="dropdown-trigger" alt="multi menu"></paper-icon-button>
                             <paper-listbox slot="dropdown-content" multi>
                                 <paper-item on-click="_update">{{localize('modify')}}</paper-item>
-                                <paper-item  on-click="_delete">{{localize('delete')}}</paper-item>
                             </paper-listbox>
                         </paper-menu-button>
                     </div>
