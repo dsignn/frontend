@@ -112,13 +112,11 @@ export class Repository extends AbstractRepository {
         );
 
         hydrator.enableHydrateProperty('id')
-            .enableHydrateProperty('_id')
             .enableHydrateProperty('name')
             .enableHydrateProperty('oauthToken')
             ;
 
         hydrator.enableExtractProperty('id')
-            .enableExtractProperty('_id')
             .enableExtractProperty('name')
             .enableExtractProperty('oauthToken')
             ;

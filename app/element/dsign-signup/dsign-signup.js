@@ -65,7 +65,6 @@ class DsignSignup extends FormErrorMessage(AclMixin(ServiceInjectorMixin(Polymer
                 value-property="name"
                 remote-source
                 on-autocomplete-change="_defaultChanged"
-                on-autocomplete-reset-blur="_removeDefault"
                 required>
                     <template slot="autocomplete-custom-template">
                         <paper-item class="account-item" on-tap="_onSelect" role="option" aria-selected="false">

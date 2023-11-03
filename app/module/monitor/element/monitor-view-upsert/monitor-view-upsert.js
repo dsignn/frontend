@@ -15,11 +15,12 @@ import '../paper-monitor/paper-monitor';
 import '../../element/paper-monitor-update/paper-monitor-update';
 import '../../../../element/paper-input-points/paper-input-points';
 import {lang} from './language';
+import { AclMixin } from '@dsign/polymer-mixin/acl/acl-mixin';
 
 /**
  * @class MonitorViewUpsert
  */
-class MonitorViewUpsert extends StorageEntityMixin(NotifyMixin(LocalizeMixin(ServiceInjectorMixin(PolymerElement)))) {
+class MonitorViewUpsert extends StorageEntityMixin(NotifyMixin(AclMixin(LocalizeMixin(ServiceInjectorMixin(PolymerElement))))) {
 
     static get template() {
         return html`
@@ -77,6 +78,27 @@ class MonitorViewUpsert extends StorageEntityMixin(NotifyMixin(LocalizeMixin(Ser
                 <iron-form id="formMonitorContainer">
                     <form method="post" action="">
                         <paper-input name="name" label="{{localize('name')}}" value="{{entity.name}}" required></paper-input>
+                        <template id="domIf" is="dom-if" if="{{isAllowed('monitor', 'post')}}">
+                            <paper-autocomplete
+                                id="orgAutocomplete"
+                                label="{{localize('name-organization')}}"
+                                text-property="name"
+                                value-property="name"
+                                remote-source
+                                value="{{entity.organizationReference}}"
+                                on-autocomplete-change="_defaultChanged"
+                                required>
+                                    <template slot="autocomplete-custom-template">
+                                        <paper-item class="account-item" on-tap="_onSelect" role="option" aria-selected="false">
+                                            <div index="[[index]]">
+                                                <div class="service-name">[[item.name]]</div>
+                                            </div>
+                                        </paper-item>
+                                    </template>
+                
+                                    <iron-icon icon="info" slot="suffix"></iron-icon>
+                            </paper-autocomplete>
+                        </template>
                         <div id="monitorUpdate">
                             <dom-repeat items="{{entity.monitors}}" as="monitor">
                                 <template>
@@ -118,6 +140,10 @@ class MonitorViewUpsert extends StorageEntityMixin(NotifyMixin(LocalizeMixin(Ser
     static get properties() {
         return {
 
+            entity: {
+                observer: '_entityChanged'
+            },
+
             /**
              * @type Number
              */
@@ -136,11 +162,13 @@ class MonitorViewUpsert extends StorageEntityMixin(NotifyMixin(LocalizeMixin(Ser
                 value: {
                     _localizeService: 'Localize',
                     _notifyService: 'Notify',
+                    _aclService: "Acl",
                     "HydratorContainerAggregate" : {
                         _monitorHydrator : "MonitorEntityHydrator"
                     },
                     StorageContainerAggregate : {
-                        _storage :"MonitorStorage"
+                        _storage :"MonitorStorage",
+                        organizationStorage: "OrganizationStorage"
                     }
                 }
             },
@@ -159,6 +187,37 @@ class MonitorViewUpsert extends StorageEntityMixin(NotifyMixin(LocalizeMixin(Ser
         this.addEventListener('remove-monitor', this.removeMonitor.bind(this), true)
     }
 
+    _entityChanged(newValue, oldValue) {
+       
+        if (oldValue && oldValue.id != newValue.id && newValue.organizationReference && newValue.organizationReference.id) {
+            console.log('Cmbio bella', newValue, oldValue);
+            this.organizationStorage.get(newValue.organizationReference.id)
+                .then((entity) => {
+                    console.log('ORG', entity);
+                    this.entity.organizationReference = entity;
+                    this.notifyPath('entity.organizationReference');
+                });
+        }
+    }
+
+    /**
+     * @param evt
+     * @private
+     */
+    _defaultChanged(evt) {
+        if(!this.organizationStorage) {
+            return;
+        } 
+
+        this.organizationStorage
+            .getAll({ name: evt.detail.value.text })
+            .then(
+                (data) => {
+                    this.shadowRoot.querySelector('#orgAutocomplete').suggestions(data);
+                }
+            );
+    }
+
     /**
      * @param {CustomEvent} evt
      */
@@ -170,6 +229,8 @@ class MonitorViewUpsert extends StorageEntityMixin(NotifyMixin(LocalizeMixin(Ser
      * @param evt
      */
     submitMonitorContainer(evt) {
+        evt.preventDefault();
+
         let method = this.getStorageUpsertMethod();
         this._storage[method](this.entity)
             .then((data) => {

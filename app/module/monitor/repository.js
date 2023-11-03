@@ -77,6 +77,7 @@ export class Repository extends AbstractRepository {
     initAcl() {
         this.getContainer().get('Acl').addResource('monitor');
         this.getContainer().get('Acl').allow('admin', 'monitor', 'menu')
+        this.getContainer().get('Acl').allow('admin', 'monitor', 'post');
         this.getContainer().get('Acl').allow('organizationOwner', 'monitor', 'menu');
     }
 
@@ -150,24 +151,20 @@ export class Repository extends AbstractRepository {
         let strategy = new HydratorStrategy();
         strategy.setHydrator(Repository.getMonitorEntityHydrator(container));
 
-        hydrator.addPropertyStrategy('id', new MapPropertyStrategy('id', '_id'))
-            .addPropertyStrategy('_id', new MapPropertyStrategy('id', '_id'));
-
         hydrator.addValueStrategy('monitors', strategy)
             .addValueStrategy('enable', new HybridStrategy(HybridStrategy.BOOLEAN_TYPE, HybridStrategy.NUMBER_TYPE));
 
         hydrator.enableExtractProperty('id')
-            .enableExtractProperty('_id')
             .enableExtractProperty('name')
             .enableExtractProperty('enable')
-            .enableExtractProperty('monitors');
+            .enableExtractProperty('monitors')
+            .enableExtractProperty('organizationReference');
 
         hydrator.enableHydrateProperty('id')
-
-            .enableHydrateProperty('_id')
             .enableHydrateProperty('name')
             .enableHydrateProperty('enable')
-            .enableHydrateProperty('monitors');
+            .enableHydrateProperty('monitors')
+            .enableHydrateProperty('organizationReference');
 
         return hydrator;
     }

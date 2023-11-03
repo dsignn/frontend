@@ -85,14 +85,8 @@ class PaperDevice extends StorageEntityMixin(LocalizeMixin(ServiceInjectorMixin(
                     <div id="content">
                         <div class="name">{{entity.name}}</div>
                         <div class="size">
-                            <div>{{size}} {{sizeLabel}}</div>
+                            <div>{{localize(status)}}</div>
                         </div>
-                        <template is="dom-if" if="{{entity.dimension.height}}">
-                            <div class="dimension">{{entity.dimension.width}} px {{entity.dimension.height}} px</div>
-                        </template>
-                        <template is="dom-if" if="{{entity.fps}}">
-                            <div class="video">{{entity.fps}} fps</div>
-                        </template>
                     </div>
                     <div id="crud">
                     <!--
@@ -129,7 +123,11 @@ class PaperDevice extends StorageEntityMixin(LocalizeMixin(ServiceInjectorMixin(
              * @type FileEntity
              */
             entity: {
-               
+                observer: '_entityChanged'
+            },
+
+            status: {
+                value: 'disable'
             },
 
             /**
@@ -168,6 +166,14 @@ class PaperDevice extends StorageEntityMixin(LocalizeMixin(ServiceInjectorMixin(
                 readOnly: true
             }
         }
+    }
+
+    _entityChanged(newValue) {
+        if (!newValue) {
+            return;
+        }
+
+        console.log(newValue);
     }
 
     /**
