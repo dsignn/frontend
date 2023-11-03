@@ -108,7 +108,8 @@ class MonitorViewList extends RefreshCollectionData(StorageCrudMixin(LocalizeMix
             services : {
                 value : {
                     _localizeService: 'Localize',
-                    _storage:  "MonitorStorage"
+                    _storage:  "MonitorStorage",
+                    _authService: "Auth",
                 }
             }
         };
@@ -125,7 +126,7 @@ class MonitorViewList extends RefreshCollectionData(StorageCrudMixin(LocalizeMix
      */
     static get observers() {
         return [
-           'observerPaginationEntities(page, itemPerPage, _storage)'
+           '_changeAuthStorage(_authService, _storage)'
         ]
     }
 
