@@ -80,7 +80,7 @@ class DsignApp extends LocalizeMixin(AclMixin(ServiceInjectorMixin(PolymerElemen
         
         .content {
           margin-left: 64pX;
-          width: 100%;
+          width: -webkit-fill-available;
           padding: 8px;
         }
         

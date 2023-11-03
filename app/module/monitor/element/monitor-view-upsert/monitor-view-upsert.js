@@ -190,13 +190,15 @@ class MonitorViewUpsert extends StorageEntityMixin(NotifyMixin(AclMixin(Localize
     _entityChanged(newValue, oldValue) {
        
         if (oldValue && oldValue.id != newValue.id && newValue.organizationReference && newValue.organizationReference.id) {
-            console.log('Cmbio bella', newValue, oldValue);
+      
             this.organizationStorage.get(newValue.organizationReference.id)
                 .then((entity) => {
-                    console.log('ORG', entity);
                     this.entity.organizationReference = entity;
                     this.notifyPath('entity.organizationReference');
+                    this.shadowRoot.querySelector('#orgAutocomplete').disabled = true;
                 });
+        } else if(this.shadowRoot.querySelector('#orgAutocomplete')) {
+            this.shadowRoot.querySelector('#orgAutocomplete').disabled = false;
         }
     }
 

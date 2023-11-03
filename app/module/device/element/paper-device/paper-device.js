@@ -172,8 +172,6 @@ class PaperDevice extends StorageEntityMixin(LocalizeMixin(ServiceInjectorMixin(
         if (!newValue) {
             return;
         }
-
-        console.log(newValue);
     }
 
     /**
