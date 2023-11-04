@@ -112,6 +112,7 @@ export class Repository extends AbstractRepository {
     initAcl() {
         this.getContainer().get('Acl').addResource('resource');
         this.getContainer().get('Acl').allow('admin', 'resource', 'menu');
+        this.getContainer().get('Acl').allow('admin', 'resource', 'post');
         this.getContainer().get('Acl').allow('organizationOwner', 'resource', 'menu');
     }
 
@@ -127,7 +128,7 @@ export class Repository extends AbstractRepository {
             new DefaultBuilder()
         );
 
-        adapterStorage.setUpdateMethod('PATCH');
+        adapterStorage.setUpdateMethod('POST');
 
         adapterStorage.addHeader('Accept', 'application/json');
 
@@ -246,16 +247,18 @@ export class Repository extends AbstractRepository {
             .enableHydrateProperty('mimeType')
             .enableHydrateProperty('src')
             .enableHydrateProperty('path')
+            .enableHydrateProperty('organizationReference')
             .enableHydrateProperty('tags');
 
         hydrator.enableExtractProperty('id')
             .enableExtractProperty('_id')
             .enableExtractProperty('name')
-            .enableExtractProperty('size')
+            //.enableExtractProperty('size')
             .enableExtractProperty('resourceToImport')
-            .enableExtractProperty('mimeType')
-            .enableExtractProperty('src')
-            .enableExtractProperty('path')
+            //.enableExtractProperty('mimeType')
+            //.enableExtractProperty('src')
+            //.enableExtractProperty('path')
+            .enableExtractProperty('organizationReference')
             .enableExtractProperty('tags');
 
         return hydrator;
@@ -274,12 +277,12 @@ export class Repository extends AbstractRepository {
             .enableHydrateProperty('duration')
             .enableHydrateProperty('dimension')
             .enableHydrateProperty('aspectRation');
-
+/*
         hydrator.enableExtractProperty('fps')
             .enableExtractProperty('duration')
             .enableExtractProperty('dimension')
             .enableExtractProperty('aspectRation');
-
+*/
         return hydrator;
     }
 

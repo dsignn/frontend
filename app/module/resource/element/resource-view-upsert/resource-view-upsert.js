@@ -1,8 +1,9 @@
-import {html, PolymerElement} from '@polymer/polymer/polymer-element.js';
-import {ServiceInjectorMixin} from "@dsign/polymer-mixin/service/injector-mixin";
-import {LocalizeMixin} from "@dsign/polymer-mixin/localize/localize-mixin";
-import {NotifyMixin} from "@dsign/polymer-mixin/notify/notify-mixin";
-import {StorageEntityMixin} from "@dsign/polymer-mixin/storage/entity-mixin";
+import { html, PolymerElement } from '@polymer/polymer/polymer-element.js';
+import { ServiceInjectorMixin } from "@dsign/polymer-mixin/service/injector-mixin";
+import { LocalizeMixin } from "@dsign/polymer-mixin/localize/localize-mixin";
+import { NotifyMixin } from "@dsign/polymer-mixin/notify/notify-mixin";
+import { StorageEntityMixin } from "@dsign/polymer-mixin/storage/entity-mixin";
+import { AclMixin } from '@dsign/polymer-mixin/acl/acl-mixin';
 import '@polymer/paper-input/paper-input';
 import '@fluidnext-polymer/paper-autocomplete/paper-autocomplete';
 import '@fluidnext-polymer/paper-chip/paper-chips';
@@ -13,13 +14,14 @@ import '@polymer/paper-button/paper-button';
 import '@polymer/paper-card/paper-card';
 import '@fluidnext-polymer/paper-input-file/paper-input-file';
 import '@polymer/paper-tooltip/paper-tooltip';
-import {lang} from './language';
+import { lang } from './language';
+
 
 /**
  * @customElement
  * @polymer
  */
-class ResourceViewUpsert extends StorageEntityMixin(NotifyMixin(LocalizeMixin(ServiceInjectorMixin(PolymerElement)))) {
+class ResourceViewUpsert extends StorageEntityMixin(NotifyMixin(AclMixin(LocalizeMixin(ServiceInjectorMixin(PolymerElement))))) {
 
     static get template() {
         return html`
@@ -58,6 +60,27 @@ class ResourceViewUpsert extends StorageEntityMixin(NotifyMixin(LocalizeMixin(Se
                                     <paper-input id="name" name="name" label="{{localize('name')}}" value="{{entity.name}}" required></paper-input>
                                     <paper-icon-button on-tap="openViewer" icon="resource:viewer"></paper-icon-button>
                                 </div>
+                                <template id="domIf" is="dom-if" if="{{isAllowed('resource', 'post')}}">
+                                <paper-autocomplete
+                                    id="orgAutocomplete"
+                                    label="{{localize('name-organization')}}"
+                                    text-property="name"
+                                    value-property="name"
+                                    remote-source
+                                    value="{{entity.organizationReference}}"
+                                    on-autocomplete-change="_defaultChanged"
+                                    required>
+                                        <template slot="autocomplete-custom-template">
+                                            <paper-item class="account-item" on-tap="_onSelect" role="option" aria-selected="false">
+                                                <div index="[[index]]">
+                                                    <div class="service-name">[[item.name]]</div>
+                                                </div>
+                                            </paper-item>
+                                        </template>
+                    
+                                        <iron-icon icon="info" slot="suffix"></iron-icon>
+                                </paper-autocomplete>
+                            </template>
                                 <paper-input-file id="fileUpload" label="{{localize('search-file')}}" accept="image/png, image/jpeg, video/*, audio/*, application/zip"></paper-input-file>
                                 <div>
                                     <paper-input id="tag" name="name" label="{{localize('tag')}}" on-keypress="addTag"></paper-input>
@@ -78,7 +101,7 @@ class ResourceViewUpsert extends StorageEntityMixin(NotifyMixin(LocalizeMixin(Se
         `;
     }
 
-    static get properties () {
+    static get properties() {
         return {
 
             /**
@@ -86,7 +109,7 @@ class ResourceViewUpsert extends StorageEntityMixin(NotifyMixin(LocalizeMixin(Se
              */
             entity: {
                 observer: '_changeEntity',
-                value: {type: "text/html", tags: []}
+                value: { type: "text/html", tags: [] }
             },
 
             /**
@@ -100,15 +123,17 @@ class ResourceViewUpsert extends StorageEntityMixin(NotifyMixin(LocalizeMixin(Se
             /**
              * @type object
              */
-            services : {
-                value : {
-                    _notifyService : "Notify",
+            services: {
+                value: {
+                    _notifyService: "Notify",
                     _localizeService: 'Localize',
-                    "HydratorContainerAggregate" : {
-                        _resourceHydrator : "ResourceEntityHydrator"
+                    _aclService: "Acl",
+                    "HydratorContainerAggregate": {
+                        _resourceHydrator: "ResourceEntityHydrator"
                     },
-                    StorageContainerAggregate : {
-                        _storage :"ResourceStorage"
+                    StorageContainerAggregate: {
+                        _storage: "ResourceStorage",
+                        organizationStorage: "OrganizationStorage"
                     }
                 }
             }
@@ -129,18 +154,33 @@ class ResourceViewUpsert extends StorageEntityMixin(NotifyMixin(LocalizeMixin(Se
      * @param evt
      */
     addTag(evt) {
-       if (evt.charCode === 13 && evt.target.value) {
+        if (evt.charCode === 13 && evt.target.value) {
             this.$.chips.add(evt.target.value);
             this.$.tag.value = "";
-       }
+        }
     }
+
+
 
     /**
      * @param newValue
      * @private
      */
-    _changeEntity(newValue) {
+    _changeEntity(newValue, oldValue) {
         this.labelAction = 'save';
+
+        if (oldValue && oldValue.id != newValue.id && newValue.organizationReference && newValue.organizationReference.id) {
+      
+            this.organizationStorage.get(newValue.organizationReference.id)
+                .then((entity) => {
+                    this.entity.organizationReference = entity;
+                    this.notifyPath('entity.organizationReference');
+                    this.shadowRoot.querySelector('#orgAutocomplete').disabled = true;
+                });
+        } else if(this.shadowRoot.querySelector('#orgAutocomplete')) {
+            this.shadowRoot.querySelector('#orgAutocomplete').disabled = false;
+        }
+
         if (!newValue) {
             return;
         }
@@ -148,6 +188,25 @@ class ResourceViewUpsert extends StorageEntityMixin(NotifyMixin(LocalizeMixin(Se
         if (newValue.id) {
             this.labelAction = 'update';
         }
+    }
+
+
+    /**
+     * @param evt
+     * @private
+     */
+    _defaultChanged(evt) {
+        if (!this.organizationStorage) {
+            return;
+        }
+
+        this.organizationStorage
+            .getAll({ name: evt.detail.value.text })
+            .then(
+                (data) => {
+                    this.shadowRoot.querySelector('#orgAutocomplete').suggestions(data);
+                }
+            );
     }
 
     /**
@@ -166,7 +225,7 @@ class ResourceViewUpsert extends StorageEntityMixin(NotifyMixin(LocalizeMixin(Se
         let method = this.getStorageUpsertMethod();
         let template = this.$.fileUpload.files[0] ?
             this.$.fileUpload.files[0] : (method === 'update' ?
-                {id: this.entity.id, mime_type: this.entity.mimeType} : null);
+                { id: this.entity.id, mime_type: this.entity.mimeType } : null);
 
         if (this.entity.id) {
             template.id = this.entity.id;
@@ -175,6 +234,7 @@ class ResourceViewUpsert extends StorageEntityMixin(NotifyMixin(LocalizeMixin(Se
         let entity = this._resourceHydrator.hydrate(template);
         entity.name = this.$.name.value;
         entity.tags = this.entity.tags;
+        entity.organizationReference = this.entity.organizationReference;
         if (this.$.fileUpload.files[0]) {
             entity.resourceToImport = this.$.fileUpload.files[0];
         }
@@ -183,7 +243,7 @@ class ResourceViewUpsert extends StorageEntityMixin(NotifyMixin(LocalizeMixin(Se
             .then((data) => {
 
                 if (method === 'save') {
-                    this.entity = this._storage.getHydrator().hydrate({type: "text/html"});
+                    this.entity = this._storage.getHydrator().hydrate({ type: "text/html" });
                     this.$.formResource.reset();
                 }
 
