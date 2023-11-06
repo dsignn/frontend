@@ -32,23 +32,29 @@ class PaperResource extends StorageEntityMixin(LocalizeMixin(ServiceInjectorMixi
                 }
                 
                 #leftSection {
+                    position: relative;
                     width: 80px;
                     min-height: 120px;
                     background-size: cover;
                     background-position: center;
                     background-repeat: no-repeat;
-                    @apply --application-paper-card-left-content;
                 }
                 
-                #fastAction {
-                    border-right: 1px solid var(--divider-color);
+                #leftSection .action {
+                    position: absolute;
+                    bottom: 6px;
+                    right: 6px;
+                    z-index: 1;
                 }
-                
-                #fastAction .action {
+
+                paper-icon-button.circle-small {
+                    @apply --application-paper-icon-button-circle;
+                    background-color: var(--default-primary-color);
+                    color:var(--text-primary-color);
                     height: 30px;
-                    @apply --layout;
-                    @apply --layout-center
-                    @apply --layout-center-justified;
+                    width: 30px;
+                    padding: 4px;
+                
                 }
                 
                 #rightSection {
@@ -56,14 +62,26 @@ class PaperResource extends StorageEntityMixin(LocalizeMixin(ServiceInjectorMixi
                     @apply --layout-flex;
                 }
                 
-                          
+                #numberResource {
+                    display: none;
+                }
+                        
                 #content {
                     @apply --layout-flex;
                     padding: 4px;
                     word-break: break-all;
                     overflow: hidden;
                 }  
-                   
+
+                #leftSection video  {
+                    object-fit: cover;
+                    height: 120px;
+                    width: 80px;
+                    position: absolute;
+                    top: 0;
+                    left: 0;
+                }
+                
                 paper-menu-button {
                     padding: 0;
                 }
@@ -80,14 +98,6 @@ class PaperResource extends StorageEntityMixin(LocalizeMixin(ServiceInjectorMixi
                     font-size: 14px;
                     font-style: italic;
                 }
-                
-                .imgBackground {
-                    background-image: url("../../module/resource/element/paper-resource/img/image.jpeg") !important;
-                }
-    
-                .videoBackground {
-                    background-image: url("../../module/resource/element/paper-resource/img/video.jpeg") !important;
-                }
     
                 .webBackground {
                     background-image: url("../../module/resource/element/paper-resource/img/web.jpeg") !important;
@@ -100,11 +110,10 @@ class PaperResource extends StorageEntityMixin(LocalizeMixin(ServiceInjectorMixi
     
             </style>
             <paper-card>
-                <div id="leftSection"></div>
-                <div id="fastAction">
+                <div id="leftSection">
                     <div class="action">
-                        <paper-icon-button id="previewButton" icon="resource:preview" on-tap="_openPreview"></paper-icon-button>
-                        <paper-tooltip for="previewButton" position="right">{{localize('preview-resource')}}</paper-tooltip>
+                        <paper-icon-button id="previewButton" icon="resource:preview" on-tap="_openPreview" class="circle-small" ></paper-icon-button>
+                        <paper-tooltip for="previewButton" position="right" >{{localize('preview-resource')}}</paper-tooltip>
                     </div>
                 </div>
                 <div id="rightSection">
@@ -307,12 +316,22 @@ class PaperResource extends StorageEntityMixin(LocalizeMixin(ServiceInjectorMixi
     _updateLeftImageHtml() {
 
         this.$.leftSection.className = '';
+        console.log('change', this.entity);
         switch (true) {
-            case this.entity instanceof ImageEntity:
-                this.$.leftSection.classList.add("imgBackground");
+            case this.entity instanceof ImageEntity:    
+                this.$.leftSection.style.backgroundImage = `url("${this.entity.src}")`;
                 break;
-            case this.entity instanceof VideoEntity:
-                this.$.leftSection.classList.add("videoBackground");
+            case this.entity instanceof VideoEntity:  let video = document.createElement('video');
+                video.setAttribute('id', 'videoBackground')
+                video.setAttribute('width', 80);
+                video.setAttribute('height', 120);
+                video.setAttribute('preload', 'metadata');
+
+                let source = document.createElement('source');
+                source.setAttribute('src', `${this.entity.src}#t=2`);
+
+                video.appendChild(source);
+                this.$.leftSection.appendChild(video);
                 break;
             case this.entity instanceof AudioEntity:
                 this.$.leftSection.classList.add("audioBackground");
