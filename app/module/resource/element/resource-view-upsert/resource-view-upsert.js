@@ -229,12 +229,13 @@ class ResourceViewUpsert extends StorageEntityMixin(NotifyMixin(AclMixin(Localiz
 
         if (this.entity.id) {
             template.id = this.entity.id;
+            template.organizationReference = this.entity.organizationReference;
         }
 
         let entity = this._resourceHydrator.hydrate(template);
         entity.name = this.$.name.value;
         entity.tags = this.entity.tags;
-        entity.organizationReference = this.entity.organizationReference;
+    
         if (this.$.fileUpload.files[0]) {
             entity.resourceToImport = this.$.fileUpload.files[0];
         }

@@ -141,7 +141,7 @@ class PaperResource extends StorageEntityMixin(LocalizeMixin(ServiceInjectorMixi
                 </div>
             </paper-card>
             <paper-dialog id="previewDialog" entry-animation="scale-up-animation" exit-animation="fade-out-animation" on-iron-overlay-closed="_closePreview">
-                <div class="title">Preview</div>
+                <div class="title">{{localize('preview')}}</div>
                 <paper-dialog-scrollable>
                    <div id="contentPreview"></div>
                 </paper-dialog-scrollable>
@@ -156,8 +156,6 @@ class PaperResource extends StorageEntityMixin(LocalizeMixin(ServiceInjectorMixi
 
     static get properties () {
         return {
-
-
             /**
              * @type FileEntity
              */
@@ -247,12 +245,12 @@ class PaperResource extends StorageEntityMixin(LocalizeMixin(ServiceInjectorMixi
         switch (true) {
             case this.entity instanceof ImageEntity === true:
                 element = document.createElement('img');
-                element.src = this._resourceService.getResourcePath(this.entity)  + '?' + new Date().getTime();
+                element.src = this.entity.src  + '?' + new Date().getTime();
                 break;
             case this.entity instanceof AudioEntity === true:
             case this.entity instanceof VideoEntity === true:
                 element = document.createElement('video');
-                element.src = this._resourceService.getResourcePath(this.entity)  + '?' + new Date().getTime();
+                element.src = this.entity.src  + '?' + new Date().getTime();
                 element.setAttribute('autoplay', true);
                 element.muted = true; // TODO remove for debug
                 element.setAttribute('controls', true);
@@ -260,7 +258,7 @@ class PaperResource extends StorageEntityMixin(LocalizeMixin(ServiceInjectorMixi
             case this.entity instanceof FileEntity === true:
                 if (!customElements.get(this.entity.wcName)) {
 
-                    import(this._resourceService.getResourcePath(this.entity).replace('.html', '.js'))
+                    import(this.entity.src)
                         .then((module) => {
                             element = document.createElement(this.entity.wcName);
                             element.createMockData();
@@ -281,10 +279,12 @@ class PaperResource extends StorageEntityMixin(LocalizeMixin(ServiceInjectorMixi
 
             switch (true) {
                 case element.tagName === 'VIDEO':
+                    element.play();
                 case element.tagName === 'IMG':
                     element.addEventListener(
                         element.tagName === 'IMG' ? 'load' : 'playing',
                         () => {
+                      
                             this.$.previewDialog.open();
                         }
                     );
@@ -316,7 +316,7 @@ class PaperResource extends StorageEntityMixin(LocalizeMixin(ServiceInjectorMixi
     _updateLeftImageHtml() {
 
         this.$.leftSection.className = '';
-        console.log('change', this.entity);
+
         switch (true) {
             case this.entity instanceof ImageEntity:    
                 this.$.leftSection.style.backgroundImage = `url("${this.entity.src}")`;

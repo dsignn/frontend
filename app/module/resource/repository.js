@@ -220,7 +220,7 @@ export class Repository extends AbstractRepository {
             ['application/zip', 'text/html', 'application/javascript']
         ).addHydratorMap(
             Repository.getAudioEntityHydrator(container),
-            ['audio/mp3']
+            ['audio/mp3', 'audio/ogg']
         );
 
         return hydrator;
