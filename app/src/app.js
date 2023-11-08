@@ -57,19 +57,25 @@ container.set(
  * Module Hydrator
  */
 let pathHydrator = new PropertyHydrator(new PathGeneric());
-let moduleHydrator = new PropertyHydrator(new Module());
+
 let webComponentHydrator = new PropertyHydrator(new WebComponent());
 webComponentHydrator.addValueStrategy('path',new HydratorStrategy(pathHydrator));
+
 let autoLoadClassHydrator = new PropertyHydrator(new AutoLoadClass());
 autoLoadClassHydrator.addValueStrategy('path',new HydratorStrategy(pathHydrator));
-
-moduleHydrator.addValueStrategy('autoloadsWc', new HydratorStrategy(webComponentHydrator));
-moduleHydrator.addValueStrategy('entryPoint', new HydratorStrategy(webComponentHydrator));
-moduleHydrator.addValueStrategy('autoloads', new HydratorStrategy(autoLoadClassHydrator));
 
 let widgetHydrator = new PropertyHydrator(new Widget());
 widgetHydrator.addValueStrategy('webComponent', new HydratorStrategy(webComponentHydrator));
 widgetHydrator.addValueStrategy('webComponentData', new HydratorStrategy(webComponentHydrator));
+
+let moduleHydrator = new PropertyHydrator(new Module());
+moduleHydrator.addValueStrategy('autoloadsWc', new HydratorStrategy(webComponentHydrator));
+moduleHydrator.addValueStrategy('entryPoint', new HydratorStrategy(webComponentHydrator));
+moduleHydrator.addValueStrategy('autoloads', new HydratorStrategy(autoLoadClassHydrator));
+moduleHydrator.addValueStrategy('widgets', new HydratorStrategy(widgetHydrator));
+
+
+
 
 
 /**

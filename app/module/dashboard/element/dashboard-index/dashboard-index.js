@@ -12,10 +12,13 @@ import { PolymerElement, html } from '@polymer/polymer/polymer-element.js';
 import { LocalizeMixin } from "@dsign/polymer-mixin/localize/localize-mixin.js";
 import { AclMixin } from "@dsign/polymer-mixin/acl/acl-mixin";
 import { ServiceInjectorMixin } from "@dsign/polymer-mixin/service/injector-mixin.js";
+import { WidgetEntity } from "./../../src/entity/WidgetEntity";
 import { lang } from './language.js';
 // TODO add to widget load
 import { Auth } from "../../../../src/authentication/Auth";
-
+import "@fluidnext-polymer/paper-grid/paper-grid";
+import './../widget-index/widget-index';
+import './../paper-widget/paper-widget';
 
 /**
  * @class DashboardIndex
@@ -29,7 +32,6 @@ class DashboardIndex extends LocalizeMixin(AclMixin(ServiceInjectorMixin(Polymer
         :host {
             display: block;
             position: relative;
-            padding-top: 12px;
             background: white;
         }
       
@@ -62,6 +64,15 @@ class DashboardIndex extends LocalizeMixin(AclMixin(ServiceInjectorMixin(Polymer
           flex: 1;
          }
         
+         paper-card.header {
+          @apply --layout-horizontal;
+          padding: 8px;
+          margin-bottom: 8px;
+        }
+      
+      paper-card.header div.data {
+          @apply  --layout-flex-auto;
+      }
                 
         .container {
             @apply --layout-horizontal;
@@ -426,6 +437,11 @@ class DashboardIndex extends LocalizeMixin(AclMixin(ServiceInjectorMixin(Polymer
     
     #how .text-block .flex .step {
       width: 16%;
+    }
+
+    tile {
+      color: black;
+      border: 1px solid black;
     }
     
     #how .text-block .flex .step div {
@@ -1119,8 +1135,8 @@ class DashboardIndex extends LocalizeMixin(AclMixin(ServiceInjectorMixin(Polymer
                           <div class="header">
                             <div class="title">{{restaurant.name}}</div>
                             <div class="card-menu" restaurant={{restaurant}}>
-                              <div style="display:{{enableMenuCard(restaurant, 'indoor')}}" on-tap="openIndoor">Menu in sala</div>
-                              <div style="display:{{enableMenuCard(restaurant, 'delivery')}}" on-tap="openDelivery">Menu delivery</div>
+                              <div style="display:{{enableMenuCard(restaurant, 'indoor')}}">Menu in sala</div>
+                              <div style="display:{{enableMenuCard(restaurant, 'delivery')}}">Menu delivery</div>
                             </div>
                           </div>
                         </div>
@@ -1194,8 +1210,8 @@ class DashboardIndex extends LocalizeMixin(AclMixin(ServiceInjectorMixin(Polymer
               </div>
           </footer>
         </template>
-        <template is="dom-if" if="{{isAllowed('dashboard', 'index-logged')}}">
-            dashboard
+        <template is="dom-if" if="{{isAllowed('dashboard', 'index-logged')}}">  
+          <widget-index></widget-index>
         </template>`;
   }
 
@@ -1219,8 +1235,28 @@ class DashboardIndex extends LocalizeMixin(AclMixin(ServiceInjectorMixin(Polymer
           _localizeService: 'Localize',
           _aclService: "Acl",
           _authService: "Auth",
-          _config: "config"
+          _config: "config",
+          _application: "Application",
+          StorageContainerAggregate: {
+            _storage: "WidgetStorage"
+          }
         }
+      },
+
+      /**
+       * @type Application
+       */
+      _application: {
+        type: Object,
+        readOnly: true
+      },
+
+      /**
+         * @type StorageInterface
+         */
+      _widgetStorage: {
+        type: Object,
+        readOnly: true
       },
 
       _authService: {
@@ -1236,6 +1272,20 @@ class DashboardIndex extends LocalizeMixin(AclMixin(ServiceInjectorMixin(Polymer
       }
     };
   }
+
+    /**
+   *
+   */
+     initReviewDiv() {
+      let elements = this.shadowRoot.querySelectorAll('.review');
+      for (let index = 0; index < elements.length; index++) {
+        if (!elements[index].classList.contains('active')) {
+          elements[index].style.right = '1200px';
+        } else {
+          elements[index].style.right = '0';
+        }
+      }
+    }
 
   /**
    * @param next
@@ -1332,22 +1382,6 @@ class DashboardIndex extends LocalizeMixin(AclMixin(ServiceInjectorMixin(Polymer
     }
   }
 
-
-
-  /**
-   *
-   */
-  initReviewDiv() {
-    let elements = this.shadowRoot.querySelectorAll('.review');
-    for (let index = 0; index < elements.length; index++) {
-      if (!elements[index].classList.contains('active')) {
-        elements[index].style.right = '1200px';
-      } else {
-        elements[index].style.right = '0';
-      }
-    }
-  }
-
   nextReview() {
     let elements = this.shadowRoot.querySelectorAll('.review');
     let current = this._getCurrentActiveReviewIndex(elements);
@@ -1389,21 +1423,6 @@ class DashboardIndex extends LocalizeMixin(AclMixin(ServiceInjectorMixin(Polymer
     drawer.querySelector('paper-tabs').selected = 1;
     drawer.open();
   }
-
-  /**
-   * @param {CustomEvent} evt 
-   */
-  openIndoor(evt) {
-    window.open(`${this._config.app.menuPath}/${evt.target.parentElement.restaurant.normalize_name}`, "_blank")
-  }
-
-  /**
-   * @param {CustomEvent} evt 
-   */
-  openDelivery(evt) {
-    window.open(`${this._config.app.menuPath}/${evt.target.parentElement.restaurant.normalize_name}?delivery`, "_blank")
-  }
-
 }
 
 window.customElements.define('dashboard-index', DashboardIndex);
