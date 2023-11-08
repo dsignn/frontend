@@ -24,7 +24,6 @@ class WidgetNumberDevice extends RefreshCollectionData(StorageCrudMixin(Localize
             <style>
                 :host {
                     display: block;
-                    height: 100%;
                 }
 
                 .content {

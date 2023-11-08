@@ -37,7 +37,6 @@ export class PaperWidget extends LocalizeMixin(ServiceInjectorMixin(PolymerEleme
     
                 .content {
                     display: block;
-                    height: auto;
                     cursor: move;
                     overflow-y: auto;
                     overflow-x: hidden;
