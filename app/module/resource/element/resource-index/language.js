@@ -5,6 +5,13 @@ export const lang = {
     "insert-resource" : "Inserisci risorsa",
     "update-resource" : "Modifica risorsa",
     "back" : "Indietro",
+    "tags": "Tags",
+    "height": "Altezza",
+    "width": "Larghezza",
+    "type": "Tipologia",
+    "size": "Dimensione",
+    "resources": "Risorse",
+    "monitor-resource": "Media monitor"
   },
   "en": {
     "name": "Name",
@@ -12,5 +19,11 @@ export const lang = {
     "insert-resource" : "Insert monitor",
     "update-resource" : "Update monitor",
     "back" : "Back",
+    "tags": "Tags",
+    "height": "Height",
+    "width": "Width",
+    "type": "Type",
+    "size": "Size",
+    "resources": "Resources",
   }
 };

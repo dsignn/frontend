@@ -97,6 +97,9 @@ export class PaperFilterStorage extends LocalizeMixin(ServiceInjectorMixin(Polym
        
         switch(true) {
     
+            case evt.detail.value === '':
+                delete this.filters[evt.target.name];
+                break;
             case evt.target.getAttribute('direction') !== null:
                 this.filters[evt.target.name] = {
                     'direction':  evt.target.getAttribute('direction'), 
@@ -115,6 +118,7 @@ export class PaperFilterStorage extends LocalizeMixin(ServiceInjectorMixin(Polym
         
       
         let event = new CustomEvent('value-changed', {detail: this.filters});
+        console.log('DICO CAN', this.filters);
         this.dispatchEvent(event);
     }
 
