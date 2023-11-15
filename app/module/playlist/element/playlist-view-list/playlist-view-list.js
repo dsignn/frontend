@@ -63,20 +63,12 @@ class PlaylistViewList extends RefreshCollectionData(StorageCrudMixin(LocalizeMi
             <div id="list">
                 <template is="dom-repeat" items="[[entities]]" as="playlist">
                     <paper-playlist entity="{{playlist}}" 
-                        on-change-rotation="_updateEntity"
-                        on-change-context="_updateEntity"
-                        on-change-adjust="_updateEntity"
-                        on-change-volume="_updateEntity"
-                        on-play="play"
-                        on-resume="resume"
-                        on-stop="stop"
-                        on-pause="pause"
                         on-delete="_deleteEntity" 
-                        on-update="_showUpdateView"
-                        on-change-rotation="_updateEntity"
-                        on-change-context="_updateEntity"
-                        on-timeupdate="_updateTime">
+                        on-update="_showUpdateView">
                     </paper-playlist>
+                </template>
+                <template is="dom-if" if="{{!entities.length}}">
+                    <div class="empty">{{localize('empty-list')}} </div>
                 </template>
             </div>
             <paper-pagination page="{{page}}" total-items="{{totalItems}}" item-per-page="{{itemPerPage}}" next-icon="next" previous-icon="previous"></paper-pagination>

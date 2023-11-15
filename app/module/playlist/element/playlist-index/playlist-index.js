@@ -49,7 +49,7 @@ class PlaylistIndex extends LocalizeMixin(ServiceInjectorMixin(PolymerElement)) 
             <iron-pages id="index" selected="{{selected}}">
                 <div id="list"> 
                     <playlist-view-list id="viewList" selected="{{selected}}" entity-selected="{{entitySelected}}">
-                        <div slot="header" class="layout-horizontal layout-center-aligned header">
+                        <div slot="header" class="header">
                             <paper-filter-storage id="filterStorage" on-value-changed="_filterChange">
                                 <div slot="filters" class="filter-container">
                                     <paper-input name="name" label="{{localize('name')}}" ></paper-input>
@@ -62,8 +62,8 @@ class PlaylistIndex extends LocalizeMixin(ServiceInjectorMixin(PolymerElement)) 
                 </div>
                 <div id="insert"> 
                     <playlist-view-upsert>
-                        <div slot="header" class="layout-horizontal layout-center-aligned header">
-                            <div class="layout-flex">{{localize('insert-playlist')}}</div>
+                        <div slot="header" class="header">
+                            <div class="text-content">{{localize('insert-playlist')}}</div>
                             <paper-icon-button id="iconBackInsert" icon="arrow-back" class="circle" on-click="displayListView"></paper-icon-button>
                             <paper-tooltip for="iconBackInsert" position="left">{{localize('back')}}</paper-tooltip>
                         </div>
@@ -71,8 +71,8 @@ class PlaylistIndex extends LocalizeMixin(ServiceInjectorMixin(PolymerElement)) 
                 </div>
                 <div id="update"> 
                     <playlist-view-upsert entity="{{entitySelected}}">
-                        <div slot="header" class="layout-horizontal layout-center-aligned header">
-                            <div class="layout-flex">{{localize('update-playlist')}}</div>
+                        <div slot="header" class="header">
+                            <div class="text-content">{{localize('update-playlist')}}</div>
                             <paper-icon-button id="iconBackUpdate" icon="arrow-back" class="circle" on-click="displayListView"></paper-icon-button>
                             <paper-tooltip for="iconBackUpdate" position="left">{{localize('back')}}</paper-tooltip>
                         </div>

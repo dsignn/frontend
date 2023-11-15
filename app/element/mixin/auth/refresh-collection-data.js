@@ -77,7 +77,7 @@ export const RefreshCollectionData = (superClass) => {
                         },
                         10
                     );
-                    console.log('ppppp', this);
+    
                     this.listenerCollection = new Listener(this.getPagedEntities.bind(this));
                     this._storage.getEventManager().on(Storage.POST_SAVE, this.listenerCollection);
                 }

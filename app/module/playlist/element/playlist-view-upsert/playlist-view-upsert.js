@@ -173,8 +173,8 @@ class PlaylistViewUpsert extends StorageEntityMixin(LocalizeMixin(ServiceInjecto
                     StorageContainerAggregate : {
                         _storage :"PlaylistStorage",
                         _resourceStorage:"ResourceStorage",
-                    },
-                    _monitorService: "MonitorService",
+                        _monitorStorage:"MonitorStorage",
+                    }
                 }
             },
 
@@ -235,12 +235,9 @@ class PlaylistViewUpsert extends StorageEntityMixin(LocalizeMixin(ServiceInjecto
             .then((resources) => {
 
                 evt.detail.target.suggestions(
-                    /*
                     resources.filter((resource) => {
                         return ((resource instanceof VideoEntity) || (resource instanceof AudioEntity))
                     })
-                    */
-                    resources
                 );
             });
     }
@@ -271,7 +268,20 @@ class PlaylistViewUpsert extends StorageEntityMixin(LocalizeMixin(ServiceInjecto
      * @private
      */
     _searchMonitor(evt) {
-        // TODO cotroll papar autocomplete
+        if (!this._monitorStorage) {
+            return;
+        }
+
+        // TODO filter fot monitor id
+        this._monitorStorage.getAll({name : evt.detail.value.text})
+            .then((monitors) => {
+
+                evt.detail.target.suggestions(
+                    monitors
+                );
+            });
+        
+        /*
         if (!this._monitorService || !evt.detail.value) {
             return;
         }
@@ -300,6 +310,7 @@ class PlaylistViewUpsert extends StorageEntityMixin(LocalizeMixin(ServiceInjecto
         evt.detail.target.suggestions(
             filter
         );
+        */
     }
 
     /**
