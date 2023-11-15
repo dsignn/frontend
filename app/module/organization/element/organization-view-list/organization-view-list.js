@@ -116,7 +116,9 @@ class OrganizationViewList extends RefreshCollectionData(StorageCrudMixin(Locali
 
     static get observers() {
         return [
-            '_changeAuthStorage(_authService, _storage)'
+            '_changeAuthStorage(_authService, _storage)',
+            '_changePage(page, _authService, _storage)',
+            '_changeItemPerPage(itemPerPage, _authService, _storage)'
         ]
     }
 

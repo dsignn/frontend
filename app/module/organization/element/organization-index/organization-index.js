@@ -58,7 +58,7 @@ class OrganizationIndex extends LocalizeMixin(AclMixin(ServiceInjectorMixin(Poly
       </style>
       <iron-pages id="index" selected="{{selected}}">
           <div id="list"> 
-              <organization-view-list selected="{{selected}}" entity-selected="{{entitySelected}}">
+              <organization-view-list id="viewList" selected="{{selected}}" entity-selected="{{entitySelected}}">
                   <div slot="header" class="header">
                       <paper-filter-storage id="filterStorage" on-value-changed="_filterChange">
                           <div slot="filters" class="filter-container">
@@ -105,6 +105,10 @@ class OrganizationIndex extends LocalizeMixin(AclMixin(ServiceInjectorMixin(Poly
         }
       }
     };
+  }
+
+  _filterChange(evt) {
+    this.$.viewList.filter = JSON.parse(JSON.stringify(evt.detail));
   }
 
   /**
