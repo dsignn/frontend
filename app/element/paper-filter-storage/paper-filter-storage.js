@@ -118,7 +118,7 @@ export class PaperFilterStorage extends LocalizeMixin(ServiceInjectorMixin(Polym
         
       
         let event = new CustomEvent('value-changed', {detail: this.filters});
-        console.log('DICO CAN', this.filters);
+
         this.dispatchEvent(event);
     }
 

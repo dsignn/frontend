@@ -245,12 +245,12 @@ class PaperResource extends StorageEntityMixin(LocalizeMixin(ServiceInjectorMixi
         switch (true) {
             case this.entity instanceof ImageEntity === true:
                 element = document.createElement('img');
-                element.src = this.entity.src  + '?' + new Date().getTime();
+                element.src = this.entity.src  + '?' + Date.now();
                 break;
             case this.entity instanceof AudioEntity === true:
             case this.entity instanceof VideoEntity === true:
                 element = document.createElement('video');
-                element.src = this.entity.src  + '?' + new Date().getTime();
+                element.src = this.entity.src  + '?' + Date.now();
                 element.setAttribute('autoplay', true);
                 element.muted = true; // TODO remove for debug
                 element.setAttribute('controls', true);
@@ -319,7 +319,7 @@ class PaperResource extends StorageEntityMixin(LocalizeMixin(ServiceInjectorMixi
 
         switch (true) {
             case this.entity instanceof ImageEntity:    
-                this.$.leftSection.style.backgroundImage = `url("${this.entity.src}")`;
+                this.$.leftSection.style.backgroundImage = `url("${this.entity.src}?${Date.now()}")`;
                 break;
             case this.entity instanceof VideoEntity:  let video = document.createElement('video');
                 video.setAttribute('id', 'videoBackground')

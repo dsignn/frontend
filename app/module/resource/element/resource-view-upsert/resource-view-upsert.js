@@ -223,6 +223,8 @@ class ResourceViewUpsert extends StorageEntityMixin(NotifyMixin(AclMixin(Localiz
         evt.preventDefault();
 
         let method = this.getStorageUpsertMethod();
+
+        /*
         let template = this.$.fileUpload.files[0] ?
             this.$.fileUpload.files[0] : (method === 'update' ?
                 { id: this.entity.id, mime_type: this.entity.mimeType } : null);
@@ -231,20 +233,29 @@ class ResourceViewUpsert extends StorageEntityMixin(NotifyMixin(AclMixin(Localiz
             template.id = this.entity.id;
             template.organizationReference = this.entity.organizationReference;
         }
+        */
 
-        let entity = this._resourceHydrator.hydrate(template);
-        entity.name = this.$.name.value;
-        entity.tags = this.entity.tags;
+        let entity = this._resourceHydrator.hydrate(this.entity);
+       // entity.name = this.$.name.value;
+       // entity.tags = this.entity.tags;
     
         if (this.$.fileUpload.files[0]) {
             entity.resourceToImport = this.$.fileUpload.files[0];
+        } else if (method === 'save') {
+            this.$.fileUpload.errorMessage = 'File obbligatorio';
+            this.$.fileUpload.invalid = true;
+            return;
         }
 
+        console.log('ppp', entity);
         this._storage[method](entity)
             .then((data) => {
 
                 if (method === 'save') {
                     this.entity = this._storage.getHydrator().hydrate({ type: "text/html" });
+                    // TODO spostarlo nel componente
+                    this.$.fileUpload.errorMessage = '';
+                    this.$.fileUpload.invalid = false;
                     this.$.formResource.reset();
                 }
 
@@ -279,8 +290,9 @@ class ResourceViewUpsert extends StorageEntityMixin(NotifyMixin(AclMixin(Localiz
         switch (this.entity.mimeType) {
             case 'image/png':
             case 'image/jpeg':
+                console.log('DIO CANE :)');
                 element = document.createElement('img');
-                element.setAttribute('src', this.entity.src);
+                element.setAttribute('src', this.entity.src + '?cache=' + Date.now());
                 break;
             case 'video/mp4':
                 element = document.createElement('video');
