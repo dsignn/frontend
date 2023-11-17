@@ -86,7 +86,7 @@ class MonitorViewList extends RefreshCollectionData(StorageCrudMixin(LocalizeMix
              * @type number
              */
             itemPerPage: {
-              value: 3
+              value: 20
             },
 
             /**
@@ -126,7 +126,9 @@ class MonitorViewList extends RefreshCollectionData(StorageCrudMixin(LocalizeMix
      */
     static get observers() {
         return [
-           '_changeAuthStorage(_authService, _storage)'
+           '_changeAuthStorage(_authService, _storage)',
+           '_changePage(page, _authService, _storage)',
+           '_changeItemPerPage(itemPerPage, _authService, _storage)'
         ]
     }
 

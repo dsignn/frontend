@@ -76,7 +76,7 @@ class PaperUser extends StorageEntityMixin(LocalizeMixin(ServiceInjectorMixin(Po
                 <div id="leftSection"></div>
                 <div id="rightSection">
                     <div id="content">
-                        <div class="name">{{entity.name}}</div>
+                        <div class="name">{{entity.name}} {{entity.lastName}}</div>
                     </div>
                     <div id="crud">
                         <paper-menu-button ignore-select horizontal-align="right">

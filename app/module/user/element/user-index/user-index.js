@@ -50,16 +50,36 @@ class UserIndex extends LocalizeMixin(ServiceInjectorMixin(PolymerElement)) {
                   margin-right: 8px;
               }
            }
+
+
+           .filter-container {
+            display: flex;
+            padding-bottom: 6px;
+          }
+
+            .filter-container > * { 
+                padding-right: 6px !important;
+            }
       </style>
     
       <iron-pages id="index" selected="{{selected}}">
           <div id="list"> 
-              <user-view-list selected="{{selected}}" entity-selected="{{entitySelected}}">
+              <user-view-list id="viewList" selected="{{selected}}" entity-selected="{{entitySelected}}">
                    <div slot="header" class="header">
                       <paper-filter-storage id="filterStorage" on-value-changed="_filterChange">
                           <div slot="filters" class="filter-container">
                               <paper-input name="name" label="{{localize('name')}}" ></paper-input>
-                          </div>
+                              <paper-input name="last_name" label="{{localize('lastName')}}" ></paper-input>
+                              <paper-dropdown-menu id="roleId" name="role_id" label="{{localize('role')}}" style="padding:0px">
+                                <paper-listbox slot="dropdown-content" class="dropdown-content">
+                                    <dom-repeat id="menu" items="{{roles}}" as="role">
+                                        <template>
+                                            <paper-item value="{{role.value}}">{{localize(role.name)}}</paper-item>
+                                        </template>
+                                    </dom-repeat>
+                                  </paper-listbox>
+                              </paper-dropdown-menu>
+                            </div>
                       </paper-filter-storage>
                       <paper-icon-button id="iconInsertMonitor" icon="insert" class="circle" on-click="displayAddView"></paper-icon-button>
                       <paper-tooltip for="iconInsertMonitor" position="left">{{localize('user-resource')}}</paper-tooltip>
@@ -96,6 +116,14 @@ class UserIndex extends LocalizeMixin(ServiceInjectorMixin(PolymerElement)) {
 
   static get properties() {
     return {
+
+      roles: {
+        value: [
+            { "name": "admin", "value": "admin" },
+            { "name": "adminOrg", "value": "organizationOwner" }
+        ]
+      },
+
       selected: {
         type: Number,
         value: 0
@@ -110,6 +138,10 @@ class UserIndex extends LocalizeMixin(ServiceInjectorMixin(PolymerElement)) {
         }
       },
     };
+  }
+
+  _filterChange(evt) {
+    this.$.viewList.filter = JSON.parse(JSON.stringify(evt.detail));
   }
 
   /**

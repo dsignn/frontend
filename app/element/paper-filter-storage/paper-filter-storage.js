@@ -128,7 +128,7 @@ export class PaperFilterStorage extends LocalizeMixin(ServiceInjectorMixin(Polym
     _selectChange(evt) {
         evt.preventDefault();
         evt.stopImmediatePropagation();
-
+        console.log('ELEMTN', evt.detail);
         this.filters[evt.target.parentElement.name] = evt.detail.item.value;
         this._dispatch();
     }
@@ -147,7 +147,7 @@ export class PaperFilterStorage extends LocalizeMixin(ServiceInjectorMixin(Polym
 
         delete this.filters[evt.target.parentElement.name];
 
-        let event = new CustomEvent('value-changed', {detail: this.filters});
+        let event = new CustomEvent('value-deselect', {detail: this.filters});
         this.dispatchEvent(event);
     }
 

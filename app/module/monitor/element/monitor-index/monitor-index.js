@@ -50,7 +50,7 @@ class MonitorIndex extends LocalizeMixin(ServiceInjectorMixin(PolymerElement)) {
        </style>
        <iron-pages id="index" selected="{{selected}}">
             <div id="list">
-                <monitor-view-list selected="{{selected}}" entity-selected="{{entitySelected}}">
+                <monitor-view-list id="viewList" selected="{{selected}}" entity-selected="{{entitySelected}}">
                     <div slot="header" class="header">
                         <paper-filter-storage id="filterStorage" on-value-changed="_filterChange">
                             <div slot="filters" class="filter-container">
@@ -114,6 +114,10 @@ class MonitorIndex extends LocalizeMixin(ServiceInjectorMixin(PolymerElement)) {
     constructor() {
         super();
         this.resources = lang;
+    }
+
+    _filterChange(evt) {
+        this.$.viewList.filter = JSON.parse(JSON.stringify(evt.detail));
     }
 
     /**
