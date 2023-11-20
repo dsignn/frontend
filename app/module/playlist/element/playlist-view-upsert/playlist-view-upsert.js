@@ -14,11 +14,11 @@ import '@polymer/paper-item/paper-item';
 import '@polymer/paper-tooltip/paper-tooltip';
 import '@polymer/iron-flex-layout/iron-flex-layout';
 
-//import {AudioEntity} from '../../../resource/src/entity/AudioEntity';
-//import {VideoEntity} from '../../../resource/src/entity/VideoEntity';
+import {AudioEntity} from '../../../resource/src/entity/AudioEntity';
+import {VideoEntity} from '../../../resource/src/entity/VideoEntity';
 
-//import {flexStyle} from '../../../../style/layout-style';
-//import {autocompleteStyle} from '../../../../style/autocomplete-custom-style';
+
+import {customAutocomplete} from '../../../../element/custom-autocomplete/custom-autocomplete';
 import {lang} from './language';
 
 /**
@@ -66,26 +66,6 @@ class PlaylistViewUpsert extends StorageEntityMixin(LocalizeMixin(ServiceInjecto
                             <paper-checkbox checked="{{entity.enableAudio}}" style="padding-top: 20px;">{{localize('enable-audio')}} <i>({{localize('working-only-video')}})</i></paper-checkbox>
                             <paper-autocomplete 
                                 id="autocompleteMonitor"
-                                label="{{localize('resources')}}" 
-                                text-property="name"
-                                value-property="name"
-                                on-autocomplete-selected="_selectResource"
-                                on-autocomplete-change="_searchResource"
-                                remote-source>
-                                <template slot="autocomplete-custom-template">
-                                    
-                                    <paper-item class="account-item" on-tap="_onSelect" role="option" aria-selected="false">
-                                        <div index="[[index]]">
-                                            <div class="service-name">[[item.name]]</div>
-                                             <div class="service-description">[[item.monitorContainerReference.name]]</div>
-                                        </div>
-                                        <paper-ripple></paper-ripple>
-                                    </paper-item>
-                                </template>
-                            </paper-autocomplete>
-                            <paper-chips id="listResource" items="{{entity.resources}}"></paper-chips> 
-                            <paper-autocomplete 
-                                id="autocompleteMonitor"
                                 label="{{localize('monitor')}}" 
                                 text-property="name"
                                 value-property="name"
@@ -93,16 +73,36 @@ class PlaylistViewUpsert extends StorageEntityMixin(LocalizeMixin(ServiceInjecto
                                 value="{{entity.monitorContainerReference}}"
                                 remote-source>
                                     <template slot="autocomplete-custom-template">
-                                      
+                                        ${customAutocomplete}
                                         <paper-item class="account-item" on-tap="_onSelect" role="option" aria-selected="false">
                                             <div index="[[index]]">
                                                 <div class="service-name">[[item.name]]</div>
-                                                <div class="service-description">{{localize('duration')}}[[item.height]] x [[item.width]]</div>
+                                                <div class="service-description">[[item.parent.name]]</div>
                                             </div>
                                             <paper-ripple></paper-ripple>
                                         </paper-item>
                                     </template>
                             </paper-autocomplete>   
+                            <paper-autocomplete 
+                                id="autocompleteResource"
+                                label="{{localize('resources')}}" 
+                                text-property="name"
+                                value-property="name"
+                                on-autocomplete-selected="_selectResource"
+                                on-autocomplete-change="_searchResource"
+                                remote-source>
+                                <template id="resourceStyle" slot="autocomplete-custom-template">
+                                    ${customAutocomplete}
+                                    <paper-item class="account-item" on-tap="_onSelect" role="option" aria-selected="false">
+                                        <div index="[[index]]">
+                                            <div class="service-name">[[item.name]]</div>
+                                            <div class="service-description">[[item.mimeType]] {{calcSize(item)}}</div>
+                                        </div>
+                                        <paper-ripple></paper-ripple>
+                                    </paper-item>
+                                </template>
+                            </paper-autocomplete>
+                            <paper-chips id="listResource" items="{{entity.resources}}"></paper-chips> 
                             <paper-autocomplete 
                                 id="autocompleteBindPlaylist"
                                 label="{{localize('bind-playlist')}}" 
@@ -204,6 +204,21 @@ class PlaylistViewUpsert extends StorageEntityMixin(LocalizeMixin(ServiceInjecto
     ready() {
         super.ready();
         this.$.formPlaylist.addEventListener('iron-form-presubmit', this.submitPlaylist.bind(this));
+        this.$.autocompleteResource.$.paperAutocompleteSuggestions.calcSize = this.calcSize;
+    }
+
+    /**
+     * @param {Number} size
+     * @private
+     */
+    calcSize(item) {
+        let unit, units = ["TB", "GB", "MB", "KB", "Byte"];
+        let size = item.size;
+        for (unit = units.pop(); units.length && size >= 1024; unit = units.pop()) {
+            size /= 1024;
+        }
+
+        return Math.ceil(size) + ' ' + unit;
     }
 
     /**
@@ -218,6 +233,24 @@ class PlaylistViewUpsert extends StorageEntityMixin(LocalizeMixin(ServiceInjecto
 
         if (newValue.id) {
             this.labelAction = 'update';
+            this._monitorStorage.get(newValue.monitorContainerReference.parentId)
+                .then((monitor) => {
+                   
+                    let allMonitor = monitor.getMonitors({nested: true});
+                    for (let cont = 0; allMonitor.length > cont; cont++) {
+                        if (newValue.monitorContainerReference.id == allMonitor[cont].id) {
+                            console.log('MONITORE ggg', newValue.monitorContainerReference);
+                            newValue.monitorContainerReference = allMonitor[cont];
+                            newValue.monitorContainerReference.parentId = monitor.id;
+                            newValue.monitorContainerReference.parent = monitor;
+                            this.notifyPath('entity.monitorContainerReference');
+
+                            break;
+                        }
+                    }
+                });
+        } else {
+            newValue.monitorContainerReference = {};
         }
     }
 
@@ -268,7 +301,7 @@ class PlaylistViewUpsert extends StorageEntityMixin(LocalizeMixin(ServiceInjecto
      * @private
      */
     _searchMonitor(evt) {
-        if (!this._monitorStorage) {
+        if (!this._monitorStorage &&  evt.detail.value.text.length > 2) {
             return;
         }
 
@@ -276,41 +309,20 @@ class PlaylistViewUpsert extends StorageEntityMixin(LocalizeMixin(ServiceInjecto
         this._monitorStorage.getAll({name : evt.detail.value.text})
             .then((monitors) => {
 
+                let data = [];
+                for(let cont = 0; monitors.length > cont; cont++) {
+                    let nested = monitors[cont].getMonitors({nested:true});
+                    for (let nestCont = 0; nested.length > nestCont; nestCont++) {
+                        nested[nestCont].parent = monitors[cont];
+                        nested[nestCont].parentId = monitors[cont].id;
+                        data.push(nested[nestCont]);
+                    }
+                }
+
                 evt.detail.target.suggestions(
-                    monitors
+                    data
                 );
             });
-        
-        /*
-        if (!this._monitorService || !evt.detail.value) {
-            return;
-        }
-
-        let enableMonitor = this._monitorService.getEnableMonitor();
-        let monitors = enableMonitor.id ? enableMonitor.getMonitors({nested: true}) : [];
-
-        let filter = monitors.filter(
-            element => {
-                return element.name.search(new RegExp(evt.detail.value.text, 'i')) > -1;
-            }
-        );
-
-        let reference;
-        for (let cont =  0; filter.length > cont; cont++) {
-            reference = new (require("@dsign/library").storage.entity.EntityNestedReference)();
-            reference.setCollection('monitor');
-            reference.setId(filter[cont].id);
-            reference.height = filter[cont].height;
-            reference.width = filter[cont].width;
-            reference.setParentId(this._monitorService.getEnableMonitor().getId());
-            reference.name = filter[cont].name;
-            filter[cont] = reference;
-        }
-
-        evt.detail.target.suggestions(
-            filter
-        );
-        */
     }
 
     /**

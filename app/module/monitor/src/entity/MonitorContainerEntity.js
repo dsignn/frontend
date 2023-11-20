@@ -36,6 +36,8 @@ export class MonitorContainerEntity extends EntityIdentifier {
                    let nestedMonitor = this.monitors[cont].getMonitors(options);
                    if (nestedMonitor.length > 0) {
                        monitors = monitors.concat(nestedMonitor);
+                   } else {
+                        monitors = this.monitors;
                    }
                }
            }

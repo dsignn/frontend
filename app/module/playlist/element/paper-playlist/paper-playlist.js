@@ -333,16 +333,32 @@ class PaperPlaylist extends StorageEntityMixin(LocalizeMixin(ServiceInjectorMixi
         }
 
         var resourceLoaded = 0;
+        var ids = {ids: []};
         for (let cont = 0; this.entity.resources.length > cont; cont++) {
-            this._resourceStorage.get(this.entity.resources[cont].id)
-                .then((resource) => {
-                    this.entity.resources[cont] = Object.assign(resource, this.entity.resources[cont]);
-                    resourceLoaded++
+            ids.ids.push(this.entity.resources[cont].id);                
+        }
+
+        this._resourceStorage.getAll(ids)
+            .then((resources) => {
+            
+                console.log(ids, resources, this.entity.resources);
+                for (let cont = 0; this.entity.resources.length > cont; cont++) {
+                    let index = resources.findIndex((resource) => {
+                        return this.entity.resources[cont].id == resource.id;
+                    });
+
+                    resourceLoaded++;
+                    if (index < 0) {
+                        continue;
+                    }
+
+                    this.entity.resources[cont] = Object.assign(resources[index], this.entity.resources[cont]);
                     if (this.entity.resources.length == resourceLoaded) {
                         this.dispatchEvent(new CustomEvent('update-resource', this.entity));
+                        console.log('dio', this.entity);
                     }
-                });
-        }
+                }
+            });
     }
 
     /**
