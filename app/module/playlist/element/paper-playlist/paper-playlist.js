@@ -61,6 +61,10 @@ class PaperPlaylist extends StorageEntityMixin(LocalizeMixin(ServiceInjectorMixi
                     @apply --layout-horizontal;
                     @apply --layout-flex;
                 }
+
+                .titleEntity {
+                    flex:1;
+                }
                 
                 
                 .content {
@@ -180,6 +184,7 @@ class PaperPlaylist extends StorageEntityMixin(LocalizeMixin(ServiceInjectorMixi
                                     </paper-menu-button>
                                 </div>
                             </div>
+                            <!--
                             <div class="row center spaces h-22">
                                 <div id="status" status>{{localize(entity.status)}}</div>
                                 <div class="titleEntity t-r capitalize">{{entity.monitorContainerReference.name}}</div>
@@ -189,8 +194,8 @@ class PaperPlaylist extends StorageEntityMixin(LocalizeMixin(ServiceInjectorMixi
                                 <div class="divider">|</div>
                                 <div id="duration">{{hour}}:{{minute}}:{{second}}:{{secondTenths}}</div>
                             </div>  
+                            -->
                         </div>
-                        <paper-slider id="slider" pin on-mousedown="sliderDown" on-mouseup="sliderUp" on-mouseout="sliderOut" disabled></paper-slider>
                     </div>      
                 </div>
             </paper-card>
@@ -285,11 +290,11 @@ class PaperPlaylist extends StorageEntityMixin(LocalizeMixin(ServiceInjectorMixi
             this.status = this.entity.status;
             this.notifyPath('entity.status');
             this.duration = this.entity.getDuration();
-            this.calcTimeDuration();
-            this.calcCurrentTime();
-            this.updateContextIcons();
-            this.updateActionIcons();
-            this.updateSlider();
+            //this.calcTimeDuration();
+            //this.calcCurrentTime();
+            //this.updateContextIcons();
+            //this.updateActionIcons();
+            //this.updateSlider();
         });
     }
 
@@ -355,7 +360,6 @@ class PaperPlaylist extends StorageEntityMixin(LocalizeMixin(ServiceInjectorMixi
                     this.entity.resources[cont] = Object.assign(resources[index], this.entity.resources[cont]);
                     if (this.entity.resources.length == resourceLoaded) {
                         this.dispatchEvent(new CustomEvent('update-resource', this.entity));
-                        console.log('dio', this.entity);
                     }
                 }
             });

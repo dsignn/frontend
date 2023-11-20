@@ -109,6 +109,10 @@ class PlaylistIndex extends LocalizeMixin(ServiceInjectorMixin(PolymerElement)) 
         };
     }
 
+    _filterChange(evt) {
+        this.$.viewList.filter = JSON.parse(JSON.stringify(evt.detail));
+    }
+
     /**
      * @param evt
      */
