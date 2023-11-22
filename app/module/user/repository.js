@@ -70,6 +70,7 @@ export class Repository extends AbstractRepository {
     initAcl() {
         this.getContainer().get('Acl').addResource('user');
         this.getContainer().get('Acl').allow('admin', 'user', 'menu')
+        this.getContainer().get('Acl').allow('admin', 'user', 'search-organization');
     }
 
     /**

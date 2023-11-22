@@ -91,7 +91,7 @@ class UserViewUpsert extends FormErrorMessage(StorageEntityMixin(LocalizeMixin(S
                                     <paper-item value="admin">admin</paper-item>
                                 </paper-listbox>
                             </paper-dropdown-menu>
-                            <paper-button class="status" disabled>{{localize(entity.status)}}</paper-button>
+                            <paper-button id="status" class="status" disabled>{{localize(entity.status)}}</paper-button>
                         </div>
                         <paper-input name="email" label="{{localize('email')}}" value="{{entity.email}}" required></paper-input>
                         <paper-autocomplete
@@ -237,6 +237,9 @@ class UserViewUpsert extends FormErrorMessage(StorageEntityMixin(LocalizeMixin(S
 
         if (newValue.id) {
             this.labelAction = 'update';
+            this.$.status.style.display = 'unset';
+        } else {
+            this.$.status.style.display = 'none';
         }
  
         if (newValue.organizations && Array.isArray(newValue.organizations) && newValue.organizations.length > 0 ) {

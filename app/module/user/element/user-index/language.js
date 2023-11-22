@@ -8,7 +8,8 @@ export const lang = {
     "lastName": "Cognome",
     "role": "Ruolo",
     "admin": "Amministratore",
-    "adminOrg": "Amministratore organizzazione"
+    "adminOrg": "Amministratore organizzazione",
+    "name-organization": "Nome organizzazione"
   },
   "en": {
     "list-user": "List user",
@@ -19,6 +20,7 @@ export const lang = {
     "lastName": "Lastname",
     "role": "Role",
     "admin": "Admin",
-    "adminOrg": "Admin org"
+    "adminOrg": "Admin org",
+    "name-organization": "Name organization"
   }
 };

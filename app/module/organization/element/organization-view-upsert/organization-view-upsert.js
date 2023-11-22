@@ -61,14 +61,17 @@ class OrganizationViewUpsert extends StorageEntityMixin(NotifyMixin(LocalizeMixi
                         white-space: pre-line;
                     }
 
-                    #code {
+                    #code,
+                    #orgToken {
                         display:none;
                     }
+
+
 
                 </style>
                 <slot name="header"></slot>
                 <div id="container">
-                   <iron-form id="formResource">
+                   <iron-form id="formOrganization">
                         <form method="post">
                             <div>
                                 <paper-input id="name" name="name" label="{{localize('name')}}" value="{{entity.name}}" required></paper-input>
@@ -82,7 +85,7 @@ class OrganizationViewUpsert extends StorageEntityMixin(NotifyMixin(LocalizeMixi
                             <div>
                                 <div class="flex flex-horizontal-end" style="margin-top: 20px;">
                                     <paper-button id="orgToken" on-tap="generateOrganizationToken">{{localize('generate-token')}}</paper-button>
-                                    <paper-button on-tap="submitResourceButton">{{localize(labelAction)}}</paper-button>
+                                    <paper-button on-tap="submitOrganizationButton">{{localize(labelAction)}}</paper-button>
                                 </div>
                             </div>
                         </form>
@@ -137,7 +140,7 @@ class OrganizationViewUpsert extends StorageEntityMixin(NotifyMixin(LocalizeMixi
 
     ready() {
         super.ready();
-        this.$.formResource.addEventListener('iron-form-presubmit', this.submitResource.bind(this));
+        this.$.formOrganization.addEventListener('iron-form-presubmit', this.submitOrganization.bind(this));
     }
 
     /**
@@ -165,7 +168,7 @@ class OrganizationViewUpsert extends StorageEntityMixin(NotifyMixin(LocalizeMixi
     _hideToken(hide) {
       
         if (hide) {
-            this.$.orgToken.style.display = 'unset';
+            this.$.orgToken.style.display = this.entity.id ? 'unset' : 'none';
             this.$.code.style.display = 'none';
         } else {
             this.$.orgToken.style.display = 'none';
@@ -185,7 +188,10 @@ class OrganizationViewUpsert extends StorageEntityMixin(NotifyMixin(LocalizeMixi
 
         if (newValue.id) {
             this.labelAction = 'update';
-        } 
+            this.$.orgToken.style.display = 'unset';
+        } else {
+            this.$.orgToken.style.display = 'none'
+        }
 
         this._hideToken(!newValue.oauthToken);
     }
@@ -193,20 +199,22 @@ class OrganizationViewUpsert extends StorageEntityMixin(NotifyMixin(LocalizeMixi
     /**
      * @param evt
      */
-    submitResourceButton(evt) {
-        this.$.formResource.submit();
+    submitOrganizationButton(evt) {
+        this.$.formOrganization.submit();
     }
 
     /**
      * @param evt
      */
-    submitResource(evt) {
+    submitOrganization(evt) {
         evt.preventDefault();
 
         let method = this.getStorageUpsertMethod();
 
         this._storage[method](this.entity)
             .then((data) => {
+                this.entity = this._storage.getHydrator().hydrate({});
+                this.$.formOrganization.reset();
                 this.notify(this.localize(method === 'save' ? 'notify-save' : 'notify-update'));
             });
 
