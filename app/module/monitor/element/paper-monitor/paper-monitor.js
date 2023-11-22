@@ -66,12 +66,6 @@ class PaperMonitor extends StorageEntityMixin(LocalizeMixin(ServiceInjectorMixin
             </style>
             <paper-card>
                 <div id="left-section"></div>
-                <div id="fastAction">
-                    <div class="action">
-                        <paper-toggle-button id="paperToggleEnable" on-change="_toggleEnableMonitor" checked="{{entity.enable}}"></paper-toggle-button>
-                        <paper-tooltip for="paperToggleEnable" position="bottom">{{localize('enable-monitor')}}</paper-tooltip>
-                    </div>
-                </div>
                 <div id="right-section">
                     <div id="content">
                         {{entity.name}}

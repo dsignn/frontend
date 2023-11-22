@@ -79,6 +79,8 @@ export class Repository extends AbstractRepository {
         this.getContainer().get('Acl').allow('admin', 'monitor', 'menu')
         this.getContainer().get('Acl').allow('admin', 'monitor', 'post');
         this.getContainer().get('Acl').allow('organizationOwner', 'monitor', 'menu');
+        this.getContainer().get('Acl').allow('admin', 'monitor', 'search-organization');
+  
     }
 
     /**

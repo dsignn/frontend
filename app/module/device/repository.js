@@ -106,5 +106,7 @@ export class Repository extends AbstractRepository {
         this.getContainer().get('Acl').addResource('device');
         this.getContainer().get('Acl').allow('admin', 'device', 'menu');
         this.getContainer().get('Acl').allow('organizationOwner', 'device', 'menu');
+        this.getContainer().get('Acl').allow('admin', 'device', 'search-organization');
+  
     }
 }

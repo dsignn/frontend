@@ -6,6 +6,7 @@ export const lang = {
     "back" : "Torna indietro",
     "playlist-data": "Dati playlist",
     "name": "Nome",
+    "name-organization": "Nome organizzazione"
   },
   "en": {
     "list-playlist": "List playlist",
@@ -14,5 +15,6 @@ export const lang = {
     "back" : "Back",
     "playlist-data": "playlist data",
     "name": "Name",
+    "name-organization": "Name organization"
   }
 };

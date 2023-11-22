@@ -48,6 +48,7 @@ export class Repository extends AbstractRepository {
         this.getContainer().get('Acl').addResource('playlist');
         this.getContainer().get('Acl').allow('admin', 'playlist', 'menu');
         this.getContainer().get('Acl').allow('organizationOwner', 'playlist', 'menu');
+        this.getContainer().get('Acl').allow('admin', 'playlist', 'search-organization');
     }
 
     initEntity() {

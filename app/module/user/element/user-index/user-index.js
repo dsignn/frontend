@@ -52,7 +52,6 @@ class UserIndex extends AclMixin(LocalizeMixin(ServiceInjectorMixin(PolymerEleme
                   display: flex;
                   min-height: 70px;
                   width: -webkit-fill-available;
-                  margin-right: 8px;
               }
            }
 
@@ -73,17 +72,6 @@ class UserIndex extends AclMixin(LocalizeMixin(ServiceInjectorMixin(PolymerEleme
                    <div slot="header" class="header">
                       <paper-filter-storage id="filterStorage" on-value-changed="_filterChange" on-value-deselect="_filterChange">
                           <div slot="filters" class="filter-container">
-                              <paper-input name="name" label="{{localize('name')}}" ></paper-input>
-                              <paper-input name="last_name" label="{{localize('lastName')}}" ></paper-input>
-                              <app-paper-dropdown-menu id="roleId" name="role_id" label="{{localize('role')}}" style="padding:0px">
-                                <paper-listbox slot="dropdown-content" class="dropdown-content">
-                                    <dom-repeat id="menu" items="{{roles}}" as="role">
-                                        <template>
-                                            <paper-item value="{{role.value}}">{{localize(role.name)}}</paper-item>
-                                        </template>
-                                    </dom-repeat>
-                                  </paper-listbox>
-                              </app-paper-dropdown-menu>
                               <template id="domIf" is="dom-if" if="{{isAllowed('user', 'search-organization')}}">
                                 <paper-autocomplete
                                     id="orgAutocomplete"
@@ -104,10 +92,19 @@ class UserIndex extends AclMixin(LocalizeMixin(ServiceInjectorMixin(PolymerEleme
                                         </template>
                                 </paper-autocomplete>
                               </template>
+                              <paper-input name="name" label="{{localize('name')}}" ></paper-input>
+                              <paper-input name="last_name" label="{{localize('lastName')}}" ></paper-input>
+                              <app-paper-dropdown-menu id="roleId" name="role_id" label="{{localize('role')}}" style="padding:0px">
+                                <paper-listbox slot="dropdown-content" class="dropdown-content">
+                                    <dom-repeat id="menu" items="{{roles}}" as="role">
+                                        <template>
+                                            <paper-item value="{{role.value}}">{{localize(role.name)}}</paper-item>
+                                        </template>
+                                    </dom-repeat>
+                                  </paper-listbox>
+                              </app-paper-dropdown-menu>
                             </div>
                       </paper-filter-storage>
-                      <paper-icon-button id="iconInsertMonitor" icon="insert" class="circle" on-click="displayAddView"></paper-icon-button>
-                      <paper-tooltip for="iconInsertMonitor" position="left">{{localize('user-resource')}}</paper-tooltip>
                    </div>
               </user-view-list>
           </div>

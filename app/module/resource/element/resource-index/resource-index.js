@@ -1,20 +1,24 @@
 import { html, PolymerElement } from '@polymer/polymer/polymer-element.js';
 import { ServiceInjectorMixin } from "@dsign/polymer-mixin/service/injector-mixin";
 import { LocalizeMixin } from "@dsign/polymer-mixin/localize/localize-mixin";
+import { AclMixin } from '@dsign/polymer-mixin/acl/acl-mixin';
 import '@polymer/paper-icon-button/paper-icon-button';
 import '@polymer/iron-pages/iron-pages';
 import './../resource-view-list/resource-view-list'
 import './../resource-view-upsert/resource-view-upsert'
 import './../../../../element/paper-filter-storage/paper-filter-storage'
 import './../../../../element/paper-input-list/paper-input-list'
+import {autocompleteStyle} from "../../../../element/paper-autocomplete/autocomplete-custom-style";
+
 
 import { lang } from './language';
+
 
 /**
  * @customElement
  * @polymer
  */
-class ResourceIndex extends LocalizeMixin(ServiceInjectorMixin(PolymerElement)) {
+class ResourceIndex extends AclMixin(LocalizeMixin(ServiceInjectorMixin(PolymerElement))) {
 
     static get template() {
         return html`
@@ -83,8 +87,28 @@ class ResourceIndex extends LocalizeMixin(ServiceInjectorMixin(PolymerElement)) 
                 <div id="list"> 
                     <resource-view-list id="viewList" selected="{{selected}}" entity-selected="{{entitySelected}}">
                         <div slot="header" class="header">
-                            <paper-filter-storage id="filterStorage" on-value-changed="_filterChange">
+                            <paper-filter-storage id="filterStorage" on-value-changed="_filterChange" on-value-deselect="_filterChange">
                                 <div slot="filters" class="filter-container">
+                                    <template id="domIf" is="dom-if" if="{{isAllowed('resource', 'search-organization')}}">
+                                        <paper-autocomplete
+                                            id="orgAutocomplete"
+                                            name="organization_reference"
+                                            label="{{localize('name-organization')}}"
+                                            text-property="name"
+                                            value-property="name"
+                                            remote-source
+                                            on-autocomplete-change="_defaultChanged"
+                                            required>
+                                                <template slot="autocomplete-custom-template">
+                                                ${autocompleteStyle}
+                                                    <paper-item class="account-item" on-tap="_onSelect" role="option" aria-selected="false">
+                                                        <div index="[[index]]">
+                                                            <div class="service-name">[[item.name]]</div>
+                                                        </div>
+                                                    </paper-item>
+                                                </template>
+                                        </paper-autocomplete>
+                                    </template>
                                     <paper-input name="name" label="{{localize('name')}}"></paper-input>
                                     <paper-dropdown-menu id="type" name="type" label="{{localize('type')}}" style="padding:0px">
                                         <paper-listbox slot="dropdown-content" class="dropdown-content">
@@ -173,10 +197,36 @@ class ResourceIndex extends LocalizeMixin(ServiceInjectorMixin(PolymerElement)) 
              */
             services: {
                 value: {
-                    _localizeService: 'Localize'
+                    _localizeService: 'Localize',
+                    _aclService: "Acl",
+                    StorageContainerAggregate : {
+                      organizationStorage: "OrganizationStorage"
+                    }
                 }
             },
         };
+    }
+
+    /**
+    * @param evt
+    * @private
+    */
+    _defaultChanged(evt) {
+        if(!this.organizationStorage) {
+            return;
+        } 
+
+        this.organizationStorage
+            .getAll({ name: evt.detail.value.text })
+            .then(
+                (data) => {
+                    this.shadowRoot.querySelector('#orgAutocomplete').suggestions(data);
+                }
+            );
+    }
+
+    _filterChange(evt) {
+        this.$.viewList.filter = JSON.parse(JSON.stringify(evt.detail));
     }
 
     _filterChange(evt) {

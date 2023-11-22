@@ -345,8 +345,7 @@ class PaperPlaylist extends StorageEntityMixin(LocalizeMixin(ServiceInjectorMixi
 
         this._resourceStorage.getAll(ids)
             .then((resources) => {
-            
-                console.log(ids, resources, this.entity.resources);
+
                 for (let cont = 0; this.entity.resources.length > cont; cont++) {
                     let index = resources.findIndex((resource) => {
                         return this.entity.resources[cont].id == resource.id;

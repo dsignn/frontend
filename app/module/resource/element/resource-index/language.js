@@ -11,7 +11,8 @@ export const lang = {
     "type": "Tipologia",
     "size": "Dimensione",
     "resources": "Risorse",
-    "monitor-resource": "Media monitor"
+    "monitor-resource": "Media monitor",
+    "name-organization": "Nome organizzazione"
   },
   "en": {
     "name": "Name",
@@ -25,5 +26,6 @@ export const lang = {
     "type": "Type",
     "size": "Size",
     "resources": "Resources",
+    "name-organization": "Name organization"
   }
 };
