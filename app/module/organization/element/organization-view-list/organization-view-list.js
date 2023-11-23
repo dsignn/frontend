@@ -19,6 +19,11 @@ class OrganizationViewList extends RefreshCollectionData(StorageCrudMixin(Locali
         return html`
             <style>
 
+                .empty {
+                    padding: 10px 0;
+                    font-size: 20px;
+                }
+        
                 #container {
                     @apply --layout-horizontal;
                     @apply --layout-wrap;
@@ -64,6 +69,9 @@ class OrganizationViewList extends RefreshCollectionData(StorageCrudMixin(Locali
                 <div id="container">
                 <template is="dom-repeat" items="[[entities]]" as="paper-organization">
                     <paper-organization entity="{{paper-organization}}" on-update="_showUpdateView"></paper-paper-organization>
+                </template>
+                <template is="dom-if" if="{{!entities.length}}">
+                    <div class="empty">{{localize('empty-list')}} </div>
                 </template>
             </div>
             <paper-pagination page="{{page}}" total-items="{{totalItems}}" item-per-page="{{itemPerPage}}" next-icon="next" previous-icon="previous"></paper-pagination>

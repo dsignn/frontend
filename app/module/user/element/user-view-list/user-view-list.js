@@ -19,6 +19,11 @@ class UserViewList extends RefreshCollectionData(StorageCrudMixin(LocalizeMixin(
         return html`
             <style>
 
+                .empty {
+                    padding: 10px 0;
+                    font-size: 20px;
+                }
+        
                 #container {
                     @apply --layout-horizontal;
                     @apply --layout-wrap;
@@ -64,6 +69,9 @@ class UserViewList extends RefreshCollectionData(StorageCrudMixin(LocalizeMixin(
                 <div id="container">
                 <template is="dom-repeat" items="[[entities]]" as="user">
                     <paper-user entity="{{user}}" on-delete="_deleteEntity" on-update="_showUpdateView" on-enable-monitor="_updateEntity"</paper-user>
+                </template>
+                <template is="dom-if" if="{{!entities.length}}">
+                    <div class="empty">{{localize('empty-list')}} </div>
                 </template>
             </div>
             <paper-pagination page="{{page}}" total-items="{{totalItems}}" item-per-page="{{itemPerPage}}" next-icon="next" previous-icon="previous"></paper-pagination>

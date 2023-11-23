@@ -18,7 +18,11 @@ class ResourceViewList extends RefreshCollectionData(StorageCrudMixin(LocalizeMi
     static get template() {
         return html`
             <style>
-
+                .empty {
+                    padding: 10px 0;
+                    font-size: 20px;
+                }
+            
                 #container {
                     @apply --layout-horizontal;
                     @apply --layout-wrap;
@@ -64,6 +68,9 @@ class ResourceViewList extends RefreshCollectionData(StorageCrudMixin(LocalizeMi
                 <div id="container">
                 <template is="dom-repeat" items="[[entities]]" as="resource">
                     <paper-resource entity="{{resource}}" on-delete="_deleteEntity" on-update="_showUpdateView"></paper-resource>
+                </template>
+                <template is="dom-if" if="{{!entities.length}}">
+                    <div class="empty">{{localize('empty-list')}} </div>
                 </template>
             </div>
             <paper-pagination page="{{page}}" total-items="{{totalItems}}" item-per-page="{{itemPerPage}}" next-icon="next" previous-icon="previous"></paper-pagination>

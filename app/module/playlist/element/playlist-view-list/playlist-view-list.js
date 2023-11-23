@@ -18,6 +18,11 @@ class PlaylistViewList extends RefreshCollectionData(StorageCrudMixin(LocalizeMi
     static get template() {
         return html`
             <style>
+                .empty {
+                    padding: 10px 0;
+                    font-size: 20px;
+                }
+
                 #list {
                     @apply --layout-horizontal;
                     @apply --layout-wrap;
