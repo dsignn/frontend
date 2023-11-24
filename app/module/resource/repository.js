@@ -218,7 +218,7 @@ export class Repository extends AbstractRepository {
             ['video/mp4', 'video/webm']
         ).addHydratorMap(
             Repository.getWebComponentEntityHydrator(container),
-            ['application/zip', 'text/html', 'application/javascript']
+            ['application/zip', 'text/html', 'application/javascript', 'application/pdf']
         ).addHydratorMap(
             Repository.getAudioEntityHydrator(container),
             ['audio/mp3', 'audio/ogg']

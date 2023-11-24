@@ -81,7 +81,7 @@ class ResourceViewUpsert extends StorageEntityMixin(NotifyMixin(AclMixin(Localiz
                                         <iron-icon icon="info" slot="suffix"></iron-icon>
                                 </paper-autocomplete>
                             </template>
-                                <paper-input-file id="fileUpload" label="{{localize('search-file')}}" accept="image/png, image/jpeg, video/*, audio/*, application/zip"></paper-input-file>
+                                <paper-input-file id="fileUpload" label="{{localize('search-file')}}" accept="image/png, image/jpeg, video/*, audio/*, application/zip, application/pdf"></paper-input-file>
                                 <div>
                                     <paper-input id="tag" name="name" label="{{localize('tag')}}" on-keypress="addTag"></paper-input>
                                     <paper-chips id="chips" items="{{entity.tags}}"></paper-chips>

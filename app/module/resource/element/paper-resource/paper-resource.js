@@ -255,6 +255,15 @@ class PaperResource extends StorageEntityMixin(LocalizeMixin(ServiceInjectorMixi
                 element.muted = true; // TODO remove for debug
                 element.setAttribute('controls', true);
                 break;
+            case this.entity instanceof FileEntity === true  && this.entity.mimeType === 'application/pdf' : 
+                element = document.createElement('iframe');
+                element.setAttribute('frameBorder', '0');
+                element.setAttribute('scrolling', 'auto');
+                element.setAttribute('height', document.body.offsetHeight - 200);
+                element.setAttribute('width', document.body.offsetWidth - 100);
+                element.src = 'https://drive.google.com/viewerng/viewer?embedded=true&url=' + this.entity.src  + '?' + Date.now();
+               
+                break;
             case this.entity instanceof FileEntity === true:
                 if (!customElements.get(this.entity.wcName)) {
 
