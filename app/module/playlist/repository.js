@@ -47,6 +47,7 @@ export class Repository extends AbstractRepository {
     initAcl() {
         this.getContainer().get('Acl').addResource('playlist');
         this.getContainer().get('Acl').allow('admin', 'playlist', 'menu');
+        this.getContainer().get('Acl').allow('admin', 'playlist', 'post');
         this.getContainer().get('Acl').allow('organizationOwner', 'playlist', 'menu');
         this.getContainer().get('Acl').allow('admin', 'playlist', 'search-organization');
     }
@@ -126,6 +127,7 @@ export class Repository extends AbstractRepository {
             .enableExtractProperty('context')
             .enableExtractProperty('adjust')
             .enableExtractProperty('monitorContainerReference')
+            .enableExtractProperty('organizationReference')
             .enableExtractProperty('rotation')
             .enableExtractProperty('enableAudio')
             .enableExtractProperty('currentIndex')
@@ -139,6 +141,7 @@ export class Repository extends AbstractRepository {
             .enableHydrateProperty('context')
             .enableHydrateProperty('adjust')
             .enableHydrateProperty('monitorContainerReference')
+            .enableHydrateProperty('organizationReference')
             .enableHydrateProperty('rotation')
             .enableHydrateProperty('enableAudio')
             .enableHydrateProperty('currentIndex')

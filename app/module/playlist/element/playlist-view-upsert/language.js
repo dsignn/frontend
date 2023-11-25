@@ -9,7 +9,8 @@ export const lang = {
     "save": "Salva",
     "notify-save" : "Playlist saved",
     "notify-update" : "Playlist updated",
-    "monitor": "Cerca monitor"
+    "monitor": "Cerca monitor",
+    "name-organization": "Nome organizzazione"
   },
   "en": {
     "header": "List playlist",
@@ -21,6 +22,7 @@ export const lang = {
     "save": "Save",
     "notify-save" : "Playlist salvata",
     "notify-update" : "Playlist aggiornata",
-    "monitor": "Search monitor"
+    "monitor": "Search monitor",
+    "name-organization": "Name organization"
   }
 };

@@ -264,21 +264,15 @@ class PaperPlaylist extends StorageEntityMixin(LocalizeMixin(ServiceInjectorMixi
                     StorageContainerAggregate: {
                         _storage: "PlaylistStorage",
                         _resourceStorage: "ResourceStorage"
-                    },
-                    playlistService: 'PlaylistService'
+                    }
                 }
-            },
-
-            playlistService: {
-                readOnly: true,
-                observer: '_playlistServiceChanged'
             }
         }
     }
 
     static get observers() {
         return [
-            'changeEntity(entity, _resourceStorage)'
+            'changeEntity(entity, _resourceStorage, _storage)'
         ]
     }
 
@@ -290,24 +284,7 @@ class PaperPlaylist extends StorageEntityMixin(LocalizeMixin(ServiceInjectorMixi
             this.status = this.entity.status;
             this.notifyPath('entity.status');
             this.duration = this.entity.getDuration();
-            //this.calcTimeDuration();
-            //this.calcCurrentTime();
-            //this.updateContextIcons();
-            //this.updateActionIcons();
-            //this.updateSlider();
         });
-    }
-
-    _playlistServiceChanged(service) {
-        if (!service) {
-            return;
-        }
-
-        service.getEventManager().on(PlaylistService.UPDATE_TIME, this.updateEntityCurrentTimeFromService.bind(this));
-        service.getEventManager().on(PlaylistService.PLAY, this.updateEntityFromService.bind(this));
-        service.getEventManager().on(PlaylistService.STOP, this.updateEntityFromService.bind(this));
-        service.getEventManager().on(PlaylistService.PAUSE, this.updateEntityFromService.bind(this));
-        service.getEventManager().on(PlaylistService.RESUME, this.updateEntityFromService.bind(this));
     }
 
     updateEntityCurrentTimeFromService(evt) {
@@ -332,32 +309,61 @@ class PaperPlaylist extends StorageEntityMixin(LocalizeMixin(ServiceInjectorMixi
      * @param {PlayerEntity} entity 
      * @param {StorageInterface} storage 
      */
-    changeEntity(entity, storage) {
-        if (!storage || !entity || !this.entity.resources || this.entity.resources.length < 1) {
+    changeEntity(entity, resourceStorage, playlistStorage) {
+        if (!playlistStorage || !resourceStorage || !entity) {
             return;
         }
 
-        var resourceLoaded = 0;
-        var ids = {ids: []};
-        for (let cont = 0; this.entity.resources.length > cont; cont++) {
-            ids.ids.push(this.entity.resources[cont].id);                
+        if (!this.entity.resources || Array.isArray(this.entity.resources) || this.entity.resources.length > 0) {
+            var resourceLoaded = 0;
+            var ids = {ids: []};
+            for (let cont = 0; this.entity.resources.length > cont; cont++) {
+                ids.ids.push(this.entity.resources[cont].id);                
+            }
+
+            this._resourceStorage.getAll(ids)
+                .then((resources) => {
+
+                    for (let cont = 0; this.entity.resources.length > cont; cont++) {
+                        let index = resources.findIndex((resource) => {
+                            return this.entity.resources[cont].id == resource.id;
+                        });
+
+                        resourceLoaded++;
+                        if (index < 0) {
+                            continue;
+                        }
+
+                        this.entity.resources[cont] = Object.assign(resources[index], this.entity.resources[cont]);
+                        if (this.entity.resources.length == resourceLoaded) {
+                            this.dispatchEvent(new CustomEvent('update-resource', this.entity));
+                        }
+                    }
+                });
+        }
+      
+
+        var bindLoaded = 0;
+        ids = {ids: []};
+        for (let cont = 0; this.entity.binds.length > cont; cont++) {
+            ids.ids.push(this.entity.binds[cont].id);                
         }
 
-        this._resourceStorage.getAll(ids)
-            .then((resources) => {
-
-                for (let cont = 0; this.entity.resources.length > cont; cont++) {
-                    let index = resources.findIndex((resource) => {
-                        return this.entity.resources[cont].id == resource.id;
+        this._storage.getAll(ids)
+            .then((binds) => {
+                
+                for (let cont = 0; this.entity.binds.length > cont; cont++) {
+                    let index = binds.findIndex((playlist) => {
+                        return this.entity.binds[cont].id == playlist.id;
                     });
 
-                    resourceLoaded++;
+                    bindLoaded++;
                     if (index < 0) {
                         continue;
                     }
 
-                    this.entity.resources[cont] = Object.assign(resources[index], this.entity.resources[cont]);
-                    if (this.entity.resources.length == resourceLoaded) {
+                    this.entity.binds[cont] = Object.assign(binds[index], this.entity.binds[cont]);
+                    if (this.entity.binds.length == bindLoaded) {
                         this.dispatchEvent(new CustomEvent('update-resource', this.entity));
                     }
                 }

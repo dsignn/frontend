@@ -2,6 +2,7 @@ import {html, PolymerElement} from '@polymer/polymer/polymer-element.js';
 import {ServiceInjectorMixin} from "@dsign/polymer-mixin/service/injector-mixin";
 import {LocalizeMixin} from "@dsign/polymer-mixin/localize/localize-mixin";
 import {StorageEntityMixin} from "@dsign/polymer-mixin/storage/entity-mixin";
+import { AclMixin } from '@dsign/polymer-mixin/acl/acl-mixin';
 import '@polymer/paper-checkbox/paper-checkbox';
 import '@fluidnext-polymer/paper-autocomplete/paper-autocomplete';
 import '@fluidnext-polymer/paper-chip/paper-chips';
@@ -21,15 +22,20 @@ import {VideoEntity} from '../../../resource/src/entity/VideoEntity';
 import {customAutocomplete} from '../../../../element/custom-autocomplete/custom-autocomplete';
 import {lang} from './language';
 
+
 /**
  * @customElement
  * @polymer
  */
-class PlaylistViewUpsert extends StorageEntityMixin(LocalizeMixin(ServiceInjectorMixin(PolymerElement))) {
+class PlaylistViewUpsert extends AclMixin(StorageEntityMixin(LocalizeMixin(ServiceInjectorMixin(PolymerElement)))) {
 
     static get template() {
         return html`
                 <style>
+                    .action{
+                        padding-top:10px
+                    }
+
                     div#container {
                         margin-top: 8px;
                     }
@@ -63,7 +69,28 @@ class PlaylistViewUpsert extends StorageEntityMixin(LocalizeMixin(ServiceInjecto
                     <form method="post">
                         <div id="container">
                             <paper-input id="name" name="name" label="{{localize('name')}}" value="{{entity.name}}" required></paper-input>
-                            <paper-checkbox checked="{{entity.enableAudio}}" style="padding-top: 20px;">{{localize('enable-audio')}} <i>({{localize('working-only-video')}})</i></paper-checkbox>
+                            <template id="domIf" is="dom-if" if="{{isAllowed('playlist', 'post')}}">
+                                <paper-autocomplete
+                                    id="orgAutocomplete"
+                                    label="{{localize('name-organization')}}"
+                                    text-property="name"
+                                    value-property="name"
+                                    remote-source
+                                    value="{{entity.organizationReference}}"
+                                    on-autocomplete-change="_defaultChanged"
+                                    required>
+                                        <template slot="autocomplete-custom-template">
+                                            ${customAutocomplete}
+                                            <paper-item class="account-item" on-tap="_onSelect" role="option" aria-selected="false">
+                                                <div index="[[index]]">
+                                                    <div class="service-name">[[item.name]]</div>
+                                                </div>
+                                            </paper-item>
+                                        </template>
+                    
+                                        <iron-icon icon="info" slot="suffix"></iron-icon>
+                                </paper-autocomplete>
+                            </template>
                             <paper-autocomplete 
                                 id="autocompleteMonitor"
                                 label="{{localize('monitor')}}" 
@@ -71,6 +98,7 @@ class PlaylistViewUpsert extends StorageEntityMixin(LocalizeMixin(ServiceInjecto
                                 value-property="name"
                                 on-autocomplete-change="_searchMonitor"
                                 value="{{entity.monitorContainerReference}}"
+                                required
                                 remote-source>
                                     <template slot="autocomplete-custom-template">
                                         ${customAutocomplete}
@@ -112,7 +140,7 @@ class PlaylistViewUpsert extends StorageEntityMixin(LocalizeMixin(ServiceInjecto
                                 on-autocomplete-change="_searchBindPlaylist"
                                 remote-source>
                                 <template slot="autocomplete-custom-template">
-                                   
+                                    ${customAutocomplete}
                                     <paper-item class="account-item" on-tap="_onSelect" role="option" aria-selected="false">
                                         <div index="[[index]]">
                                             <div class="service-name">[[item.name]]</div>
@@ -123,7 +151,7 @@ class PlaylistViewUpsert extends StorageEntityMixin(LocalizeMixin(ServiceInjecto
                                 </template>
                             </paper-autocomplete>
                             <paper-chips id="listPlaylist" items="{{entity.binds}}"></paper-chips> 
-                            <div class="layout-horizontal layout-end-justified">
+                            <div class="layout-horizontal layout-end-justified action">
                                 <paper-button on-tap="submitPlaylistButton">{{localize('save')}}</paper-button>
                             </div>
                            
@@ -166,6 +194,7 @@ class PlaylistViewUpsert extends StorageEntityMixin(LocalizeMixin(ServiceInjecto
             services : {
                 value : {
                     _notify : "Notify",
+                    _aclService: "Acl",
                     _localizeService: 'Localize',
                     "HydratorContainerAggregate" : {
                         _monitorHydrator : "MonitorEntityHydrator"
@@ -174,6 +203,7 @@ class PlaylistViewUpsert extends StorageEntityMixin(LocalizeMixin(ServiceInjecto
                         _storage :"PlaylistStorage",
                         _resourceStorage:"ResourceStorage",
                         _monitorStorage:"MonitorStorage",
+                        organizationStorage: "OrganizationStorage"
                     }
                 }
             },
@@ -225,7 +255,7 @@ class PlaylistViewUpsert extends StorageEntityMixin(LocalizeMixin(ServiceInjecto
      * @param newValue
      * @private
      */
-    _changeEntity(newValue) {
+    _changeEntity(newValue, oldValue) {
         this.labelAction = 'save';
         if (!newValue) {
             return;
@@ -239,7 +269,6 @@ class PlaylistViewUpsert extends StorageEntityMixin(LocalizeMixin(ServiceInjecto
                     let allMonitor = monitor.getMonitors({nested: true});
                     for (let cont = 0; allMonitor.length > cont; cont++) {
                         if (newValue.monitorContainerReference.id == allMonitor[cont].id) {
-                            console.log('MONITORE ggg', newValue.monitorContainerReference);
                             newValue.monitorContainerReference = allMonitor[cont];
                             newValue.monitorContainerReference.parentId = monitor.id;
                             newValue.monitorContainerReference.parent = monitor;
@@ -249,9 +278,39 @@ class PlaylistViewUpsert extends StorageEntityMixin(LocalizeMixin(ServiceInjecto
                         }
                     }
                 });
+
+                if (oldValue && oldValue.id != newValue.id && newValue.organizationReference && newValue.organizationReference.id) {
+      
+                    this.organizationStorage.get(newValue.organizationReference.id)
+                        .then((entity) => {
+                            this.entity.organizationReference = entity;
+                            this.notifyPath('entity.organizationReference');
+                            this.shadowRoot.querySelector('#orgAutocomplete').disabled = true;
+                        });
+                } else if(this.shadowRoot.querySelector('#orgAutocomplete')) {
+                    this.shadowRoot.querySelector('#orgAutocomplete').disabled = false;
+                }
         } else {
             newValue.monitorContainerReference = {};
         }
+    }
+
+    /**
+     * @param evt
+     * @private
+     */
+     _defaultChanged(evt) {
+        if(!this.organizationStorage) {
+            return;
+        } 
+
+        this.organizationStorage
+            .getAll({ name: evt.detail.value.text })
+            .then(
+                (data) => {
+                    this.shadowRoot.querySelector('#orgAutocomplete').suggestions(data);
+                }
+            );
     }
 
     /**
@@ -351,15 +410,6 @@ class PlaylistViewUpsert extends StorageEntityMixin(LocalizeMixin(ServiceInjecto
 
         this._storage.getAll({name : evt.detail.value.text})
             .then((filter) => {
-
-                let reference;
-                for (let cont =  0; filter.length > cont; cont++) {
-                    reference = new (require("@dsign/library").storage.entity.EntityNestedReference)();
-                    reference.setCollection('playlist');
-                    reference.setId(filter[cont].id);
-                    reference.name = filter[cont].name;
-                    filter[cont] = reference;
-                }
 
                 evt.detail.target.suggestions(
                     filter
