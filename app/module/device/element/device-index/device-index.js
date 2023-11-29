@@ -14,8 +14,8 @@ import { AclMixin } from "@dsign/polymer-mixin/acl/acl-mixin";
 import { ServiceInjectorMixin } from "@dsign/polymer-mixin/service/injector-mixin.js";
 import { lang } from './language.js';
 // TODO add to widget load
-import { Auth } from "../../../../src/authentication/Auth.js";
 import './../device-view-list/device-view-list.js';
+import './../device-view-upsert/device-view-upsert.js'
 import {autocompleteStyle} from "../../../../element/paper-autocomplete/autocomplete-custom-style";
 
 
@@ -23,7 +23,7 @@ import {autocompleteStyle} from "../../../../element/paper-autocomplete/autocomp
 /**
  * @class DeviceIndex
  */
-class DeviceIndex extends AclMixin(LocalizeMixin(AclMixin(ServiceInjectorMixin(PolymerElement)))) {
+class DeviceIndex extends LocalizeMixin(AclMixin(ServiceInjectorMixin(PolymerElement))) {
 
   static get template() {
     return html`
@@ -63,11 +63,7 @@ class DeviceIndex extends AclMixin(LocalizeMixin(AclMixin(ServiceInjectorMixin(P
     .filter-container > * { 
         padding-right: 6px !important;
     }
-
-    #update {
-       display: block;
-       width: 96%;
-    }
+    
   </style>
   <iron-pages id="index" selected="{{selected}}">
       <div id="list"> 

@@ -290,6 +290,7 @@ class PlaylistViewUpsert extends AclMixin(StorageEntityMixin(LocalizeMixin(Servi
                 } else if(this.shadowRoot.querySelector('#orgAutocomplete')) {
                     this.shadowRoot.querySelector('#orgAutocomplete').disabled = false;
                 }
+
         } else {
             newValue.monitorContainerReference = {};
         }
@@ -339,8 +340,7 @@ class PlaylistViewUpsert extends AclMixin(StorageEntityMixin(LocalizeMixin(Servi
      * @private
      */
     _selectResource(evt) {
-        let search = 
-
+  
         this.entity.appendResource(evt.detail.value);
      
         // TODO better solution.

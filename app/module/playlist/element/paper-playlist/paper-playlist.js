@@ -74,6 +74,11 @@ class PaperPlaylist extends StorageEntityMixin(LocalizeMixin(ServiceInjectorMixi
                     padding: 4px;
                 }  
 
+                .monitor-data {
+                    font-size: 14px;
+                    font-style: italic;
+                }
+
                 .sub-content {
                     flex: 1;
                     display: flex;
@@ -173,7 +178,12 @@ class PaperPlaylist extends StorageEntityMixin(LocalizeMixin(ServiceInjectorMixi
                     <div class="content">
                         <div class="sub-content">
                             <div class="row center">
-                                <div class="titleEntity">{{entity.name}}</div>
+                                <div>
+                                    <div>{{entity.name}}</div>
+                                    <div class="monitor-data">{{monitorName}}</div>
+                                    <div class="monitor-data">{{parentMonitorName}}</div>
+                                </div>
+                           
                                 <div id="crud" hidden$="[[removeCrud]]">
                                     <paper-menu-button id="crudButton" ignore-select horizontal-align="right" disabled="{{hideCrud}}">
                                         <paper-icon-button icon="v-menu" slot="dropdown-trigger" alt="multi menu"></paper-icon-button>
@@ -263,7 +273,8 @@ class PaperPlaylist extends StorageEntityMixin(LocalizeMixin(ServiceInjectorMixi
                     _localizeService: 'Localize',
                     StorageContainerAggregate: {
                         _storage: "PlaylistStorage",
-                        _resourceStorage: "ResourceStorage"
+                        _resourceStorage: "ResourceStorage",
+                        _monitorStorage: "MonitorStorage"
                     }
                 }
             }
@@ -272,7 +283,7 @@ class PaperPlaylist extends StorageEntityMixin(LocalizeMixin(ServiceInjectorMixi
 
     static get observers() {
         return [
-            'changeEntity(entity, _resourceStorage, _storage)'
+            'changeEntity(entity, _monitorStorage, _resourceStorage, _storage)'
         ]
     }
 
@@ -309,8 +320,8 @@ class PaperPlaylist extends StorageEntityMixin(LocalizeMixin(ServiceInjectorMixi
      * @param {PlayerEntity} entity 
      * @param {StorageInterface} storage 
      */
-    changeEntity(entity, resourceStorage, playlistStorage) {
-        if (!playlistStorage || !resourceStorage || !entity) {
+    changeEntity(entity, _monitorStorage, resourceStorage, playlistStorage) {
+        if (!_monitorStorage || !playlistStorage || !resourceStorage || !entity) {
             return;
         }
 
@@ -368,6 +379,30 @@ class PaperPlaylist extends StorageEntityMixin(LocalizeMixin(ServiceInjectorMixi
                     }
                 }
             });
+
+            if (entity.monitorContainerReference.parentId) {
+                this._monitorStorage.get(entity.monitorContainerReference.parentId)
+                    .then((monitor) => {
+                    
+                        if (monitor) {
+                           
+                            let monitors = monitor.getMonitors({nested:true});
+                            let nestedMonitor = monitors.find((element) => {
+                                return element.id === entity.monitorContainerReference.id;
+                            });
+
+                            this.parentMonitorName = monitor.name;
+                            this.monitorName = nestedMonitor.name;
+                        } else {
+                            this.parentMonitorName = null;
+                            this.monitorName = null;
+                        }
+                       
+                    });
+            } else {
+                this.parentMonitorName = null;
+                this.monitorName = null;
+            }
     }
 
     /**

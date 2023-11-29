@@ -7,5 +7,10 @@ export class DeviceEntity extends EntityIdentifier {
 
     constructor() {
         super();
+
+        /**
+         * @type {String}
+         */
+         this.monitor = null;
     }
 }
