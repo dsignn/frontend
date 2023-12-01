@@ -69,7 +69,6 @@ class MonitorPlaylistViewer extends StorageEntityMixin(NotifyMixin(LocalizeMixin
 
             monitor: {
                 notify: true,
-                observer: '_monitorChanged'
             },
 
             /**

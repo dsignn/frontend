@@ -69,6 +69,14 @@ class PaperDevice extends StorageEntityMixin(LocalizeMixin(ServiceInjectorMixin(
                     overflow: hidden;
                     height: 20px;
                 }
+
+                .disable {
+                    color:red;
+                }
+
+                .enable {
+                    color:green;
+                }
                 
                 .dimension, 
                 .size,
@@ -84,8 +92,8 @@ class PaperDevice extends StorageEntityMixin(LocalizeMixin(ServiceInjectorMixin(
                 <div id="rightSection">
                     <div id="content">
                         <div class="name">{{entity.name}}</div>
-                        <div class="size">
-                            <div>{{localize(status)}}</div>
+                        <div>
+                            <div id="status">{{localize(status)}}</div>
                         </div>
                     </div>
                     <div id="crud">
@@ -168,6 +176,24 @@ class PaperDevice extends StorageEntityMixin(LocalizeMixin(ServiceInjectorMixin(
     _entityChanged(newValue) {
         if (!newValue) {
             return;
+        }
+
+        let diff = newValue.lastUpdateDate.getTime() - newValue.createdDate.getTime();
+       
+        if (diff > 20) {
+            this.changeStatus('disable');
+        } else {
+            this.changeStatus('enable');
+        }
+    }
+
+    changeStatus(status) {
+        if (status === 'disable') {
+            this.status = 'disable';
+            this.$.status.className = 'disable';
+        } else {
+            this.status = 'enable';
+            this.$.status.className = 'enable';
         }
     }
 

@@ -6,6 +6,7 @@
  import { DefaultBuilder } from "@dsign/library/src/storage/adapter/xmlh/url/DefaultBuilder";
  import { Storage } from "@dsign/library/src/storage/Storage";
  import { PropertyHydrator } from "@dsign/library/src/hydrator/index";
+ import { DateStrategy } from "@dsign/library/src/hydrator/strategy/value/DateStrategy";
  import { config } from './config.js';
  import { AbstractRepository } from "../../src/AbstractRepository";
  import { DeviceEntity } from "./src/entity/DeviceEntity.js";
@@ -95,6 +96,9 @@ export class Repository extends AbstractRepository {
         let hydrator = new PropertyHydrator(
             container.get('EntityContainerAggregate').get('DeviceEntity')
         );
+
+        hydrator.addValueStrategy('createdDate', new DateStrategy())
+            .addValueStrategy('lastUpdateDate', new DateStrategy());
 
         return hydrator;
     }
