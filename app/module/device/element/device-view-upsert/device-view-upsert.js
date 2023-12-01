@@ -11,6 +11,7 @@ import '@polymer/paper-button/paper-button';
 import '@polymer/paper-card/paper-card';
 import '@polymer/paper-tooltip/paper-tooltip';
 import '../../../../element/paper-input-points/paper-input-points';
+import './../monitor-plylist-viewer/monitor-playlist-viewer';
 
 import {customAutocomplete} from '../../../../element/custom-autocomplete/custom-autocomplete';
 import {lang} from './language';
@@ -60,6 +61,11 @@ class DeviceViewUpsert extends StorageEntityMixin(NotifyMixin(AclMixin(LocalizeM
                 width: 100%;
                 padding: 10px;
             }
+
+            monitor-playlist-viewer {
+                flex: 1;
+                margin-right: 4px;
+            }
         
             @media (max-width: 900px) {
                 #container {
@@ -91,52 +97,37 @@ class DeviceViewUpsert extends StorageEntityMixin(NotifyMixin(AclMixin(LocalizeM
         </style>
         <slot name="header"></slot>
         <div id="container">
-            
-            <paper-autocomplete 
-                id="autocompleteMonitors"
-                label="{{localize('monitor')}}" 
-                text-property="name"
-                value-property="name"
-                on-autocomplete-change="_searchMonitors"
-                on-autocomplete-selected="_selectMonitors"
-                remote-source>
-                <template slot="autocomplete-custom-template">
-                    ${customAutocomplete}
-                    <paper-item class="account-item" on-tap="_onSelect" role="option" aria-selected="false">
-                        <div index="[[index]]">
-                            <div class="service-name">[[item.name]]</div>
-                            <div class="service-description">[[item.type]]</div>
-                        </div>
-                        <paper-ripple></paper-ripple>
-                    </paper-item>
-                </template>
-            </paper-autocomplete>
-            <div class="monitors">
-                <template is="dom-repeat" items="[[monitors]]" id="labels-row">
-                    <div class="monitor" monitor="{{item}}">
-                        <div class="title">[[item.name]]</div>
-                        <paper-autocomplete 
-                            label="{{localize('playlist')}}" 
-                            text-property="name"
-                            value-property="name"
-                            on-autocomplete-change="_searchPlaylist"
-                            on-autocomplete-selected="_selectPlaylist"
-                            remote-source>
-                            <template slot="autocomplete-custom-template">
-                                ${customAutocomplete}
-                                <paper-item class="account-item" on-tap="_onSelect" role="option" aria-selected="false">
-                                    <div index="[[index]]">
-                                        <div class="service-name">[[item.name]]</div>
-                                        <div class="service-description">[[item.type]]</div>
-                                    </div>
-                                    <paper-ripple></paper-ripple>
-                                </paper-item>
-                            </template>
-                        </paper-autocomplete>
+            <iron-form id="formDevice">
+                <form method="post">
+                    <paper-autocomplete 
+                        id="autocompleteMonitors"
+                        label="{{localize('monitor')}}" 
+                        text-property="name"
+                        value-property="name"
+                        on-autocomplete-change="_searchMonitors"
+                        on-autocomplete-selected="_selectMonitors"
+                        remote-source>
+                        <template slot="autocomplete-custom-template">
+                            ${customAutocomplete}
+                            <paper-item class="account-item" on-tap="_onSelect" role="option" aria-selected="false">
+                                <div index="[[index]]">
+                                    <div class="service-name">[[item.name]]</div>
+                                    <div class="service-description">[[item.type]]</div>
+                                </div>
+                                <paper-ripple></paper-ripple>
+                            </paper-item>
+                        </template>
+                    </paper-autocomplete>
+                    <div id="monPlay" class="monitors">
+                        <template is="dom-repeat" items="[[monitors]]" id="labels-row">
+                            <monitor-playlist-viewer monitor="{{item}}" monitor-container="[[monitor]]"></monitor-playlist-viewer>
+                        </template>
                     </div>
-                    
-                </template>
-            </div>
+                    <div class="layout-horizontal layout-end-justified">
+                        <paper-button on-tap="submitDeviceButton">{{localize(labelAction)}}</paper-button>
+                    </div>
+                </form>
+            </iron-form>
         </div>`;
     }
     static get properties() {
@@ -154,11 +145,11 @@ class DeviceViewUpsert extends StorageEntityMixin(NotifyMixin(AclMixin(LocalizeM
              */
             labelAction: {
                 type: String,
-                value: 'save'
+                value: 'update'
             },
 
             monitor: {
-                observer: '_monitorChanged'
+                notify: true
             },
 
             monitors: {
@@ -173,12 +164,10 @@ class DeviceViewUpsert extends StorageEntityMixin(NotifyMixin(AclMixin(LocalizeM
                     _localizeService: 'Localize',
                     _notifyService: 'Notify',
                     _aclService: "Acl",
-                    "HydratorContainerAggregate" : {
-                        _monitorHydrator : "MonitorEntityHydrator"
-                    },
                     StorageContainerAggregate : {
                         _playlistStorage :"PlaylistStorage",
-                        _monitorStorage :"MonitorStorage"
+                        _monitorStorage :"MonitorStorage",
+                        _storage :"DeviceStorage",
                     }
                 }
             },
@@ -189,18 +178,58 @@ class DeviceViewUpsert extends StorageEntityMixin(NotifyMixin(AclMixin(LocalizeM
         super();
         this.resources = lang;
     }
-/*
-    static get observers() {
-        return [
-          '_changeMonitor(entity.monitor)'
-        ];
-      }
-*/
+
+    ready() {
+        super.ready();
+        this.$.formDevice.addEventListener('iron-form-presubmit', this.submitDevice.bind(this));
+    }
+
+    /**
+     * @param {CustomEvent} evt
+     */
+     submitDeviceButton(evt) {
+        this.$.formDevice.submit();
+    }
+
+    submitDevice(evt) {
+
+        evt.preventDefault();
+        this.entity.monitor = this.monitor;
+        this._storage.save(this.entity)
+            .then((data) => {
+                this.notify(this.localize('notify-update'));
+            });
+    }
+
+    _entityChanged(newValue) {
+       
+        if (newValue.monitor && newValue.monitor.id) {
+
+            this._monitorStorage.get(newValue.monitor.id)
+                .then((monitor) => {
+                    this.monitor = monitor;
+                    setTimeout(
+                        () => {
+                            this.sendMessageToChild('change-monitor');
+                        },
+                        200
+                    );
+                });
+        }
+
+        if (newValue.monitor && newValue.monitor.monitors) { 
+            this.monitors = newValue.monitor.monitors;
+        } else {
+            this.monitors = [];
+        }
+
+    }
+
     /**
      * @param evt
      * @private
      */
-     _searchMonitors(evt) {
+    _searchMonitors(evt) {
         if (!this._monitorStorage) {
             return;
         }
@@ -217,8 +246,13 @@ class DeviceViewUpsert extends StorageEntityMixin(NotifyMixin(AclMixin(LocalizeM
     _selectMonitors(evt) {
       
         this.monitor = evt.detail.value;
+        this.monitors =  this.monitor.getMonitors();
+        
         setTimeout(
             () => {
+                let nodes = this.$.monPlay.children;
+              
+                this.sendMessageToChild('select-monitor');
                 this.$.autocompleteMonitors.clear();
                 this.notifyPath('entity');
             },
@@ -226,32 +260,11 @@ class DeviceViewUpsert extends StorageEntityMixin(NotifyMixin(AclMixin(LocalizeM
         )
     }
 
-    _searchPlaylist(evt) {
-        if (!this._playlistStorage) {
-            return;
+    sendMessageToChild(event) {
+        let nodes = this.$.monPlay.children;
+        for (let cont = 0; nodes.length > cont; cont++) {
+            nodes[cont].dispatchEvent(new CustomEvent(event, {}));
         }
-
-        let search = {name : evt.detail.value.text};
-        search['monitor_container'] =  {};
-        search['monitor_container'].id = evt.target.parentElement.monitor.id;
-        search['monitor_container'].parentId =  this.monitor.id 
-
-        this._playlistStorage.getAll(search)
-            .then((filter) => {
-
-                evt.detail.target.suggestions(
-                    filter
-                );
-            });
-    }
-
-    _entityChanged(newValue) {
-        console.log('FFFFFFFFF', newValue);
-    }
-
-    _monitorChanged(newValue) {
-        console.log('BBBBBBBBBBBBBB', newValue);
-        this.monitors = newValue.getMonitors();
     }
 }
 
