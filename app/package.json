@@ -8,7 +8,7 @@
   "scripts": {
     "start": "polymer serve --root . --hostname 127.0.0.156",
     "build": "polymer build",
-    "rsync": "rsync -zavhr --delete --update build/* ../build-app && rm -rf build",
+    "rsync": "rsync -zavhr --delete --update build/* ../build-app",
     "lint": "polymer lint",
     "test": "polymer test",
     "test:integration": "polymer build # test that psk builds without error with the CLI"
