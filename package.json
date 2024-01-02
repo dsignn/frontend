@@ -11,7 +11,7 @@
     "polymer-cli": "1.9.11"
   },
   "scripts": {
-    "postinstall": "cd app && npm install && cd ../app-menu/ && npm install",
+    "postinstall": "cd app && npm install && cd ../app/ && npm install",
     "start-app": "polymer serve --root build-app/production --hostname 127.0.0.156",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
