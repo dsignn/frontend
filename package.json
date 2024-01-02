@@ -13,7 +13,8 @@
   "scripts": {
     "postinstall": "cd app && npm install && cd ../app/ && npm install",
     "start-app": "polymer serve --root build-app/production --hostname 127.0.0.156",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "build":  "cd app && npm run build"
   },
   "repository": {
     "type": "git",
