@@ -1,5 +1,5 @@
 npm-install:
-	docker run  --user 1000:1000 -v ${PWD}:/usr/src/app -w /usr/src/app node:16 npm install
+	docker run -v ${PWD}:/usr/src/app -w /usr/src/app node:20 npm install
 
 npm-build:
-	docker run  --user 1000:1000 -v ${PWD}:/usr/src/app -w /usr/src/app node:16 npm run build
+	docker run -v ${PWD}:/usr/src/app -w /usr/src/app node:20 npm run build
