@@ -12,7 +12,6 @@ export const config = {
     app: {
         basePath: 'http://127.0.0.1:8081/',
         moduleRelativePath: 'module',
-        menuPath: 'http://127.0.0.200'
     },
     modules:  [
         {
