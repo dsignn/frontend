@@ -94,12 +94,6 @@ class MonitorPlaylistViewer extends StorageEntityMixin(NotifyMixin(LocalizeMixin
         this.resources = lang;
     }
 
-    static get observers() {
-        return [
-            '_changeMonitor(monitor, monitorContainer, _playlistStorage)'
-        ]
-    }
-
     ready() {
         super.ready();
         this.addEventListener('select-monitor', (evt) => {

@@ -174,12 +174,19 @@ class PaperDevice extends StorageEntityMixin(LocalizeMixin(ServiceInjectorMixin(
     }
 
     _entityChanged(newValue) {
+
         if (!newValue) {
             return;
         }
 
-        let diff = newValue.lastUpdateDate.getTime() - newValue.createdDate.getTime();
-       
+        let now = new Date();
+        let diff = now.getTime() -  newValue.lastUpdateDate.getTime();
+        
+        diff = Math.floor((diff / 1000));
+
+
+
+       console.log('DIFF', newValue.lastUpdateDate, now, diff)
         if (diff > 20) {
             this.changeStatus('disable');
         } else {

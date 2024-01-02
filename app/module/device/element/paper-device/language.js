@@ -4,13 +4,13 @@ export const lang = {
     "delete" : "Elimina",
     "preview-resource": "Preview della risorsa",
     "disable": "Disattivo",
-    "active": "Attivo"
+    "enable": "Attivo"
   },
   "en": {
     "modify": "Modify",
     "delete" : "Delete",
     "preview-resource": "Resource preview ",
     "disable": "Disabled",
-    "active": "Enable"
+    "enable": "Enable"
   }
 };

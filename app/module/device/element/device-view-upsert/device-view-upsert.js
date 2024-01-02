@@ -46,6 +46,28 @@ class DeviceViewUpsert extends StorageEntityMixin(NotifyMixin(AclMixin(LocalizeM
                 flex-direction: row;
             }
 
+            .center {
+                align-items: center;
+            }
+
+            paper-input {
+                --paper-input-container-disabled : {
+                    color: var(--primary-text-color);
+                    opacity: 0.9;
+                }
+
+                --paper-input-container-input-disabled : {
+                    color: var(--primary-text-color);
+                    opacity: 0.9;
+                }
+
+                --paper-input-container-underline-disabled : {
+                    color: var(--primary-text-color);
+                    border-bottom: 0;
+                    opacity: 0.9;
+                }
+            }
+
             .monitor {
                 flex:1;
                 text-align: center;
@@ -65,6 +87,24 @@ class DeviceViewUpsert extends StorageEntityMixin(NotifyMixin(AclMixin(LocalizeM
             monitor-playlist-viewer {
                 flex: 1;
                 margin-right: 4px;
+            }
+
+            #status {
+                width: 40px;
+                height: 40px;
+                border-radius: 50%;
+            }
+
+            .disable {
+                background: red ;
+            }
+
+            .enable {
+                background: var(--default-primary-color);
+            }
+
+            #name {
+                margin-left: 10px;
             }
         
             @media (max-width: 900px) {
@@ -97,6 +137,14 @@ class DeviceViewUpsert extends StorageEntityMixin(NotifyMixin(AclMixin(LocalizeM
         </style>
         <slot name="header"></slot>
         <div id="container">
+            <paper-card>
+                <h2>{{localize('info-device')}}</h2>
+                <div class="monitors center">
+                    <div id="status" ></div>
+                    <paper-input id="name" label="{{localize('name')}}" value="{{entity.name}}" disabled></paper-input>
+                    <paper-input id="name" label="{{localize('last-ping')}}" value="{{lastPing(entity.lastUpdateDate)}}" disabled></paper-input>
+                </div>
+             </paper-card>
             <iron-form id="formDevice">
                 <form method="post">
                     <paper-autocomplete 
@@ -202,6 +250,10 @@ class DeviceViewUpsert extends StorageEntityMixin(NotifyMixin(AclMixin(LocalizeM
     }
 
     _entityChanged(newValue) {
+
+        if (!newValue) {
+            return;
+        }
        
         if (newValue.monitor && newValue.monitor.id) {
 
@@ -223,6 +275,38 @@ class DeviceViewUpsert extends StorageEntityMixin(NotifyMixin(AclMixin(LocalizeM
             this.monitors = [];
         }
 
+        this.calcStatus();
+    }
+
+    lastPing(date) {
+        if (date && date instanceof Date) {
+            return date.toLocaleString();
+        }
+    }
+
+    /**
+     * @returns
+     */
+    calcStatus() {
+
+        if (!this.entity || !this.entity.id) {
+            return;
+        }
+
+        let diff = this.entity.lastUpdateDate.getTime() - this.entity.createdDate.getTime();
+        
+        let status = 'enable';
+        if (diff > 20) {
+            status = 'disable';
+        }
+
+        if (status === 'disable') {
+            this.status = 'disable';
+            this.$.status.className = 'disable';
+        } else {
+            this.status = 'enable';
+            this.$.status.className = 'enable';
+        }
     }
 
     /**
