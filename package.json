@@ -4,7 +4,7 @@
   "description": "test",
   "main": "index.js",
   "dependencies": {
-    "@polymer/polymer": "^3.4.1",
+    "@polymer/polymer": "^3.5.1",
     "@polymer/app-layout": "^3.1.0"
   },
   "devDependencies": {

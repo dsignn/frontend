@@ -33,7 +33,7 @@
       "name": "production",
       "js": {
         "minify": false,
-        "compile": "es5"
+        "compile": false
       },
       "css": {
         "minify": false
@@ -44,7 +44,7 @@
       "bundle": false,
       "addServiceWorker": false,
       "addPushManifest": false,
-      "preset": "es5-bundled",
+      "preset": "es6-bundled",
       "browserCapabilities": [
         "es2015",
         "modules"
