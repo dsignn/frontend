@@ -153,8 +153,10 @@ class DashboardIndex extends LocalizeMixin(AclMixin(ServiceInjectorMixin(Polymer
     
     .menu {
       background: #f0b906;
-      margin-top: -40px;
       text-align: center;
+    }
+
+    .menu.first {
       padding-top: 80px;
     }
     
@@ -182,12 +184,18 @@ class DashboardIndex extends LocalizeMixin(AclMixin(ServiceInjectorMixin(Polymer
       justify-content: space-between;
       margin-top: 80px;
     }
+
+    .flex-center {
+      display: flex;
+      justify-content: center;
+      margin-top: 80px;
+    }
     
-    .flex div {
+    .flex div,
+    .flex-center div {
       display:block;
       width:16.6%;  
     }
-    
     
     .icon {
       display: block;
@@ -955,8 +963,8 @@ class DashboardIndex extends LocalizeMixin(AclMixin(ServiceInjectorMixin(Polymer
                 </div>
               </div>      
           </div>
-          <div class="menu">
-          <div class="inside">
+          <div class="menu first">
+            <div class="inside">
                   <h2>Dsign</h2>
               <div class="text-block">
                   <p class="">
@@ -1029,7 +1037,7 @@ class DashboardIndex extends LocalizeMixin(AclMixin(ServiceInjectorMixin(Polymer
                 <a class="button yellow" on-tap="openLogin" style="margin-bottom: 20px;">Provalo subito</a>
             </div>     
           </div>
-          <div class="section column second white">
+          <div class="section column second white" style="padding-bottom:40px;">
              <div class="row center">
                 <h2 class="c-green">Pricing</h2>
              </div>
@@ -1037,7 +1045,7 @@ class DashboardIndex extends LocalizeMixin(AclMixin(ServiceInjectorMixin(Polymer
                 <div class="boxed">
                   <ul>
                     <li>
-                      <span>19,90€ Mese</span>
+                      <span>GRATIS</span>
                     </li>
                     <li class="flex gap-x-3 py-2" style="justify-content: unset">
                       <svg class="h-6 w-5" viewBox="0 0 20 20" fill="currentcolor" aria-hidden="true"><path fill-rule="evenodd" d="M16.704 4.153a.75.75.0 01.143 1.052l-8 10.5a.75.75.0 01-1.127.075l-4.5-4.5a.75.75.0 011.06-1.06l3.894 3.893 7.48-9.817a.75.75.0 011.05-.143z" clip-rule="evenodd"></path></svg>
@@ -1049,7 +1057,27 @@ class DashboardIndex extends LocalizeMixin(AclMixin(ServiceInjectorMixin(Polymer
                     </li>
                     <li  class="flex gap-x-3 py-2" style="justify-content: unset">
                       <svg class="h-6 w-5" viewBox="0 0 20 20" fill="currentcolor" aria-hidden="true"><path fill-rule="evenodd" d="M16.704 4.153a.75.75.0 01.143 1.052l-8 10.5a.75.75.0 01-1.127.075l-4.5-4.5a.75.75.0 011.06-1.06l3.894 3.893 7.48-9.817a.75.75.0 011.05-.143z" clip-rule="evenodd"></path></svg>
-                      <div style="width:100%; text-align: left;">Gestione di 2 monitor</div>
+                      <div style="width:100%; text-align: left;">Gestione di 1 monitor</div>
+                    </li>     
+                    <li>&nbsp</li>          
+                  </ul>
+                </div>
+                <div class="boxed">
+                  <ul>
+                    <li>
+                      <span>39€ Mese</span>
+                    </li>
+                    <li class="flex gap-x-3 py-2" style="justify-content: unset">
+                      <svg class="h-6 w-5" viewBox="0 0 20 20" fill="currentcolor" aria-hidden="true"><path fill-rule="evenodd" d="M16.704 4.153a.75.75.0 01.143 1.052l-8 10.5a.75.75.0 01-1.127.075l-4.5-4.5a.75.75.0 011.06-1.06l3.894 3.893 7.48-9.817a.75.75.0 011.05-.143z" clip-rule="evenodd"></path></svg>
+                      <div style="width:100%; text-align: left;">Caricamento illimitato di risorse</div>
+                    </li>
+                    <li  class="flex gap-x-3 py-2" style="justify-content: unset">
+                      <svg class="h-6 w-5" viewBox="0 0 20 20" fill="currentcolor" aria-hidden="true"><path fill-rule="evenodd" d="M16.704 4.153a.75.75.0 01.143 1.052l-8 10.5a.75.75.0 01-1.127.075l-4.5-4.5a.75.75.0 011.06-1.06l3.894 3.893 7.48-9.817a.75.75.0 011.05-.143z" clip-rule="evenodd"></path></svg>
+                      <div style="width:100%; text-align: left;">Caricamento illimitato di playlist</div>
+                    </li>
+                    <li  class="flex gap-x-3 py-2" style="justify-content: unset">
+                      <svg class="h-6 w-5" viewBox="0 0 20 20" fill="currentcolor" aria-hidden="true"><path fill-rule="evenodd" d="M16.704 4.153a.75.75.0 01.143 1.052l-8 10.5a.75.75.0 01-1.127.075l-4.5-4.5a.75.75.0 011.06-1.06l3.894 3.893 7.48-9.817a.75.75.0 011.05-.143z" clip-rule="evenodd"></path></svg>
+                      <div style="width:100%; text-align: left;">Gestione di 4 monitor</div>
                     </li>     
                     <li>&nbsp</li>          
                   </ul>
@@ -1066,15 +1094,12 @@ class DashboardIndex extends LocalizeMixin(AclMixin(ServiceInjectorMixin(Polymer
                     <li  class="flex gap-x-3 py-2" style="justify-content: unset">
                       <svg class="h-6 w-5" viewBox="0 0 20 20" fill="currentcolor" aria-hidden="true"><path fill-rule="evenodd" d="M16.704 4.153a.75.75.0 01.143 1.052l-8 10.5a.75.75.0 01-1.127.075l-4.5-4.5a.75.75.0 011.06-1.06l3.894 3.893 7.48-9.817a.75.75.0 011.05-.143z" clip-rule="evenodd"></path></svg>
                       <div style="width:100%; text-align: left;">Caricamento illimitato di playlist</div>
-                    </li>
-                    <li  class="flex gap-x-3 py-2" style="justify-content: unset">
-                      <svg class="h-6 w-5" viewBox="0 0 20 20" fill="currentcolor" aria-hidden="true"><path fill-rule="evenodd" d="M16.704 4.153a.75.75.0 01.143 1.052l-8 10.5a.75.75.0 01-1.127.075l-4.5-4.5a.75.75.0 011.06-1.06l3.894 3.893 7.48-9.817a.75.75.0 011.05-.143z" clip-rule="evenodd"></path></svg>
-                      <div style="width:100%; text-align: left;">30% di sconto</div>
-                    </li>    
+                    </li>   
                     <li  class="flex gap-x-3 py-2" style="justify-content: unset">
                       <svg class="h-6 w-5" viewBox="0 0 20 20" fill="currentcolor" aria-hidden="true"><path fill-rule="evenodd" d="M16.704 4.153a.75.75.0 01.143 1.052l-8 10.5a.75.75.0 01-1.127.075l-4.5-4.5a.75.75.0 011.06-1.06l3.894 3.893 7.48-9.817a.75.75.0 011.05-.143z" clip-rule="evenodd"></path></svg>
                       <div style="width:100%; text-align: left;">Gestione di 10 monitor</div>
-                    </li>               
+                    </li>      
+                    <li>&nbsp</li>                
                   </ul>
                 </div>
                 <div class="boxed">
@@ -1089,62 +1114,34 @@ class DashboardIndex extends LocalizeMixin(AclMixin(ServiceInjectorMixin(Polymer
                   <li  class="flex gap-x-3 py-2" style="justify-content: unset">
                     <svg class="h-6 w-5" viewBox="0 0 20 20" fill="currentcolor" aria-hidden="true"><path fill-rule="evenodd" d="M16.704 4.153a.75.75.0 01.143 1.052l-8 10.5a.75.75.0 01-1.127.075l-4.5-4.5a.75.75.0 011.06-1.06l3.894 3.893 7.48-9.817a.75.75.0 011.05-.143z" clip-rule="evenodd"></path></svg>
                     <div style="width:100%; text-align: left;">Caricamento illimitato di playlist</div>
-                  </li>
-                  <li  class="flex gap-x-3 py-2" style="justify-content: unset">
-                    <svg class="h-6 w-5" viewBox="0 0 20 20" fill="currentcolor" aria-hidden="true"><path fill-rule="evenodd" d="M16.704 4.153a.75.75.0 01.143 1.052l-8 10.5a.75.75.0 01-1.127.075l-4.5-4.5a.75.75.0 011.06-1.06l3.894 3.893 7.48-9.817a.75.75.0 011.05-.143z" clip-rule="evenodd"></path></svg>
-                    <div style="width:100%; text-align: left;">40% di sconto</div>
-                  </li>    
+                  </li>  
                   <li  class="flex gap-x-3 py-2" style="justify-content: unset">
                     <svg class="h-6 w-5" viewBox="0 0 20 20" fill="currentcolor" aria-hidden="true"><path fill-rule="evenodd" d="M16.704 4.153a.75.75.0 01.143 1.052l-8 10.5a.75.75.0 01-1.127.075l-4.5-4.5a.75.75.0 011.06-1.06l3.894 3.893 7.48-9.817a.75.75.0 011.05-.143z" clip-rule="evenodd"></path></svg>
                     <div style="width:100%; text-align: left;">Gestione di 20 monitor</div>
-                  </li>               
+                  </li>     
+                  <li>&nbsp</li>                 
                 </ul>
               </div>
              </div>
           </div>
-          <div class="menu">
-              <div class="container box">
-                <div class="people center start">
-                    <h2 class="margin-0">Dicono di noi</h2>
-                    <div class="quote">
-                      <a class="left prev" on-tap="prevReview">&#10094;</a>
-                      <div class="slideshow-container">
-                          <div class="review active">Ottima iniziativa. strumento facile e intuivo per organizzare i contenuti a far girare sugli schermi della mia attività<br/><i>Claudio</i></div>
-                          <div class="review" style="display: block; right: 1500px;">Veloce con 2 click riesco ad aggiornare facilemente i contenuti da visualizzare<br/><i>Matteo</i></div>
-                          <div class="review" style="display: block; right: 1500px;">Inizialmente ero un po' preoccupata visto la mia clientela di tutte le età. L'idea però mi è piaciuta fin da subito, l'ho provata e i miei clienti sono soddisfatti.<br/><i>Gabriella</i></div>      
-                      </div>
-                      <a class="right next" on-tap="nextReview">&#10095;</a>
-                    </div>
-                    <div class="navigation">
-                        <span class="dot active"></span>
-                        <span class="dot"></span>
-                        <span class="dot"></span>
-                    </div>
+          <div class="section column menu" style="padding-top:40px; adding-bottom: 3px;">
+            <div id="partner" class="row center">
+              <h2>Scarica player</h2>
+              <div class="flex-center">
+                <div>
+                  <a class="icon"><img src="https://dsign-asset.s3.eu-central-1.amazonaws.com/windows.png" /></a><p>Windows</p>
                 </div>
-              </div>      
-          </div>
-          <div class="section column blue">
-              <div id="partner" class="row center">
-                <h2>Scarica player</h2>
-                <div class="text-block partner-container">
-                  <dom-repeat id="menu" items="{{restaurants}}" as="restaurant">
-                    <template>
-                      <div class="partner-card">
-                        <div class="card-container">
-                          <div class="logo-restaurant" style="background-image:url({{getBackgroundCard(restaurant)}})"></div>
-                          <div class="header">
-                            <div class="title">{{restaurant.name}}</div>
-                            <div class="card-menu" restaurant={{restaurant}}>
-                              <div style="display:{{enableMenuCard(restaurant, 'indoor')}}">Menu in sala</div>
-                              <div style="display:{{enableMenuCard(restaurant, 'delivery')}}">Menu delivery</div>
-                            </div>
-                          </div>
-                        </div>
-                      </div>
-                    </template>
-                  </dom-repeat>
+                <div>
+                  <a class="icon"><img src="https://dsign-asset.s3.eu-central-1.amazonaws.com/mac-os.png" /></a><p>Macos</p>
+                </div>
+                <div>
+                  <a class="icon"><img src="https://dsign-asset.s3.eu-central-1.amazonaws.com/linux.png" /></a><p>Linux</p>
+                </div>
+                <div>
+                  <a class="icon"><img src="https://dsign-asset.s3.eu-central-1.amazonaws.com/raspberry.png" /></a><p>Raspberry</p>
                 </div>
               </div>
+            </div>
           </div>
           <div class="section column white team">
             <div id="team" class="row center">
@@ -1192,8 +1189,29 @@ class DashboardIndex extends LocalizeMixin(AclMixin(ServiceInjectorMixin(Polymer
                 </div>        
             </div>     
           </div>
+          <div class="menu">
+            <div class="container box">
+              <div class="people center start">
+                  <h2 class="margin-0">Dicono di noi</h2>
+                  <div class="quote">
+                    <a class="left prev" on-tap="prevReview">&#10094;</a>
+                    <div class="slideshow-container">
+                        <div class="review active">Ottima iniziativa. strumento facile e intuivo per organizzare i contenuti a far girare sugli schermi della mia attività<br/><i>Claudio</i></div>
+                        <div class="review" style="display: block; right: 1500px;">Veloce con 2 click riesco ad aggiornare facilemente i contenuti da visualizzare<br/><i>Matteo</i></div>
+                        <div class="review" style="display: block; right: 1500px;">Inizialmente ero un po' preoccupata visto la mia clientela di tutte le età. L'idea però mi è piaciuta fin da subito, l'ho provata e i miei clienti sono soddisfatti.<br/><i>Gabriella</i></div>      
+                    </div>
+                    <a class="right next" on-tap="nextReview">&#10095;</a>
+                  </div>
+                  <div class="navigation">
+                      <span class="dot active"></span>
+                      <span class="dot"></span>
+                      <span class="dot"></span>
+                  </div>
+              </div>
+            </div>      
+          </div>
           <footer>
-            <div>© 2020 Dsign - Buon appetito</div> 
+            <div>© 2020 Dsign - Buona visione</div> 
             <div class="row-responsive">
                 <a class="icon-footer" href="https://www.facebook.com/Ds-ign-106670881473065/" target="_blank">
                     <iron-icon icon="facebook"></iron-icon>

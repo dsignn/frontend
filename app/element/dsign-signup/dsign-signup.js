@@ -181,7 +181,7 @@ class DsignSignup extends FormErrorMessage(AclMixin(ServiceInjectorMixin(Polymer
         if (!this.$.orgAutocomplete.value) {
             userData.organization = this.$.orgAutocomplete.text
         } else {
-            userData.organization = this.$.orgAutocomplete.text == this.$.orgAutocomplete.value.name ? this.$.orgAutocomplete.value._id.$oid:  this.$.orgAutocomplete.text;
+            userData.organization = this.$.orgAutocomplete.text == this.$.orgAutocomplete.value.name ? this.$.orgAutocomplete.value.id:  this.$.orgAutocomplete.text;
         }
 
        
