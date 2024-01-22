@@ -6,6 +6,7 @@ import "@polymer/paper-button/paper-button";
 import "@fluidnext-polymer/paper-autocomplete/paper-autocomplete";
 import "@polymer/paper-input/paper-input";
 import "@polymer/iron-form/iron-form";
+import "@polymer/paper-tooltip/paper-tooltip";
 import { layout } from "../layout/dsing-layout";
 import { lang } from './language';
 
@@ -18,13 +19,24 @@ class DsignSignup extends FormErrorMessage(AclMixin(ServiceInjectorMixin(Polymer
         return html`
       ${layout}
       <style>
+
+        :host {
+            display:block;
+
+            --paper-tooltip : {
+                background-color: var(--default-primary-color);
+                background: var(--default-primary-color);
+                font-size: 16px;
+            }
+        }
       
-         :host paper-input[disabled] {
+        :host paper-input[disabled] {
 
           --paper-input-container-disabled: {
             opacity: 0.7;
           }
         }
+
       
         .url {
         
@@ -73,8 +85,11 @@ class DsignSignup extends FormErrorMessage(AclMixin(ServiceInjectorMixin(Polymer
                             </div>
                         </paper-item>
                     </template>
-
-                    <iron-icon icon="info" slot="suffix"></iron-icon>
+                    <div slot="suffix">
+                        <iron-icon id="infoOrg" icon="info"></iron-icon>
+                        <paper-tooltip for="infoOrg" position="left">Cerca la tua organizzazione se non la trovi sarà creata automaticamente</paper-tooltip>
+                    </div>
+                    
               </paper-autocomplete>
               <paper-button on-tap="submitSignupButton">{{localize('signup')}}</paper-button>
             </form>
@@ -195,3 +210,4 @@ class DsignSignup extends FormErrorMessage(AclMixin(ServiceInjectorMixin(Polymer
 }
 
 window.customElements.define('dsign-signup', DsignSignup);
+
