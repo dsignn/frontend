@@ -203,6 +203,7 @@ class DsignSignup extends FormErrorMessage(AclMixin(ServiceInjectorMixin(Polymer
         this.userStorage.save(userData).then((data) => {
             this._notify.notify(this.localize('signup-ok'));
             this.$.signupUser.reset();
+            this.$.orgAutocomplete.clear();
         }).catch((error) => {
             this.errorMessage(this.$.signupUser, error);
         });

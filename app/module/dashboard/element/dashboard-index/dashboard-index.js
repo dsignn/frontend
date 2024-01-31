@@ -194,7 +194,7 @@ class DashboardIndex extends LocalizeMixin(AclMixin(ServiceInjectorMixin(Polymer
     .flex div,
     .flex-center div {
       display:block;
-      width:16.6%;  
+      width:26.6%;  
     }
     
     .icon {
@@ -775,6 +775,9 @@ class DashboardIndex extends LocalizeMixin(AclMixin(ServiceInjectorMixin(Polymer
      .row-responsive.mail {
             padding-left: 20px;
          }
+    .invert-color {
+      filter: invert(100%);
+    }
 
     @media only screen and (max-width: 1000px) {
       .team {
@@ -1129,16 +1132,18 @@ class DashboardIndex extends LocalizeMixin(AclMixin(ServiceInjectorMixin(Polymer
               <h2>Scarica player</h2>
               <div class="flex-center">
                 <div>
-                  <a class="icon"><img src="https://dsign-asset.s3.eu-central-1.amazonaws.com/windows.png" /></a><p>Windows</p>
+                  <a class="icon"><img class="invert-color" src="https://dsign-asset.s3.eu-central-1.amazonaws.com/windows.png"  on-tap="downloadPlayer" type="windows" style="cursor:pointer;" /></a><p>Windows</p>
+                </div>
+                <!--
+                <div>
+                  <a class="icon"><img class="invert-color" src="https://dsign-asset.s3.eu-central-1.amazonaws.com/mac-os.png" /></a><p>Macos</p>
+                </div>
+                -->
+                <div>
+                  <a class="icon"><img class="invert-color" src="https://dsign-asset.s3.eu-central-1.amazonaws.com/linux.png" on-tap="downloadPlayer" type="linux" style="cursor:pointer;" /></a><p>Linux</p>
                 </div>
                 <div>
-                  <a class="icon"><img src="https://dsign-asset.s3.eu-central-1.amazonaws.com/mac-os.png" /></a><p>Macos</p>
-                </div>
-                <div>
-                  <a class="icon"><img src="https://dsign-asset.s3.eu-central-1.amazonaws.com/linux.png" /></a><p>Linux</p>
-                </div>
-                <div>
-                  <a class="icon"><img src="https://dsign-asset.s3.eu-central-1.amazonaws.com/raspberry.png" /></a><p>Raspberry</p>
+                  <a class="icon"><img class="invert-color" src="https://dsign-asset.s3.eu-central-1.amazonaws.com/raspberry.png" on-tap="downloadPlayer" type="raspberry" style="cursor:pointer;" /></a><p>Raspberry</p>
                 </div>
               </div>
             </div>
@@ -1291,7 +1296,7 @@ class DashboardIndex extends LocalizeMixin(AclMixin(ServiceInjectorMixin(Polymer
     };
   }
 
-    /**
+  /**
    *
    */
      initReviewDiv() {
@@ -1319,10 +1324,41 @@ class DashboardIndex extends LocalizeMixin(AclMixin(ServiceInjectorMixin(Polymer
     }
   }
 
+  downloadPlayer(evt) {
+
+    let type = evt.target.getAttribute('type');
+    let uri = null;
+    console.log('FFFFFFFFFFFFFFFF', type);
+    switch(type) {
+      case 'windows' :
+        uri = 'https://github.com/dsignn/player/releases/download/1.0.0/Dsign-player-Setup-1.0.0.exe';
+        break;
+      case 'linux' :
+        uri = 'https://github.com/dsignn/player/releases/download/1.0.0/Dsign-player-1.0.0.AppImage';
+        break;
+      case 'raspberry' :
+        uri = 'https://github.com/dsignn/player/releases/download/1.0.0/Dsign-player-1.0.0-armv7l.AppImage';
+        break;
+    }
+
+    if (!uri) {
+      return;
+    }
+
+    var link = document.createElement("a");
+    // If you don't know the name or want to use
+    // the webserver default set name = ''
+    link.setAttribute('download', 'player');
+    link.href = uri;
+    document.body.appendChild(link);
+    link.click();
+    link.remove();
+  }
+
   /**
- * @returns {number}
- * @private
- */
+   * @returns {number}
+   * @private
+   */
   _getCurrentActiveReviewIndex(elements) {
     let index;
     for (index = 0; index < elements.length; index++) {
