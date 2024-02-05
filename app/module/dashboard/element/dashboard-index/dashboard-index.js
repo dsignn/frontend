@@ -90,7 +90,7 @@ class DashboardIndex extends LocalizeMixin(AclMixin(ServiceInjectorMixin(Polymer
         border: none;
         width: 100%;
         margin: 160px auto 0;
-        background: url(https://dsign-asset.s3.eu-central-1.amazonaws.com/table-background.jpg);
+        background: url(images/ds.jpg);
         text-align: center;
         background-repeat: no-repeat;
         background-size: cover;
